@@ -1,0 +1,291 @@
+/* THEMES */
+.theme-dark {
+    --bg000: rgb(30, 30, 30);
+    --bg100: rgb(33, 33, 33); /* 👍 */
+    --bg200: rgb(42, 42, 42);
+    --bg300: rgb(46, 46, 46);
+    --bg400: rgb(50, 50, 50); /* 👍 */
+    --bg500: rgb(83, 83, 83);
+    --bg600: rgb(93, 93, 93); /* 👍 */
+    --bg700: rgb(100, 100, 100);
+    --bg800: rgb(118, 118, 118); /* 👍 */
+    --bg900: rgb(180, 180, 180); /* 👍 */
+
+    --color000: goldenrod;
+    --color100: rgb(182, 100, 157);
+    --color200: rgb(222, 132, 195);
+
+    --overlay: rgba(0, 0, 0, 0.3);
+    --overlayB: rgba(50, 50, 50, 0.9);
+    --text: white;
+}
+
+.theme-grey {
+    --bg000: rgb(180, 180, 180);
+    --bg100: rgb(118, 118, 118);
+    --bg200: rgb(100, 100, 100);
+    --bg300: rgb(93, 93, 93);
+    --bg400: rgb(83, 83, 83);
+    --bg500: rgb(50, 50, 50);
+    --bg600: rgb(46, 46, 46);
+    --bg700: rgb(42, 42, 42);
+    --bg800: rgb(33, 33, 33);
+    --bg900: rgb(30, 30, 30);
+    --color000: goldenrod;
+    --color100: rgb(182, 100, 157);
+    --color200: rgb(222, 132, 195);
+    --overlay: rgba(97, 97, 97, 0.3);
+    --overlayB: rgba(134, 134, 134, 0.9);
+    --text: white;
+}
+
+.theme-light {
+    --bg000: rgb(250, 250, 250);
+    --bg100: rgb(245, 245, 245);
+    --bg200: rgb(238, 238, 238);
+    --bg300: rgb(223, 223, 223);
+    --bg400: rgb(199, 199, 199);
+    --bg500: rgb(179, 179, 179);
+    --bg600: rgb(146, 146, 146);
+    --bg700: rgb(126, 126, 126);
+    --bg800: rgb(102, 102, 102);
+    --bg900: rgb(94, 94, 94);
+    --color000: goldenrod;
+    --color100: rgb(182, 100, 157);
+    --color200: rgb(222, 132, 195);
+    --overlay: rgba(255, 255, 255, 0.3);
+    --overlayB: rgba(200, 200, 200, 0.9);
+    --text: rgb(30, 30, 30);
+}
+
+.theme-night {
+    --bg000: rgb(2, 2, 22);
+    --bg100: rgb(13, 13, 19);
+    --bg200: rgb(22, 26, 44);
+    --bg300: rgb(34, 38, 54);
+    --bg400: rgb(15, 17, 34);
+    --bg500: rgb(42, 56, 117);
+    --bg600: rgb(38, 46, 121);
+    --bg700: rgb(80, 82, 180);
+    --bg800: rgb(91, 102, 201);
+    --bg900: rgb(112, 114, 223);
+    --color000: rgb(226, 179, 61);
+    --color100: rgb(0, 110, 184);
+    --color200: rgb(61, 174, 226);
+    --overlay: rgba(0, 1, 77, 0.3);
+    --overlayB: rgba(14, 14, 32, 0.9);
+    --text: white;
+}
+
+.theme-sunset {
+    --bg000: rgb(101, 73, 141);
+    --bg100: rgb(184, 72, 80);
+    --bg200: rgb(206, 90, 80);
+    --bg300: rgb(230, 117, 82);
+    --bg400: rgb(238, 144, 90);
+    --bg500: rgb(249, 173, 71);
+    --bg600: rgb(250, 193, 69);
+    --bg700: rgb(255, 207, 104);
+    --bg800: rgb(255, 224, 151);
+    --bg900: rgb(255, 233, 182);
+    --color000: rgb(114, 28, 61);
+    --color100: rgb(146, 61, 226);
+    --color200: rgb(171, 80, 247);
+    --overlay: rgba(184, 72, 80, 0.3);
+    --overlayB: rgba(101, 73, 141, 0.9);
+    --text: rgb(5, 5, 5);
+}
+
+.theme-nature {
+    --bg000: rgb(43, 68, 59);
+    --bg100: rgb(60, 98, 85);
+    --bg200: rgb(71, 121, 103);
+    --bg300: rgb(97, 135, 110);
+    --bg400: rgb(110, 156, 126);
+    --bg500: rgb(145, 165, 121);
+    --bg600: rgb(166, 187, 141);
+    --bg700: rgb(182, 206, 152);
+    --bg800: rgb(244, 255, 194);
+    --bg900: rgb(252, 250, 208);
+    --color000: rgb(126, 187, 228);
+    --color100: rgb(215, 226, 61);
+    --color200: rgb(236, 247, 80);
+    --overlay: rgba(43, 68, 59, 0.3);
+    --overlayB: rgba(110, 156, 126, 0.9);
+    --text: rgb(5, 5, 5);
+}
+
+/* GLOBAL */
+html,
+body {
+    padding: 0;
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+        Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+}
+html {
+    color-scheme: dark;
+}
+body {
+    background: var(--bg400);
+    color: var(--text);
+}
+
+main {
+    padding: 5rem 2rem;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: var(--200);
+    /* background-color: rgb(33, 33, 33); */
+    min-height: 100vh;
+}
+#HomeMain {
+    padding: 12rem 2rem;
+    min-height: 80vh;
+}
+#ElMain {
+    padding: 5rem 2rem 12rem;
+}
+
+h2,
+h3,
+h4,
+h5,
+h6 {
+    margin: 0;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+button {
+    background-color: var(--bg800);
+    border: 2px solid var(--bg800);
+    border-radius: 3px;
+    color: var(--text);
+    cursor: pointer;
+}
+button:hover {
+    background-color: var(--bg700);
+    border: 2px solid var(--bg700);
+}
+button:disabled {
+    color: var(--bg900);
+    background-color: var(--bg700);
+    border: 2px solid var(--bg700);
+    cursor: no-drop;
+}
+
+input,
+select {
+    background-color: var(--bg400);
+    border: 1px solid var(--bg800);
+    padding: 3px;
+    border-radius: 3px;
+}
+select {
+    cursor: pointer;
+}
+input:hover {
+    background-color: var(--bg500);
+    border: 1px solid var(--bg800);
+}
+select:hover {
+    border: 1px solid var(--bg900);
+}
+
+*::-webkit-scrollbar {
+    width: 1em;
+}
+*::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    background-color: var(--bg300);
+}
+
+*::-webkit-scrollbar-thumb {
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    background-color: var(--bg500);
+    /* outline: 1px solid var(--bg500); */
+}
+
+/* CUSTOM ELEMENTS */
+#Overlay {
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    z-index: 10;
+    left: 0;
+    top: 55px;
+    background: var(--overlayB);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+#Overlay > .overlayWindow {
+    /* position: absolute; */
+    /* transform: translate(50%, 0%); */
+    /* border: 1px var(--text) solid; */
+    border: 1px var(--bg600) solid;
+    background: var(--bg200);
+    border-radius: 25px;
+    width: 500px;
+    padding: 1em 0;
+    margin-top: 2em;
+    margin-bottom: 8em;
+}
+#Overlay > .overlayWindow > .topBar {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+#Overlay > .overlayWindow > .topBar > span {
+    cursor: pointer;
+    font-weight: bold;
+    float: right;
+    margin-right: 1em;
+}
+
+.unselectedEl,
+.selectedEl {
+    padding: 0px 10px;
+    border-radius: 25px;
+    color: var(--text);
+    width: 150px;
+    font-size: 12px;
+    display: flex;
+    justify-content: space-between;
+    margin: 0.66em 0;
+    cursor: pointer;
+    transition: 0.1s ease;
+}
+.unselectedEl {
+    background-color: var(--bg500);
+}
+.selectedList > div,
+.selectedEl {
+    background-color: var(--color100);
+}
+.unselectedEl:hover {
+    background-color: var(--bg800);
+    color: var(--text);
+}
+.selectedEl:hover {
+    background-color: var(--color200);
+    color: var(--text);
+}

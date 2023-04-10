@@ -1,0 +1,102 @@
+/* RIFARE!!! QUESTO CSS FILE NON È OTTIMALE */
+
+.wrapper {
+    padding: 0.5rem 0.5rem 0 0.5rem;
+    /* border-radius: 4px; */
+    border: 1px solid var(--bg800);
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    height: 425px;
+    overflow-y: auto;
+    /* align-items: flex-end; */
+}
+
+/* INPUT SELECTOR */
+/* .inputSelectorWrap {
+    position: absolute;
+    left: 0;
+    width: 500px;
+    height: 100%;
+    padding: 1em;
+    background-color: var(--bg400);
+}
+
+.inputSelectorDisplay {
+    display: flex;
+    height: 380px;
+    margin: 1em 0;
+    border-top: 1px solid var(--text);
+} */
+
+.allList,
+.selectedList {
+    overflow-y: auto;
+    /* height: 450px; */
+    display: flex;
+    flex-direction: column;
+    margin-top: 2em;
+    width: 50%;
+    padding-left: 1em;
+}
+
+/* CATEGORY  */
+.categoryWrap {
+    /* padding: 0.5rem 0.3rem; */
+    width: 100%;
+}
+.categoryWrap > .category {
+    background: var(--bg300);
+    border-bottom: 1px solid var(--bg800);
+    font-size: 12px;
+    padding: 0.5rem 0.3rem;
+    /* padding: 0.2rem 0.6rem; */
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+}
+.categoryWrap > .category:hover {
+    background: var(--bg500);
+}
+.categoryWrap > .category > p {
+    margin: 0;
+    font-weight: bold;
+}
+.categoryWrap > .category > span {
+    font-size: 10px;
+    margin-left: 0.6rem;
+}
+
+.categoryDropdown {
+    /* transition: height 0.5s ease; */
+    padding: 0.2rem 0.6rem;
+}
+/* SELECTED ELEMENT  */
+.unselectedEl,
+.selectedEl {
+    padding: 0px 10px;
+    border-radius: 25px;
+    color: var(--text);
+    width: 150px;
+    font-size: 12px;
+    display: flex;
+    justify-content: space-between;
+    margin: 0.66em 0;
+    cursor: pointer;
+    transition: 0.1s ease;
+}
+.unselectedEl {
+    background-color: var(--bg500);
+}
+.selectedList > div,
+.selectedEl {
+    background-color: var(--color100);
+}
+.unselectedEl:hover {
+    background-color: var(--bg700);
+    color: var(--text);
+}
+.selectedEl:hover {
+    background-color: var(--color200);
+    color: var(--text);
+}

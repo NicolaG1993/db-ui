@@ -1,0 +1,335 @@
+import axios from "axios";
+import Link from "next/link";
+import { useEffect, useState } from "react";
+
+// import RecordForm from "@/components/Forms/RecordForm";
+import Graph from "@/components/Displayers/Graphs/Graph";
+import styles from "@/styles/Records.module.css";
+import { formatDateEU, formatFormInputDate } from "@/utils/convertTimestamp";
+import Form from "@/components/Forms/Form";
+
+export default function Records() {
+    const [allRecords, setAllRecords] = useState(null);
+    const [openForm, setOpenForm] = useState(false);
+    const [rec, setRec] = useState(null);
+
+    const fetchAllRecords = async () => {
+        try {
+            const res = await axios.get("/api/record/all");
+            console.log("fetchAllRecords activated: ", res);
+            setAllRecords(res.data);
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+    useEffect(() => {
+        fetchAllRecords();
+    }, []);
+
+    useEffect(() => {
+        // force fetch when openForm closes to update UI
+        // there may be a better way to do this
+        if (!openForm && rec) {
+            fetchAllRecords();
+        }
+    }, [openForm]);
+
+    useEffect(() => {
+        if (allRecords) {
+            // parse data for colums in DOM
+            console.log("allRecords: ", allRecords);
+        }
+    }, [allRecords]);
+
+    const handleEdits = () => {
+        fetchAllRecords();
+    };
+
+    return (
+        <main>
+            <div className={styles.heading}>
+                <h1>ALL RECORDS</h1>
+            </div>
+
+            {/* <div className={styles.searchbar}>
+                <input
+                    type="text"
+                    placeholder="Search something..."
+                    value={searchBar}
+                    onChange={(e) => setSearchBar(e.target.value)}
+                ></input>
+                <button>SEARCH</button>
+                <span onClick={() => setFiltersBar(!filtersBar)}>
+                    {filtersBar ? "Close" : "Filters"}
+                </span>
+            </div> */}
+
+            {/* {filtersBar && (
+                <FiltersBar
+                    filters={filters}
+                    updateFilters={updateFilters}
+                    closeFilters={setFiltersBar}
+                    deleteAllFilters={setFilters}
+                    allLabels={[
+                        "actors",
+                        "categories",
+                        "tags",
+                        "studios",
+                        "distribution",
+                    ]}
+                    fetchData={fetchData}
+                />
+            )} */}
+
+            {allRecords ? (
+                <>
+                    <section
+                        className={`${styles.section} ${styles.recordsGrid}`}
+                    >
+                        <div className={styles.infoWrap}>
+                            <div className={styles.infoHeadingWrap}>
+                                <h3>RECORDS</h3>
+                                <span>{`(${allRecords.records.length})`}</span>
+                            </div>
+
+                            <div className={styles.recordsWrap}>
+                                {allRecords.records.map((el, i) => (
+                                    <div
+                                        key={el.id}
+                                        className={styles.recordRow}
+                                    >
+                                        <Link
+                                            href={`/el/movie/${el.movie.id}`}
+                                            title={el.movie.title}
+                                        >
+                                            <p className={styles.id}>
+                                                #{allRecords.records.length - i}
+                                            </p>
+                                            <p className={styles.title}>
+                                                {el.movie.title}
+                                            </p>
+                                            <p className={styles.date}>
+                                                {formatDateEU(el.created_at)}
+                                            </p>
+                                        </Link>
+
+                                        <div className={styles.btnWrap}>
+                                            <button
+                                                onClick={() => (
+                                                    setRec(el),
+                                                    setOpenForm(true)
+                                                )}
+                                            >
+                                                Edit
+                                            </button>
+                                            <button
+                                                onClick={() => (
+                                                    setRec(el),
+                                                    handleDelete(el.id)
+                                                )}
+                                            >
+                                                X
+                                            </button>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+
+                            {/* <p>count</p>
+                        <p>Order by: last, first</p>
+                        <p>Edit date option</p>
+                        <p>Delete option</p> */}
+                        </div>
+
+                        <div className={styles.infoWrap}>
+                            <div className={styles.infoHeadingWrap}>
+                                <h3>MOVIES</h3>
+                                <span>{`(${allRecords.moviesRecords.length})`}</span>
+                            </div>
+
+                            <div className={styles.recordsWrap}>
+                                {allRecords.moviesRecords.map((el, i) => (
+                                    <div
+                                        key={el.id}
+                                        className={styles.recordRowLarge}
+                                    >
+                                        <Link
+                                            href={`/el/movie/${el.id}`}
+                                            title={el.title}
+                                        >
+                                            <p className={styles.id}>
+                                                #{i + 1}
+                                            </p>
+                                            <div
+                                                className={
+                                                    styles.doubleLineTitle
+                                                }
+                                            >
+                                                <p className={styles.title}>
+                                                    {el.title}
+                                                </p>
+                                                <p className={styles.cast}>
+                                                    {el.cast &&
+                                                        el.cast.map((el, i) => (
+                                                            <span
+                                                                key={
+                                                                    el.name + i
+                                                                }
+                                                            >
+                                                                • {el.name}{" "}
+                                                            </span>
+                                                        ))}
+                                                </p>
+                                            </div>
+
+                                            <p className={styles.total}>
+                                                x {el.totalRecords}
+                                            </p>
+                                        </Link>
+                                    </div>
+                                ))}
+                            </div>
+
+                            {/* <p>count</p>
+                        <p>Order by: last, first, higher count, lower count</p> */}
+                        </div>
+
+                        <div className={styles.infoWrap}>
+                            <div className={styles.infoHeadingWrap}>
+                                <h3>ACTORS</h3>
+                            </div>
+
+                            <div className={styles.recordsWrap}>
+                                {allRecords.actorsRecords.map((el, i) => (
+                                    <div
+                                        key={el.id}
+                                        className={styles.recordRowLarge}
+                                    >
+                                        <Link
+                                            href={`/el/actor/${el.id}`}
+                                            title={el.name}
+                                        >
+                                            <p className={styles.id}>
+                                                #{i + 1}
+                                            </p>
+
+                                            <p className={styles.title}>
+                                                {el.name}
+                                            </p>
+
+                                            <p className={styles.total}>
+                                                x {el.totalRecords}
+                                            </p>
+                                        </Link>
+                                    </div>
+                                ))}
+                            </div>
+                            {/* <p>Order by: last, first, higher count, lower count</p> */}
+                        </div>
+
+                        <div className={styles.infoWrap}>
+                            <div className={styles.infoHeadingWrap}>
+                                <h3>TAGS</h3>
+                            </div>
+
+                            <div className={styles.recordsWrap}>
+                                {allRecords.tagsRecords.map((el, i) => (
+                                    <div
+                                        key={el.id}
+                                        className={styles.recordRowLarge}
+                                    >
+                                        <Link
+                                            href={`/el/tag/${el.id}`}
+                                            title={el.name}
+                                        >
+                                            <p className={styles.id}>
+                                                #{i + 1}
+                                            </p>
+
+                                            <p className={styles.title}>
+                                                {el.name}
+                                            </p>
+
+                                            <p className={styles.total}>
+                                                x {el.totalRecords}
+                                            </p>
+                                        </Link>
+                                    </div>
+                                ))}
+                            </div>
+                            {/* <p>Order by: last, first, higher count, lower count</p> */}
+                        </div>
+
+                        <div className={styles.infoWrap}>
+                            <div className={styles.infoHeadingWrap}>
+                                <h3>CATEGORIES</h3>
+                            </div>
+
+                            <div className={styles.recordsWrap}>
+                                {allRecords.categoriesRecords.map((el, i) => (
+                                    <div
+                                        key={el.id}
+                                        className={styles.recordRowLarge}
+                                    >
+                                        <Link
+                                            href={`/el/category/${el.id}`}
+                                            title={el.name}
+                                        >
+                                            <p className={styles.id}>
+                                                #{i + 1}
+                                            </p>
+
+                                            <p className={styles.title}>
+                                                {el.name}
+                                            </p>
+
+                                            <p className={styles.total}>
+                                                x {el.totalRecords}
+                                            </p>
+                                        </Link>
+                                    </div>
+                                ))}
+                            </div>
+                            {/* <p>Order by: last, first, higher count, lower count</p> */}
+                        </div>
+                    </section>
+
+                    <section
+                        className={`${styles.section} ${styles.graphsGrid}`}
+                    >
+                        <div className={styles.graphWrap}>
+                            <div className={styles.infoHeadingWrap}>
+                                <h3>GRAPHIC 1</h3>
+                            </div>
+                            <Graph data={allRecords.records} />
+                        </div>
+
+                        <div className={styles.graphWrap}>
+                            <div className={styles.infoHeadingWrap}>
+                                <h3>GRAPHIC 2</h3>
+                            </div>
+                            <div className={styles.graph}></div>
+                        </div>
+                    </section>
+                </>
+            ) : (
+                <div>Loading...</div>
+            )}
+
+            {openForm && (
+                <div className={styles.overlay}>
+                    <div className={styles.formWrapContainer}>
+                        <Form
+                            topicLabel={"record"}
+                            propsData={rec}
+                            handleEditsInParent={handleEdits}
+                            setOpenForm={setOpenForm}
+                        />
+                        {/* <RecordForm propsData={rec} setOpenForm={setOpenForm} /> */}
+                    </div>
+                </div>
+            )}
+        </main>
+    );
+}

@@ -1,0 +1,233 @@
+/* DASHBOARD */
+.main h1 {
+    text-transform: uppercase;
+}
+.main button {
+    width: 130px;
+    height: 50px;
+}
+
+.content {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* flex-grow: 0.4; */
+}
+
+.content button {
+    margin: 2rem 2rem;
+}
+
+/* FORMS */
+.selector {
+    border-bottom: 1px var(--text) solid;
+    padding-bottom: 1em;
+    /* margin-top: 3em; */
+    padding: 0 1em;
+}
+.selector > ul {
+    display: flex;
+    justify-content: space-between;
+}
+
+.selector > ul > li {
+    cursor: pointer;
+    margin-bottom: 0.8em;
+}
+
+.selected {
+    text-decoration: underline;
+    font-weight: bold;
+}
+
+.formWrapContainer {
+    position: relative;
+    height: 500px;
+    overflow: hidden;
+}
+
+.formWrap {
+    padding: 0 1em;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: absolute;
+    width: 100%;
+}
+.formWrap > div:nth-child(1) {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    border-bottom: 1px solid var(--bg600);
+    margin-bottom: 2em;
+    /* padding: 0 1em; */
+}
+.formWrap > div:nth-child(1) > h2 {
+    margin: 1em 0;
+}
+.formWrap > div:nth-child(1) > span {
+    /* padding: 0 1em;
+    margin: 1.6em 0; */
+    cursor: pointer;
+    font-weight: bold;
+    /* height: 30px; */
+    font-size: 1.2em;
+}
+
+.form {
+    display: grid;
+    grid-template-columns: 160px 1fr;
+    max-height: 380px;
+    /* width: 420px; */
+    overflow-y: auto;
+    padding-right: 2em;
+}
+
+.form h4 {
+    margin: 0 1em 0 0;
+}
+.form input {
+    width: 100%;
+    /* width: 250px; */
+    /* margin: 0 2em 0 0; */
+}
+
+.form-col-left,
+.form-col-right {
+    margin-bottom: 1em;
+}
+.form-col-left {
+}
+.form-col-right {
+    /* display: flex; */
+    width: 250px;
+}
+
+.input-and-btn-wrap {
+    width: 100%;
+    display: flex;
+}
+.input-and-btn-wrap > button {
+    width: 40px;
+    cursor: pointer;
+    font-size: 12px;
+    margin-left: 0.8em;
+    padding: 0;
+}
+
+.form-new-image {
+    width: 250px;
+    height: 400px;
+    position: relative;
+}
+
+.form-delete-image {
+    background-color: var(--text);
+    color: black;
+    position: absolute;
+    right: 8px;
+    top: 8px;
+    z-index: 5;
+    cursor: pointer;
+    width: 26px;
+    height: 26px;
+    border-radius: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+}
+
+.form-selector-interaction-box {
+    display: flex;
+    justify-content: space-between;
+    /* margin-right: 2em; */
+    width: 250px;
+}
+.form-selector-interaction-box > div:nth-child(2) {
+    cursor: pointer;
+    background: var(--bg800);
+    border-radius: 3px;
+    font-size: 12px;
+    width: 45px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.form-selector-interaction-box > div:nth-child(2):hover {
+    background-color: var(--bg700);
+}
+
+.buttons-box {
+    margin-top: 1rem;
+}
+.buttons-box button {
+    cursor: pointer;
+    height: 2rem;
+    width: 5rem;
+}
+/* SIDE WRAP */
+.sidewrap {
+    position: relative;
+    padding: 0 1em;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    transition: 0.2s ease-in;
+    background: var(--bg200);
+    /* border-left: 1px solid var(--text); */
+}
+.sidewrap > .nav {
+    display: flex;
+    align-items: center;
+    /* position: absolute;
+    top: 0;
+    left: 0; */
+    width: 100%;
+    z-index: 10;
+    padding: 15px;
+}
+
+.sidewrap > .nav > span {
+    float: right;
+    margin-left: auto;
+    cursor: pointer;
+    line-height: 30px;
+}
+
+.sidewrapContent {
+    display: grid;
+    grid-template-columns: 1fr auto;
+}
+.sidewrapContent > div:nth-child(1) {
+    padding-right: 1rem;
+}
+.sidewrapContent > div:nth-child(2) {
+    border-left: 1px solid var(--bg800);
+    padding-left: 1rem;
+}
+
+/* SETTING */
+.theme-option {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    margin-bottom: 0.8rem;
+}
+
+.theme-preview {
+    height: 15px;
+    width: 30px;
+    display: flex;
+    align-items: center;
+    border: 1px solid var(--bg600);
+    margin-right: 0.8rem;
+}
+
+.theme-preview > div {
+    height: 100%;
+    width: 50%;
+    /* flex-grow: 1; */
+}

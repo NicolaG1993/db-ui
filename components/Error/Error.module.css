@@ -1,0 +1,16 @@
+.err {
+    background: red;
+    padding: 1rem;
+    border-radius: 3px;
+}
+.response {
+    background: rgb(0, 255, 0);
+    padding: 1rem;
+    border-radius: 3px;
+}
+.err > span:nth-child(1) {
+    color: white;
+}
+.response > span:nth-child(1) {
+    color: white;
+}
