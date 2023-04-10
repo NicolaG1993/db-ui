@@ -237,53 +237,6 @@ export default function Actor({
                 ) : (
                     <p>N/A</p>
                 )}
-                {/* <div className={styles.itemsWrap}>
-                    {actors ? (
-                        <div className={styles.grid}>
-                            {actors.map((el) => (
-                                <Link
-                                    key={"actor" + el.id}
-                                    href={`/el/actor/${el.id}`}
-                                >
-                                    <div id={styles.Actor}>
-                                        <div
-                                            style={{
-                                                position: "relative",
-                                            }}
-                                        >
-                                            <Image
-                                                src={
-                                                    el.pic
-                                                        ? el.pic
-                                                        : "/no-image.png"
-                                                }
-                                                alt={el.name}
-                                                fill
-                                                style={{ objectFit: "cover" }}
-                                            />
-                                        </div>
-                                        <div>
-                                            <h5>{el.name}</h5>
-                                            <p>
-                                                Movies:{" "}
-                                                {el.movies
-                                                    ? el.movies.lenght
-                                                    : 0}
-                                            </p>
-                                            <p>
-                                                {el.rating
-                                                    ? el.rating
-                                                    : "unrated"}
-                                            </p>
-                                        </div>
-                                    </div>
-                                </Link>
-                            ))}
-                        </div>
-                    ) : (
-                        <p>N/A</p>
-                    )}
-                </div> */}
             </div>
 
             <div className={styles.infoWrap}>
