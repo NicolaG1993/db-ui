@@ -43,10 +43,11 @@ export default function Graph({ data }) {
                 startingDate.setDate(startingDate.getDate() - 1);
 
                 if (date >= startingDate.toISOString() && date <= endDate) {
-                    newObj[formatDateShort(date)] = [
-                        ...newObj[formatDateShort(date)],
-                        el,
-                    ];
+                    newObj[formatDateShort(date)] = Array.isArray(
+                        newObj[formatDateShort(date)]
+                    )
+                        ? [...newObj[formatDateShort(date)], el]
+                        : [el];
                 }
             });
 
