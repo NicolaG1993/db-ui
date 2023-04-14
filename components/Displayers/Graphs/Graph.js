@@ -23,12 +23,13 @@ export default function Graph({ data }) {
         setStartDate(date.toISOString());
         // setStartDate(formatDateShort(date.toISOString()));
     }, []);
+    console.log("💚💚💚 DATA: ", data);
 
     useEffect(() => {
         // prendere ultimi 7 giorni e creare JSON di records divisi per giorno
-
+        console.log("💚💚💚 DATA changed!!!: ", data, startDate, endDate);
         if (data && startDate && endDate) {
-            console.log("💚💚💚 DATA: ", data);
+            console.log("💚💚💚 condition matched!");
             let newObj = {};
 
             // set newObj keys as days, because we need days with 0 records too!
