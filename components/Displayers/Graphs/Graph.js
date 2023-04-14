@@ -14,7 +14,7 @@ export default function Graph({ data }) {
     const [endDate, setEndDate] = useState(null);
     const [divider, setDivider] = useState(0);
     const [sum, setSum] = useState(0);
-    // console.log("💚💚💚 DATA: ", data);
+    console.log("💚💚💚 DATA: ", data);
 
     useEffect(() => {
         setEndDate(new Date().toISOString());
@@ -79,10 +79,10 @@ export default function Graph({ data }) {
             setSum(0);
         }
     }, [parsedData]);
-
-    // console.log("💚💚💚 startDate: ", startDate);
-    // console.log("💚💚💚 endDate: ", endDate);
-    // console.log("💚💚💚 divider: ", divider);
+    //
+    console.log("💚💚💚 startDate: ", startDate);
+    console.log("💚💚💚 endDate: ", endDate);
+    console.log("💚💚💚 divider: ", divider);
 
     return (
         <div className={styles.graphContainer}>
