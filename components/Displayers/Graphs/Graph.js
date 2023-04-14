@@ -60,7 +60,7 @@ export default function Graph({ data }) {
         } else {
             setParsedData(null);
         }
-    }, [data]);
+    }, [data, startDate, endDate]);
 
     useEffect(() => {
         if (parsedData) {
