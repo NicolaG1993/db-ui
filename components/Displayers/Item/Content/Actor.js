@@ -69,7 +69,7 @@ export default function Actor({
                                     key={"nationality" + el}
                                     className={styles.tagElSmall}
                                 >
-                                    <Link href={`/nationality/${el}`}>
+                                    <Link href={`/el/nationality/${el}`}>
                                         {el}
                                     </Link>
                                 </div>
@@ -114,7 +114,7 @@ export default function Actor({
                                     key={"hair " + el.id}
                                     className={styles.tagElSmall}
                                 >
-                                    <Link href={`/tag/${el.id}`}>
+                                    <Link href={`/el/tag/${el.id}`}>
                                         {el.name}
                                     </Link>
                                 </div>
@@ -139,7 +139,7 @@ export default function Actor({
                                     key={"ethnicity " + el.id}
                                     className={styles.tagElSmall}
                                 >
-                                    <Link href={`/tag/${el.id}`}>
+                                    <Link href={`/el/tag/${el.id}`}>
                                         {el.name}
                                     </Link>
                                 </div>
@@ -159,7 +159,7 @@ export default function Actor({
                                     key={"bodyType " + el.id}
                                     className={styles.tagElSmall}
                                 >
-                                    <Link href={`/tag/${el.id}`}>
+                                    <Link href={`/el/tag/${el.id}`}>
                                         {el.name}
                                     </Link>
                                 </div>

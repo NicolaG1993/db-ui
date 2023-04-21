@@ -64,7 +64,7 @@ export default function Category({
                                     key={"actor" + el.id}
                                     className={styles.tagElWithInfo}
                                 >
-                                    <Link href={`/actor/${el.id}`}>
+                                    <Link href={`/el/actor/${el.id}`}>
                                         <p>{el.name}</p>
                                     </Link>
                                     {" | "}

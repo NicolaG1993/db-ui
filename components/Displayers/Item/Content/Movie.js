@@ -161,7 +161,7 @@ export default function Actor({
                                                         className={styles.tagEl}
                                                     >
                                                         <Link
-                                                            href={`/category/${el.id}`}
+                                                            href={`/el/category/${el.id}`}
                                                         >
                                                             {el.name}
                                                         </Link>

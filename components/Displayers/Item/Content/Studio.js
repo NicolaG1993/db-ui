@@ -97,7 +97,7 @@ export default function Studio({
                                     key={"actor" + el.id}
                                     className={styles.tagElWithInfo}
                                 >
-                                    <Link href={`/actor/${el.id}`}>
+                                    <Link href={`/el/actor/${el.id}`}>
                                         <p>{el.name}</p>
                                     </Link>
                                     {" | "}
