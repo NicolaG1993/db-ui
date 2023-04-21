@@ -23,13 +23,12 @@ export default function Graph({ data }) {
         setStartDate(date.toISOString());
         // setStartDate(formatDateShort(date.toISOString()));
     }, []);
-    console.log("💚💚💚 DATA: ", data);
+    // console.log("💚💚💚 DATA: ", data);
 
     useEffect(() => {
         // prendere ultimi 7 giorni e creare JSON di records divisi per giorno
-        console.log("💚💚💚 DATA changed!!!: ", data, startDate, endDate);
+        // console.log("💚💚💚 DATA changed!!!: ", data, startDate, endDate);
         if (data && startDate && endDate) {
-            console.log("💚💚💚 condition matched!");
             let newObj = {};
 
             // set newObj keys as days, because we need days with 0 records too!
@@ -52,7 +51,7 @@ export default function Graph({ data }) {
                 }
             });
 
-            console.log("💚💚💚 newObj: ", newObj);
+            // console.log("💚💚💚 newObj: ", newObj);
 
             // getAllDays();
 
@@ -81,9 +80,9 @@ export default function Graph({ data }) {
         }
     }, [parsedData]);
 
-    console.log("💚💚💚 startDate: ", startDate);
-    console.log("💚💚💚 endDate: ", endDate);
-    console.log("💚💚💚 divider: ", divider);
+    // console.log("💚💚💚 startDate: ", startDate);
+    // console.log("💚💚💚 endDate: ", endDate);
+    // console.log("💚💚💚 divider: ", divider);
 
     return (
         <div className={styles.graphContainer}>

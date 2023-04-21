@@ -80,8 +80,13 @@ export default function Actor({
                     </div>
                 </div>
 
-                <div className={styles.elRow}>
+                {/* <div className={styles.elRow}>
                     <span>Height: </span>
+                    <p>{"?"} cm</p>
+                </div>
+
+                <div className={styles.elRow}>
+                    <span>Weight: </span>
                     <p>{"?"} cm</p>
                 </div>
 
@@ -91,9 +96,14 @@ export default function Actor({
                 </div>
 
                 <div className={styles.elRow}>
-                    <span>Foot size: </span>
-                    <p>{"?"}</p>
+                    <span>Reach size: </span>
+                    <p>{"?"} cm</p>
                 </div>
+
+                <div className={styles.elRow}>
+                    <span>Shoe size: </span>
+                    <p>{"?"}</p>
+                </div> */}
 
                 <div className={styles.elRow}>
                     <span>Hair: </span>
