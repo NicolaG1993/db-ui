@@ -52,7 +52,11 @@ export default function Actor({
 
                 <div className={styles.elRow}>
                     <span>Age: </span>
-                    <p>{getAge(item.birthday)} y.o.</p>
+                    {item.birthday ? (
+                        <p>{getAge(item.birthday)} y.o.</p>
+                    ) : (
+                        <p>N/A</p>
+                    )}
                 </div>
 
                 <div className={styles.elRow}>
@@ -127,7 +131,7 @@ export default function Actor({
 
                 <div className={styles.elRow}>
                     <span>Eyes color: </span>
-                    <p>{"?"}</p>
+                    <p>{"N/A"}</p>
                 </div>
 
                 <div className={styles.elRow}>

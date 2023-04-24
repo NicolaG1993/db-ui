@@ -3,7 +3,7 @@ import styles from "@/styles/AdminDashboard.module.css";
 import { useEffect, useState } from "react";
 import InputToArray from "@/components/Filters/InputToArray/InputToArray";
 
-export default function TagForm({
+export default function CategoryForm({
     formState,
     updateFormState,
     validateData,
@@ -15,6 +15,7 @@ export default function TagForm({
     errors,
     topicLabel,
 }) {
+    console.log(formState);
     //================================================================================
     // Render UI
     //================================================================================
@@ -76,7 +77,7 @@ export default function TagForm({
 
             <div className={styles["form-col-left"]}>
                 <label>
-                    <h4>Tag</h4>
+                    <h4>Title</h4>
                 </label>
             </div>
             <div className={styles["form-col-right"]}>

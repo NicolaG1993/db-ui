@@ -49,7 +49,7 @@ export default function FullListContent({ data, table }) {
                                         </p>
                                     </div>
                                     <p className={styles.rating}>
-                                        {el.rating ? el.rating : "unrated"}
+                                        {el.rating ? el.rating : "N/A"}
                                     </p>
                                 </div>
                             ) : (
@@ -61,10 +61,12 @@ export default function FullListContent({ data, table }) {
                                     ></h5>
                                     <p className={styles.subtitle}>
                                         Movies:{" "}
-                                        {el.movies ? el.movies.length : 0}
+                                        {el.movies || el.count
+                                            ? el.count || el.movies.length
+                                            : 0}
                                     </p>
                                     <p className={styles.rating}>
-                                        {el.rating ? el.rating : "unrated"}
+                                        {el.rating ? el.rating : "N/A"}
                                     </p>
                                 </div>
                             )}

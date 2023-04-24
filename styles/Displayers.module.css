@@ -70,9 +70,7 @@
     align-items: center;
     justify-items: center;
 }
-.fullListGrid p {
-    margin: 0;
-}
+
 .fullListGrid > a {
     margin: 0 0.7em 2em 0.7em;
     /* margin: 0.2em; */
@@ -86,6 +84,7 @@
     align-items: center;
     justify-items: center;
 }
+
 /* GRID */
 .grid {
     display: grid;
@@ -94,14 +93,14 @@
     align-items: center;
     justify-items: center;
 }
-.grid p {
-    margin: 0;
-}
 
 /* GRID ELEMENTS */
 .gridElement {
     /* margin: 0 0.7em 2em 0.7em; */
     margin: 0.2em;
+}
+.gridElement p {
+    margin: 0;
 }
 
 .gridElement > div {
@@ -177,7 +176,7 @@
     margin-right: auto;
 }
 .regularDescription .subtitle {
-    width: 58px;
+    width: 75px;
     padding-left: 8px;
     white-space: nowrap;
 }

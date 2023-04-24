@@ -243,6 +243,9 @@ const parseFormProps = (key, value) => {
         key === "genre" ||
         key === "rating" ||
         key === "created_at" ||
+        key === "type" ||
+        key === "nameType" ||
+        key === "group" ||
         key === "urls"
     ) {
         return value;

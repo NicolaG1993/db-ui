@@ -2,7 +2,7 @@ import ActorForm from "@/components/Forms/Content/ActorForm";
 import MovieForm from "@/components/Forms/Content/MovieForm";
 import RecordForm from "@/components/Forms/Content/RecordForm";
 import StudioForm from "@/components/Forms/Content/StudioForm";
-import TagForm from "@/components/Forms/Content/TagForm";
+import CategoryForm from "@/components/Forms/Content/CategoryForm";
 
 const dataStructureForms = {
     actor: {
@@ -82,7 +82,7 @@ const dataStructureForms = {
     category: {
         emptyState: {
             name: "",
-            website: "",
+            type: "",
         },
         key: "category",
         group: "categorys",
@@ -90,12 +90,12 @@ const dataStructureForms = {
         APInew: "/api/category/new",
         APImodify: "/api/category/modify",
         relations: [],
-        formComponent: (pageProps) => <TagForm {...pageProps} />,
+        formComponent: (pageProps) => <CategoryForm {...pageProps} />,
     },
     tag: {
         emptyState: {
             name: "",
-            website: "",
+            type: "",
         },
         key: "tag",
         group: "tags",
@@ -103,7 +103,7 @@ const dataStructureForms = {
         APInew: "/api/tag/new",
         APImodify: "/api/tag/modify",
         relations: [],
-        formComponent: (pageProps) => <TagForm {...pageProps} />,
+        formComponent: (pageProps) => <CategoryForm {...pageProps} />,
     },
     record: {
         emptyState: {
