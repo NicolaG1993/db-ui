@@ -1,6 +1,7 @@
 import ActorForm from "@/components/Forms/Content/ActorForm";
 import MovieForm from "@/components/Forms/Content/MovieForm";
 import RecordForm from "@/components/Forms/Content/RecordForm";
+import RecordsForm from "@/components/Forms/Content/RecordsForm";
 import StudioForm from "@/components/Forms/Content/StudioForm";
 import CategoryForm from "@/components/Forms/Content/CategoryForm";
 
@@ -116,6 +117,18 @@ const dataStructureForms = {
         APImodify: "/api/record/modify",
         relations: [],
         formComponent: (pageProps) => <RecordForm {...pageProps} />,
+    },
+    records: {
+        emptyState: {
+            date: "",
+        },
+        key: "record",
+        group: "records",
+        nameType: "",
+        APInew: "/api/record/new",
+        APImodify: "/api/record/modify",
+        relations: [],
+        formComponent: (pageProps) => <RecordsForm {...pageProps} />,
     },
 };
 

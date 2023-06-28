@@ -7,44 +7,71 @@ import Graph from "@/components/Displayers/Graphs/Graph";
 import styles from "@/styles/Records.module.css";
 import { formatDateEU, formatFormInputDate } from "@/utils/convertTimestamp";
 import Form from "@/components/Forms/Form";
+import ToggleSwitch from "@/components/ToggleSwitch/ToggleSwitch";
+
+const fetchData = async () => {
+    try {
+        const res = await axios.get("/api/record/all");
+        console.log("fetchData activated: ", res);
+        return res.data;
+    } catch (error) {
+        console.error(error);
+    }
+};
 
 export default function Records() {
     const [allRecords, setAllRecords] = useState(null);
     const [openForm, setOpenForm] = useState(false);
     const [rec, setRec] = useState(null);
+    const [recs, setRecs] = useState();
+    const [multipleSelection, setMultipleSelection] = useState(false);
 
-    const fetchAllRecords = async () => {
-        try {
-            const res = await axios.get("/api/record/all");
-            console.log("fetchAllRecords activated: ", res);
-            setAllRecords(res.data);
-        } catch (error) {
-            console.error(error);
-        }
+    const storeData = async () => {
+        const res = await fetchData();
+        setAllRecords(res);
+    };
+
+    const updateMultipleSelection = (val) => {
+        setMultipleSelection(val);
+    };
+
+    const updateRecs = (id, isChecked) => {
+        isChecked
+            ? recs && recs.length
+                ? setRecs((prev) => [...prev, id])
+                : setRecs([id])
+            : recs &&
+              recs.length &&
+              setRecs((prev) => prev.filter((el) => el !== id));
+    };
+
+    const handleEdits = () => {
+        storeData();
     };
 
     useEffect(() => {
-        fetchAllRecords();
+        storeData();
     }, []);
+
+    useEffect(() => {
+        multipleSelection ? setRec() : setRecs();
+    }, [multipleSelection]);
 
     useEffect(() => {
         // force fetch when openForm closes to update UI
         // there may be a better way to do this
         if (!openForm && rec) {
-            fetchAllRecords();
+            storeData();
         }
     }, [openForm]);
 
     useEffect(() => {
-        if (allRecords) {
+        console.log("recs: ", recs);
+        if (recs) {
             // parse data for colums in DOM
-            console.log("allRecords: ", allRecords);
+            // console.log("recs: ", recs);
         }
-    }, [allRecords]);
-
-    const handleEdits = () => {
-        fetchAllRecords();
-    };
+    }, [recs]);
 
     return (
         <main>
@@ -89,8 +116,36 @@ export default function Records() {
                     >
                         <div className={styles.infoWrap}>
                             <div className={styles.infoHeadingWrap}>
-                                <h3>RECORDS</h3>
-                                <span>{`(${allRecords.records.length})`}</span>
+                                <div className={"subBox"}>
+                                    <h3>RECORDS</h3>
+                                    <span>{`(${allRecords.records.length})`}</span>
+                                </div>
+                                <div className={"subBox"}>
+                                    <ToggleSwitch
+                                        updateState={updateMultipleSelection}
+                                    />
+                                    {multipleSelection && (
+                                        <>
+                                            <button
+                                                onClick={() => (
+                                                    setRecs(recs),
+                                                    setOpenForm(true)
+                                                )}
+                                            >
+                                                X
+                                            </button>
+
+                                            <button
+                                                onClick={() => (
+                                                    setRecs(recs),
+                                                    setOpenForm(true)
+                                                )}
+                                            >
+                                                Edit
+                                            </button>
+                                        </>
+                                    )}
+                                </div>
                             </div>
 
                             <div className={styles.recordsWrap}>
@@ -114,24 +169,43 @@ export default function Records() {
                                             </p>
                                         </Link>
 
-                                        <div className={styles.btnWrap}>
-                                            <button
-                                                onClick={() => (
-                                                    setRec(el),
-                                                    setOpenForm(true)
-                                                )}
-                                            >
-                                                Edit
-                                            </button>
-                                            <button
-                                                onClick={() => (
-                                                    setRec(el),
-                                                    handleDelete(el.id)
-                                                )}
-                                            >
-                                                X
-                                            </button>
-                                        </div>
+                                        {multipleSelection ? (
+                                            <div className={styles.btnWrap}>
+                                                <input
+                                                    type="checkbox"
+                                                    id="checkbox"
+                                                    checked={
+                                                        recs &&
+                                                        recs.includes(el.id)
+                                                    }
+                                                    onChange={(e) =>
+                                                        updateRecs(
+                                                            el.id,
+                                                            e.target.checked
+                                                        )
+                                                    }
+                                                />
+                                            </div>
+                                        ) : (
+                                            <div className={styles.btnWrap}>
+                                                <button
+                                                    onClick={() => (
+                                                        setRec(el),
+                                                        setOpenForm(true)
+                                                    )}
+                                                >
+                                                    Edit
+                                                </button>
+                                                <button
+                                                    onClick={() => (
+                                                        setRec(el),
+                                                        handleDelete(el.id)
+                                                    )}
+                                                >
+                                                    X
+                                                </button>
+                                            </div>
+                                        )}
                                     </div>
                                 ))}
                             </div>
@@ -320,12 +394,21 @@ export default function Records() {
             {openForm && (
                 <div className={styles.overlay}>
                     <div className={styles.formWrapContainer}>
-                        <Form
-                            topicLabel={"record"}
-                            propsData={rec}
-                            handleEditsInParent={handleEdits}
-                            setOpenForm={setOpenForm}
-                        />
+                        {!multipleSelection ? (
+                            <Form
+                                topicLabel={"record"}
+                                propsData={rec}
+                                handleEditsInParent={handleEdits}
+                                setOpenForm={setOpenForm}
+                            />
+                        ) : (
+                            <Form
+                                topicLabel={"records"}
+                                propsData={recs}
+                                handleEditsInParent={handleEdits}
+                                setOpenForm={setOpenForm}
+                            />
+                        )}
                         {/* <RecordForm propsData={rec} setOpenForm={setOpenForm} /> */}
                     </div>
                 </div>

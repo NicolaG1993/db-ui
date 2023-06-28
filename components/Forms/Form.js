@@ -29,7 +29,7 @@ export default function Form({
     //================================================================================
     // Component State
     //================================================================================
-    console.log("propsData: ", propsData);
+    console.log("propsData: ", propsData); // lo state del parent
     const router = useRouter();
 
     let form = dataStructureForms[topicLabel];
@@ -60,20 +60,26 @@ export default function Form({
     //PARSE PROPSDATA
     useEffect(() => {
         if (propsData) {
-            let obj = {};
-            Object.entries(propsData).map(([key, value], i) => {
-                if (value) {
-                    let parsedValue = parseFormProps(key, value);
-                    obj[key] = parsedValue;
-                }
-            });
-            setFormState({ ...formState, ...obj });
+            if (Array.isArray(propsData)) {
+                console.log("🤖🤖🤖 propsData is Array");
+                setFormState({ ...form.emptyState, ids: propsData });
+            } else if (typeof propsData === "object") {
+                let obj = {};
+                Object.entries(propsData).map(([key, value], i) => {
+                    if (value) {
+                        let parsedValue = parseFormProps(key, value);
+                        obj[key] = parsedValue;
+                    }
+                });
+                console.log("🤖🤖🤖 propsData is Object");
+                setFormState({ ...formState, ...obj });
+            }
         } else {
             setFormState(form.emptyState);
         }
     }, [propsData]);
 
-    // FETCH AND FILTER DATA FROM DB -> FOR UI SELECTORS
+    // FETCH AND FILTER DATA FROM DB -> USED FOR UI SELECTORS
     useEffect(() => {
         if (openSection && openSection !== "nationalities") {
             async function invokeFetch() {
@@ -189,6 +195,7 @@ export default function Form({
                         propsData && handleEditsInParent();
                         setOpenForm && setOpenForm(false);
                         topicLabel !== "record" &&
+                            topicLabel !== "records" &&
                             router.push(`/el/${topicLabel}/${data.id}`); // forse fare Form Component separato per "record" page, in caso si volessero fare cose diverse al suo interno
                     })
                     .catch((err) => console.log("ERROR: ", err));
@@ -230,13 +237,22 @@ export default function Form({
             );
         }
         console.log("💛💛💛 obj", obj);
+        console.log("💛💛💛 relatedData", relatedData);
+        console.log("💛💛💛 propsData", propsData);
         if (propsData) {
             /* parse relations for db */
-            const relationsObj = parseFormRelationsEdit(relatedData, propsData);
-            return axios.put(`/api/${topicLabel}/modify`, {
+            let relationsObj = {};
+            relatedData &&
+                (relationsObj = parseFormRelationsEdit(relatedData, propsData));
+            console.log("💛💛💛 relationsObj", relationsObj);
+            return axios.put(form.APImodify, {
                 ...obj,
                 ...relationsObj,
             });
+            // return axios.put(`/api/${topicLabel}/modify`, {
+            //     ...obj,
+            //     ...relationsObj,
+            // });
         } else {
             /* parse data for db */
             Object.entries(relatedData).map(([key, arr], i) => {
@@ -247,10 +263,14 @@ export default function Form({
                     relatedData[key] = parsedArr;
                 }
             });
-            return axios.post(`/api/${topicLabel}/new`, {
+            return axios.post(form.APInew, {
                 ...obj,
                 ...relatedData,
             });
+            // return axios.post(`/api/${topicLabel}/new`, {
+            //     ...obj,
+            //     ...relatedData,
+            // });
         }
     };
 

@@ -4,7 +4,6 @@ import Form from "../Forms/Form";
 
 export default function AddNewWrap({ setAddForm }) {
     const [UI, setUI] = useState("actor");
-
     return (
         <div id={"Overlay"}>
             <div className={"overlayWindow"}>
@@ -56,7 +55,6 @@ export default function AddNewWrap({ setAddForm }) {
                         </li>
                     </ul>
                 </div>
-
                 <Form topicLabel={UI} />
             </div>
         </div>

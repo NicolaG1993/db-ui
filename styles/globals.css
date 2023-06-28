@@ -289,3 +289,15 @@ select:hover {
     background-color: var(--color200);
     color: var(--text);
 }
+
+.subBox {
+    width: 50%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+.subBox:first-child {
+}
+.subBox:last-child {
+    flex-direction: row-reverse;
+}

@@ -131,6 +131,14 @@ module.exports.editRecord = (id, date) => {
     const keys = [id, date];
     return db.query(myQuery, keys);
 };
+module.exports.editRecords = (ids, date) => {
+    const myQuery = `UPDATE counter 
+        SET created_at = $2
+        WHERE id = ANY($1)
+        RETURNING *`;
+    const keys = [ids, date];
+    return db.query(myQuery, keys);
+};
 module.exports.editPicURL = (pic, id, table) => {
     const myQuery = `UPDATE ${table} 
         SET pic = $1

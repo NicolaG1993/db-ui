@@ -272,7 +272,7 @@ const parseFormRelationsPromise = async (arr, formState) => {
 };
 
 const parseFormRelationsEdit = (relatedData, propsData) => {
-    console.log("💛💛💛 parseFormRelationsEdit", relatedData, propsData);
+    // console.log("💛💛💛 parseFormRelationsEdit", relatedData, propsData);
     // !important that we need ids and not names for db update
     let addedRelations = {};
     let removedRelations = {};
@@ -303,7 +303,7 @@ const parseFormRelationsEdit = (relatedData, propsData) => {
 
     if (relatedData) {
         Object.entries(relatedData).map(([key, arr], i) => {
-            console.log("💛💛💛 parseFormRelationsEdit data", key, arr);
+            // console.log("💛💛💛 parseFormRelationsEdit data", key, arr);
 
             if (key === "nationalities") {
                 // fare anche caso nationality N/A? serve veramente ? 🧠
