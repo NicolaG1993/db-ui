@@ -3,6 +3,8 @@ import Layout from "@/constants/layout";
 import "@/styles/globals.css";
 import { useRouter } from "next/router";
 import { getRandomMovieID } from "@/utils/custom/customFetches";
+import { Provider } from "react-redux";
+import store from "@/redux/store";
 
 export default function App({ Component, pageProps }) {
     //================================================================================
@@ -21,9 +23,11 @@ export default function App({ Component, pageProps }) {
         <SnackbarProvider
             anchorOrigin={{ vertical: "top", horizontal: "center" }}
         >
-            <Layout getRandomMovie={getRandomMovie}>
-                <Component {...pageProps} />
-            </Layout>
+            <Provider store={store}>
+                <Layout getRandomMovie={getRandomMovie}>
+                    <Component {...pageProps} />
+                </Layout>
+            </Provider>
         </SnackbarProvider>
     );
 }

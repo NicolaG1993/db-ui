@@ -1,4 +1,4 @@
-import Item from "@/components/Displayers/Item/Item";
+import Item from "@/components/Item/Item";
 export default function Tag() {
     return <Item label={"tag"} />;
 }

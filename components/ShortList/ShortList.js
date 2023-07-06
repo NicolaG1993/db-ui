@@ -5,6 +5,7 @@ import styles from "@/styles/Displayers.module.css";
 import dataArchitectureObj from "@/utils/custom/dataStructureGroups";
 import createMarkup from "@/utils/createMarkup";
 import { detectImage } from "@/utils/custom/customParsers";
+import SessionPlaylistAddBtn from "@/components/SessionPlaylist/SessionPlaylistBtns/SessionPlaylistAddBtn";
 
 export default function ShortList({ data, tableName }) {
     let table = dataArchitectureObj[tableName];
@@ -19,13 +20,21 @@ export default function ShortList({ data, tableName }) {
             <div className={styles.shortListGrid} id={styles.ShortListGrid}>
                 {data ? (
                     data.map((el) => (
-                        <Link
-                            href={`/el/${itemLabel}/${el.id}`}
+                        <div
                             key={tableName + " ShortList " + el.id}
                             className={styles.gridElement}
-                            title={el[nameType]}
                         >
-                            <div id={styles[thumbnailSize]}>
+                            {tableName === "movies" && (
+                                <SessionPlaylistAddBtn
+                                    el={{ id: el.id, title: el.title }}
+                                />
+                            )}
+
+                            <Link
+                                id={styles[thumbnailSize]}
+                                href={`/el/${itemLabel}/${el.id}`}
+                                title={el[nameType]}
+                            >
                                 <div
                                     style={{
                                         position: "relative",
@@ -81,8 +90,8 @@ export default function ShortList({ data, tableName }) {
                                         </p>
                                     </div>
                                 )}
-                            </div>
-                        </Link>
+                            </Link>
+                        </div>
                     ))
                 ) : (
                     <p>Loading...</p>

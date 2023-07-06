@@ -5,6 +5,7 @@ import styles from "@/styles/Displayers.module.css";
 import dataArchitectureObj from "@/utils/custom/dataStructureGroups";
 import createMarkup from "@/utils/createMarkup";
 import { detectImage } from "@/utils/custom/customParsers";
+import SessionPlaylistAddBtn from "../SessionPlaylist/SessionPlaylistBtns/SessionPlaylistAddBtn";
 
 export default function RelationsList({
     itemName,
@@ -24,15 +25,20 @@ export default function RelationsList({
 
     return (
         <div className={styles.relationList}>
-            <div className={styles.grid}>
+            <div className={styles.relationsGrid}>
                 {data.map((el) => (
-                    <Link
-                        key={itemLabel + el.id}
-                        href={`/el/${itemLabel}/${el.id}`}
-                        className={styles.gridElement}
-                        title={el[nameType]}
-                    >
-                        <div id={styles[thumbnailSize]}>
+                    <div key={itemLabel + el.id} className={styles.gridElement}>
+                        {listGroup === "movies" && (
+                            <SessionPlaylistAddBtn
+                                el={{ id: el.id, title: el.title }}
+                            />
+                        )}
+
+                        <Link
+                            id={styles[thumbnailSize]}
+                            href={`/el/${itemLabel}/${el.id}`}
+                            title={el[nameType]}
+                        >
                             <div
                                 style={{ position: "relative" }}
                                 className={styles.picWrap}
@@ -104,8 +110,8 @@ export default function RelationsList({
                                     </p>
                                 </div>
                             )}
-                        </div>
-                    </Link>
+                        </Link>
+                    </div>
                 ))}
             </div>
         </div>

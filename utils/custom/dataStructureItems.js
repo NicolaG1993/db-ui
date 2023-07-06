@@ -1,10 +1,10 @@
-import Actor from "@/components/Displayers/Item/Content/Actor";
-import Movie from "@/components/Displayers/Item/Content/Movie";
-import Category from "@/components/Displayers/Item/Content/Category";
-// import Tag from "@/components/Displayers/Item/Content/Tag";
-import Studio from "@/components/Displayers/Item/Content/Studio";
-// import Distribution from "@/components/Displayers/Item/Content/Distribution";
-// import Nationality from "@/components/Displayers/Item/Content/Nationality";
+import Actor from "@/components/Item/Content/Actor";
+import Movie from "@/components/Item/Content/Movie";
+import Category from "@/components/Item/Content/Category";
+// import Tag from "@/components/Item/Content/Tag";
+import Studio from "@/components/Item/Content/Studio";
+// import Distribution from "@/components/Item/Content/Distribution";
+// import Nationality from "@/components/Item/Content/Nationality";
 
 const dataStructureItems = {
     actor: {

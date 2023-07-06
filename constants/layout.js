@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import Header from "@/constants/Header/Header";
 import Footer from "@/constants/Footer/Footer";
 import { keepTheme } from "@/utils/themes";
+import SessionUI from "./SessionUI/SessionUI";
 
 export default function Layout({ children, getRandomMovie }) {
     useEffect(() => {
@@ -24,6 +25,7 @@ export default function Layout({ children, getRandomMovie }) {
             </Head>
             <Header getRandomMovie={getRandomMovie} />
             {children}
+            <SessionUI />
             <Footer />
         </>
     );

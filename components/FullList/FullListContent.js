@@ -3,20 +3,30 @@ import Link from "next/link";
 import styles from "@/styles/Displayers.module.css";
 import createMarkup from "@/utils/createMarkup";
 import { detectImage } from "@/utils/custom/customParsers";
+import SessionPlaylistAddBtn from "../SessionPlaylist/SessionPlaylistBtns/SessionPlaylistAddBtn";
 
 export default function FullListContent({ data, table }) {
-    let { nameType, thumbnailSize, itemLabel } = table;
+    let { nameType, thumbnailSize, itemLabel, itemGroup } = table;
+    console.log(table);
     return (
         <>
             {data ? (
                 data.map((el, i) => (
-                    <Link
-                        href={`/el/${itemLabel}/${el.id}`}
+                    <div
                         key={`FullListContent ${el[nameType]} ${i}`}
                         className={styles.gridElement}
-                        title={el[nameType]}
                     >
-                        <div key={el.id} id={styles[thumbnailSize]}>
+                        {itemGroup === "movies" && (
+                            <SessionPlaylistAddBtn
+                                el={{ id: el.id, title: el.title }}
+                            />
+                        )}
+
+                        <Link
+                            id={styles[thumbnailSize]}
+                            href={`/el/${itemLabel}/${el.id}`}
+                            title={el[nameType]}
+                        >
                             <div
                                 style={{
                                     position: "relative",
@@ -70,8 +80,8 @@ export default function FullListContent({ data, table }) {
                                     </p>
                                 </div>
                             )}
-                        </div>
-                    </Link>
+                        </Link>
+                    </div>
                 ))
             ) : (
                 <p>Loading...</p>

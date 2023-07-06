@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 
 import styles from "@/styles/Home.module.css";
 import { sortByObjDate, sortByValue } from "@/utils/orderData";
-import ShortList from "@/components/Displayers/ShortList/ShortList";
+import ShortList from "@/components/ShortList/ShortList";
 import HomeSearchBar from "@/components/SearchBars/HomeSearchBar";
 
 export default function Home() {

@@ -1,0 +1,26 @@
+#SessionPlaylistAddBtn {
+    cursor: pointer;
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    z-index: 1;
+    border: 2px solid var(--bg800);
+    background-color: var(--bg400);
+    border-radius: 12px;
+    height: 25px;
+    width: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.15s ease;
+}
+#SessionPlaylistAddBtn:hover {
+    border: 2px solid var(--text);
+    background-color: var(--bg500);
+}
+#SessionPlaylistAddBtn > p {
+    line-height: 15px;
+    font-size: 1rem;
+    font-weight: bold;
+    margin-top: -3px;
+}

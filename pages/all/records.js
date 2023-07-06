@@ -3,7 +3,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 
 // import RecordForm from "@/components/Forms/RecordForm";
-import Graph from "@/components/Displayers/Graphs/Graph";
+import Graph from "@/components/Graphs/Graph";
 import styles from "@/styles/Records.module.css";
 import { formatDateEU, formatFormInputDate } from "@/utils/convertTimestamp";
 import Form from "@/components/Forms/Form";
