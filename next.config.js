@@ -17,6 +17,7 @@ const nextConfig = {
         REACT_AWS_SECRET: process.env.REACT_AWS_SECRET,
         S3_BUCKET_NAME: process.env.S3_BUCKET_NAME,
         S3_BUCKET_URL: process.env.S3_BUCKET_URL,
+        S3_BUCKET_URL_B: process.env.S3_BUCKET_URL_B,
         CATEGORY_TYPES: process.env.CATEGORY_TYPES,
         TAGS_OBJ: process.env.TAGS_OBJ,
         TAGS_REL: process.env.TAGS_REL,
