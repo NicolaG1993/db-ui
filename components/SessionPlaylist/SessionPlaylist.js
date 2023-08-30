@@ -8,6 +8,7 @@ import {
     selectSessionPlaylist,
     shuffleSessionPlaylist,
 } from "@/redux/slices/sessionPlaylistSlice";
+import Link from "next/link";
 
 export default function SessionPlaylist() {
     // prendere array da cookie/redux
@@ -58,7 +59,7 @@ export default function SessionPlaylist() {
                             key={"session data " + i}
                             className={styles["row"]}
                         >
-                            <p>{el.title}</p>
+                            <Link href={`/el/movie/${el.id}`}>{el.title}</Link>
                             <p onClick={() => removeFromPlaylist(i)}>X</p>
                         </div>
                     ))
