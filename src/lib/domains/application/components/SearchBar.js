@@ -1,12 +1,11 @@
-import Image from "next/image";
-import Link from "next/link";
-import axios from "axios";
-import { useEffect, useState } from "react";
+import styles from "./SearchBar.module.css";
 
-import Filters from "@/components/Filters/Filters";
-import styles from "@/styles/Searchbars.module.css";
-
-export default function TableSearchbar({ searchBar, setSearchBar }) {
+export default function SearchBar({
+    searchBar,
+    setSearchBar,
+    handleFocus,
+    handleBlur,
+}) {
     return (
         <div className={styles.searchbar}>
             <input
@@ -14,6 +13,8 @@ export default function TableSearchbar({ searchBar, setSearchBar }) {
                 placeholder="Search something..."
                 value={searchBar}
                 onChange={setSearchBar}
+                onFocus={handleFocus}
+                onBlur={handleBlur}
             ></input>
             <button>SEARCH</button>
         </div>

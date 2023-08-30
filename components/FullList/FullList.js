@@ -6,11 +6,11 @@ import { orderData, parseOrderOptions } from "@/utils/custom/customParsers";
 import dataStructureGroups from "@/utils/custom/dataStructureGroups";
 
 import FiltersBar from "@/components/Filters/Filters";
-import TableSearchbar from "@/components/SearchBars/TableSearchBar";
 import FullListContent from "./FullListContent";
 import { fetchDataForFilter } from "@/utils/custom/customFetches";
 import { getError } from "@/utils/error";
 import PageNav from "@/components/Filters/PageNav/PageNav";
+import SearchBar from "@/src/lib/domains/application/components/SearchBar";
 
 export default function FullList({ tableName }) {
     //================================================================================
@@ -116,11 +116,10 @@ export default function FullList({ tableName }) {
             </div>
 
             <div className={styles.searchBarWrap}>
-                <TableSearchbar
+                <SearchBar
                     searchBar={searchBar}
                     setSearchBar={handleSearchBar}
                 />
-
                 <span
                     onClick={() => setFiltersBar(!filtersBar)}
                     className={styles.filtersToggle}

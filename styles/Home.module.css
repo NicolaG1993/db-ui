@@ -1,11 +1,7 @@
 /* HEADING */
-.heading,
-.homeheading {
+.heading {
     text-align: center;
     width: 100%;
-}
-.homeheading {
-    margin-bottom: 4rem;
 }
 
 /* FILTERS UI */

@@ -5,6 +5,7 @@
 .searchBarWrap {
     display: flex;
     position: relative;
+    margin-bottom: 4rem;
 }
 
 .filtersToggle {
