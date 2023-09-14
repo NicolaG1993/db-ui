@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-import styles from "./FullListContent.module.css";
+import styles from "./FullList.module.css";
 import { orderData, parseOrderOptions } from "@/utils/custom/customParsers";
 import dataStructureGroups from "@/utils/custom/dataStructureGroups";
 

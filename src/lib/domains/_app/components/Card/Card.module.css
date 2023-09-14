@@ -1,9 +1,3 @@
-.fullList {
-    /* position: relative; */
-}
-
-/* FULL LIST CONTENT */
-/* GRID ELEMENTS */
 .gridElement {
     margin: 0 0.7em 2em 0.7em;
     /* margin: 0.2em; */
@@ -124,24 +118,4 @@
     padding-left: 8px;
     font-weight: 500;
     white-space: nowrap;
-}
-
-@media screen and (max-width: 1020px) {
-    .fullListGrid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
-@media screen and (min-width: 1300px) {
-    .fullListGrid {
-        grid-template-columns: repeat(4, 1fr);
-    }
-}
-@media screen and (min-width: 1700px) {
-    .fullListGrid {
-        grid-template-columns: repeat(5, 1fr);
-    }
-
-    .display {
-        max-width: 2000px;
-    }
 }

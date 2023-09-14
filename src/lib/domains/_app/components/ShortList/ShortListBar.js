@@ -1,7 +1,5 @@
 import Link from "next/link";
 import styles from "./ShortListBar.module.css";
-import dataArchitectureObj from "@/utils/custom/dataStructureGroups";
-import ShortListCard from "./ShortListCard";
 
 export default function ShortListBar({ tableName }) {
     return (

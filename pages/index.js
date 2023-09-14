@@ -1,11 +1,6 @@
-import Head from "next/head";
-import Image from "next/image";
-import Link from "next/link";
 import axios from "axios";
 import { useEffect, useState } from "react";
-
-import styles from "@/styles/Home.module.css";
-import { sortByObjDate, sortByValue } from "@/utils/orderData";
+import { sortByObjDate } from "@/utils/orderData";
 import ShortList from "@/src/lib/domains/_app/components/ShortList/ShortList";
 import HomeHeading from "@/src/lib/domains/home/components/HomeHeading";
 import HomeSearchbar from "@/src/lib/domains/home/components/HomeSearchBar";
@@ -44,7 +39,6 @@ export default function Home() {
                     setGroupB(groupBResp.slice(0, 6));
                 }
             }
-            // return res.data;
         } catch (error) {
             console.error("❤❤❤ FETCH ERROR: ", error);
         }

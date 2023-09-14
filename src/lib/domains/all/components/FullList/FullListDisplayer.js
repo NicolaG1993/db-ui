@@ -1,5 +1,5 @@
+import Card from "../../../_app/components/Card/Card";
 import PageNav from "../Filters/PageNav/PageNav";
-import FullListContent from "./FullListContent";
 import styles from "./FullListDisplayer.module.css";
 import { parseOrderOptions } from "@/utils/custom/customParsers";
 
@@ -13,6 +13,9 @@ export default function FullListDiplayer({
     order,
     handleSelect,
 }) {
+    const sliceData = (arr) =>
+        arr.slice(selectedPage * step - step, selectedPage * step);
+
     return (
         <div className={styles.display}>
             <div className={styles.displayHeading}>
@@ -39,16 +42,17 @@ export default function FullListDiplayer({
             </div>
 
             <div className={styles.fullListGrid}>
-                <FullListContent
-                    data={
-                        displayData &&
-                        displayData.slice(
-                            selectedPage * step - step,
-                            selectedPage * step
-                        )
-                    }
-                    table={table}
-                />
+                {displayData ? (
+                    sliceData(displayData).map((el, i) => (
+                        <Card
+                            key={`FullListContent ${el[table.nameType]} ${i}`}
+                            table={table}
+                            obj={el}
+                        />
+                    ))
+                ) : (
+                    <p>Loading...</p>
+                )}
             </div>
 
             <div>

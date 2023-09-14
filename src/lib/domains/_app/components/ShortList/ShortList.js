@@ -1,8 +1,7 @@
-import Link from "next/link";
 import styles from "./ShortList.module.css";
-import ShortListCard from "./ShortListCard";
 import ShortListBar from "./ShortListBar";
 import dataArchitectureObj from "@/utils/custom/dataStructureGroups";
+import Card from "../Card/Card";
 
 export default function ShortList({ data, tableName }) {
     let table = dataArchitectureObj[tableName];
@@ -13,7 +12,7 @@ export default function ShortList({ data, tableName }) {
             <div className={styles.shortListGrid} id={styles.ShortListGrid}>
                 {data ? (
                     data.map((el) => (
-                        <ShortListCard
+                        <Card
                             obj={el}
                             table={table}
                             tableName={tableName}
