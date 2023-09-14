@@ -1,10 +1,8 @@
-import axios from "axios";
 import { useEffect, useState } from "react";
-
-import SearchBar from "../../application/components/SearchBar";
+import SearchBar from "../../_app/components/SearchBar/SearchBar";
 import styles from "./HomeSearchBar.module.css";
-import SearchBarResults from "../../application/components/SearchBarResults";
-import getSearch from "../../application/hooks/getSearch";
+import getSearch from "../../_app/actions/getSearch";
+import SearchBarResults from "../../_app/components/SearchBar/SearchBarResults";
 
 export default function HomeSearchbar() {
     //================================================================================

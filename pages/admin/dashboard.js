@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import AddNewWrap from "@/components/AdminDashboard/AddNewWrap";
-import AppSettingsWrap from "@/components/AdminDashboard/AppSettingsWrap";
+import AddNewWrap from "@/src/lib/domains/admin/components/AdminDashboard/AddNewWrap";
+import AppSettingsWrap from "@/src/lib/domains/admin/components/AdminDashboard/AppSettingsWrap";
 import styles from "@/styles/AdminDashboard.module.css";
 import axios from "axios";
 

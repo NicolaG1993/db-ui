@@ -1,5 +1,5 @@
 import { SnackbarProvider } from "notistack";
-import Layout from "@/constants/layout";
+import Layout from "@/src/lib/domains/_app/constants/layout";
 import "@/styles/globals.css";
 import { useRouter } from "next/router";
 import { getRandomMovieID } from "@/utils/custom/customFetches";

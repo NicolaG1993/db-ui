@@ -1,9 +1,9 @@
-import ActorForm from "@/components/Forms/Content/ActorForm";
-import MovieForm from "@/components/Forms/Content/MovieForm";
-import RecordForm from "@/components/Forms/Content/RecordForm";
-import RecordsForm from "@/components/Forms/Content/RecordsForm";
-import StudioForm from "@/components/Forms/Content/StudioForm";
-import CategoryForm from "@/components/Forms/Content/CategoryForm";
+import ActorForm from "@/src/lib/domains/_app/components/Form/Content/ActorForm";
+import MovieForm from "@/src/lib/domains/_app/components/Form/Content/MovieForm";
+import RecordForm from "@/src/lib/domains/_app/components/Form/Content/RecordForm";
+import RecordsForm from "@/src/lib/domains/_app/components/Form/Content/RecordsForm";
+import StudioForm from "@/src/lib/domains/_app/components/Form/Content/StudioForm";
+import CategoryForm from "@/src/lib/domains/_app/components/Form/Content/CategoryForm";
 
 const dataStructureForms = {
     actor: {

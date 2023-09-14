@@ -3,11 +3,11 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 
 // import RecordForm from "@/components/Forms/RecordForm";
-import Graph from "@/components/Graphs/Graph";
+import Graph from "@/src/lib/domains/records/components/Graphs/Graph";
 import styles from "@/styles/Records.module.css";
 import { formatDateEU, formatFormInputDate } from "@/utils/convertTimestamp";
-import Form from "@/components/Forms/Form";
-import ToggleSwitch from "@/components/ToggleSwitch/ToggleSwitch";
+import Form from "@/src/lib/domains/_app/components/Form/Form";
+import ToggleSwitch from "@/src/lib/domains/_app/components/ToggleSwitch/ToggleSwitch";
 
 const fetchData = async () => {
     try {
@@ -78,36 +78,6 @@ export default function Records() {
             <div className={styles.heading}>
                 <h1>ALL RECORDS</h1>
             </div>
-
-            {/* <div className={styles.searchbar}>
-                <input
-                    type="text"
-                    placeholder="Search something..."
-                    value={searchBar}
-                    onChange={(e) => setSearchBar(e.target.value)}
-                ></input>
-                <button>SEARCH</button>
-                <span onClick={() => setFiltersBar(!filtersBar)}>
-                    {filtersBar ? "Close" : "Filters"}
-                </span>
-            </div> */}
-
-            {/* {filtersBar && (
-                <FiltersBar
-                    filters={filters}
-                    updateFilters={updateFilters}
-                    closeFilters={setFiltersBar}
-                    deleteAllFilters={setFilters}
-                    allLabels={[
-                        "actors",
-                        "categories",
-                        "tags",
-                        "studios",
-                        "distribution",
-                    ]}
-                    fetchData={fetchData}
-                />
-            )} */}
 
             {allRecords ? (
                 <>

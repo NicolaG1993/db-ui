@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 
 import styles from "@/styles/Home.module.css";
 import { sortByObjDate, sortByValue } from "@/utils/orderData";
-import ShortList from "@/components/ShortList/ShortList";
+import ShortList from "@/src/lib/domains/_app/components/ShortList/ShortList";
 import HomeHeading from "@/src/lib/domains/home/components/HomeHeading";
 import HomeSearchbar from "@/src/lib/domains/home/components/HomeSearchBar";
 
