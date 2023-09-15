@@ -15,7 +15,6 @@ export default function ShortList({ data, tableName }) {
                         <Card
                             obj={el}
                             table={table}
-                            tableName={tableName}
                             key={tableName + " ShortList " + el.id}
                         />
                     ))

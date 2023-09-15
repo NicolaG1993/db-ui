@@ -7,25 +7,9 @@ import { detectImage } from "@/utils/custom/customParsers";
 import { useEffect, useState } from "react";
 import CardUI from "./CardUI/CardUI";
 
-export default function Card({ obj, table, tableName }) {
+export default function Card({ obj, table }) {
     let { nameType, thumbnailSize, itemLabel } = table;
-    const [label, setLabel] = useState(table.itemGroup);
-
-    console.log("thumbnailSize: ", thumbnailSize);
-
-    useEffect(() => {
-        if (itemLabel) {
-            setLabel(itemLabel);
-        } else if (tableName) {
-            setLabel(tableName);
-            // 🧠 dovrebbe servire solo in shortlist
-            // vedere se si puo rimuovere questo caso 🧠
-            // mi eviterebbe di usare useEffect e useState 🧠🧠🧠🧠
-            // si potrebbero passare tutti i data gia destrutturati
-        } else {
-            setLabel();
-        }
-    }, [table, tableName]);
+    const [label, setLabel] = useState(table.itemLabel);
 
     return (
         <div className={styles.gridElement}>
