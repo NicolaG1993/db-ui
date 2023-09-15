@@ -2,22 +2,26 @@ import Image from "next/image";
 import Link from "next/link";
 import styles from "./Card.module.css";
 import createMarkup from "@/utils/createMarkup";
-import SessionPlaylistAddBtn from "../../constants/components/SessionPlaylist/SessionPlaylistBtns/SessionPlaylistAddBtn";
+
 import { detectImage } from "@/utils/custom/customParsers";
 import { useEffect, useState } from "react";
+import CardUI from "./CardUI/CardUI";
 
 export default function Card({ obj, table, tableName }) {
-    let { nameType, thumbnailSize, itemLabel, itemGroup } = table;
+    let { nameType, thumbnailSize, itemLabel } = table;
     const [label, setLabel] = useState(table.itemGroup);
 
+    console.log("thumbnailSize: ", thumbnailSize);
+
     useEffect(() => {
-        if (itemGroup) {
-            setLabel(itemGroup);
+        if (itemLabel) {
+            setLabel(itemLabel);
         } else if (tableName) {
             setLabel(tableName);
             // 🧠 dovrebbe servire solo in shortlist
             // vedere se si puo rimuovere questo caso 🧠
             // mi eviterebbe di usare useEffect e useState 🧠🧠🧠🧠
+            // si potrebbero passare tutti i data gia destrutturati
         } else {
             setLabel();
         }
@@ -25,13 +29,10 @@ export default function Card({ obj, table, tableName }) {
 
     return (
         <div className={styles.gridElement}>
-            {label === "movies" && (
-                <SessionPlaylistAddBtn obj={{ id: obj.id, title: obj.title }} />
-            )}
-
+            <CardUI obj={obj} label={label} />
             <Link
                 id={styles[thumbnailSize]}
-                href={`/el/${itemLabel}/${obj.id}`}
+                href={`/el/${label}/${obj.id}`}
                 title={obj[nameType]}
             >
                 <div
@@ -48,7 +49,7 @@ export default function Card({ obj, table, tableName }) {
                     />
                 </div>
 
-                {itemLabel === "actor" && (
+                {thumbnailSize === "Portrait" && (
                     <div className={styles.regularDescription}>
                         <h5
                             dangerouslySetInnerHTML={createMarkup(
@@ -63,7 +64,7 @@ export default function Card({ obj, table, tableName }) {
                         </p>
                     </div>
                 )}
-                {itemLabel === "movie" && (
+                {thumbnailSize === "Landscape" && (
                     <div className={styles.movieDescription}>
                         <div>
                             <h5
@@ -71,19 +72,23 @@ export default function Card({ obj, table, tableName }) {
                                     obj[nameType]
                                 )}
                             ></h5>
-                            <p className={styles.subtitle}>
-                                {obj.cast &&
-                                    obj.cast.map((model, i) => (
-                                        <span key={model.modelid}>
-                                            {i > 0 && ", "}
-                                            {model.name}
-                                        </span>
-                                    ))}
-                            </p>
+                            {label === "movie" && (
+                                <p className={styles.subtitle}>
+                                    {obj.cast &&
+                                        obj.cast.map((model, i) => (
+                                            <span key={model.modelid}>
+                                                {i > 0 && ", "}
+                                                {model.name}
+                                            </span>
+                                        ))}
+                                </p>
+                            )}
                         </div>
-                        <p className={styles.rating}>
-                            {obj.rating ? obj.rating : "unrated"}
-                        </p>
+                        {label === "movie" && (
+                            <p className={styles.rating}>
+                                {obj.rating ? obj.rating : "unrated"}
+                            </p>
+                        )}
                     </div>
                 )}
             </Link>

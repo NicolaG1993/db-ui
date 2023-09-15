@@ -95,11 +95,18 @@
     overflow: hidden;
 }
 .movieDescription > div {
-    display: grid;
-    grid-template-rows: 30px auto;
+    /* display: grid;
+    grid-template-rows: 30px auto; */
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
 }
 .movieDescription > div h5 {
-    align-self: center;
+    height: 30px;
+    text-align: left;
+    line-height: 25px;
+    padding-top: 5px;
 }
 
 .gridElement h5,
@@ -118,4 +125,8 @@
     padding-left: 8px;
     font-weight: 500;
     white-space: nowrap;
+}
+
+.gridElement h5:hover {
+    text-decoration: underline;
 }
