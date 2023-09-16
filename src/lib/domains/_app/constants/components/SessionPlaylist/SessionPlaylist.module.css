@@ -31,6 +31,9 @@
     grid-template-columns: 1fr 40px;
     padding: 0 0.5rem;
 }
+.row > a:hover {
+    text-decoration: underline;
+}
 .no-data-row {
     display: flex;
     justify-content: center;

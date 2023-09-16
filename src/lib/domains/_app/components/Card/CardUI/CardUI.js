@@ -9,7 +9,7 @@ export default function CardUI({ obj, label }) {
             {label === "movie" && (
                 <>
                     <SessionPlaylistAddBtn
-                        obj={{ id: obj.id, title: obj.title }}
+                        el={{ id: obj.id, title: obj.title }}
                     />
                     <MovieCounter />
                     <ToggleInfo />
