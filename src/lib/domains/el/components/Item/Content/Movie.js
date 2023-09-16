@@ -152,16 +152,13 @@ export default function Actor({
                                             </div>
                                             <div>
                                                 {arr.map((el) => (
-                                                    <div
+                                                    <Link
+                                                        href={`/el/category/${el.id}`}
                                                         key={"category" + el.id}
                                                         className={styles.tagEl}
                                                     >
-                                                        <Link
-                                                            href={`/el/category/${el.id}`}
-                                                        >
-                                                            {el.name}
-                                                        </Link>
-                                                    </div>
+                                                        {el.name}
+                                                    </Link>
                                                 ))}
                                             </div>
                                         </div>
@@ -187,16 +184,13 @@ export default function Actor({
                                             </div>
                                             <div>
                                                 {arr.map((el) => (
-                                                    <div
+                                                    <Link
+                                                        href={`/el/tag/${el.id}`}
                                                         key={"tag" + el.id}
                                                         className={styles.tagEl}
                                                     >
-                                                        <Link
-                                                            href={`/el/tag/${el.id}`}
-                                                        >
-                                                            {el.name}
-                                                        </Link>
-                                                    </div>
+                                                        {el.name}
+                                                    </Link>
                                                 ))}
                                             </div>
                                         </div>
