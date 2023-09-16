@@ -8,7 +8,7 @@ export default function ShortList({ data, tableName }) {
 
     return (
         <div className={styles.display}>
-            <ShortListBar tableName={table.tableName} />
+            <ShortListBar tableName={tableName} />
             <div className={styles.shortListGrid} id={styles.ShortListGrid}>
                 {data ? (
                     data.map((el) => (
