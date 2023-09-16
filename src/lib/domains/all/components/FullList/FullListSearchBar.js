@@ -5,13 +5,13 @@ export default function FullListSearchBar({
     filtersBar,
     searchBar,
     handleSearchBar,
-    filtersToggle,
+    toggleFilters,
 }) {
     return (
         <div className={styles.searchBarWrap}>
             <SearchBar searchBar={searchBar} setSearchBar={handleSearchBar} />
             <span
-                onClick={() => setFiltersBar(!filtersBar)}
+                onClick={() => toggleFilters()}
                 className={styles.filtersToggle}
             >
                 {filtersBar ? "Close" : "Filters"}

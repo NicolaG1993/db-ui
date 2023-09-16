@@ -55,7 +55,7 @@ export default function FullList({ tableName }) {
     const fetchAllData = async () => {
         try {
             const { data } = await axios.get(table.APIfetchAll);
-            console.log("💚💚💚 fetchAllData: ", data);
+            // console.log("💚💚💚 fetchAllData: ", data);
             // setAllData(data);
             setDisplayData(data);
         } catch (err) {
@@ -64,15 +64,20 @@ export default function FullList({ tableName }) {
     };
 
     const fetchFilteredData = async () => {
-        console.log("fetchFilteredData: ", searchBar, filters);
+        console.log("👁️👁️👁️ fetchFilteredData data: ", {
+            params: {
+                str: searchBar,
+                filters: filters,
+            },
+        });
         try {
             const { data } = await axios.get(table.APIfetchSearch, {
                 params: {
                     str: searchBar,
-                    filters: filters,
+                    filters: JSON.stringify(filters),
                 },
             });
-            console.log("💚💚💚 fetchFilteredData: ", data);
+            console.log("💚💚💚 fetchFilteredData response: ", data);
             const response = orderData(data, order);
             setDisplayData(response);
         } catch (err) {
@@ -93,6 +98,10 @@ export default function FullList({ tableName }) {
     const handleSelect = (e) => {
         e.preventDefault();
         setOrder(e.target.value);
+    };
+
+    const toggleFiltersBar = () => {
+        setFiltersBar(!filtersBar);
     };
 
     const updateFilters = (val, topic) => {
@@ -118,6 +127,7 @@ export default function FullList({ tableName }) {
                 filtersBar={filtersBar}
                 searchBar={searchBar}
                 handleSearchBar={handleSearchBar}
+                toggleFilters={toggleFiltersBar}
             />
 
             {filtersBar && (

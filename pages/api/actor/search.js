@@ -2,7 +2,6 @@ import { getAllActorsWithInfos } from "@/utils/db/db";
 import { filtersParser } from "@/utils/parsers";
 
 export default async function handler(req, res) {
-    console.log("search 💚💚💚: ", req.query);
     let { str, filters } = req.query;
     if (!str) {
         str = "";

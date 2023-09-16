@@ -5,6 +5,7 @@ import { filtersParser } from "@/utils/parsers";
 
 export default async function handler(req, res) {
     let { str, filters } = req.query;
+
     if (!str) {
         str = "";
     }
