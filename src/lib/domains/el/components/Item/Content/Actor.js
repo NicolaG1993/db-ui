@@ -69,14 +69,13 @@ export default function Actor({
                     <div className={styles.tagsWrap}>
                         {item.nationalities ? (
                             item.nationalities.map((el) => (
-                                <div
+                                <Link
+                                    href={`/el/nationality/${el}`}
                                     key={"nationality" + el}
-                                    className={styles.tagElSmall}
+                                    className={styles.tagEl}
                                 >
-                                    <Link href={`/el/nationality/${el}`}>
-                                        {el}
-                                    </Link>
-                                </div>
+                                    {el}
+                                </Link>
                             ))
                         ) : (
                             <p>N/A</p>
@@ -114,14 +113,13 @@ export default function Actor({
                     <div className={styles.tagsWrap}>
                         {itemInfos && itemInfos.Hair ? (
                             itemInfos.Hair.map((el) => (
-                                <div
+                                <Link
+                                    href={`/el/tag/${el.id}`}
                                     key={"hair " + el.id}
-                                    className={styles.tagElSmall}
+                                    className={styles.tagEl}
                                 >
-                                    <Link href={`/el/tag/${el.id}`}>
-                                        {el.name}
-                                    </Link>
-                                </div>
+                                    {el.name}
+                                </Link>
                             ))
                         ) : (
                             <p>N/A</p>
@@ -139,14 +137,13 @@ export default function Actor({
                     <div className={styles.tagsWrap}>
                         {itemInfos && itemInfos.Ethnicity ? (
                             itemInfos.Ethnicity.map((el) => (
-                                <div
+                                <Link
+                                    href={`/el/tag/${el.id}`}
                                     key={"ethnicity " + el.id}
-                                    className={styles.tagElSmall}
+                                    className={styles.tagEl}
                                 >
-                                    <Link href={`/el/tag/${el.id}`}>
-                                        {el.name}
-                                    </Link>
-                                </div>
+                                    {el.name}
+                                </Link>
                             ))
                         ) : (
                             <p>N/A</p>
@@ -159,14 +156,13 @@ export default function Actor({
                     <div className={styles.tagsWrap}>
                         {itemInfos && itemInfos["Body Types"] ? (
                             itemInfos["Body Types"].map((el) => (
-                                <div
+                                <Link
+                                    href={`/el/tag/${el.id}`}
                                     key={"bodyType " + el.id}
-                                    className={styles.tagElSmall}
+                                    className={styles.tagEl}
                                 >
-                                    <Link href={`/el/tag/${el.id}`}>
-                                        {el.name}
-                                    </Link>
-                                </div>
+                                    {el.name}
+                                </Link>
                             ))
                         ) : (
                             <p>N/A</p>
@@ -194,16 +190,13 @@ export default function Actor({
                                             </div>
                                             <div>
                                                 {arr.map((el) => (
-                                                    <div
+                                                    <Link
+                                                        href={`/el/tag/${el.id}`}
                                                         key={"tag" + el.id}
                                                         className={styles.tagEl}
                                                     >
-                                                        <Link
-                                                            href={`/el/tag/${el.id}`}
-                                                        >
-                                                            {el.name}
-                                                        </Link>
-                                                    </div>
+                                                        {el.name}
+                                                    </Link>
                                                 ))}
                                             </div>
                                         </div>
@@ -222,7 +215,7 @@ export default function Actor({
                                     item.categories.map((el) => (
                                         <div
                                             key={"category" + el.id}
-                                            className={styles.tagElSmall}
+                                            className={styles.tagEl}
                                         >
                                             <Link href={`/category/${el.id}`}>
                                                 {el.name}
@@ -246,16 +239,13 @@ export default function Actor({
                                             </div>
                                             <div>
                                                 {arr.map((el) => (
-                                                    <div
+                                                    <Link
+                                                        href={`/el/category/${el.id}`}
                                                         key={"category" + el.id}
                                                         className={styles.tagEl}
                                                     >
-                                                        <Link
-                                                            href={`/el/category/${el.id}`}
-                                                        >
-                                                            {el.name}
-                                                        </Link>
-                                                    </div>
+                                                        {el.name}
+                                                    </Link>
                                                 ))}
                                             </div>
                                         </div>
@@ -272,14 +262,13 @@ export default function Actor({
                     <div className={styles.tagsWrap}>
                         {item.studios && item.studios.length ? (
                             item.studios.map((el) => (
-                                <div
+                                <Link
+                                    href={`/el/studio/${el.id}`}
                                     key={"studio" + el.id}
-                                    className={styles.tagElSmall}
+                                    className={styles.tagEl}
                                 >
-                                    <Link href={`/el/studio/${el.id}`}>
-                                        {el.name}
-                                    </Link>
-                                </div>
+                                    {el.name}
+                                </Link>
                             ))
                         ) : (
                             <p>N/A</p>
@@ -292,14 +281,13 @@ export default function Actor({
                     <div className={styles.tagsWrap}>
                         {item.distributions && item.distributions.length ? (
                             item.distributions.map((el) => (
-                                <div
+                                <Link
+                                    href={`/el/distribution/${el.id}`}
                                     key={"distribution" + el.id}
-                                    className={styles.tagElSmall}
+                                    className={styles.tagEl}
                                 >
-                                    <Link href={`/el/distribution/${el.id}`}>
-                                        {el.name}
-                                    </Link>
-                                </div>
+                                    {el.name}
+                                </Link>
                             ))
                         ) : (
                             <p>N/A</p>

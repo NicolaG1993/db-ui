@@ -299,7 +299,8 @@
 .elRow {
     /* width: 100%; */
     padding: 0.5rem 0.75rem 0.5rem 0.75rem;
-    display: flex;
+    display: grid;
+    grid-template-columns: 100px 1fr;
     align-items: flex-start;
     /* margin-bottom: 0.5em; */
     border-bottom: 1px solid var(--bg600);
@@ -311,12 +312,12 @@
 
 .elRowToScroll {
     padding: 0.5rem 0.75rem 0.5rem 0.75rem;
-    display: flex;
-    align-items: flex-start;
+    display: grid;
+    grid-template-columns: 100px 1fr;
     border-bottom: 1px solid var(--bg600);
     overflow: hidden;
     /* min-height: 35px; */
-    max-height: 280px;
+    height: 280px;
 }
 
 .elRow > span:nth-child(1),
@@ -471,11 +472,11 @@
     max-height: 100%;
     overflow-y: auto;
     overflow-x: hidden;
-}
-
-/* .tagsWrap {
     width: 100%;
-} */
+}
+.tagLabelsWrap {
+    max-width: 180px;
+}
 
 .tagLabel {
     font-size: 0.7em;
@@ -491,11 +492,15 @@
 .tagLabelsWrap > div:nth-child(1) > .tagLabel {
     margin: 0 0 0.3rem 0;
 }
+.tagLabelsWrap .tagEl {
+    width: 130px;
+}
 
 .tagLabelsWrap > div > div:nth-child(2) {
     display: flex;
     flex-direction: column;
     justify-content: center;
+    align-items: center;
 }
 
 .tagEl,
@@ -513,11 +518,13 @@
     height: 18px;
     line-height: 18px;
     overflow: hidden;
+    white-space: nowrap;
+    display: inline-block;
 }
 
 .tagEl {
-    width: 130px;
-    margin: 0.5rem 0.5rem 0 0.5rem;
+    width: auto;
+    margin: 0.5rem 0 0 0;
 }
 .tagElSmall {
     width: 100%;
@@ -533,7 +540,7 @@
 }
 
 .tagsWrap > .tagEl:nth-child(1) {
-    margin: 0 0.5rem;
+    margin: 0 0.5rem 0 0;
 }
 .tagsWrap > .tagElSmall:nth-child(1),
 .tagsWrap > .linkEl:nth-child(1) {

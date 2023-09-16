@@ -88,7 +88,7 @@ export default function Studio({
                     <p>{actors && actors.length}</p>
                 </div>
 
-                <div className={styles.elRow}>
+                <div className={styles.elRowToScroll}>
                     <span>Actors: </span>
                     <div className={styles.tagsWrap}>
                         {actors ? (

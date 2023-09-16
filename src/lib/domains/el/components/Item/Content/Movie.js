@@ -60,19 +60,16 @@ export default function Actor({
                     <div className={styles.tagsWrap}>
                         {urls && urls.length ? (
                             urls.map((el, i) => (
-                                <div
+                                <a
+                                    // key={"url" + i}
+                                    href={el}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
                                     key={"url" + el.id}
                                     className={styles.linkEl}
                                 >
-                                    <a
-                                        key={"url" + i}
-                                        href={el}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                    >
-                                        <p>{el}</p>
-                                    </a>
-                                </div>
+                                    <p>{el}</p>
+                                </a>
                             ))
                         ) : (
                             <p>N/A</p>
@@ -90,14 +87,13 @@ export default function Actor({
                     <div className={styles.tagsWrap}>
                         {studios && studios.length ? (
                             studios.map((el) => (
-                                <div
+                                <Link
+                                    href={`/el/studio/${el.id}`}
                                     key={"studio" + el.id}
                                     className={styles.tagEl}
                                 >
-                                    <Link href={`/el/studio/${el.id}`}>
-                                        {el.name}
-                                    </Link>
-                                </div>
+                                    {el.name}
+                                </Link>
                             ))
                         ) : (
                             <p>N/A</p>
