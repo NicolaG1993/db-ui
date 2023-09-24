@@ -1,5 +1,5 @@
-export default function PageNav({ displayData, goToPage, step, selectedPage }) {
-    if (displayData) {
+export default function PageNav({ totalCount, goToPage, step, selectedPage }) {
+    if (totalCount) {
         return (
             <div>
                 <span>Page: </span>
@@ -7,11 +7,11 @@ export default function PageNav({ displayData, goToPage, step, selectedPage }) {
                     name="page"
                     id="Page"
                     onChange={
-                        (e) => goToPage(e.target.value, "page") // passo page perché potrebbe servirmi x cookies in futuro
+                        (e) => goToPage(Number(e.target.value), "page") // passo page perché potrebbe servirmi x cookies in futuro
                     }
                     value={selectedPage}
                 >
-                    {[...Array(Math.ceil(displayData.length / step))].map(
+                    {[...Array(Math.ceil(totalCount / step))].map(
                         (value, i) => (
                             <option key={i} value={i + 1}>
                                 {i + 1}

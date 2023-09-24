@@ -11,7 +11,7 @@ export default function CardUI({ obj, label }) {
                     <SessionPlaylistAddBtn
                         el={{ id: obj.id, title: obj.title }}
                     />
-                    <MovieCounter />
+                    <MovieCounter records={obj.records} />
                     <ToggleInfo />
                 </>
             )}

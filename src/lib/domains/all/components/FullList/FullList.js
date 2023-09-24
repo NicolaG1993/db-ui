@@ -1,8 +1,6 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
 
 import styles from "./FullList.module.css";
-import { orderData, parseOrderOptions } from "@/utils/custom/customParsers";
 import dataStructureGroups from "@/utils/custom/dataStructureGroups";
 
 import FiltersBar from "../Filters/Filters";
@@ -12,6 +10,8 @@ import { getError } from "@/utils/error";
 import FullListHeading from "./FullListHeading";
 import FullListSearchBar from "./FullListSearchBar";
 import FullListDisplayer from "./FullListDisplayer";
+import fetchAllData from "../../actions/fetchAllData";
+import fetchFilteredData from "../../actions/fetchFilteredData";
 
 export default function FullList({ tableName }) {
     //================================================================================
@@ -19,7 +19,6 @@ export default function FullList({ tableName }) {
     //================================================================================
     let table = dataStructureGroups[tableName];
 
-    // const [allData, setAllData] = useState();
     const [displayData, setDisplayData] = useState();
     const [order, setOrder] = useState(table.defaultOrder);
     const [searchBar, setSearchBar] = useState("");
@@ -27,63 +26,107 @@ export default function FullList({ tableName }) {
     const [filtersBar, setFiltersBar] = useState();
     const [selectedPage, setSelectedPage] = useState(1);
     const [step, setStep] = useState(30);
+    const [totalCount, setTotalCount] = useState(0);
+    const [isLoading, setIsLoading] = useState(true);
+    const [isError, setIsError] = useState(false);
 
+    //================================================================================
+    // API calls
+    //================================================================================
+    const getFirstData = async ({
+        url,
+        searchBar,
+        selectedPage,
+        step,
+        order,
+    }) => {
+        setIsLoading(true);
+        try {
+            const params = {
+                str: searchBar,
+                page: selectedPage,
+                step: step,
+                order: order,
+            };
+            const data = await fetchAllData(url, params);
+            setDisplayData(data);
+        } catch (err) {
+            console.log("ERROR!", getError(err)); // TODO: proper error message in UI
+            setIsError(getError(err));
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    const getFilteredData = async ({
+        url,
+        searchBar,
+        filters,
+        selectedPage,
+        step,
+        order,
+    }) => {
+        setIsLoading(true);
+        try {
+            const params = {
+                str: searchBar,
+                filters: JSON.stringify(filters),
+                page: selectedPage,
+                step: step,
+                order: order,
+            };
+            const data = await fetchFilteredData(url, params);
+            setDisplayData(data);
+        } catch (err) {
+            console.log("ERROR!", getError(err)); // TODO: proper error message in UI
+            setIsError(getError(err));
+        } finally {
+            setIsLoading(false);
+        }
+    };
     //================================================================================
     // UseEffects
     //================================================================================
-    useEffect(() => {
-        fetchAllData();
-    }, []);
+    const activateSearch = () => {
+        setIsError();
+        if (Object.keys(filters).length > 0) {
+            getFilteredData({
+                url: table.APIfetchSearch,
+                searchBar,
+                filters,
+                selectedPage,
+                step,
+                order,
+            });
+        } else {
+            getFirstData({
+                url: table.APIfetchAll,
+                searchBar,
+                selectedPage,
+                step,
+                order,
+            });
+        }
+    };
 
     useEffect(() => {
-        if (displayData && order) {
-            const response = orderData(displayData, order);
-            setDisplayData([...response]);
-        }
-    }, [order]);
-
-    useEffect(() => {
-        setSelectedPage(1);
-        if (searchBar || Object.keys(filters).length > 0) {
-            fetchFilteredData();
-        }
+        selectedPage === 1 ? activateSearch() : setSelectedPage(1);
+        // !important : if value is 1 already it will not update, so WE need to activateSearch
     }, [searchBar, filters]);
 
-    //================================================================================
-    // API
-    //================================================================================
-    const fetchAllData = async () => {
-        try {
-            const { data } = await axios.get(table.APIfetchAll);
-            // console.log("💚💚💚 fetchAllData: ", data);
-            // setAllData(data);
-            setDisplayData(data);
-        } catch (err) {
-            console.log("ERROR!", getError(err));
-        }
-    };
+    useEffect(() => {
+        activateSearch();
+    }, [selectedPage, step, order]);
 
-    const fetchFilteredData = async () => {
-        console.log("👁️👁️👁️ fetchFilteredData data: ", {
-            params: {
-                str: searchBar,
-                filters: filters,
-            },
-        });
-        try {
-            const { data } = await axios.get(table.APIfetchSearch, {
-                params: {
-                    str: searchBar,
-                    filters: JSON.stringify(filters),
-                },
-            });
-            console.log("💚💚💚 fetchFilteredData response: ", data);
-            const response = orderData(data, order);
-            setDisplayData(response);
-        } catch (err) {
-            console.log("ERROR!", getError(err));
+    useEffect(() => {
+        if (displayData && displayData.length) {
+            // full_count is stored inside every row
+            const val = displayData[0].full_count;
+            setTotalCount(Number(val));
+        } else {
+            setTotalCount(0);
         }
-    };
+    }, [displayData]);
 
     //================================================================================
     // Filters
@@ -110,7 +153,7 @@ export default function FullList({ tableName }) {
                 ...filters,
                 [topic]: val,
             });
-        } else {
+        } else if (val && val.length) {
             // if filters[topic] doesnt exist, create it
             setFilters({ ...filters, [topic]: val });
         }
@@ -141,16 +184,23 @@ export default function FullList({ tableName }) {
                 />
             )}
 
-            <FullListDisplayer
-                table={table}
-                tableName={tableName}
-                displayData={displayData}
-                goToPage={goToPage}
-                step={step}
-                selectedPage={selectedPage}
-                order={order}
-                handleSelect={handleSelect}
-            />
+            {isLoading || !displayData ? (
+                <div>Loading...</div>
+            ) : isError ? (
+                <div>{isError}</div>
+            ) : (
+                <FullListDisplayer
+                    table={table}
+                    tableName={tableName}
+                    displayData={displayData}
+                    goToPage={goToPage}
+                    step={step}
+                    selectedPage={selectedPage}
+                    order={order}
+                    totalCount={totalCount}
+                    handleSelect={handleSelect}
+                />
+            )}
         </main>
     );
 }

@@ -19,9 +19,6 @@ export default function FiltersBar({
     fetchData,
 }) {
     const [filterSelect, setFilterSelect] = useState();
-    useEffect(() => {
-        console.log("FiltersBar renders: ", filters);
-    }, []);
 
     return (
         <div className={styles.filtersWrap}>

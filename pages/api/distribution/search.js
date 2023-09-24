@@ -23,7 +23,12 @@ export default async function handler(req, res) {
     try {
         // GET DATA AND PARSE WITH INFOS //
         const { rows } = await getAllDistributions(str); // [{id: 1, movies: [{id:1}, {}]},  ..]
-        const allMovies = await getAllMoviesWithInfos(""); // [{id: 1, cast: [{}, {}, ..], ..}, {id: 2}, ..]
+        const allMovies = await getAllMoviesWithInfos(
+            "",
+            500,
+            0,
+            "movie.title ASC"
+        ); // [{id: 1, cast: [{}, {}, ..], ..}, {id: 2}, ..]
 
         // loopo attravers tutti gli studi
         let finalObj = rows.map((studio) => {
