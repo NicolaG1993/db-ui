@@ -9,6 +9,7 @@
     border-top: 1px solid var(--bg800);
     width: 100%;
     max-width: 1280px;
+    min-height: 90vh;
 }
 
 .displayHeading {
@@ -40,6 +41,7 @@
     width: 100%;
     align-items: center;
     justify-items: center;
+    min-height: 90vh;
 }
 
 .fullListGrid > a {

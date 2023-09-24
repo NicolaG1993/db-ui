@@ -184,9 +184,7 @@ export default function FullList({ tableName }) {
                 />
             )}
 
-            {isLoading || !displayData ? (
-                <div>Loading...</div>
-            ) : isError ? (
+            {isError ? (
                 <div>{isError}</div>
             ) : (
                 <FullListDisplayer
@@ -199,6 +197,7 @@ export default function FullList({ tableName }) {
                     order={order}
                     totalCount={totalCount}
                     handleSelect={handleSelect}
+                    isLoading={isLoading || !displayData}
                 />
             )}
         </main>

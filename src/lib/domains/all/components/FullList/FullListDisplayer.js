@@ -13,6 +13,7 @@ export default function FullListDiplayer({
     order,
     totalCount,
     handleSelect,
+    isLoading,
 }) {
     return (
         <div className={styles.display}>
@@ -40,14 +41,17 @@ export default function FullListDiplayer({
             </div>
 
             <div className={styles.fullListGrid}>
-                {displayData &&
+                {displayData && !isLoading ? (
                     displayData.map((el, i) => (
                         <Card
                             key={`FullListContent ${el[table.nameType]} ${i}`}
                             table={table}
                             obj={el}
                         />
-                    ))}
+                    ))
+                ) : (
+                    <div>Loading data...</div>
+                )}
             </div>
 
             <div>

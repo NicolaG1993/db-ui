@@ -4,11 +4,12 @@ import { filtersParser } from "@/utils/parsers";
 export default async function handler(req, res) {
     try {
         let { str, filters, page, step, order } = req.query;
+        let offset = 0;
+        let orderString = "actor.name ASC";
 
         if ((page, step, order, filters)) {
-            let offset = step * (page - 1);
+            offset = step * (page - 1);
 
-            let orderString = "actor.name ASC";
             if (order === "name") {
                 orderString = "actor.name ASC";
             }

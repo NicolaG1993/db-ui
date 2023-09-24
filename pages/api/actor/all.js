@@ -3,15 +3,16 @@ import { getAllActorsWithInfos } from "@/utils/db/db";
 export default async function handler(req, res) {
     try {
         let { str, page, step, order } = req.query;
-        console.log("💚💚 req.query: ", req.query);
+        let offset = 0;
+        let orderString = "actor.name ASC";
+
         if (!str) {
             str = "";
         }
 
         if ((page, step, order)) {
-            let offset = step * (page - 1);
+            offset = step * (page - 1);
 
-            let orderString = "actor.name ASC";
             if (order === "name") {
                 orderString = "actor.name ASC";
             }
@@ -37,17 +38,17 @@ export default async function handler(req, res) {
                 orderString = "actor.name ASC";
             }
             // questi valori si potrebbero settare in un file separato, sia valori che fn x if
-
-            const { rows } = await getAllActorsWithInfos(
-                str,
-                Number(step),
-                Number(offset),
-                orderString
-            );
-            res.status(200).send(rows);
         }
+
+        const { rows } = await getAllActorsWithInfos(
+            str,
+            Number(step),
+            Number(offset),
+            orderString
+        );
+        res.status(200).send(rows);
     } catch (err) {
-        console.log(err);
+        console.error(err);
         res.status(401).send({ message: "ERROR" });
     }
 }
