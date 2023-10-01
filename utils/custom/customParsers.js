@@ -221,118 +221,6 @@ const parseOrderOptions = (arr) => {
     );
 };
 
-const parseFormProps = (key, value) => {
-    if (key === "birthday" || key === "release") {
-        return formatFormInputDate(value);
-    } else if (
-        key === "actors" ||
-        key === "studios" ||
-        key === "distributions" ||
-        key === "categories" ||
-        key === "tags"
-    ) {
-        return value.map((el) => el.name);
-    } else if (key === "movies") {
-        return value.map((el) => el.title);
-    } else if (
-        key === "pic" ||
-        key === "id" ||
-        key === "name" ||
-        key === "title" ||
-        key === "nationalities" ||
-        key === "genre" ||
-        key === "rating" ||
-        key === "created_at" ||
-        key === "type" ||
-        key === "nameType" ||
-        key === "group" ||
-        key === "urls"
-    ) {
-        return value;
-    }
-};
-
-/* USED IN FORM TO PARSE ALL RELATIONS ON CREATION/EDIT */
-const parseFormRelationsPromise = async (arr, formState) => {
-    let relatedData = {};
-    // We need Promise.all because we can't await axios with map() 👍
-    const allPromises = arr.map(({ topic, label }) => {
-        if (label !== "nationality") {
-            return axios
-                .get(`/api/list/all`, {
-                    params: { table: label },
-                })
-                .then(({ data }) => {
-                    console.log("💛💛💛 data", label, data);
-                    relatedData[topic] = data
-                        .filter((el) => formState[topic].includes(el.name))
-                        .map((el) => {
-                            return { name: el.name, id: el.id || el.code }; // nationalities non hanno id
-                        });
-                })
-                .catch((err) => console.error(err));
-        }
-    });
-    return Promise.all(allPromises).then(() => relatedData); // relatedData posso averlo solo dopo aver risolto 🧠
-};
-
-const parseFormRelationsEdit = (relatedData, propsData) => {
-    // console.log("💛💛💛 parseFormRelationsEdit", relatedData, propsData);
-    // !important that we need ids and not names for db update
-    let addedRelations = {};
-    let removedRelations = {};
-
-    let standardMethod = (arr, propsData, key) => {
-        return arr
-            .filter(
-                (o) =>
-                    !propsData[key]
-                        .filter((el) => el.name) // skip any corrupted element saved before in db
-                        .map((el) => el.name) // modify the rest
-                        .includes(o.name) // check if includes the user selected x
-            )
-            .map((el) => el.id); // get only the ids
-    };
-
-    let nationalitiesMethod = (arr, propsData, key) => {
-        return arr
-            .filter(
-                (o) =>
-                    !propsData[key]
-                        .filter((el) => el)
-                        .map((el) => el)
-                        .includes(o.name)
-            )
-            .map((el) => el.name);
-    };
-
-    if (relatedData) {
-        Object.entries(relatedData).map(([key, arr], i) => {
-            // console.log("💛💛💛 parseFormRelationsEdit data", key, arr);
-
-            if (key === "nationalities") {
-                // fare anche caso nationality N/A? serve veramente ? 🧠
-                addedRelations[key] = nationalitiesMethod(arr, propsData, key);
-                removedRelations[key] = propsData[key].filter(
-                    (el) => !arr.map((x) => x.name).includes(el)
-                );
-            } else {
-                // set the new relations
-                addedRelations[key] = standardMethod(arr, propsData, key);
-                // set the deleted relations
-                removedRelations[key] = propsData[key]
-                    .filter((el) => !arr.map((el) => el.id).includes(el.id))
-                    .map((el) => el.id);
-            }
-        });
-    }
-
-    return {
-        addedRelations,
-        removedRelations,
-    };
-};
-
 const tagsCheck = (tags) => {
     let parsedTags = [];
 
@@ -374,9 +262,6 @@ export {
     parseTagsForUiList,
     orderData,
     parseOrderOptions,
-    parseFormProps,
-    parseFormRelationsPromise,
-    parseFormRelationsEdit,
     tagsCheck,
     detectImage,
 };

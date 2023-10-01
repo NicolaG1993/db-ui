@@ -1,13 +1,13 @@
 import axios from "axios";
 import { parseTagsByType } from "./customParsers";
 import dataStructureGroups from "@/utils/custom/dataStructureGroups";
-import { groupJsonByValue } from "../parsers";
-import { getError } from "../error";
 
-/* USED FOR GETTING SIMPLE SIDENAV DATA IN FORMS */
+import { getError } from "../error";
+import { groupJsonByValue } from "@/src/lib/domains/_app/actions/parsers";
+
+/* USED FOR GETTING SIMPLE SIDENAV DATA IN FULLLIST */
 const fetchDataForFilter = async (str, topic) => {
     let { itemLabel } = dataStructureGroups[topic];
-    console.log("fetchDataForFilter: ", itemLabel);
     if (topic !== "nationalities" && topic !== "nationality") {
         try {
             // const res = await axios.get(`/api/${itemLabel}/search`, {

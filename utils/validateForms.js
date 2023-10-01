@@ -11,6 +11,18 @@ const titleValidation = (fieldName, fieldValue) => {
     return "Caratteri non consentiti";
 };
 
+const nicknameValidation = (fieldName, fieldValue) => {
+    if (fieldValue.trim() === "") {
+        return `Il ${fieldName} è richiesto`;
+    } else if (fieldValue.trim().length < 3) {
+        return `Il ${fieldName} deve contenere almeno 3 lettere`;
+    } else if (/^[^0-9]\w+$/.test(fieldValue)) {
+        return null;
+    } else {
+        return "Caratteri non consentiti";
+    }
+};
+
 const nameValidation = (fieldName, fieldValue) => {
     if (fieldValue.trim() === "") {
         return `Il ${fieldName} è richiesto`;
@@ -133,6 +145,7 @@ const slugValidation = (fieldName, fieldValue) => {
 module.exports = {
     titleValidation,
     nameValidation,
+    nicknameValidation,
     emailValidation,
     requestedValue,
     textValidation,

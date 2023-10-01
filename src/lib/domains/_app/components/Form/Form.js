@@ -1,24 +1,19 @@
+import styles from "@/styles/AdminDashboard.module.css";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import axios from "axios";
 
-import styles from "@/styles/AdminDashboard.module.css";
 import { createObjectURL, revokeObjectURL } from "@/utils/useLocalImages";
 import {
     decimalValidation,
     textValidation,
-    titleValidation,
-    nameValidation,
+    nicknameValidation,
 } from "@/utils/validateForms";
 import dataStructureForms from "@/utils/custom/dataStructureForms";
-import { fetchDataForFilter } from "@/utils/custom/customFetches";
-import {
-    parseFormProps,
-    parseFormRelationsEdit,
-    parseFormRelationsPromise,
-} from "@/utils/custom/customParsers";
-
 import FormSideNav from "./FormSideNav";
+import formHydrate from "@/src/lib/domains/_app/actions/formHydrate";
+import { fetchDataForSideNav } from "@/src/lib/domains/_app/actions/formFetchers";
+import uploadImage from "@/src/lib/domains/_app/actions/uploadImage";
+import createItem from "@/src/lib/domains/_app/actions/createItem";
 
 export default function Form({
     topicLabel,
@@ -29,7 +24,6 @@ export default function Form({
     //================================================================================
     // Component State
     //================================================================================
-    console.log("propsData: ", propsData); // lo state del parent
     const router = useRouter();
 
     let form = dataStructureForms[topicLabel];
@@ -60,31 +54,17 @@ export default function Form({
     //PARSE PROPSDATA
     useEffect(() => {
         if (propsData) {
-            if (Array.isArray(propsData)) {
-                setFormState({ ...form.emptyState, ids: propsData });
-            } else if (typeof propsData === "object") {
-                let obj = {};
-                Object.entries(propsData).map(([key, value], i) => {
-                    if (value) {
-                        let parsedValue = parseFormProps(key, value);
-                        obj[key] = parsedValue;
-                    }
-                });
-                setFormState({ ...formState, ...obj });
-            }
+            let newState = formHydrate(formState, form.emptyState, propsData); // hydrate form on modify
+            setFormState(newState);
         } else {
-            setFormState(form.emptyState);
+            setFormState(form.emptyState); // set empty form on add new
         }
     }, [propsData]);
 
-    // FETCH AND FILTER DATA FROM DB -> USED FOR UI SELECTORS
+    // FETCH DATA FOR SIDENAV
     useEffect(() => {
         if (openSection && openSection !== "nationalities") {
-            async function invokeFetch() {
-                let res = await fetchDataForFilter("", openSection);
-                setSideNavData(res);
-            }
-            invokeFetch();
+            fetchDataForSideNav(openSection).then((res) => setSideNavData(res));
         } else {
             setSideNavData();
         }
@@ -128,7 +108,7 @@ export default function Form({
 
         //validate values
         if (id === "Name") {
-            const resp = nameValidation(id, value);
+            const resp = nicknameValidation(id, value);
             if (resp) {
                 setErrors({ ...errors, [name]: resp });
             } else {
@@ -156,7 +136,6 @@ export default function Form({
         }
     }; // forse qualcosa bisogna acora aggiungere da altri forms? 💛
 
-    //// 💛💛💛 TESTING BETA
     const confirmChanges = async (e) => {
         e.preventDefault();
 
@@ -175,16 +154,18 @@ export default function Form({
                             ...formState,
                             pic: imgRes.data[0].Location,
                         };
-                        createItem(finalState).then(({ data }) => {
-                            propsData && handleEditsInParent(); // this run only in modify form
-                            setOpenForm && setOpenForm(false);
-                            router.push(`/el/${topicLabel}/${data.id}`);
-                        });
+                        createItem(finalState, form, formState, propsData).then(
+                            ({ data }) => {
+                                propsData && handleEditsInParent(); // this run only in modify form
+                                setOpenForm && setOpenForm(false);
+                                router.push(`/el/${topicLabel}/${data.id}`);
+                            }
+                        );
                     })
                     .catch((err) => console.log("🧡🧡🧡 ERR: ", err));
             } else {
                 // user doesnt want to use any image or nothing changed
-                createItem(formState)
+                createItem(formState, form, formState, propsData)
                     .then(({ data }) => {
                         propsData && handleEditsInParent();
                         setOpenForm && setOpenForm(false);
@@ -204,66 +185,6 @@ export default function Form({
             return;
         }
     };
-    //// 💛💛💛
-
-    //================================================================================
-    // API
-    //================================================================================
-    const uploadImage = (obj) => {
-        let formData = new FormData();
-        formData.append("image", obj);
-        formData.append("folder", form.group);
-        return axios.post("/api/pic/single-upload", formData, {
-            headers: {
-                "content-type": "multipart/form-data",
-                // authorization: `Bearer ${userInfo.token}`, // 🧠
-            },
-        });
-    };
-
-    // BETA 💛
-    const createItem = async (obj) => {
-        console.log("createItem invoked 💚: ", obj);
-        let relatedData;
-        if (form.relations) {
-            relatedData = await parseFormRelationsPromise(
-                form.relations,
-                formState
-            );
-        }
-        if (propsData) {
-            /* parse relations for db */
-            let relationsObj = {};
-            relatedData &&
-                (relationsObj = parseFormRelationsEdit(relatedData, propsData));
-            return axios.put(form.APImodify, {
-                ...obj,
-                ...relationsObj,
-            });
-            // return axios.put(`/api/${topicLabel}/modify`, {
-            //     ...obj,
-            //     ...relationsObj,
-            // });
-        } else {
-            /* parse data for db */
-            Object.entries(relatedData).map(([key, arr], i) => {
-                if (key === "nationalities") {
-                    relatedData[key] = formState.nationalities;
-                } else {
-                    let parsedArr = relatedData[key].map((el) => el.id);
-                    relatedData[key] = parsedArr;
-                }
-            });
-            return axios.post(form.APInew, {
-                ...obj,
-                ...relatedData,
-            });
-            // return axios.post(`/api/${topicLabel}/new`, {
-            //     ...obj,
-            //     ...relatedData,
-            // });
-        }
-    };
 
     //================================================================================
     // Render UI
@@ -273,7 +194,6 @@ export default function Form({
             <div className={styles.formWrap}>
                 <div>
                     <h2>{topicLabel}</h2>
-                    {/* <span onClick={() => setOpenForm(false)}>X</span> */}
                 </div>
 
                 {Component && topicLabel === activeForm ? (
