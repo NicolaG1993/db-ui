@@ -1,0 +1,70 @@
+/* DATA DISPLAYERS */
+.display {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem 0;
+    margin-bottom: 2rem;
+    border-top: 1px solid var(--bg800);
+    width: 100%;
+    max-width: 1280px;
+    min-height: 90vh;
+}
+
+.displayHeading {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 2rem;
+}
+.displayHeading span {
+    font-size: 12px;
+    margin: 0 0.6rem 0 0;
+}
+.displayHeading > div:nth-child(1) {
+    display: flex;
+    align-items: baseline;
+}
+.displayHeading > div:nth-child(1) h4 {
+    margin: 0 0.6rem 0 0;
+}
+.displayHeading a:hover {
+    color: var(--bg900);
+}
+
+/* FULL LIST GRID */
+.fullListGrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    width: 100%;
+    align-items: center;
+    justify-items: center;
+    min-height: 90vh;
+}
+
+.fullListGrid > a {
+    margin: 0 0.7em 2em 0.7em;
+    /* margin: 0.2em; */
+}
+
+@media screen and (max-width: 1020px) {
+    .fullListGrid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+@media screen and (min-width: 1300px) {
+    .fullListGrid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+@media screen and (min-width: 1700px) {
+    .fullListGrid {
+        grid-template-columns: repeat(5, 1fr);
+    }
+
+    .display {
+        max-width: 2000px;
+    }
+}

@@ -277,17 +277,21 @@ module.exports.getAllRecords = () => {
 };
 
 /* GET ALL WITH INFOS */
-module.exports.getAllMoviesWithInfos = (str) => {
+module.exports.getAllMoviesWithInfos = (str, limit, offset, order) => {
     const myQuery = `SELECT 
         movie.*,
+        COUNT(*) OVER() AS full_count,
         cast_JSON.cast,
         production_JSON.production,
         distribution_JSON.distribution,
         categories_JSON.categories,
-        tags_JSON.tags
+        tags_JSON.tags,
+        records_JSON.records
      FROM
         movie
+
         LEFT JOIN
+
             (SELECT 
                 movie_actor.movieID, 
                 JSON_AGG(
@@ -303,7 +307,9 @@ module.exports.getAllMoviesWithInfos = (str) => {
                 movie_actor.movieID
             ) AS cast_JSON
             ON movie.id = cast_JSON.movieID
+
         LEFT JOIN
+
             (SELECT
                 movie_studio.movieID,
                 JSON_AGG(
@@ -319,7 +325,9 @@ module.exports.getAllMoviesWithInfos = (str) => {
                     movie_studio.movieID
             ) AS production_JSON
             ON movie.id = production_JSON.movieID
+
         LEFT JOIN
+
             (SELECT
                 movie_distribution.movieID,
                 JSON_AGG(
@@ -335,7 +343,9 @@ module.exports.getAllMoviesWithInfos = (str) => {
                     movie_distribution.movieID
             ) AS distribution_JSON
             ON movie.id = distribution_JSON.movieID
+
         LEFT JOIN
+
             (SELECT
                 categoryRelation.movieID,
                 JSON_AGG(
@@ -351,28 +361,47 @@ module.exports.getAllMoviesWithInfos = (str) => {
                     categoryRelation.movieID
             ) AS categories_JSON
             ON movie.id = categories_JSON.movieID
+
         LEFT JOIN
+
             (SELECT
                 tagRelation.movieID,
                 JSON_AGG(
                     JSON_BUILD_OBJECT(
                         'id', tag.id,
                         'name', tag.name                 
-                        )
-                    ) AS tags
-                FROM
-                    tagRelation
-                    JOIN tag ON tag.id = tagRelation.tagID
-                GROUP BY
-                    tagRelation.movieID
+                    )
+                ) AS tags
+            FROM
+                tagRelation
+                JOIN tag ON tag.id = tagRelation.tagID
+            GROUP BY tagRelation.movieID
+
             ) AS tags_JSON
             ON movie.id = tags_JSON.movieID
+
+        LEFT JOIN
+
+            (SELECT
+                movieID,
+                JSON_AGG(
+                    JSON_BUILD_OBJECT(
+                        'id', id,
+                        'movie_id', movieID,
+                        'created_at', created_at                 
+                    )
+                ) AS records
+            FROM counter
+            GROUP BY movieID
+        ) AS records_JSON
+        ON records_JSON.movieID = movie.id
+
     WHERE movie.title ILIKE '%' || $1 || '%'
-    ORDER BY
-        movie.created_at DESC
+    ORDER BY ${order}
+    LIMIT $2 OFFSET $3
 `;
-    const key = [str];
-    return db.query(myQuery, key);
+    const keys = [str, limit, offset];
+    return db.query(myQuery, keys);
 };
 
 module.exports.getAllMoviesWithInfosByIDS = (arr) => {
@@ -473,9 +502,82 @@ module.exports.getAllMoviesWithInfosByIDS = (arr) => {
     return db.query(myQuery, key);
 };
 
-module.exports.getAllActorsWithInfos = (str) => {
+module.exports.getAllActorsWithInfos = (str, limit, offset, order) => {
     const myQuery = `SELECT 
         actor.*,
+        COUNT(*) OVER() AS full_count,
+        movies_JSON.movies,
+        tags_JSON.tags,
+        nationalities_JSON.nationalities
+    FROM
+        actor
+
+        LEFT JOIN
+
+            (SELECT
+                movie_actor.actorID,
+                JSON_AGG(
+                    JSON_BUILD_OBJECT(
+                        'id', movie.id,
+                        'title', movie.title,
+                        'pic', movie.pic
+                        )
+                ) AS movies
+            FROM
+                movie_actor
+                JOIN movie ON movie.id = movie_actor.movieID
+            GROUP BY
+                movie_actor.actorID
+        ) AS movies_JSON
+            ON actor.id = movies_JSON.actorID
+
+        LEFT JOIN (
+        
+        SELECT
+          tagRelation.actorID,
+          JSON_AGG(
+            JSON_BUILD_OBJECT(
+              'id', tag.id,
+              'name', tag.name)
+            ) AS tags
+        FROM tagRelation 
+          JOIN tag
+            ON tag.id = tagRelation.tagID
+          GROUP BY tagRelation.actorID
+            
+      ) AS tags_JSON
+        ON actor.id = tags_JSON.actorID
+
+    LEFT JOIN
+        (SELECT
+            nationalityRelation.actorID,
+            JSON_AGG(
+                nationalityRelation.nationality
+            ) AS nationalities
+            FROM nationalityRelation
+            GROUP BY nationalityRelation.actorID
+        ) AS nationalities_JSON
+        ON actor.id = nationalities_JSON.actorID
+
+        WHERE actor.name ILIKE '%' || $1 || '%'
+        ORDER BY ${order}
+        LIMIT $2 OFFSET $3
+        `;
+    const keys = [str, limit, offset];
+    return db.query(myQuery, keys);
+};
+
+module.exports.filterAllActorsWithInfos = (
+    str,
+    limit,
+    offset,
+    order,
+    tags,
+    nationalities
+) => {
+    const myQuery = `SELECT 
+        actor.*,
+        COUNT(*) OVER() AS full_count,
         movies_JSON.movies,
         tags_JSON.tags,
         nationalities_JSON.nationalities
@@ -498,39 +600,45 @@ module.exports.getAllActorsWithInfos = (str) => {
                 movie_actor.actorID
         ) AS movies_JSON
         ON actor.id = movies_JSON.actorID
-    LEFT JOIN
-        (SELECT
-            tagRelation.actorID,
-            JSON_AGG(
-                JSON_BUILD_OBJECT(
-                    'id', tag.id,
-                    'name', tag.name                 
-                )
-            ) AS tags
-            FROM
-                tagRelation
-                JOIN tag ON tag.id = tagRelation.tagID
-            GROUP BY
-                tagRelation.actorID
-        ) AS tags_JSON
-        ON actor.id = tags_JSON.actorID
 
-    LEFT JOIN
-        (SELECT
+    LEFT JOIN (
+  
+        SELECT
+          tagRelation.actorID,
+          JSON_AGG(
+            JSON_BUILD_OBJECT(
+              'id', tag.id,
+              'name', tag.name)
+            ) AS tags,
+          JSON_AGG(tag.name) AS tags_names
+        FROM tagRelation 
+          JOIN tag
+            ON tag.id = tagRelation.tagID
+          GROUP BY tagRelation.actorID
+  
+    ) AS tags_JSON
+    ON actor.id = tags_JSON.actorID
+
+    LEFT JOIN (
+
+        SELECT
             nationalityRelation.actorID,
             JSON_AGG(
                 nationalityRelation.nationality
             ) AS nationalities
-            FROM nationalityRelation
-            GROUP BY nationalityRelation.actorID
-        ) AS nationalities_JSON
+        FROM nationalityRelation
+        GROUP BY nationalityRelation.actorID
+
+    ) AS nationalities_JSON
         ON actor.id = nationalities_JSON.actorID
+
     WHERE actor.name ILIKE '%' || $1 || '%'
-    ORDER BY
-        actor.name ASC
-        `;
-    const key = [str];
-    return db.query(myQuery, key);
+        AND nationalities::jsonb ? ANY($5)
+        AND tags_names::jsonb ? ANY($4)
+    ORDER BY ${order}
+        LIMIT $2 OFFSET $3`;
+    const keys = [str, limit, offset, tags, nationalities];
+    return db.query(myQuery, keys);
 };
 
 module.exports.getAllActorsWithInfosByIDS = (arr) => {

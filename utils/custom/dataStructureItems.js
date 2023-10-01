@@ -1,8 +1,8 @@
-import Actor from "@/components/Item/Content/Actor";
-import Movie from "@/components/Item/Content/Movie";
-import Category from "@/components/Item/Content/Category";
+import Actor from "@/src/lib/domains/el/components/Item/Content/Actor";
+import Movie from "@/src/lib/domains/el/components/Item/Content/Movie";
+import Category from "@/src/lib/domains/el/components/Item/Content/Category";
 // import Tag from "@/components/Item/Content/Tag";
-import Studio from "@/components/Item/Content/Studio";
+import Studio from "@/src/lib/domains/el/components/Item/Content/Studio";
 // import Distribution from "@/components/Item/Content/Distribution";
 // import Nationality from "@/components/Item/Content/Nationality";
 

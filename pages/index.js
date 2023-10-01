@@ -1,13 +1,9 @@
-import Head from "next/head";
-import Image from "next/image";
-import Link from "next/link";
 import axios from "axios";
 import { useEffect, useState } from "react";
-
-import styles from "@/styles/Home.module.css";
-import { sortByObjDate, sortByValue } from "@/utils/orderData";
-import ShortList from "@/components/ShortList/ShortList";
-import HomeSearchBar from "@/components/SearchBars/HomeSearchBar";
+import { sortByObjDate } from "@/utils/orderData";
+import ShortList from "@/src/lib/domains/_app/components/ShortList/ShortList";
+import HomeHeading from "@/src/lib/domains/home/components/HomeHeading";
+import HomeSearchbar from "@/src/lib/domains/home/components/HomeSearchBar";
 
 export default function Home() {
     //================================================================================
@@ -43,7 +39,6 @@ export default function Home() {
                     setGroupB(groupBResp.slice(0, 6));
                 }
             }
-            // return res.data;
         } catch (error) {
             console.error("❤❤❤ FETCH ERROR: ", error);
         }
@@ -58,13 +53,8 @@ export default function Home() {
     //================================================================================
     return (
         <main id={"HomeMain"}>
-            <div className={styles.homeheading}>
-                <h1>DATABASE UI</h1>
-                <h2>Gallery for Bookmarks and Records</h2>
-            </div>
-
-            <HomeSearchBar />
-
+            <HomeHeading />
+            <HomeSearchbar />
             <ShortList data={groupA} tableName={"actors"} />
             <ShortList data={groupB} tableName={"movies"} />
         </main>

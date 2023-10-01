@@ -1,0 +1,14 @@
+.relationList {
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 2.5em 0.3em 0.5em 0.3em;
+}
+
+/* RELATIONS GRID */
+.relationsGrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    width: 100%;
+    align-items: center;
+    justify-items: center;
+}
