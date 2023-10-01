@@ -8,6 +8,7 @@ import {
     decimalValidation,
     textValidation,
     titleValidation,
+    nicknameValidation,
     nameValidation,
 } from "@/utils/validateForms";
 import dataStructureForms from "@/utils/custom/dataStructureForms";
@@ -128,7 +129,7 @@ export default function Form({
 
         //validate values
         if (id === "Name") {
-            const resp = nameValidation(id, value);
+            const resp = nicknameValidation(id, value);
             if (resp) {
                 setErrors({ ...errors, [name]: resp });
             } else {
