@@ -61,7 +61,6 @@ export default function Form({
     useEffect(() => {
         if (propsData) {
             if (Array.isArray(propsData)) {
-                console.log("🤖🤖🤖 propsData is Array");
                 setFormState({ ...form.emptyState, ids: propsData });
             } else if (typeof propsData === "object") {
                 let obj = {};
@@ -71,7 +70,6 @@ export default function Form({
                         obj[key] = parsedValue;
                     }
                 });
-                console.log("🤖🤖🤖 propsData is Object");
                 setFormState({ ...formState, ...obj });
             }
         } else {
@@ -97,12 +95,11 @@ export default function Form({
     //================================================================================
     const addLocalImages = (e) => {
         /* version for hosted App */
-        console.log("e.target.files: ", e.target.files); // use the spread syntax to get it as an array
         const file = {
             location: createObjectURL([...e.target.files][0]),
             key: [...e.target.files][0].name,
             file: [...e.target.files][0],
-        };
+        }; // use the spread syntax to get it as an array
         setNewImage(file);
     };
 
@@ -174,13 +171,11 @@ export default function Form({
                 // user added a new image
                 uploadImage(newImage.file)
                     .then((imgRes) => {
-                        console.log("💚💚💚 imgRes!", imgRes.data);
                         let finalState = {
                             ...formState,
                             pic: imgRes.data[0].Location,
                         };
                         createItem(finalState).then(({ data }) => {
-                            console.log("res!", data);
                             propsData && handleEditsInParent(); // this run only in modify form
                             setOpenForm && setOpenForm(false);
                             router.push(`/el/${topicLabel}/${data.id}`);
@@ -191,7 +186,6 @@ export default function Form({
                 // user doesnt want to use any image or nothing changed
                 createItem(formState)
                     .then(({ data }) => {
-                        console.log("res!", data);
                         propsData && handleEditsInParent();
                         setOpenForm && setOpenForm(false);
                         topicLabel !== "record" &&
@@ -229,6 +223,7 @@ export default function Form({
 
     // BETA 💛
     const createItem = async (obj) => {
+        console.log("createItem invoked 💚: ", obj);
         let relatedData;
         if (form.relations) {
             relatedData = await parseFormRelationsPromise(
@@ -236,15 +231,11 @@ export default function Form({
                 formState
             );
         }
-        console.log("💛💛💛 obj", obj);
-        console.log("💛💛💛 relatedData", relatedData);
-        console.log("💛💛💛 propsData", propsData);
         if (propsData) {
             /* parse relations for db */
             let relationsObj = {};
             relatedData &&
                 (relationsObj = parseFormRelationsEdit(relatedData, propsData));
-            console.log("💛💛💛 relationsObj", relationsObj);
             return axios.put(form.APImodify, {
                 ...obj,
                 ...relationsObj,
