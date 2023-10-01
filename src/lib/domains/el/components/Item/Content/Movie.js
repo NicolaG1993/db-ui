@@ -6,7 +6,7 @@ import { formatDateEU } from "@/utils/convertTimestamp";
 import RecordsCounter from "../RecordsCounter";
 import RelationsList from "@/src/lib/domains/el/components/RelationsList/RelationsList";
 
-export default function Actor({
+export default function Movie({
     label,
     item,
     itemInfos,

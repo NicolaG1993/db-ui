@@ -227,8 +227,16 @@ module.exports.getDistributions = (arr) => {
 };
 
 /* GET ALL */
+module.exports.getTable = (str) => {
+    const myQuery = `SELECT id, name FROM ${str} ORDER BY name`;
+    return db.query(myQuery);
+};
+module.exports.getTableWithTypes = (str) => {
+    const myQuery = `SELECT id, name, type FROM ${str} ORDER BY name`;
+    return db.query(myQuery);
+};
 module.exports.getAllTable = (str) => {
-    const myQuery = `SELECT * FROM ${str}`;
+    const myQuery = `SELECT * FROM ${str} ORDER BY name`;
     return db.query(myQuery);
 };
 module.exports.getAllActors = () => {

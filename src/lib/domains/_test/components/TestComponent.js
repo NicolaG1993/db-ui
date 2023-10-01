@@ -1,4 +1,4 @@
-import styles from "@/styles/AdminDashboard.module.css";
+import styles from "@/styles/Test.module.css";
 import axios from "axios";
 import { useState } from "react";
 import { useRouter } from "next/router";

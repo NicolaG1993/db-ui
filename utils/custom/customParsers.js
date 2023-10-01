@@ -252,21 +252,26 @@ const parseFormProps = (key, value) => {
     }
 };
 
+/* USED IN FORM TO PARSE ALL RELATIONS ON CREATION/EDIT */
 const parseFormRelationsPromise = async (arr, formState) => {
     let relatedData = {};
     // We need Promise.all because we can't await axios with map() 👍
     const allPromises = arr.map(({ topic, label }) => {
-        return axios
-            .get(`/api/${label}/all`)
-            .then(({ data }) => {
-                console.log("💛💛💛 data", label, data);
-                relatedData[topic] = data
-                    .filter((el) => formState[topic].includes(el.name))
-                    .map((el) => {
-                        return { name: el.name, id: el.id || el.code }; // nationalities non hanno id
-                    });
-            })
-            .catch((err) => console.error(err));
+        if (label !== "nationality") {
+            return axios
+                .get(`/api/list/all`, {
+                    params: { table: label },
+                })
+                .then(({ data }) => {
+                    console.log("💛💛💛 data", label, data);
+                    relatedData[topic] = data
+                        .filter((el) => formState[topic].includes(el.name))
+                        .map((el) => {
+                            return { name: el.name, id: el.id || el.code }; // nationalities non hanno id
+                        });
+                })
+                .catch((err) => console.error(err));
+        }
     });
     return Promise.all(allPromises).then(() => relatedData); // relatedData posso averlo solo dopo aver risolto 🧠
 };
