@@ -1,5 +1,5 @@
 import { tagsCheck } from "@/utils/custom/customParsers";
-import { newMovie, newRelations, getRelationsByArr } from "@/utils/db/db";
+import { newMovie, newRelations, getRelationsByArr } from "@/src/lib/db/db";
 
 async function handler(req, res) {
     let {

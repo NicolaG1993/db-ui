@@ -1,4 +1,4 @@
-import { getAllStudios, getAllRelations } from "@/utils/db/db";
+import { getAllStudios, getAllRelations } from "@/src/lib/db/db";
 
 export default async function handler(req, res) {
     try {

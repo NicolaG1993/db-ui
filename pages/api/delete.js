@@ -1,4 +1,4 @@
-import { deleteRecord } from "@/utils/db/db";
+import { deleteRecord } from "@/src/lib/db/db";
 
 export default async function handler(req, res) {
     const { id, table } = req.body;

@@ -4,7 +4,7 @@ import {
     getRelationsByArr,
     getMovies,
     getActors,
-} from "@/utils/db/db";
+} from "@/src/lib/db/db";
 // import { sortByObjValue } from "../../../../utils/orderData";
 
 export default async function handler(req, res) {

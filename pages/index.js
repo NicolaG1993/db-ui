@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { sortByObjDate } from "@/utils/orderData";
+import { sortByObjDate } from "@/src/lib/domains/_app/actions/orderData.js";
 import ShortList from "@/src/lib/domains/_app/components/ShortList/ShortList";
 import HomeHeading from "@/src/lib/domains/home/components/HomeHeading";
 import HomeSearchbar from "@/src/lib/domains/home/components/HomeSearchBar";

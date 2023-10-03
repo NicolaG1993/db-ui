@@ -1,4 +1,4 @@
-import { newActor, newRelations, newRelationsByStrings } from "@/utils/db/db";
+import { newActor, newRelations, newRelationsByStrings } from "@/src/lib/db/db";
 
 export default async function handler(req, res) {
     let {

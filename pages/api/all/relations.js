@@ -1,4 +1,4 @@
-import { getAllForRelations } from "@/utils/db/db";
+import { getAllForRelations } from "@/src/lib/db/db";
 
 export default async function handler(req, res) {
     try {

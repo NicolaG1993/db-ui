@@ -7,7 +7,7 @@ import {
     getDistributions,
     getCategories,
     getTags,
-} from "@/utils/db/db";
+} from "@/src/lib/db/db";
 
 export default async function handler(req, res) {
     const { id } = req.query;

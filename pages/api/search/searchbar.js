@@ -1,4 +1,4 @@
-import { getAllActorsWithInfos, getAllMoviesWithInfos } from "@/utils/db/db";
+import { getAllActorsWithInfos, getAllMoviesWithInfos } from "@/src/lib/db/db";
 
 export default async function handler(req, res) {
     let { str } = req.query;

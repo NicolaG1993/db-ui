@@ -1,6 +1,6 @@
 // import { searchMovies } from "@/utils/db/db";
-import { getAllMoviesWithInfos } from "@/utils/db/db";
-import { filtersParser } from "@/utils/parsers";
+import { getAllMoviesWithInfos } from "@/src/lib/db/db";
+import { deleteJSONEmptyArrays } from "@/src/lib/domains/_app/actions/parsers";
 // import { search } from "@/utils/db/db";
 
 export default async function handler(req, res) {
@@ -39,7 +39,7 @@ export default async function handler(req, res) {
 
             // parse filters
             if (filters) {
-                filters = filtersParser(filters);
+                filters = deleteJSONEmptyArrays(filters);
             }
             let { actors, categories, tags, studios, distribution } = filters;
 

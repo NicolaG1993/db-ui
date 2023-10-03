@@ -9,7 +9,7 @@ import {
     getAllTags,
     getAllRecords,
     getAllRelations,
-} from "@/utils/db/localDB";
+} from "@/src/lib/db/localDB";
 import {
     importMovieRow,
     importActorRow,
@@ -19,7 +19,7 @@ import {
     importTagRow,
     importRecordRow,
     importRelationRow,
-} from "@/utils/db/db";
+} from "@/src/lib/db/db";
 
 // ELIMINARE!
 async function handler(req, res) {

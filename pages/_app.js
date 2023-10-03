@@ -4,7 +4,7 @@ import "@/styles/globals.css";
 import { useRouter } from "next/router";
 import { getRandomMovieID } from "@/utils/custom/customFetches";
 import { Provider } from "react-redux";
-import store from "@/redux/store";
+import store from "@/src/application/redux/store";
 
 export default function App({ Component, pageProps }) {
     //================================================================================

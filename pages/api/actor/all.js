@@ -1,4 +1,4 @@
-import { getAllActorsWithInfos } from "@/utils/db/db";
+import { getAllActorsWithInfos } from "@/src/lib/db/db";
 
 export default async function handler(req, res) {
     try {

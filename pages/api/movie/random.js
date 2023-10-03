@@ -1,4 +1,4 @@
-import { getAllMovies } from "@/utils/db/db";
+import { getAllMovies } from "@/src/lib/db/db";
 
 export default async function handler(req, res) {
     try {

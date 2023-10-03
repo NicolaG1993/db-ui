@@ -5,7 +5,7 @@ import {
     deleteRelations,
     getRelationsByArr,
     getIDsByNames,
-} from "@/utils/db/db";
+} from "@/src/lib/db/db";
 
 async function handler(req, res) {
     let {

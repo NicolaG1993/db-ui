@@ -1,4 +1,4 @@
-import { getAllDistributions, getAllRelations } from "@/utils/db/db";
+import { getAllDistributions, getAllRelations } from "@/src/lib/db/db";
 
 export default async function handler(req, res) {
     try {
