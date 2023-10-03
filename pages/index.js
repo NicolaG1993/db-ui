@@ -1,9 +1,9 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { sortByObjDate } from "@/src/lib/domains/_app/actions/orderData.js";
-import ShortList from "@/src/lib/domains/_app/components/ShortList/ShortList";
-import HomeHeading from "@/src/lib/domains/home/components/HomeHeading";
-import HomeSearchbar from "@/src/lib/domains/home/components/HomeSearchBar";
+import { sortByObjDate } from "@/src/application/utils/orderData";
+import ShortList from "@/src/domains/_app/components/ShortList/ShortList";
+import HomeHeading from "@/src/domains/home/components/HomeHeading";
+import HomeSearchbar from "@/src/domains/home/components/HomeSearchBar";
 
 export default function Home() {
     //================================================================================

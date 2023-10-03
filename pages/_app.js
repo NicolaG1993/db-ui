@@ -1,10 +1,10 @@
 import { SnackbarProvider } from "notistack";
-import Layout from "@/src/lib/domains/_app/constants/layout";
-import "@/styles/globals.css";
-import { useRouter } from "next/router";
-import { getRandomMovieID } from "@/utils/custom/customFetches";
 import { Provider } from "react-redux";
+import { useRouter } from "next/router";
+import "@/src/application/styles/globals.css";
 import store from "@/src/application/redux/store";
+import { getRandomMovieID } from "@/src/application/utils/customFetches";
+import Layout from "@/src/domains/_app/constants/layout";
 
 export default function App({ Component, pageProps }) {
     //================================================================================
