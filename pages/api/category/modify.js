@@ -3,7 +3,7 @@ import {
     newRelations,
     newRelationsByStrings,
     deleteRelations,
-} from "@/src/lib/db/db";
+} from "@src/application/db/db.js";
 
 async function handler(req, res) {
     let { id, name, pic, type } = req.body;

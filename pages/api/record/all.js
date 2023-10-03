@@ -1,4 +1,7 @@
-import { getAllRecords, getAllMoviesWithInfosByIDS } from "@/src/lib/db/db";
+import {
+    getAllRecords,
+    getAllMoviesWithInfosByIDS,
+} from "@src/application/db/db.js";
 import { sortByObjNumberValue } from "@/src/lib/domains/_app/actions/orderData.js";
 
 export default async function handler(req, res) {

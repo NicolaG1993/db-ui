@@ -19,7 +19,7 @@ import {
     importTagRow,
     importRecordRow,
     importRelationRow,
-} from "@/src/lib/db/db";
+} from "@src/application/db/db.js";
 
 // ELIMINARE!
 async function handler(req, res) {

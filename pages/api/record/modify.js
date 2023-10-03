@@ -1,4 +1,4 @@
-import { editRecord, editRecords } from "@/src/lib/db/db";
+import { editRecord, editRecords } from "@src/application/db/db.js";
 
 async function handler(req, res) {
     let { id, ids, date } = req.body;

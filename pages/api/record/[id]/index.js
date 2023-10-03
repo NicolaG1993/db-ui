@@ -1,4 +1,4 @@
-import { getRecordByID } from "@/src/lib/db/db";
+import { getRecordByID } from "@src/application/db/db.js";
 
 export default async function handler(req, res) {
     const { id } = req.query;

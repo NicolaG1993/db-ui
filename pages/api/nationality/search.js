@@ -1,5 +1,5 @@
 import allNationalities from "@/utils/allNationalities";
-import { getRelationsBySearch } from "@/src/lib/db/db";
+import { getRelationsBySearch } from "@src/application/db/db.js";
 
 export default async function handler(req, res) {
     let { str } = req.query;

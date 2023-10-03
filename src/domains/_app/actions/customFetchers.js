@@ -1,5 +1,5 @@
 import axios from "axios";
-import { parseTagsByType } from "../utils/customParsers";
+import { parseTagsByType } from "../utils/parsers";
 import dataStructureGroups from "@/utils/custom/dataStructureGroups";
 
 import { getError } from "../../../../utils/error";

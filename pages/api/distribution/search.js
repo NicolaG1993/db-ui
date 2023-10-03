@@ -1,4 +1,7 @@
-import { getAllDistributions, getAllMoviesWithInfos } from "@/src/lib/db/db";
+import {
+    getAllDistributions,
+    getAllMoviesWithInfos,
+} from "@src/application/db/db.js";
 import { deleteJSONEmptyArrays } from "@/src/lib/domains/_app/actions/parsers";
 
 export default async function handler(req, res) {
