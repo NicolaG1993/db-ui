@@ -4,7 +4,7 @@ import Category from "@/src/domains/el/components/Item/Content/Category";
 // import Tag from "@/components/Item/Content/Tag";
 import Studio from "@/src/domains/el/components/Item/Content/Studio";
 // import Distribution from "@/components/Item/Content/Distribution";
-// import Nationality from "@/components/Item/Content/Nationality";
+import Nationality from "@/src/domains/el/components/Item/Content/Nationality";
 
 const dataStructureItems = {
     actor: {
