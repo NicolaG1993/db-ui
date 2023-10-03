@@ -2,7 +2,7 @@ import {
     getAllDistributions,
     getAllMoviesWithInfos,
 } from "@src/application/db/db.js";
-import { deleteJSONEmptyArrays } from "@/src/lib/domains/_app/actions/parsers";
+import { deleteJSONEmptyArrays } from "@/src/application/utils/parsers";
 
 export default async function handler(req, res) {
     let { str, filters } = req.query;

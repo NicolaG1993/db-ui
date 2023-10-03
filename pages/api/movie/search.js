@@ -1,6 +1,6 @@
 // import { searchMovies } from "@src/application/db/db.js";;
 import { getAllMoviesWithInfos } from "@src/application/db/db.js";
-import { deleteJSONEmptyArrays } from "@/src/lib/domains/_app/actions/parsers";
+import { deleteJSONEmptyArrays } from "@/src/application/utils/parsers";
 // import { search } from "@src/application/db/db.js";;
 
 export default async function handler(req, res) {

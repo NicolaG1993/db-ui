@@ -1,5 +1,5 @@
 import fs from "fs";
-import S3 from "@/utils/libs/s3";
+import S3 from "@/src/application/libs/s3";
 import { IncomingForm } from "formidable";
 
 // first we need to disable the default body parser

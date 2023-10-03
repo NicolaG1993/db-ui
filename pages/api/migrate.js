@@ -9,7 +9,7 @@ import {
     getAllTags,
     getAllRecords,
     getAllRelations,
-} from "@/src/lib/db/localDB";
+} from "@src/application/db/localDB";
 import {
     importMovieRow,
     importActorRow,
