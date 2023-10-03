@@ -1,5 +1,5 @@
 import { useState } from "react";
-import styles from "@/styles/AdminDashboard.module.css";
+import styles from "@/src/application/styles/AdminDashboard.module.css";
 
 export default function InputToArray({
     topic,

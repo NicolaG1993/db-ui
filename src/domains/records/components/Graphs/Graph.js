@@ -1,12 +1,11 @@
 import { useEffect, useState } from "react";
+import styles from "@/src/application/styles/Records.module.css";
 import {
     formatDateShort,
     formatMonthDay,
     getCurrentDate,
     getDaysArray,
-} from "@/utils/convertTimestamp";
-
-import styles from "@/styles/Records.module.css";
+} from "@/src/application/utils/convertTimestamp";
 
 export default function Graph({ data }) {
     const [parsedData, setParsedData] = useState(null);

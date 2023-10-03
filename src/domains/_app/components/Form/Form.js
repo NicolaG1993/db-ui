@@ -1,22 +1,22 @@
-import styles from "@/styles/AdminDashboard.module.css";
+import styles from "@/src/application/styles/AdminDashboard.module.css";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 
 import {
     createObjectURL,
     revokeObjectURL,
-} from "@/src/lib/domains/_app/actions/useLocalImages";
+} from "@/src/domains/_app/actions/useLocalImages";
 import {
     decimalValidation,
     textValidation,
     nicknameValidation,
-} from "@/utils/validateForms";
-import dataStructureForms from "@/utils/custom/dataStructureForms";
+} from "@/src/application/utils/validateForms.js";
+import dataStructureForms from "@/src/application/settings/dataStructureForms";
 import FormSideNav from "./FormSideNav";
-import formHydrate from "@/src/lib/domains/_app/actions/formHydrate";
-import { fetchDataForSideNav } from "@/src/lib/domains/_app/actions/formFetchers";
-import uploadImage from "@/src/lib/domains/_app/actions/uploadImage";
-import createItem from "@/src/lib/domains/_app/actions/createItem";
+import formHydrate from "@/src/domains/_app/utils/formHydrate";
+import { fetchDataForSideNav } from "@/src/domains/_app/actions/formFetchers";
+import uploadImage from "@/src/domains/_app/actions/uploadImage";
+import createItem from "@/src/domains/_app/actions/createItem";
 
 export default function Form({
     topicLabel,

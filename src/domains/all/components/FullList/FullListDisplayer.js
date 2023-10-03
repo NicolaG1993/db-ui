@@ -1,7 +1,7 @@
-import Card from "../../../_app/components/Card/Card";
+import Card from "@/src/domains/_app/components/Card/Card";
 import PageNav from "../Filters/PageNav/PageNav";
 import styles from "./FullListDisplayer.module.css";
-import { parseOrderOptions } from "@/utils/custom/customParsers";
+import { parseOrderOptions } from "@/src/domains/_app/utils/parsers";
 
 export default function FullListDiplayer({
     table,

@@ -1,10 +1,10 @@
 import Head from "next/head";
 import { useEffect } from "react";
 
-import { keepTheme } from "@/src/lib/domains/_app/constants/actions/themes";
-import Header from "@/src/lib/domains/_app/constants/components/Header/Header";
-import Footer from "@/src/lib/domains/_app/constants/components/Footer/Footer";
-import SessionUI from "@/src/lib/domains/_app/constants/components/SessionUI/SessionUI";
+import { keepTheme } from "@/src/domains/_app/constants/actions/themes";
+import Header from "@/src/domains/_app/constants/components/Header/Header";
+import Footer from "@/src/domains/_app/constants/components/Footer/Footer";
+import SessionUI from "@/src/domains/_app/constants/components/SessionUI/SessionUI";
 
 export default function Layout({ children, getRandomMovie }) {
     useEffect(() => {

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import standardStyles from "../InputsSelector/InputsSelector.module.css";
-import Error from "@/src/lib/domains/_app/components/Error/Error";
+import Error from "@/src/domains/_app/components/Error/Error";
 
 export default function DropdownMenusByCategory(props) {
     //////////////////////////////

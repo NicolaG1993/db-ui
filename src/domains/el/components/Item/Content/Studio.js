@@ -1,8 +1,8 @@
-import styles from "@/styles/Element.module.css";
+import styles from "@/src/application/styles/Element.module.css";
 import Link from "next/link";
 import Image from "next/image";
-import Form from "@/src/lib/domains/_app/components/Form/Form";
-import RelationsList from "@/src/lib/domains/el/components/RelationsList/RelationsList";
+import Form from "@/src/domains/_app/components/Form/Form";
+import RelationsList from "../../RelationsList/RelationsList";
 
 export default function Studio({
     label,

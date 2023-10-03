@@ -1,4 +1,4 @@
-import SearchBar from "../../../_app/components/SearchBar/SearchBar";
+import SearchBar from "@/src/domains/_app/components/SearchBar/SearchBar";
 import styles from "./FullListSearchBar.module.css";
 
 export default function FullListSearchBar({

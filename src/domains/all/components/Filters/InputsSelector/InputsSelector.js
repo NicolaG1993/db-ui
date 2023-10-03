@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import Error from "@/src/lib/domains/_app/components/Error/Error";
+import Error from "@/src/domains/_app/components/Error/Error";
 import standardStyles from "./InputsSelector.module.css";
 
 export default function InputsSelector(props) {

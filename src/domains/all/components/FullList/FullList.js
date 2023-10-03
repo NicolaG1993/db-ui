@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 
 import styles from "./FullList.module.css";
-import dataStructureGroups from "@/utils/custom/dataStructureGroups";
+import dataStructureGroups from "@/src/application/settings/dataStructureGroups";
 
 import FiltersBar from "../Filters/Filters";
 import { fetchDataForFilter } from "@/utils/custom/customFetches";
-import { getError } from "@/utils/error";
+import { getError } from "@/src/application/utils/error";
 
 import FullListHeading from "./FullListHeading";
 import FullListSearchBar from "./FullListSearchBar";

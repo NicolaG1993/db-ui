@@ -1,6 +1,6 @@
-import { shuffle } from "@/src/lib/domains/_app/actions/orderData.js";
 import { createSlice } from "@reduxjs/toolkit";
 import Cookies from "js-cookie";
+import { shuffle } from "@/src/application/utils/orderData";
 
 const initialState = {
     sessionPlaylist: Cookies.get("sessionPlaylist")

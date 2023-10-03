@@ -1,6 +1,6 @@
 import { useState } from "react";
-import styles from "@/styles/AdminDashboard.module.css";
-import Form from "../../../_app/components/Form/Form";
+import styles from "@/src/application/styles/AdminDashboard.module.css";
+import Form from "@/src/domains/_app/components/Form/Form";
 
 export default function AddNewWrap({ setAddForm }) {
     const [UI, setUI] = useState("actor");

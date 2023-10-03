@@ -1,9 +1,9 @@
 import styles from "./RelationsList.module.css";
-import dataArchitectureObj from "@/utils/custom/dataStructureGroups";
-import Card from "../../../_app/components/Card/Card";
+import dataStructureGroups from "@/src/application/settings/dataStructureGroups";
+import Card from "@/src/domains/_app/components/Card/Card";
 
 export default function RelationsList({ data, listGroup }) {
-    let table = dataArchitectureObj[listGroup];
+    let table = dataStructureGroups[listGroup];
 
     return (
         <div className={styles.relationList}>

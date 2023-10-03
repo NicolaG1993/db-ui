@@ -1,4 +1,4 @@
-import { orderData } from "@/utils/custom/customParsers";
+import { orderData } from "../../_app/utils/parsers";
 import axios from "axios";
 
 const fetchFilteredData = async (url, params) => {

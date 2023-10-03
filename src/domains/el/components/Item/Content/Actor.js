@@ -1,10 +1,10 @@
-import styles from "@/styles/Element.module.css";
+import styles from "@/src/application/styles/Element.module.css";
 import Link from "next/link";
 import Image from "next/image";
-import Form from "@/src/lib/domains/_app/components/Form/Form";
-import { formatDateEU, getAge } from "@/utils/convertTimestamp";
-import RelationsList from "@/src/lib/domains/el/components/RelationsList/RelationsList";
-import { detectImage } from "@/utils/custom/customParsers";
+import Form from "@/src/domains/_app/components/Form/Form";
+import RelationsList from "../../RelationsList/RelationsList";
+import { detectImage } from "@/src/domains/_app/utils/parsers";
+import { formatDateEU, getAge } from "@/src/application/utils/convertTimestamp";
 
 export default function Actor({
     label,

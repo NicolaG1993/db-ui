@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import styles from "@/styles/Element.module.css";
-import { formatDateEU } from "@/utils/convertTimestamp";
+import styles from "@/src/application/styles/Element.module.css";
+import { formatDateEU } from "@/src/application/utils/convertTimestamp";
 
 export default function RecordsCounter({ id }) {
     const [counter, setCounter] = useState();

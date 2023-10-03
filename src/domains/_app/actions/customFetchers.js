@@ -1,9 +1,9 @@
 import axios from "axios";
-import { parseTagsByType } from "../utils/parsers";
-import dataStructureGroups from "@/utils/custom/dataStructureGroups";
+import { parseTagsByType } from "@/src/domains/_app/utils/parsers";
+import dataStructureGroups from "@/src/application/settings/dataStructureGroups";
 
-import { getError } from "../../../../utils/error";
-import { groupJsonByValue } from "@/src/lib/domains/_app/actions/parsers";
+import { getError } from "@/src/application/utils/error";
+import { groupJsonByValue } from "@/src/application/utils/parsers";
 
 /* USED FOR GETTING SIMPLE SIDENAV DATA IN FULLLIST */
 const fetchDataForFilter = async (str, topic) => {

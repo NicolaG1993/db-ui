@@ -1,10 +1,10 @@
 import Link from "next/link";
 import { useState } from "react";
 
-import styles from "@/styles/Layout.module.css";
+import styles from "@/src/application/styles/Layout.module.css";
 
 import { useRouter } from "next/router";
-import { getRandomMovieID } from "@/utils/custom/customFetches";
+import { getRandomMovieID } from "@/src/domains/_app/actions/customFetchers";
 
 export default function Header({ getRandomMovie }) {
     const [menuOpen, seMenuOpen] = useState(false);

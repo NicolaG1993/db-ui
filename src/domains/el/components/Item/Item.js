@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import axios from "axios";
-import styles from "@/styles/Element.module.css";
-import dataStructureItems from "@/utils/custom/dataStructureItems";
-import { parseTagsForUiList } from "@/utils/custom/customParsers";
+import styles from "@/src/application/styles/Element.module.css";
+import dataStructureItems from "@/src/application/settings/dataStructureItems";
+import { parseTagsForUiList } from "@/src/domains/_app/utils/parsers";
 import Head from "next/head";
 
 export default function Item({ label }) {

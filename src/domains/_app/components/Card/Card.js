@@ -1,9 +1,9 @@
 import Image from "next/image";
 import Link from "next/link";
 import styles from "./Card.module.css";
-import createMarkup from "@/utils/createMarkup";
+import createMarkup from "@/src/application/utils/createMarkup";
 
-import { detectImage } from "@/utils/custom/customParsers";
+import { detectImage } from "@/src/domains/_app/utils/parsers";
 import { useEffect, useState } from "react";
 import CardUI from "./CardUI/CardUI";
 

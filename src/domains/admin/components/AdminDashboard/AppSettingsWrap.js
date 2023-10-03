@@ -1,7 +1,6 @@
 import { useState } from "react";
-
-import { setTheme } from "@/src/lib/domains/_app/constants/actions/themes";
-import styles from "@/styles/AdminDashboard.module.css";
+import styles from "@/src/application/styles/AdminDashboard.module.css";
+import { setTheme } from "@/src/domains/_app/constants/actions/themes";
 
 export default function AppSettingsWrap({ toggleAppSettings }) {
     /**

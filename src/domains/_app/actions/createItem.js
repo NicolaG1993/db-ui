@@ -2,7 +2,7 @@ import axios from "axios";
 import {
     parseFormRelationsEdit,
     parseFormRelationsPromise,
-} from "../utils/formParsers";
+} from "@/src/domains/_app/utils/formParsers.js";
 
 // BETA 💛
 export default async function createItem(obj, form, formState, propsData) {

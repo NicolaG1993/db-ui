@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import Error from "@/src/lib/domains/_app/components/Error/Error";
-import allNationalities from "@/utils/allNationalities"; // relocate in component directory
+import Error from "@/src/domains/_app/components/Error/Error";
+import allNationalities from "@/src/application/settings/allNationalities";
 import standardStyles from "../InputsSelector/InputsSelector.module.css";
 
 export default function NationalitiesSelector(props) {

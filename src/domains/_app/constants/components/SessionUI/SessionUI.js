@@ -1,5 +1,5 @@
 import SessionPlaylist from "../SessionPlaylist/SessionPlaylist";
-import styles from "@/styles/Layout.module.css";
+import styles from "@/src/application/styles/Layout.module.css";
 import { useState } from "react";
 
 export default function SessionUI() {

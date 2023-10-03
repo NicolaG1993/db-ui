@@ -1,4 +1,4 @@
-import { sortByObjDate } from "@/src/lib/domains/_app/actions/orderData.js";
+import { sortByObjDate } from "@/src/application/utils/orderData";
 import axios from "axios";
 
 const getHomeData = async () => {

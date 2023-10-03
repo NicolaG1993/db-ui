@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import DropdownMenusByCategory from "./DropdownMenusByCategory/DropdownMenusByCategory";
-import styles from "@/styles/Home.module.css";
+import styles from "@/src/application/styles/Home.module.css";
 import axios from "axios";
 import InputsSelector from "./InputsSelector/InputsSelector";
 import NationalitiesSelector from "./NationalitiesSelector/NationalitiesSelector";
