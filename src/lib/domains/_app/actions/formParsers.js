@@ -87,6 +87,7 @@ const parseFormRelationsEdit = (relatedData, propsData) => {
 
 /* USED IN FORM TO PARSE ALL RELATIONS ON CREATION/EDIT */
 const parseFormRelationsPromise = async (arr, formState) => {
+    // console.log("ARR: ", arr); // [{topic: 'actors', label: 'actor'}, ...]
     let relatedData = {};
     // We need Promise.all because we can't await axios with map() 👍
     const allPromises = arr.map(({ topic, label }) => {
@@ -107,6 +108,22 @@ const parseFormRelationsPromise = async (arr, formState) => {
     });
     return Promise.all(allPromises).then(() => relatedData); // relatedData posso averlo solo dopo aver risolto 🧠
 }; // ridurre ad una singola API call - non usarla dentro a map 🧨🧨🧨
+const parseFormRelationsPromiseMovie = async (arr, formState) => {
+    console.log("ARR: ", arr);
+    let relatedData = {};
+    const allData = await axios.get(`/api/all/relations`);
+    arr.map(({ topic, label }) => {
+        if (label !== "nationality") {
+            relatedData[topic] = data[label]
+                .filter((el) => formState[topic].includes(el.name))
+                .map((el) => {
+                    return { name: el.name, id: el.id || el.code }; // nationalities non hanno id
+                });
+        }
+    });
+
+    return relatedData;
+};
 
 /*
 function parseDataForForm(obj) {
