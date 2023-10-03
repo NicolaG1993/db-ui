@@ -1,4 +1,4 @@
-import styles from "@/styles/AdminDashboard.module.css";
+import styles from "@/src/application/styles/AdminDashboard.module.css";
 import ActiveFilters from "@/src/domains/all/components/Filters/ActiveFilters/ActiveFilters";
 import DropdownMenusByCategory from "@/src/domains/all/components/Filters/DropdownMenusByCategory/DropdownMenusByCategory";
 import InputsSelector from "@/src/domains/all/components/Filters/InputsSelector/InputsSelector";

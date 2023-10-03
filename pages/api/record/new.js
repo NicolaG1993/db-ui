@@ -1,4 +1,4 @@
-import { newRecord } from "@src/application/db/db.js";
+import { newRecord } from "@/src/application/db/db.js";
 
 async function handler(req, res) {
     let { id } = req.body;

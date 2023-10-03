@@ -1,5 +1,5 @@
 import Image from "next/image";
-import styles from "@/styles/AdminDashboard.module.css";
+import styles from "@/src/application/styles/AdminDashboard.module.css";
 
 export default function CategoryForm({
     formState,

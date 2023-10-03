@@ -2,7 +2,7 @@ import {
     editDistribution,
     newRelationsByStrings,
     deleteRelations,
-} from "@src/application/db/db.js";
+} from "@/src/application/db/db.js";
 
 async function handler(req, res) {
     let { id, name, pic, website, addedRelations, removedRelations } = req.body;

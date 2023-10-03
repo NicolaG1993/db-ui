@@ -1,4 +1,4 @@
-import { getAllTable, editPicURL } from "@src/application/db/db.js";
+import { getAllTable, editPicURL } from "@/src/application/db/db.js";
 
 async function handler(req, res) {
     let { table } = req.body; // 🧠

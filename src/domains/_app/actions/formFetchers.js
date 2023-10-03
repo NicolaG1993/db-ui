@@ -1,6 +1,6 @@
-import { parseTagsByType } from "@/utils/custom/customParsers";
-import dataStructureGroups from "@/utils/custom/dataStructureGroups";
-import { groupJsonByValue } from "@/src/lib/domains/_app/actions/parsers";
+import { parseTagsByType } from "../utils/parsers";
+import dataStructureGroups from "@/src/application/settings/dataStructureGroups";
+import { groupJsonByValue } from "@/src/application/utils/parsers";
 import axios from "axios";
 
 /* USED FOR GETTING SIMPLE SIDENAV DATA IN FORMS */

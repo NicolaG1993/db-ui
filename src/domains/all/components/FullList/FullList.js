@@ -4,7 +4,7 @@ import styles from "./FullList.module.css";
 import dataStructureGroups from "@/src/application/settings/dataStructureGroups";
 
 import FiltersBar from "../Filters/Filters";
-import { fetchDataForFilter } from "@/utils/custom/customFetches";
+import { fetchDataForFilter } from "@/src/domains/_app/actions/customFetchers";
 import { getError } from "@/src/application/utils/error";
 
 import FullListHeading from "./FullListHeading";

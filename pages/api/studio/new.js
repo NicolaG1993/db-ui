@@ -1,4 +1,4 @@
-import { newStudio, newRelationsByStrings } from "@src/application/db/db.js";
+import { newStudio, newRelationsByStrings } from "@/src/application/db/db.js";
 
 async function handler(req, res) {
     let { name, pic, website, nationalities } = req.body;

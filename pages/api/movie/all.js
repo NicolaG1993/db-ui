@@ -1,4 +1,4 @@
-import { getAllMoviesWithInfos } from "@src/application/db/db.js";
+import { getAllMoviesWithInfos } from "@/src/application/db/db.js";
 
 export default async function handler(req, res) {
     try {

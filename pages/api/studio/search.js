@@ -1,7 +1,7 @@
 import {
     getAllStudios,
     getAllMoviesWithInfos,
-} from "@src/application/db/db.js";
+} from "@/src/application/db/db.js";
 import { deleteJSONEmptyArrays } from "@/src/application/utils/parsers";
 
 export default async function handler(req, res) {

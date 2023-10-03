@@ -1,4 +1,4 @@
-import { editTag } from "@src/application/db/db.js";
+import { editTag } from "@/src/application/db/db.js";
 
 async function handler(req, res) {
     let { id, name, pic, type } = req.body;

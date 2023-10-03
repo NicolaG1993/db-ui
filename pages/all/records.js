@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 
 // import RecordForm from "@/components/Forms/RecordForm";
 import Graph from "@/src/domains/records/components/Graphs/Graph";
-import styles from "@/styles/Records.module.css";
+import styles from "@/src/application/styles/Records.module.css";
 import {
     formatDateEU,
     formatFormInputDate,

@@ -1,4 +1,4 @@
-import { deleteRecord } from "@src/application/db/db.js";
+import { deleteRecord } from "@/src/application/db/db.js";
 
 export default async function handler(req, res) {
     const { id, table } = req.body;

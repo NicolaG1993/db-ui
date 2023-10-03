@@ -1,7 +1,7 @@
 import Image from "next/image";
-import styles from "@/styles/AdminDashboard.module.css";
+import styles from "@/src/application/styles/AdminDashboard.module.css";
 import { useEffect, useState } from "react";
-import InputToArray from "@/src/lib/domains/all/components/Filters/InputToArray/InputToArray";
+import InputToArray from "@/src/domains/all/components/Filters/InputToArray/InputToArray";
 
 export default function MovieForm({
     formState,

@@ -1,6 +1,6 @@
 import styles from "./ShortList.module.css";
 import ShortListBar from "./ShortListBar";
-import dataStructureGroups from "@/utils/custom/dataStructureGroups";
+import dataStructureGroups from "@/src/application/settings/dataStructureGroups";
 import Card from "../Card/Card";
 
 export default function ShortList({ data, tableName }) {

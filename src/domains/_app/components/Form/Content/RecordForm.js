@@ -1,5 +1,8 @@
-import styles from "@/styles/AdminDashboard.module.css";
-import { formatFormInputDate, getCurrentTime } from "@/utils/convertTimestamp";
+import styles from "@/src/application/styles/AdminDashboard.module.css";
+import {
+    formatFormInputDate,
+    getCurrentTime,
+} from "@/src/application/utils/convertTimestamp";
 
 export default function RecordForm({
     formState,

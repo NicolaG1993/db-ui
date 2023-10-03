@@ -3,7 +3,7 @@ import { Provider } from "react-redux";
 import { useRouter } from "next/router";
 import "@/src/application/styles/globals.css";
 import store from "@/src/application/redux/store";
-import { getRandomMovieID } from "@/src/application/utils/customFetches";
+import { getRandomMovieID } from "@/src/domains/_app/actions/customFetchers";
 import Layout from "@/src/domains/_app/constants/layout";
 
 export default function App({ Component, pageProps }) {
