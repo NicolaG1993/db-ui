@@ -148,7 +148,7 @@ export default function Form({
             //qui se no dovrei fare upload img su db e salvare quel link
             if (newImage) {
                 // user added a new image
-                uploadImage(newImage.file)
+                uploadImage(newImage.file, form.group)
                     .then((imgRes) => {
                         let finalState = {
                             ...formState,
