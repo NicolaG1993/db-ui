@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import AddNewWrap from "@/src/lib/domains/admin/components/AdminDashboard/AddNewWrap";
-import AppSettingsWrap from "@/src/lib/domains/admin/components/AdminDashboard/AppSettingsWrap";
-import styles from "@/styles/AdminDashboard.module.css";
+import AddNewWrap from "@/src/domains/admin/components/AdminDashboard/AddNewWrap";
+import AppSettingsWrap from "@/src/domains/admin/components/AdminDashboard/AppSettingsWrap";
+import styles from "@/src/application/styles/AdminDashboard.module.css";
 import axios from "axios";
 
 export default function Dashboard() {

@@ -1,5 +1,5 @@
-import { getAllTags } from "@/utils/db/db";
-import { filtersParser } from "@/utils/parsers";
+import { getAllTags } from "@/src/application/db/db.js";
+import { deleteJSONEmptyArrays } from "@/src/application/utils/parsers";
 
 export default async function handler(req, res) {
     let { str, filters } = req.query;
@@ -9,7 +9,7 @@ export default async function handler(req, res) {
 
     // parse filters
     if (filters) {
-        filters = filtersParser(filters);
+        filters = deleteJSONEmptyArrays(filters);
     }
 
     try {

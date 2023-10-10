@@ -1,5 +1,8 @@
-import { getAllRecords, getAllMoviesWithInfosByIDS } from "@/utils/db/db";
-import { sortByObjNumberValue } from "@/utils/orderData";
+import {
+    getAllRecords,
+    getAllMoviesWithInfosByIDS,
+} from "@/src/application/db/db.js";
+import { sortByObjNumberValue } from "@/src/application/utils/orderData";
 
 export default async function handler(req, res) {
     try {

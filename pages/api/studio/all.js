@@ -1,5 +1,4 @@
-import { getAllStudios, getAllRelations } from "@/utils/db/db";
-
+import { getAllStudios, getAllRelations } from "@/src/application/db/db.js";
 export default async function handler(req, res) {
     try {
         const { rows } = await getAllStudios("");

@@ -1,4 +1,4 @@
-import { newTag } from "@/utils/db/db";
+import { newTag } from "@/src/application/db/db.js";
 
 async function handler(req, res) {
     let { name, pic, type } = req.body;

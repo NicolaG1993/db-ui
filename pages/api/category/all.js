@@ -1,5 +1,4 @@
-import { getAllCategories, getAllRelations } from "@/utils/db/db";
-
+import { getAllCategories, getAllRelations } from "@/src/application/db/db.js";
 export default async function handler(req, res) {
     try {
         const { rows } = await getAllCategories("");

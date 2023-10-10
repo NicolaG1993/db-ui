@@ -1,4 +1,4 @@
-import TestComponent from "@/src/lib/domains/_test/components/TestComponent";
+import TestComponent from "@/src/domains/_test/components/TestComponent";
 import { useEffect, useState } from "react";
 
 export default function Test() {

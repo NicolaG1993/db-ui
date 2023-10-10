@@ -1,4 +1,7 @@
-import { newDistribution, newRelationsByStrings } from "@/utils/db/db";
+import {
+    newDistribution,
+    newRelationsByStrings,
+} from "@/src/application/db/db.js";
 
 async function handler(req, res) {
     let { name, pic, website, nationalities } = req.body;

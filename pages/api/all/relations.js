@@ -1,5 +1,4 @@
-import { getAllForRelations } from "@/utils/db/db";
-
+import { getAllForRelations } from "@/src/application/db/db.js";
 export default async function handler(req, res) {
     try {
         const { rows } = await getAllForRelations(); // todo 🧠

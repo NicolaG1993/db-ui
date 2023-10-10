@@ -3,11 +3,14 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 
 // import RecordForm from "@/components/Forms/RecordForm";
-import Graph from "@/src/lib/domains/records/components/Graphs/Graph";
-import styles from "@/styles/Records.module.css";
-import { formatDateEU, formatFormInputDate } from "@/utils/convertTimestamp";
-import Form from "@/src/lib/domains/_app/components/Form/Form";
-import ToggleSwitch from "@/src/lib/domains/_app/components/ToggleSwitch/ToggleSwitch";
+import Graph from "@/src/domains/records/components/Graphs/Graph";
+import styles from "@/src/application/styles/Records.module.css";
+import {
+    formatDateEU,
+    formatFormInputDate,
+} from "@/src/application/utils/convertTimestamp";
+import Form from "@/src/domains/_app/components/Form/Form";
+import ToggleSwitch from "@/src/domains/_app/components/ToggleSwitch/ToggleSwitch";
 
 const fetchData = async () => {
     try {

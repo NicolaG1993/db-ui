@@ -7,7 +7,7 @@ import {
     newTag,
     newRelations,
     newRelationsByStrings,
-} from "@/utils/db/db";
+} from "@/src/application/db/db.js";
 
 export default async function handler(req, res) {
     try {

@@ -1,4 +1,4 @@
-import { getTable, getTableWithTypes } from "@/utils/db/db";
+import { getTable, getTableWithTypes } from "@/src/application/db/db.js";
 
 export default async function handler(req, res) {
     try {

@@ -1,4 +1,4 @@
-import { newCategory } from "@/utils/db/db";
+import { newCategory } from "@/src/application/db/db.js";
 
 async function handler(req, res) {
     let { name, pic, type } = req.body;

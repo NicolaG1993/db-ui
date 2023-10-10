@@ -1,5 +1,5 @@
-import { filterAllActorsWithInfos } from "@/utils/db/db";
-import { filtersParser } from "@/utils/parsers";
+import { filterAllActorsWithInfos } from "@/src/application/db/db.js";
+import { deleteJSONEmptyArrays } from "@/src/application/utils/parsers";
 
 export default async function handler(req, res) {
     try {
@@ -42,7 +42,7 @@ export default async function handler(req, res) {
 
             if (filters) {
                 // parse filters
-                filters = filtersParser(filters);
+                filters = deleteJSONEmptyArrays(filters);
             }
             let { categories, tags, studios, distribution, nationalities } =
                 filters;
@@ -71,7 +71,7 @@ export default async function handler(req, res) {
         }
         if (filters) {
             // parse filters
-            filters = filtersParser(filters);
+            filters = deleteJSONEmptyArrays(filters);
         }
 
         const { rows } = await getAllActorsWithInfos(str);

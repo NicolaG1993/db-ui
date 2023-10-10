@@ -4,7 +4,7 @@ import {
     getAllMoviesWithInfosByIDS,
     getActors,
     getRelationsByArr,
-} from "@/utils/db/db";
+} from "@/src/application/db/db.js";
 
 export default async function handler(req, res) {
     const { id } = req.query;
