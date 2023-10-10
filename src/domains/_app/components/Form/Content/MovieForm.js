@@ -87,7 +87,7 @@ export default function MovieForm({
                     type="text"
                     name="title"
                     id="Title"
-                    maxLength="50"
+                    maxLength="244"
                     onChange={(e) => updateFormState(e.target.value, "title")}
                     onBlur={(e) => validateData(e)}
                     value={formState.title}
