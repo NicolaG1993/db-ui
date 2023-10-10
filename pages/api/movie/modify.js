@@ -1,4 +1,3 @@
-import { tagsCheck } from "@/utils/custom/customParsers";
 import {
     editMovie,
     newRelations,
@@ -6,6 +5,7 @@ import {
     getRelationsByArr,
     getIDsByNames,
 } from "@/src/application/db/db.js";
+import { tagsCheck } from "@/src/domains/_app/utils/parsers";
 
 async function handler(req, res) {
     let {
