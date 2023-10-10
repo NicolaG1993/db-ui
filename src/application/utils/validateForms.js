@@ -16,7 +16,8 @@ const nicknameValidation = (fieldName, fieldValue) => {
         return `Il ${fieldName} è richiesto`;
     } else if (fieldValue.trim().length < 3) {
         return `Il ${fieldName} deve contenere almeno 3 lettere`;
-    } else if (/^[^0-9]\w+$/.test(fieldValue)) {
+    } else if (/^[a-zA-Z0-9 _.-]*$/.test(fieldValue)) {
+        // /^[^0-9]\w+$/
         return null;
     } else {
         return "Caratteri non consentiti";
