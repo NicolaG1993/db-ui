@@ -64,7 +64,7 @@ export default function Studio({
                         {nationalities ? (
                             nationalities.map((el) => (
                                 <div
-                                    key={"nationality" + el}
+                                    key={"nationality " + el}
                                     className={styles.tagEl}
                                 >
                                     <Link href={`/el/nationality/${el}`}>
@@ -94,7 +94,7 @@ export default function Studio({
                         {actors ? (
                             actors.map((el) => (
                                 <div
-                                    key={"actor" + el.id}
+                                    key={"actor " + el.id}
                                     className={styles.tagElWithInfo}
                                 >
                                     <Link href={`/el/actor/${el.id}`}>

@@ -201,10 +201,21 @@
     display: grid;
     grid-template-columns: 1fr auto;
 }
-.sidewrapContent > div:nth-child(1) {
+.wrapper {
+    padding: 0.5rem 0.5rem 0 0.5rem;
+    /* border-radius: 4px; */
+    border: 1px solid var(--bg800);
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    height: 425px;
+    overflow-y: auto;
+    /* align-items: flex-end; */
+}
+.sidewrapContent > .wrapper:nth-child(1) {
     padding-right: 1rem;
 }
-.sidewrapContent > div:nth-child(2) {
+.sidewrapContent > .wrapper:nth-child(2) {
     border-left: 1px solid var(--bg800);
     padding-left: 1rem;
 }

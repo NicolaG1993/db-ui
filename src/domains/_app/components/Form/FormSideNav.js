@@ -24,56 +24,60 @@ export default function FormSideNav({
             </div>
 
             <div className={styles.sidewrapContent}>
-                {data &&
-                    typeof data === "object" &&
-                    !Array.isArray(data) &&
-                    openSection === "tags" && (
-                        <DropdownMenusByCategory
-                            obj={data}
-                            filters={formState[openSection]}
-                            handleChildState={updateFormState}
-                            // styles={styles}
-                            topic={openSection}
-                        />
-                    )}
-                {data &&
-                    data.length &&
-                    (openSection === "actors" ||
-                        openSection === "studios" ||
-                        openSection === "distributions" ||
-                        openSection === "categories") && (
-                        <InputsSelector
-                            arr={data.map((el) => (el.name ? el.name : el))}
-                            filters={formState[openSection]}
-                            handleChildState={updateFormState}
-                            // styles={styles}
-                            topic={openSection}
-                        />
-                    )}
+                <div className={styles.wrapper}>
+                    {data &&
+                        typeof data === "object" &&
+                        !Array.isArray(data) &&
+                        openSection === "tags" && (
+                            <DropdownMenusByCategory
+                                obj={data}
+                                filters={formState[openSection]}
+                                handleChildState={updateFormState}
+                                // styles={styles}
+                                topic={openSection}
+                            />
+                        )}
+                    {data &&
+                        data.length &&
+                        (openSection === "actors" ||
+                            openSection === "studios" ||
+                            openSection === "distributions" ||
+                            openSection === "categories") && (
+                            <InputsSelector
+                                arr={data.map((el) => (el.name ? el.name : el))}
+                                filters={formState[openSection]}
+                                handleChildState={updateFormState}
+                                // styles={styles}
+                                topic={openSection}
+                            />
+                        )}
 
-                {openSection === "nationalities" && (
-                    <NationalitiesSelector
-                        filters={formState[openSection]}
+                    {openSection === "nationalities" && (
+                        <NationalitiesSelector
+                            filters={formState[openSection]}
+                            handleChildState={updateFormState}
+                            // styles={styles}
+                            topic={openSection}
+                        />
+                        // <InputSelector
+                        //     topic={openSection}
+                        //     topicID={openSection}
+                        //     formState={formState}
+                        //     updateFormState={updateFormState}
+                        //     setOpenSection={setOpenSection}
+                        //     propsData={allNationalities}
+                        // />
+                    )}
+                </div>
+
+                <div className={styles.wrapper}>
+                    <ActiveFilters
+                        arr={formState[openSection]}
                         handleChildState={updateFormState}
                         // styles={styles}
                         topic={openSection}
                     />
-                    // <InputSelector
-                    //     topic={openSection}
-                    //     topicID={openSection}
-                    //     formState={formState}
-                    //     updateFormState={updateFormState}
-                    //     setOpenSection={setOpenSection}
-                    //     propsData={allNationalities}
-                    // />
-                )}
-
-                <ActiveFilters
-                    arr={formState[openSection]}
-                    handleChildState={updateFormState}
-                    // styles={styles}
-                    topic={openSection}
-                />
+                </div>
             </div>
         </div>
     );

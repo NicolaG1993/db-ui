@@ -71,7 +71,7 @@ export default function Actor({
                             item.nationalities.map((el) => (
                                 <Link
                                     href={`/el/nationality/${el}`}
-                                    key={"nationality" + el}
+                                    key={"nationality " + el}
                                     className={styles.tagEl}
                                 >
                                     {el}

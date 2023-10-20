@@ -88,7 +88,7 @@ export default function InputsSelector(props) {
     // RENDERING
     //////////////////////////////
     return (
-        <div className={styles.wrapper}>
+        <>
             {error ? (
                 <Error error={error} styles={null} />
             ) : renderReady ? (
@@ -96,6 +96,6 @@ export default function InputsSelector(props) {
             ) : (
                 "Loading"
             )}
-        </div>
+        </>
     );
 }

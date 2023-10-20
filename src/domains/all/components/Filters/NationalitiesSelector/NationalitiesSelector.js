@@ -81,7 +81,7 @@ export default function NationalitiesSelector(props) {
     // RENDERING
     //////////////////////////////
     return (
-        <div className={styles.wrapper}>
+        <>
             {error ? (
                 <Error error={error} styles={null} />
             ) : renderReady ? (
@@ -89,6 +89,6 @@ export default function NationalitiesSelector(props) {
             ) : (
                 "Loading"
             )}
-        </div>
+        </>
     );
 }

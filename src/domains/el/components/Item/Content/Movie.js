@@ -16,7 +16,6 @@ export default function Movie({
     openForm,
     setOpenForm,
 }) {
-    console.log("itemInfos: ", itemInfos);
     let {
         pic,
         id,
@@ -65,7 +64,7 @@ export default function Movie({
                                     href={el}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    key={"url" + el.id}
+                                    key={"url " + el}
                                     className={styles.linkEl}
                                 >
                                     <p>{el}</p>
