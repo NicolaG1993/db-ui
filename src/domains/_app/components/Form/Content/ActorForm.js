@@ -1,6 +1,5 @@
 import Image from "next/image";
 import styles from "@/src/application/styles/AdminDashboard.module.css";
-import { useEffect, useState } from "react";
 
 export default function ActorForm({
     formState,

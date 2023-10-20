@@ -34,7 +34,20 @@ async function handler(req, res) {
             genre
         );
 
+        console.log("actor: ", actor);
+        console.log("data: ", {
+            id,
+            name,
+            pic,
+            rating,
+            birthday,
+            genre,
+            addedRelations,
+            removedRelations,
+        });
+
         // ADD RELATIONS
+        // TODO: ridurre request a ona sola 🧠
         addedRelations.tags.length &&
             (await newRelations(
                 id,
