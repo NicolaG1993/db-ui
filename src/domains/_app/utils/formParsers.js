@@ -1,3 +1,4 @@
+import { formatFormInputDate } from "@/src/application/utils/convertTimestamp";
 import axios from "axios";
 
 const parseFormProps = (key, value) => {
@@ -31,6 +32,20 @@ const parseFormProps = (key, value) => {
     }
 };
 
+// remove all null, undefined, etc.. from relations obj before calling API - just to be sure we dont have to store in DB wrong values
+const cleanFalseRelations = (obj) => {
+    let newObj = {};
+    Object.entries(obj).map(([key, arr]) => {
+        newObj[key] = arr.filter((el) => {
+            if (el !== null || el !== undefined) {
+                return el;
+            }
+        });
+    });
+    return newObj;
+};
+
+// Used to identify in form which relations are new or removed in the edit
 const parseFormRelationsEdit = (relatedData, propsData) => {
     // !important that we need ids and not names for db update
     let addedRelations = {};
@@ -55,9 +70,9 @@ const parseFormRelationsEdit = (relatedData, propsData) => {
                     !propsData[key]
                         .filter((el) => el)
                         .map((el) => el)
-                        .includes(o.name)
+                        .includes(o)
             )
-            .map((el) => el.name);
+            .map((el) => el);
     };
 
     if (relatedData) {
@@ -66,8 +81,24 @@ const parseFormRelationsEdit = (relatedData, propsData) => {
                 // fare anche caso nationality N/A? serve veramente ? 🧠
                 addedRelations[key] = nationalitiesMethod(arr, propsData, key);
                 removedRelations[key] = propsData[key].filter(
-                    (el) => !arr.map((x) => x.name).includes(el)
+                    (el) => !arr.map((x) => x).includes(el)
                 );
+
+                // check for falsy values already stored in DB - if so add them to removedRelations
+                if (propsData[key]) {
+                    const falseValues = propsData[key].filter((el) => {
+                        if (el === null || el === undefined) {
+                            return el;
+                        }
+                    });
+                    if (falseValues.length) {
+                        removedRelations[key] = [
+                            ...removedRelations[key],
+                            null,
+                            undefined,
+                        ];
+                    }
+                }
             } else {
                 // set the new relations
                 addedRelations[key] = standardMethod(arr, propsData, key);
@@ -78,6 +109,8 @@ const parseFormRelationsEdit = (relatedData, propsData) => {
             }
         });
     }
+
+    addedRelations = cleanFalseRelations(addedRelations);
 
     return {
         addedRelations,
@@ -104,6 +137,8 @@ const parseFormRelationsPromise = async (arr, formState) => {
                         });
                 })
                 .catch((err) => console.error(err));
+        } else {
+            relatedData.nationalities = formState.nationalities;
         }
     });
     return Promise.all(allPromises).then(() => relatedData); // relatedData posso averlo solo dopo aver risolto 🧠

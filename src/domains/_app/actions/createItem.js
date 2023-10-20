@@ -6,7 +6,7 @@ import {
 
 // BETA 💛
 export default async function createItem(obj, form, formState, propsData) {
-    console.log("createItem invoked 💚: ", obj);
+    // console.log("createItem invoked 💚: ", obj);
     let relatedData;
     if (form.relations) {
         relatedData = await parseFormRelationsPromise(
@@ -14,11 +14,14 @@ export default async function createItem(obj, form, formState, propsData) {
             formState
         ); // posso usare direttamente obj ogni volta invece di formState ? 🧠 se sí eliminare 3 prop
     }
+
     if (propsData) {
         /* parse relations for db */
         let relationsObj = {};
         relatedData &&
             (relationsObj = parseFormRelationsEdit(relatedData, propsData));
+
+        // MODIFY
         return axios.put(form.APImodify, {
             ...obj,
             ...relationsObj,
@@ -37,6 +40,7 @@ export default async function createItem(obj, form, formState, propsData) {
                 relatedData[key] = parsedArr;
             }
         });
+        // NEW
         return axios.post(form.APInew, {
             ...obj,
             ...relatedData,
