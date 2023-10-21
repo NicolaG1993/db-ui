@@ -12,8 +12,8 @@ import {
 } from "@/src/application/utils/orderData";
 
 function parseTagsByType(obj) {
-    console.log("parseTagsByType: ", obj);
-    console.log("process.env.TAGS_OBJ: ", process.env.TAGS_OBJ);
+    // console.log("parseTagsByType: ", obj);
+    // console.log("process.env.TAGS_OBJ: ", process.env.TAGS_OBJ);
 
     // using TAGS_OBJ to create parsedObj
     const secretObj = JSON.parse(process.env.TAGS_OBJ);
@@ -39,7 +39,7 @@ function parseTagsByType(obj) {
 
 function parseTagsByTypeSelection() {
     const parsedObj = JSON.parse(process.env.TAGS_OBJ);
-    console.log("💚 parseTagsByTypeSelection: ", parsedObj);
+    // console.log("💚 parseTagsByTypeSelection: ", parsedObj);
     return parsedObj;
 } // SPOSTARE
 

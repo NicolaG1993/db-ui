@@ -12,7 +12,7 @@ import {
     nicknameValidation,
 } from "@/src/application/utils/validateForms.js";
 import dataStructureForms from "@/src/application/settings/dataStructureForms";
-import FormSideNav from "./FormSideNav";
+import FormSideNav from "./FormSideNav/FormSideNav";
 import formHydrate from "@/src/domains/_app/utils/formHydrate";
 import { fetchDataForSideNav } from "@/src/domains/_app/actions/formFetchers";
 import uploadImage from "@/src/domains/_app/actions/uploadImage";

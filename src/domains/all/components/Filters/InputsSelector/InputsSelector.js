@@ -6,7 +6,6 @@ export default function InputsSelector(props) {
     //////////////////////////////
     // STATE
     //////////////////////////////
-    console.log("*Rendering *InputsSelector* ", props);
     const [error, setError] = useState();
     const [renderReady, setRenderReady] = useState(false);
     const [filters, setFilters] = useState(props.filters || []);

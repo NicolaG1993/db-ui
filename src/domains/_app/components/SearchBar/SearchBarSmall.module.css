@@ -1,0 +1,32 @@
+/* SEARCHBAR */
+/* .searchbar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 370px;
+    position: relative;
+}
+.searchbar > input {
+    width: 300px;
+    padding: 5px;
+}
+.searchbar > button {
+    cursor: pointer;
+    padding: 5px;
+    width: 70px;
+}
+.searchbar > span {
+    cursor: pointer;
+    padding: 8px;
+    font-size: 14px;
+    position: absolute;
+    right: -4rem;
+}
+.searchbar > span:hover {
+    text-decoration: underline;
+} */
+
+.searchbar {
+    display: grid;
+    grid-template-columns: 1fr auto;
+}
