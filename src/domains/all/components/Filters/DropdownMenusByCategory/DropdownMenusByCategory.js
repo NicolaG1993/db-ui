@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import standardStyles from "../InputsSelector/InputsSelector.module.css";
+import standardStyles from "@/src/domains/all/components/Filters/InputsSelector/InputsSelector.module.css";
 import Error from "@/src/domains/_app/components/Error/Error";
 
 export default function DropdownMenusByCategory(props) {
@@ -248,7 +248,7 @@ export default function DropdownMenusByCategory(props) {
     // RENDERING
     //////////////////////////////
     return (
-        <div className={styles.wrapper}>
+        <>
             {error ? (
                 <Error error={error} styles={null} />
             ) : renderReady ? (
@@ -256,7 +256,7 @@ export default function DropdownMenusByCategory(props) {
             ) : (
                 "Loading"
             )}
-        </div>
+        </>
     );
 }
 

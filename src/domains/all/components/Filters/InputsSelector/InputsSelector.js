@@ -6,7 +6,6 @@ export default function InputsSelector(props) {
     //////////////////////////////
     // STATE
     //////////////////////////////
-    console.log("*Rendering *InputsSelector* ", props);
     const [error, setError] = useState();
     const [renderReady, setRenderReady] = useState(false);
     const [filters, setFilters] = useState(props.filters || []);
@@ -88,7 +87,7 @@ export default function InputsSelector(props) {
     // RENDERING
     //////////////////////////////
     return (
-        <div className={styles.wrapper}>
+        <>
             {error ? (
                 <Error error={error} styles={null} />
             ) : renderReady ? (
@@ -96,6 +95,6 @@ export default function InputsSelector(props) {
             ) : (
                 "Loading"
             )}
-        </div>
+        </>
     );
 }

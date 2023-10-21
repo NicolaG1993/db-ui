@@ -42,7 +42,7 @@ export default function ActiveFilters(props) {
     // DATA HANDLERS & RENDERING
     //////////////////////////////
     return (
-        <div className={styles.wrapper}>
+        <>
             {error ? (
                 <Error error={error} styles={null} />
             ) : (
@@ -64,6 +64,6 @@ export default function ActiveFilters(props) {
                         ))}
                 </div>
             )}
-        </div>
+        </>
     );
 }

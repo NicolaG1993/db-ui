@@ -238,7 +238,7 @@ export default function MovieForm({
                     name="release"
                     id="Release"
                     onChange={(e) => updateFormState(e.target.value, "release")}
-                    value={formState.release}
+                    value={formState.release ? formState.release : ""}
                 />
             </div>
 
