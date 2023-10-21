@@ -1,7 +1,7 @@
 import styles from "@/src/application/styles/Element.module.css";
 import Link from "next/link";
 import Image from "next/image";
-import Form from "@/src/domains/_app/components/Form/Form";
+import Form from "@/src/domains/_app/components/Form/components/Form";
 import { formatDateEU } from "@/src/application/utils/convertTimestamp";
 import RecordsCounter from "../RecordsCounter";
 import RelationsList from "../../RelationsList/RelationsList";

@@ -191,6 +191,10 @@
     padding: 15px;
 }
 
+.sidewrap > .nav > p {
+    margin: 0;
+}
+
 .sidewrap > .nav > span {
     float: right;
     margin-left: auto;
