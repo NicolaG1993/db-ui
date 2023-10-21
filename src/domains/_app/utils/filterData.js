@@ -3,7 +3,9 @@ const searchData = (data, str) => {
     // UTILS
     const filterArray = (arr, str) =>
         arr.filter((el) =>
-            el.name ? el.name.includes(str) : el.includes(str)
+            el.name
+                ? el.name.toLowerCase().includes(str)
+                : el.toLowerCase().includes(str)
         );
 
     // CASES
