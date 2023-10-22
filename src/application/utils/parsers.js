@@ -21,6 +21,11 @@ const deleteJSONEmptyArrays = (jsonObj) => {
     return parsedObject;
 };
 
+// used to merge array avoiding duplicate values
+const mergeArrays = (array1, array2) => {
+    return [...new Set([...array1, ...array2])];
+};
+
 /*
 function parseDataForDB(obj) {
     const parsedObj = {};
@@ -33,4 +38,4 @@ function parseDataForDB(obj) {
 }
 */
 
-export { groupJsonByValue, deleteJSONEmptyArrays };
+export { groupJsonByValue, deleteJSONEmptyArrays, mergeArrays };

@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import Graph from "@/src/domains/records/components/Graphs/Graph";
 import styles from "@/src/application/styles/Records.module.css";
 import { formatDateEU } from "@/src/application/utils/convertTimestamp";
-import Form from "@/src/domains/_app/components/Form/Form";
+import Form from "@/src/domains/_app/components/Form/components/Form";
 import ToggleSwitch from "@/src/domains/_app/components/ToggleSwitch/ToggleSwitch";
 
 const fetchData = async () => {

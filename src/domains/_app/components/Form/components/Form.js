@@ -12,7 +12,7 @@ import {
     nicknameValidation,
 } from "@/src/application/utils/validateForms.js";
 import dataStructureForms from "@/src/application/settings/dataStructureForms";
-import FormSideNav from "./FormSideNav/FormSideNav";
+import FormSideNav from "@/src/domains/_app/components/Form/components/FormSideNav/FormSideNav.js";
 import formHydrate from "@/src/domains/_app/utils/formHydrate";
 import { fetchDataForSideNav } from "@/src/domains/_app/actions/formFetchers";
 import uploadImage from "@/src/domains/_app/actions/uploadImage";
@@ -38,6 +38,7 @@ export default function Form({
     const [errors, setErrors] = useState({});
     const [openSection, setOpenSection] = useState(false);
     const [sideNavData, setSideNavData] = useState(undefined);
+    const [hints, setHints] = useState([]);
 
     //================================================================================
     // UseEffects
@@ -189,6 +190,27 @@ export default function Form({
         }
     };
 
+    const handleHintsModal = (arr) => {
+        if (arr && arr.length) {
+            setHints(arr);
+        } else {
+            setHints([]);
+            setOpenSection(false);
+        }
+    };
+
+    const acceptHints = (arr) => {
+        // console.log("ARR: ", arr);
+        if (arr && arr.length) {
+            setFormState({
+                ...formState,
+                tags: arr,
+            });
+        }
+        setHints([]);
+        setOpenSection(false);
+    };
+
     //================================================================================
     // Render UI
     //================================================================================
@@ -223,6 +245,9 @@ export default function Form({
                 updateFormState={updateFormState}
                 openSection={openSection}
                 setOpenSection={setOpenSection}
+                handleHintsModal={handleHintsModal}
+                hints={hints}
+                acceptHints={acceptHints}
             />
         </div>
     );

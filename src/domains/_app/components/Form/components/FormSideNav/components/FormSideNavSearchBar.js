@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import SearchBarSmall from "../../../SearchBar/SearchBarSmall";
+import SearchBarSmall from "@/src/domains/_app/components/SearchBar/SearchBarSmall.js";
 
 export default function FormSideNavSearchBar({
     openSection,

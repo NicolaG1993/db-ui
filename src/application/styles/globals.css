@@ -243,22 +243,28 @@ select:hover {
     background: var(--bg200);
     border-radius: 25px;
     width: 500px;
-    padding: 1em 0;
+    /* padding: 1em 0; */
     margin-top: 2em;
     margin-bottom: 8em;
+    position: relative;
 }
 #Overlay > .overlayWindow > .topBar {
     width: 100%;
     display: flex;
     justify-content: flex-end;
     align-items: center;
-    margin-bottom: 1rem;
+    /* margin-bottom: 1rem; */
+    position: absolute;
+    padding: 1rem 1.25rem;
+    top: 0;
+    left: 0;
+    z-index: 2;
 }
 #Overlay > .overlayWindow > .topBar > span {
     cursor: pointer;
     font-weight: bold;
-    float: right;
-    margin-right: 1em;
+    /* float: right; */
+    /* margin-right: 1em; */
 }
 
 .unselectedEl,

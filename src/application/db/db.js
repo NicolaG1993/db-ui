@@ -708,6 +708,65 @@ module.exports.getAllActorsWithInfosByIDS = (arr) => {
     return db.query(myQuery, key);
 };
 
+module.exports.getAllActorsWithInfosByNames = (arr) => {
+    const myQuery = `SELECT 
+        actor.*,
+        movies_JSON.movies,
+        tags_JSON.tags,
+        nationalities_JSON.nationalities
+    FROM
+        actor
+        LEFT JOIN
+            (SELECT
+                movie_actor.actorID,
+                JSON_AGG(
+                    JSON_BUILD_OBJECT(
+                        'id', movie.id,
+                        'title', movie.title
+                        )
+                ) AS movies
+            FROM
+                movie_actor
+                JOIN movie ON movie.id = movie_actor.movieID
+            GROUP BY
+                movie_actor.actorID
+        ) AS movies_JSON
+        ON actor.id = movies_JSON.actorID
+    LEFT JOIN
+        (SELECT
+            tagRelation.actorID,
+            JSON_AGG(
+                JSON_BUILD_OBJECT(
+                    'id', tag.id,
+                    'name', tag.name                 
+                )
+            ) AS tags
+            FROM
+                tagRelation
+                JOIN tag ON tag.id = tagRelation.tagID
+            GROUP BY
+                tagRelation.actorID
+        ) AS tags_JSON
+        ON actor.id = tags_JSON.actorID
+
+    LEFT JOIN
+        (SELECT
+            nationalityRelation.actorID,
+            JSON_AGG(
+                nationalityRelation.nationality
+            ) AS nationalities
+            FROM nationalityRelation
+            GROUP BY nationalityRelation.actorID
+        ) AS nationalities_JSON
+        ON actor.id = nationalities_JSON.actorID
+    WHERE actor.name = ANY($1)
+    ORDER BY
+        actor.name ASC
+        `;
+    const key = [arr];
+    return db.query(myQuery, key);
+};
+
 /* RELATIONS */
 module.exports.newRelations = (id, arr, table, idColumn, arrColumn) => {
     const myQuery = `INSERT INTO ${table} (${idColumn}, ${arrColumn}) VALUES ($1, UNNEST(cast($2 as integer[]))) RETURNING *`;

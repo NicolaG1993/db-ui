@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import standardStyles from "@/src/domains/all/components/Filters/InputsSelector/InputsSelector.module.css";
 import Error from "@/src/domains/_app/components/Error/Error";
+import updateFilters from "@/src/domains/all/components/Filters/DropdownMenusByCategory/actions/updateFilters";
+import { getMenusState } from "@/src/domains/all/components/Filters/DropdownMenusByCategory/actions/getMenusStates";
 
 export default function DropdownMenusByCategory(props) {
     //////////////////////////////
@@ -8,14 +10,16 @@ export default function DropdownMenusByCategory(props) {
     //////////////////////////////
     // console.log("*Rendering *DropdownMenusByCategory* ", props);
     const [error, setError] = useState();
+    const [stateObj, setStateObj] = useState({});
     const [dropdownMenus, setDropdownMenus] = useState({});
     const [renderReady, setRenderReady] = useState(false);
     const [filters, setFilters] = useState(props.filters || []);
+
     let styles = props.styles
         ? { ...standardStyles, ...props.styles }
         : standardStyles;
 
-    // console.log("PROPS!: ", props);
+    const loopObject = (object) => Object.entries(object);
 
     useEffect(() => {
         if (!props.obj) {
@@ -25,7 +29,7 @@ export default function DropdownMenusByCategory(props) {
         } else if (props.filters && !Array.isArray(props.filters)) {
             setError("Error: props.filters is not an array");
         } else {
-            getMenusState();
+            handleMenus(stateObj);
         }
     }, []);
 
@@ -43,143 +47,42 @@ export default function DropdownMenusByCategory(props) {
     //////////////////////////////
     // UPDATE FILTER STATE
     //////////////////////////////
-    const updateFilters = (val, action) => {
-        if (action === "add") {
-            // update only if value is not present in array already, bug prevention
-            if (props.filters && !props.filters.some((x) => x === val)) {
-                setFilters([...props.filters, val]);
-            } else if (!filters.some((x) => x === val)) {
-                setFilters([...filters, val]);
-            }
-        }
-        if (action === "remove") {
-            setFilters(props.filters.filter((x) => x !== val));
-        }
-    };
-
-    const checkCategoryValues = (val, key) => {
-        if (typeof val !== "object" && !Array.isArray(val)) {
-            setError(
-                `Error: The category "${key}" contains a value that is not an object or an array`
-            );
-        }
-        if (Array.isArray(val)) {
-            // if its array check all values inside
-            val.map((el) => {
-                if (typeof el === "function") {
-                    setError(
-                        `Error: Some input inside "${key}" category is a function, not a string`
-                    );
-                } else if (typeof el === "object") {
-                    setError(
-                        `Error: Some input inside "${key}" category is an object, not a string`
-                    );
-                } else if (typeof el !== "string" || !el instanceof String) {
-                    setError(
-                        `Error: Some input inside "${key}" category is not a string`
-                    );
-                }
-            });
-        }
+    const handleFilters = (val, action) => {
+        let array = updateFilters(val, action, props, filters, dropdownMenus);
+        setFilters(array);
     };
 
     //////////////////////////////
     // SET DROPDOWN MENUS
     //////////////////////////////
-    const getMenusState = () => {
-        // console.log("getMenusState ACTIVATED 🧠");
-        // PARSE AND SET DROPDOWN MENUS STATE 1st
-        let newObj = {};
-        let objectEntries = loopObject(props.obj);
-        objectEntries.map(([key, val], i) => {
-            newObj[key] = false;
-            stateObj = { ...stateObj, 1: newObj };
-            checkCategoryValues(val, key);
-            if (typeof val === "object" && !Array.isArray(val)) {
-                getSubMenusState(val, 2, stateObj);
-            }
+    const handleMenus = (stateObj) => {
+        let { res, err } = getMenusState({
+            stateObj,
+            propsObj: props.obj,
+            dropdownMenus,
         });
-        setDropdownMenus(stateObj);
+        err && setError(err);
+        setDropdownMenus(res);
         setRenderReady(true);
     };
 
-    const getSubMenusState = (values, level, state) => {
-        // console.log("getSubMenusState ACTIVATED 🧠");
-        let newObj = {};
-        let levelObj = {
-            ...state[level],
-            ...dropdownMenus[level],
-        };
-        let objectEntries = loopObject(values);
-        objectEntries.map(([key, val], i) => {
-            newObj[key] = false;
-            levelObj = {
-                ...levelObj,
-                ...newObj,
-            };
-            stateObj = {
-                ...state,
-                ...dropdownMenus,
-                [level]: levelObj,
-            };
-            checkCategoryValues(val, key);
-            if (typeof val === "object" && !Array.isArray(val)) {
-                getSubMenusState(val, Number(level) + 1, stateObj);
-            }
-        });
-        // console.log("stateObj: ", stateObj);
-        setDropdownMenus(stateObj);
+    //////////////////////////////
+    // RENDERING
+    //////////////////////////////
+    const renderAllData = (object) => {
+        let objectEntries = loopObject(object);
+        return checkEntries(objectEntries, 1);
     };
-
-    //////////////////////////////
-    // DATA HANDLERS
-    //////////////////////////////
-    let stateObj; // has to be setted outside the functions
-    const loopObject = (object) => Object.entries(object);
 
     const checkEntries = (array, level) => {
         return array.map(([key, values], i) =>
-            renderCategory(values, key, level)
+            renderCategory(values, key, level, dropdownMenus)
         );
     };
 
-    const renderValues = (array, key) => {
-        return (
-            <div className={styles.categoryDropdown}>
-                {array.map((it) => {
-                    return props.filters &&
-                        props.filters.find((x) => it === x) ? (
-                        <div key={"value: " + it + " key: " + key}>
-                            <span
-                                className={styles.selectedEl}
-                                onClick={() => updateFilters(it, "remove")}
-                            >
-                                {it}
-                            </span>
-                        </div>
-                    ) : (
-                        <div key={"value: " + it + " key: " + key}>
-                            <span
-                                className={styles.unselectedEl}
-                                onClick={() => updateFilters(it, "add")}
-                            >
-                                {it}
-                            </span>
-                        </div>
-                    );
-                })}
-            </div>
-        );
-    };
-
-    const renderCategory = (values, key, level) => {
+    const renderCategory = (values, key, level, dropdownMenus) => {
         if (values) {
             if (Array.isArray(values)) {
-                // console.log("*props* ", props);
-                // console.log("*dropdownMenus* ", dropdownMenus);
-                // console.log("values: ", values);
-                // console.log("key: ", key);
-                // console.log("level: ", level);
                 return (
                     <div
                         className={styles.categoryWrap}
@@ -239,14 +142,36 @@ export default function DropdownMenusByCategory(props) {
         }
     };
 
-    const renderAllData = (object) => {
-        let objectEntries = loopObject(object);
-        return checkEntries(objectEntries, 1);
+    const renderValues = (array, key) => {
+        // console.log("renderValues ACTIVATED 🧨", { array, key });
+        return (
+            <div className={styles.categoryDropdown}>
+                {array.map((it) => {
+                    return props.filters &&
+                        props.filters.find((x) => it === x) ? (
+                        <div key={"value: " + it + " key: " + key}>
+                            <span
+                                className={styles.selectedEl}
+                                onClick={() => handleFilters(it, "remove")}
+                            >
+                                {it}
+                            </span>
+                        </div>
+                    ) : (
+                        <div key={"value: " + it + " key: " + key}>
+                            <span
+                                className={styles.unselectedEl}
+                                onClick={() => handleFilters(it, "add")}
+                            >
+                                {it}
+                            </span>
+                        </div>
+                    );
+                })}
+            </div>
+        );
     };
 
-    //////////////////////////////
-    // RENDERING
-    //////////////////////////////
     return (
         <>
             {error ? (
