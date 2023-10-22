@@ -1,4 +1,6 @@
 import axios from "axios";
+import { mergeArrays } from "@/src/application/utils/parsers";
+
 export default async function getActorsMissingTags(actors, tags) {
     try {
         const { data } = await axios.get("/api/tag/item-tags", {
@@ -8,13 +10,13 @@ export default async function getActorsMissingTags(actors, tags) {
         let allTags = [];
 
         if (data && data.length) {
-            data.map(({ tags }) => {
+            data.map(({ name, tags }) => {
                 let onlyTagNames = tags.map(({ name }) => name);
-                allTags = [...allTags, ...onlyTagNames];
+                allTags = mergeArrays(allTags, onlyTagNames);
             });
         }
 
-        const missingTags = allTags.filter((el) => tags.includes(el));
+        const missingTags = allTags.filter((el) => !tags.includes(el));
 
         return missingTags;
     } catch (err) {

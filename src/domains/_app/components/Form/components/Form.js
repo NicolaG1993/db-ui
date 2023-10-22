@@ -195,12 +195,12 @@ export default function Form({
             setHints(arr);
         } else {
             setHints([]);
+            setOpenSection(false);
         }
-        // setOpenSection(false);
     };
 
     const acceptHints = (arr) => {
-        console.log("ARR: ", arr);
+        // console.log("ARR: ", arr);
         if (arr && arr.length) {
             setFormState({
                 ...formState,

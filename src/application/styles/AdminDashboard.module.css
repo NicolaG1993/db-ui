@@ -23,6 +23,7 @@
 .selector {
     border-bottom: 1px var(--text) solid;
     padding-bottom: 1em;
+    margin-top: 3.25rem;
     /* margin-top: 3em; */
     padding: 0 1em;
 }
@@ -176,8 +177,11 @@
     height: 100%;
     width: 100%;
     transition: 0.2s ease-in;
-    background: var(--bg200);
+    background: var(--bg300);
+    /* background: var(--bg200); */
     border-radius: 25px;
+    z-index: 3;
+    overflow: hidden;
     /* border-left: 1px solid var(--text); */
 }
 .sidewrap > .nav {

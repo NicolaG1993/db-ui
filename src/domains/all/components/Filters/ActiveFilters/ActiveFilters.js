@@ -3,7 +3,7 @@ import Error from "@/src/domains/_app/components/Error/Error";
 import standardStyles from "../InputsSelector/InputsSelector.module.css";
 
 export default function ActiveFilters(props) {
-    // console.log("*Rendering *ActiveFilters* ", props);
+    console.log("*Rendering *ActiveFilters* ", props);
     //////////////////////////////
     // STATE
     //////////////////////////////
