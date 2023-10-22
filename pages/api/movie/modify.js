@@ -40,7 +40,9 @@ async function handler(req, res) {
 
     // console.log("addedRelations.tags: ", addedRelations.tags);
     // console.log("actors: ", actors);
+
     //actor check
+    /*
     if (actors.length) {
         try {
             let ids = await getIDsByNames(actors, "actor");
@@ -67,6 +69,7 @@ async function handler(req, res) {
             (el, i) => addedRelations.tags.indexOf(el) === i
         ); // delete all duplicates
     }
+    */
 
     try {
         // EDIT CLIP
