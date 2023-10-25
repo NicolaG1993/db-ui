@@ -61,6 +61,7 @@ export default function FormSideNav({
 
     const handleSubmitMissingHints = (e) => {
         e.preventDefault();
+
         const formData = new FormData(e.currentTarget);
 
         let res = formState.tags;
@@ -88,49 +89,53 @@ export default function FormSideNav({
                 transform: openSection ? "translateX(0)" : "translateX(498px)",
             }}
         >
-            {hints && hints.missing?.length ? (
+            {hints && (hints.missing?.length || hints.removed?.length) ? (
                 <div>
-                    <p>
-                        We have found some new tags for you, select which one to
-                        add:
-                    </p>
-                    <form
-                        id="missingHintsForm"
-                        onSubmit={(e) => handleSubmitMissingHints(e)}
-                    >
-                        {hints.missing.map((el) => (
-                            <div key={`hint ` + el}>
-                                <input
-                                    type="checkbox"
-                                    id={el}
-                                    name={el}
-                                    value={el}
-                                    defaultChecked
-                                />
-                                <label htmlFor={el}>{el}</label>
-                            </div>
-                        ))}
-                        <div>
-                            <button
-                                title="Skip this step"
-                                onClick={() => {
-                                    handleHintsModal([], []);
-                                    setOpenSection(false);
-                                }}
+                    {hints.missing?.length > 0 && (
+                        <>
+                            <p>
+                                We have found some new tags for you, select
+                                which one to add:
+                            </p>
+                            <form
+                                id="missingHintsForm"
+                                onSubmit={(e) => handleSubmitMissingHints(e)}
                             >
-                                Skip
-                            </button>
-                            <button
-                                title="Confirm your choice"
-                                type="submit"
-                                form="missingHintsForm"
-                            >
-                                Confirm
-                            </button>
-                        </div>
-                    </form>
+                                {hints.missing.map((el) => (
+                                    <div key={`hint ` + el}>
+                                        <input
+                                            type="checkbox"
+                                            id={el}
+                                            name={el}
+                                            value={el}
+                                            defaultChecked
+                                        />
+                                        <label htmlFor={el}>{el}</label>
+                                    </div>
+                                ))}
+                                <div>
+                                    <button
+                                        title="Skip this step"
+                                        onClick={() => {
+                                            handleHintsModal([], []);
+                                            setOpenSection(false);
+                                        }}
+                                    >
+                                        Skip
+                                    </button>
+                                    <button
+                                        title="Confirm your choice"
+                                        type="submit"
+                                        form="missingHintsForm"
+                                    >
+                                        Confirm
+                                    </button>
+                                </div>
+                            </form>
+                        </>
+                    )}
 
-                    {hints.removed?.length && (
+                    {hints.removed?.length > 0 && (
                         <>
                             <p>
                                 We have found some tags that could be removed,
