@@ -12,12 +12,14 @@ export default function FormSideNav({
     data,
     form,
     formState,
+    originalFormState,
     updateFormState,
     openSection,
     setOpenSection,
     handleHintsModal,
     hints,
-    acceptHints,
+    acceptMissingHints,
+    acceptRemovedHints,
 }) {
     const [filteredData, setFilteredData] = useState(data);
     const [searchActive, setSearchActive] = useState(false);
@@ -41,13 +43,14 @@ export default function FormSideNav({
     // check possible tags updates from selected actors
     const closeSideNav = async (openSection) => {
         if (openSection === "actors") {
-            const missingTags = await getActorsMissingTags(
+            const { missingTags, removedTags } = await getActorsMissingTags(
                 formState[openSection],
-                formState.tags
+                formState.tags,
+                originalFormState
             );
 
             if (missingTags) {
-                handleHintsModal(missingTags);
+                handleHintsModal(missingTags, removedTags);
             } else {
                 setOpenSection(false);
             }
@@ -56,7 +59,7 @@ export default function FormSideNav({
         }
     };
 
-    const handleSubmitTags = (e) => {
+    const handleSubmitMissingHints = (e) => {
         e.preventDefault();
         const formData = new FormData(e.currentTarget);
 
@@ -64,7 +67,18 @@ export default function FormSideNav({
         for (const value of formData.values()) {
             res.push(value);
         }
-        acceptHints(res);
+        acceptMissingHints(res);
+    };
+
+    const handleSubmitRemovedHints = (e) => {
+        e.preventDefault();
+        const formData = new FormData(e.currentTarget);
+
+        let res = [];
+        for (const value of formData.values()) {
+            res.push(value);
+        }
+        acceptRemovedHints(res);
     };
 
     return (
@@ -74,14 +88,17 @@ export default function FormSideNav({
                 transform: openSection ? "translateX(0)" : "translateX(498px)",
             }}
         >
-            {hints.length ? (
+            {hints && hints.missing?.length ? (
                 <div>
                     <p>
                         We have found some new tags for you, select which one to
                         add:
                     </p>
-                    <form id="hintsForm" onSubmit={(e) => handleSubmitTags(e)}>
-                        {hints.map((el) => (
+                    <form
+                        id="missingHintsForm"
+                        onSubmit={(e) => handleSubmitMissingHints(e)}
+                    >
+                        {hints.missing.map((el) => (
                             <div key={`hint ` + el}>
                                 <input
                                     type="checkbox"
@@ -97,7 +114,7 @@ export default function FormSideNav({
                             <button
                                 title="Skip this step"
                                 onClick={() => {
-                                    handleHintsModal([]);
+                                    handleHintsModal([], []);
                                     setOpenSection(false);
                                 }}
                             >
@@ -106,12 +123,56 @@ export default function FormSideNav({
                             <button
                                 title="Confirm your choice"
                                 type="submit"
-                                form="hintsForm"
+                                form="missingHintsForm"
                             >
                                 Confirm
                             </button>
                         </div>
                     </form>
+
+                    {hints.removed?.length && (
+                        <>
+                            <p>
+                                We have found some tags that could be removed,
+                                select which one are obsolete:
+                            </p>
+                            <form
+                                id="removedHintsForm"
+                                onSubmit={(e) => handleSubmitRemovedHints(e)}
+                            >
+                                {hints.removed.map((el) => (
+                                    <div key={`hint ` + el}>
+                                        <input
+                                            type="checkbox"
+                                            id={el}
+                                            name={el}
+                                            value={el}
+                                            defaultChecked
+                                        />
+                                        <label htmlFor={el}>{el}</label>
+                                    </div>
+                                ))}
+                                <div>
+                                    <button
+                                        title="Skip this step"
+                                        onClick={() => {
+                                            handleHintsModal([], []);
+                                            setOpenSection(false);
+                                        }}
+                                    >
+                                        Skip
+                                    </button>
+                                    <button
+                                        title="Confirm your choice"
+                                        type="submit"
+                                        form="removedHintsForm"
+                                    >
+                                        Confirm
+                                    </button>
+                                </div>
+                            </form>
+                        </>
+                    )}
                 </div>
             ) : (
                 <>
