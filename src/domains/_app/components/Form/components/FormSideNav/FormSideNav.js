@@ -116,10 +116,9 @@ export default function FormSideNav({
                                 <div>
                                     <button
                                         title="Skip this step"
-                                        onClick={() => {
-                                            handleHintsModal([], []);
-                                            setOpenSection(false);
-                                        }}
+                                        onClick={() =>
+                                            handleHintsModal([], hints.removed)
+                                        }
                                     >
                                         Skip
                                     </button>
@@ -160,10 +159,9 @@ export default function FormSideNav({
                                 <div>
                                     <button
                                         title="Skip this step"
-                                        onClick={() => {
-                                            handleHintsModal([], []);
-                                            setOpenSection(false);
-                                        }}
+                                        onClick={() =>
+                                            handleHintsModal(hints.missing, [])
+                                        }
                                     >
                                         Skip
                                     </button>
