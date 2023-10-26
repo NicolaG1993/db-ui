@@ -26,6 +26,11 @@ const mergeArrays = (array1, array2) => {
     return [...new Set([...array1, ...array2])];
 };
 
+// used to reduce array to unique values
+const onlyUnique = (arr) => {
+    return arr.filter((value, index, self) => self.indexOf(value) === index);
+};
+
 /*
 function parseDataForDB(obj) {
     const parsedObj = {};
@@ -38,4 +43,4 @@ function parseDataForDB(obj) {
 }
 */
 
-export { groupJsonByValue, deleteJSONEmptyArrays, mergeArrays };
+export { groupJsonByValue, deleteJSONEmptyArrays, mergeArrays, onlyUnique };

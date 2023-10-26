@@ -6,7 +6,7 @@ import {
 
 // BETA 💛
 export default async function createItem(obj, form, formState, propsData) {
-    // console.log("createItem invoked 💚: ", obj);
+    // console.log("createItem invoked 💚: ", { obj, form, formState, propsData });
     let relatedData;
     if (form.relations) {
         relatedData = await parseFormRelationsPromise(
@@ -16,12 +16,12 @@ export default async function createItem(obj, form, formState, propsData) {
     }
 
     if (propsData) {
+        // MODIFY //
         /* parse relations for db */
         let relationsObj = {};
         relatedData &&
             (relationsObj = parseFormRelationsEdit(relatedData, propsData));
 
-        // MODIFY
         return axios.put(form.APImodify, {
             ...obj,
             ...relationsObj,
@@ -31,6 +31,7 @@ export default async function createItem(obj, form, formState, propsData) {
         //     ...relationsObj,
         // });
     } else {
+        // NEW //
         /* parse data for db */
         Object.entries(relatedData).map(([key, arr], i) => {
             if (key === "nationalities") {
@@ -40,7 +41,7 @@ export default async function createItem(obj, form, formState, propsData) {
                 relatedData[key] = parsedArr;
             }
         });
-        // NEW
+
         return axios.post(form.APInew, {
             ...obj,
             ...relatedData,

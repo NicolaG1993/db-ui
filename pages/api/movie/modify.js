@@ -5,7 +5,7 @@ import {
     getRelationsByArr,
     getIDsByNames,
 } from "@/src/application/db/db.js";
-import { tagsCheck } from "@/src/domains/_app/utils/parsers";
+// import { tagsCheck } from "@/src/domains/_app/utils/parsers";
 
 async function handler(req, res) {
     let {
@@ -34,13 +34,15 @@ async function handler(req, res) {
     }
 
     //
-    if (addedRelations.tags.length) {
-        addedRelations.tags = tagsCheck(addedRelations.tags);
-    }
+    // if (addedRelations.tags.length) {
+    //     addedRelations.tags = tagsCheck(addedRelations.tags);
+    // }
 
     // console.log("addedRelations.tags: ", addedRelations.tags);
     // console.log("actors: ", actors);
+
     //actor check
+    /*
     if (actors.length) {
         try {
             let ids = await getIDsByNames(actors, "actor");
@@ -67,6 +69,7 @@ async function handler(req, res) {
             (el, i) => addedRelations.tags.indexOf(el) === i
         ); // delete all duplicates
     }
+    */
 
     try {
         // EDIT CLIP

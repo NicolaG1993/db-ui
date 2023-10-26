@@ -789,9 +789,9 @@ module.exports.getRelations = (id, table, idColumn) => {
     const key = [id];
     return db.query(myQuery, key);
 };
-module.exports.getRelationsByArr = (idsArr, table, idColumn) => {
-    const myQuery = `SELECT * FROM ${table} WHERE ${idColumn} = ANY($1)`;
-    const key = [idsArr];
+module.exports.getRelationsByArr = (arr, table, column) => {
+    const myQuery = `SELECT * FROM ${table} WHERE ${column} = ANY($1)`;
+    const key = [arr];
     return db.query(myQuery, key);
 };
 module.exports.getRelationsBySearch = (idsArr, table, idColumn) => {

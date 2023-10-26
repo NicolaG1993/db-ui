@@ -38,7 +38,9 @@ export default function Form({
     const [errors, setErrors] = useState({});
     const [openSection, setOpenSection] = useState(false);
     const [sideNavData, setSideNavData] = useState(undefined);
-    const [hints, setHints] = useState([]);
+
+    const emptyHints = { missing: [], removed: [] };
+    const [hints, setHints] = useState(emptyHints);
 
     //================================================================================
     // UseEffects
@@ -73,6 +75,12 @@ export default function Form({
             setSideNavData();
         }
     }, [openSection]);
+
+    useEffect(() => {
+        if (!hints?.missing?.length && !hints?.removed?.length) {
+            setOpenSection(false);
+        }
+    }, [hints]);
 
     //================================================================================
     // Handle Form Data
@@ -190,25 +198,37 @@ export default function Form({
         }
     };
 
-    const handleHintsModal = (arr) => {
-        if (arr && arr.length) {
-            setHints(arr);
+    const handleHintsModal = (arrMissing, arrRemoved) => {
+        if (
+            (arrMissing && arrMissing.length) ||
+            (arrRemoved && arrRemoved.length)
+        ) {
+            setHints({ missing: arrMissing, removed: arrRemoved });
         } else {
-            setHints([]);
+            setHints(emptyHints);
             setOpenSection(false);
         }
     };
 
-    const acceptHints = (arr) => {
-        // console.log("ARR: ", arr);
+    const acceptMissingHints = (arr) => {
         if (arr && arr.length) {
             setFormState({
                 ...formState,
                 tags: arr,
             });
         }
-        setHints([]);
-        setOpenSection(false);
+        setHints((prev) => ({ ...prev, missing: [] }));
+    };
+
+    const acceptRemovedHints = (arr) => {
+        if (arr && arr.length) {
+            let newTags = formState.tags.filter((el) => !arr.includes(el));
+            setFormState({
+                ...formState,
+                tags: newTags,
+            });
+        }
+        setHints((prev) => ({ ...prev, removed: [] }));
     };
 
     //================================================================================
@@ -242,12 +262,14 @@ export default function Form({
                 data={sideNavData}
                 form={form}
                 formState={formState}
+                originalFormState={propsData}
                 updateFormState={updateFormState}
                 openSection={openSection}
                 setOpenSection={setOpenSection}
                 handleHintsModal={handleHintsModal}
                 hints={hints}
-                acceptHints={acceptHints}
+                acceptMissingHints={acceptMissingHints}
+                acceptRemovedHints={acceptRemovedHints}
             />
         </div>
     );
