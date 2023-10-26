@@ -43,7 +43,7 @@ export default function FormSideNavSearchBar({
                 handleBlur={handleBlur}
                 clearSearchBar={clearSearchBar}
             />
-            {openSection === "tags" && <div>Suggestions</div>}
+            {/* {openSection === "tags" && <div>Suggestions</div>} */}
         </>
     );
 }

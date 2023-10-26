@@ -38,7 +38,9 @@ export default function Form({
     const [errors, setErrors] = useState({});
     const [openSection, setOpenSection] = useState(false);
     const [sideNavData, setSideNavData] = useState(undefined);
-    const [hints, setHints] = useState();
+
+    const emptyHints = { missing: [], removed: [] };
+    const [hints, setHints] = useState(emptyHints);
 
     //================================================================================
     // UseEffects
@@ -203,7 +205,7 @@ export default function Form({
         ) {
             setHints({ missing: arrMissing, removed: arrRemoved });
         } else {
-            setHints();
+            setHints(emptyHints);
             setOpenSection(false);
         }
     };

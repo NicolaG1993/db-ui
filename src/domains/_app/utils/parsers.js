@@ -10,6 +10,7 @@ import {
     sortByObjNumberValue,
     sortByObjValue,
 } from "@/src/application/utils/orderData";
+import { onlyUnique } from "@/src/application/utils/parsers";
 
 function parseTagsByType(obj) {
     // console.log("parseTagsByType: ", obj);
@@ -219,25 +220,33 @@ const parseOrderOptions = (arr) => {
     );
 };
 
-const tagsCheck = (tags) => {
-    let parsedTags = [];
+const extractIDs = (data) => {
+    // receive arr of objects // return arr of ids
+    return data.map(({ id }) => id);
+};
+const extractNames = (data) => {
+    // receive arr of objects // return arr of ids
+    return data.map(({ name }) => name);
+};
 
-    const anyExist = (arr, values) =>
-        values.some((value) => {
-            return arr.includes(Number(value));
-        }); //  arr é l'array da filtrare, values sono i valori da cercare
-    // se uno dei valori é presente in arr torna true
-
-    const relations = JSON.parse(process.env.TAGS_REL);
-
-    Object.entries(relations).map(([key, obj]) => {
-        if (anyExist(tags, obj.related)) {
-            //se tags contiene uno di questi valori
-            parsedTags.push(Number(obj.id)); //aggiungi obj.id a parsedTags
-        }
+//  arr é l'array da filtrare, values sono i valori da cercare
+// se uno dei valori é presente in arr torna true
+const anyExist = (arr, values) =>
+    values.some((value) => {
+        return arr.includes(Number(value));
     });
 
-    return [...parsedTags, ...tags];
+const tagsCheck = (tags) => {
+    let parsedTags = [];
+    const relations = JSON.parse(process.env.TAGS_REL);
+    Object.entries(relations).map(([key, obj]) => {
+        if (anyExist(tags, obj.related) && !anyExist(tags, [obj.id])) {
+            //se tags contiene uno di questi valori e non contiene gia se stesso aggiungi obj.id a parsedTags
+            parsedTags.push(Number(obj.id));
+        }
+    });
+    return parsedTags;
+    // return [...parsedTags, ...tags];
 };
 
 const detectImage = (obj) => {
@@ -262,4 +271,6 @@ export {
     parseOrderOptions,
     tagsCheck,
     detectImage,
+    extractIDs,
+    extractNames,
 };

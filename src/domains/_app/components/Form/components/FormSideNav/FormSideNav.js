@@ -7,6 +7,7 @@ import FormSideNavSearchBar from "@/src/domains/_app/components/Form/components/
 import { useEffect, useState } from "react";
 import { searchData } from "@/src/domains/_app/utils/filterData.js";
 import getActorsMissingTags from "@/src/domains/_app/components/Form/actions/getActorsMissingTags.js";
+import getTagsMissingTags from "@/src/domains/_app/components/Form/actions/getTagsMissingTags.js";
 
 export default function FormSideNav({
     data,
@@ -24,6 +25,9 @@ export default function FormSideNav({
     const [filteredData, setFilteredData] = useState(data);
     const [searchActive, setSearchActive] = useState(false);
 
+    console.log("🧠 formState: ", formState);
+    console.log("🧠 hints: ", hints);
+
     useEffect(() => {
         setFilteredData(data);
         setSearchActive(false);
@@ -40,20 +44,25 @@ export default function FormSideNav({
         }
     };
 
-    // check possible tags updates from selected actors
     const closeSideNav = async (openSection) => {
+        let res;
+
+        // check possible tags updates from selected actors
         if (openSection === "actors") {
-            const { missingTags, removedTags } = await getActorsMissingTags(
+            res = await getActorsMissingTags(
                 formState[openSection],
                 formState.tags,
                 originalFormState
             );
+        } else if (openSection === "tags") {
+            // check for related tags that could be missing
+            res = await getTagsMissingTags(formState[openSection]);
+        } else {
+            setOpenSection(false);
+        }
 
-            if (missingTags) {
-                handleHintsModal(missingTags, removedTags);
-            } else {
-                setOpenSection(false);
-            }
+        if (res && res.missingTags && res.removedTags) {
+            handleHintsModal(res.missingTags, res.removedTags);
         } else {
             setOpenSection(false);
         }
@@ -82,6 +91,7 @@ export default function FormSideNav({
         acceptRemovedHints(res);
     };
 
+    // FIX ME - tags suggestion in tags is buggy 🧨🧨🧨🧨🧨
     return (
         <div
             className={styles.sidewrap}

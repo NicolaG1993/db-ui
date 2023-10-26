@@ -45,41 +45,47 @@ const cleanFalseRelations = (obj) => {
     return newObj;
 };
 
+// used to extract new realtions from array of objects
+let newRelationsStandardMethod = (arr, propsData, key) => {
+    return arr
+        .filter(
+            (o) =>
+                !propsData[key]
+                    .filter((el) => el.name) // skip any corrupted element saved before in db
+                    .map((el) => el.name) // modify the rest
+                    .includes(o.name) // check if includes the user selected x
+        )
+        .map((el) => el.id); // get only the ids
+};
+
+// used to extract new realtions from array - only for nationalities
+let newRelationsNationalitiesMethod = (arr, propsData, key) => {
+    return arr
+        .filter(
+            (o) =>
+                !propsData[key]
+                    .filter((el) => el)
+                    .map((el) => el)
+                    .includes(o)
+        )
+        .map((el) => el);
+};
+
 // Used to identify in form which relations are new or removed in the edit
 const parseFormRelationsEdit = (relatedData, propsData) => {
     // !important that we need ids and not names for db update
     let addedRelations = {};
     let removedRelations = {};
 
-    let standardMethod = (arr, propsData, key) => {
-        return arr
-            .filter(
-                (o) =>
-                    !propsData[key]
-                        .filter((el) => el.name) // skip any corrupted element saved before in db
-                        .map((el) => el.name) // modify the rest
-                        .includes(o.name) // check if includes the user selected x
-            )
-            .map((el) => el.id); // get only the ids
-    };
-
-    let nationalitiesMethod = (arr, propsData, key) => {
-        return arr
-            .filter(
-                (o) =>
-                    !propsData[key]
-                        .filter((el) => el)
-                        .map((el) => el)
-                        .includes(o)
-            )
-            .map((el) => el);
-    };
-
     if (relatedData) {
         Object.entries(relatedData).map(([key, arr], i) => {
             if (key === "nationalities") {
                 // fare anche caso nationality N/A? serve veramente ? 🧠
-                addedRelations[key] = nationalitiesMethod(arr, propsData, key);
+                addedRelations[key] = newRelationsNationalitiesMethod(
+                    arr,
+                    propsData,
+                    key
+                );
                 removedRelations[key] = propsData[key].filter(
                     (el) => !arr.map((x) => x).includes(el)
                 );
@@ -101,7 +107,11 @@ const parseFormRelationsEdit = (relatedData, propsData) => {
                 }
             } else {
                 // set the new relations
-                addedRelations[key] = standardMethod(arr, propsData, key);
+                addedRelations[key] = newRelationsStandardMethod(
+                    arr,
+                    propsData,
+                    key
+                );
                 // set the deleted relations
                 removedRelations[key] = propsData[key]
                     .filter((el) => !arr.map((el) => el.id).includes(el.id))
@@ -144,7 +154,6 @@ const parseFormRelationsPromise = async (arr, formState) => {
     return Promise.all(allPromises).then(() => relatedData); // relatedData posso averlo solo dopo aver risolto 🧠
 }; // ridurre ad una singola API call - non usarla dentro a map 🧨🧨🧨
 const parseFormRelationsPromiseMovie = async (arr, formState) => {
-    console.log("ARR: ", arr);
     let relatedData = {};
     const allData = await axios.get(`/api/all/relations`);
     arr.map(({ topic, label }) => {

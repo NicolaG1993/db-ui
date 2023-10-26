@@ -3,6 +3,7 @@ import {
     getAllMoviesWithInfosByIDS,
 } from "@/src/application/db/db.js";
 import { sortByObjNumberValue } from "@/src/application/utils/orderData";
+import { onlyUnique } from "@/src/application/utils/parsers";
 
 export default async function handler(req, res) {
     try {
@@ -10,10 +11,7 @@ export default async function handler(req, res) {
 
         // extract all movieIDs from rows and reduce to unique values
         let onlyMovieIds = rows.map((el) => el.movieid);
-        function onlyUnique(value, index, self) {
-            return self.indexOf(value) === index;
-        }
-        const unique = onlyMovieIds.filter(onlyUnique);
+        const unique = onlyUnique(onlyMovieIds);
 
         // for those values make db req to movies table
         // get movies with all infos about cast, categories and tags
