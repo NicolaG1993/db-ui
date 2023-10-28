@@ -25,9 +25,6 @@ export default function FormSideNav({
     const [filteredData, setFilteredData] = useState(data);
     const [searchActive, setSearchActive] = useState(false);
 
-    console.log("🧠 formState: ", formState);
-    console.log("🧠 hints: ", hints);
-
     useEffect(() => {
         setFilteredData(data);
         setSearchActive(false);
@@ -91,7 +88,6 @@ export default function FormSideNav({
         acceptRemovedHints(res);
     };
 
-    // FIX ME - tags suggestion in tags is buggy 🧨🧨🧨🧨🧨
     return (
         <div
             className={styles.sidewrap}

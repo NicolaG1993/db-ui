@@ -6,6 +6,7 @@ export default async function getActorsMissingTags(
     tags,
     originalFormState
 ) {
+    console.log("getActorsMissingTags: ", { actors, tags, originalFormState });
     try {
         //NEW TAGS
         const { data } = await axios.get("/api/actor/by-name", {

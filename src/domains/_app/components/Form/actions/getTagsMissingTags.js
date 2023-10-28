@@ -27,18 +27,6 @@ export default async function getTagsMissingTags(tags) {
 
         const missingRelationsNames = extractNames(res.data);
 
-        console.log("🔥 getTagsMissingTags: ", {
-            tags,
-            data,
-            idsArr,
-            missingRelationsIDs,
-            res2: res.data,
-            finalResponse: {
-                missingTags: missingRelationsNames,
-                removedTags: [],
-            },
-        });
-
         return { missingTags: missingRelationsNames, removedTags: [] };
     } catch (err) {
         console.log("getTagsMissingTags ERROR: ", err);

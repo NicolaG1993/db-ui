@@ -246,7 +246,6 @@ const tagsCheck = (tags) => {
         }
     });
     return parsedTags;
-    // return [...parsedTags, ...tags];
 };
 
 const detectImage = (obj) => {

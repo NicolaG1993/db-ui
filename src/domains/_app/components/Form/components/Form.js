@@ -59,6 +59,7 @@ export default function Form({
 
     //PARSE PROPSDATA
     useEffect(() => {
+        console.log("propsData: ", propsData);
         if (propsData) {
             let newState = formHydrate(formState, form.emptyState, propsData); // hydrate form on modify
             setFormState(newState);
@@ -81,6 +82,10 @@ export default function Form({
             setOpenSection(false);
         }
     }, [hints]);
+
+    useEffect(() => {
+        console.log("formState: ", formState);
+    }, [formState]);
 
     //================================================================================
     // Handle Form Data
@@ -262,7 +267,7 @@ export default function Form({
                 data={sideNavData}
                 form={form}
                 formState={formState}
-                originalFormState={propsData}
+                originalFormState={propsData || formState}
                 updateFormState={updateFormState}
                 openSection={openSection}
                 setOpenSection={setOpenSection}
