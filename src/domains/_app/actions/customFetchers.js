@@ -6,7 +6,7 @@ import { getError } from "@/src/application/utils/error";
 import { groupJsonByValue } from "@/src/application/utils/parsers";
 
 /* USED FOR GETTING SIMPLE SIDENAV DATA IN FULLLIST */
-const fetchDataForFilter = async (str, topic) => {
+const fetchDataForFilter = async (str, topic, TAGS_OBJ) => {
     let { itemLabel } = dataStructureGroups[topic];
     if (topic !== "nationalities" && topic !== "nationality") {
         try {
@@ -19,7 +19,7 @@ const fetchDataForFilter = async (str, topic) => {
             console.log("res: ", res.data);
             if (topic === "tags") {
                 let result = groupJsonByValue(res.data, "type");
-                return parseTagsByType(result);
+                return parseTagsByType(result, TAGS_OBJ);
             } else {
                 return res.data;
             }

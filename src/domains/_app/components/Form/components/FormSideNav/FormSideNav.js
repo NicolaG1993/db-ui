@@ -21,6 +21,7 @@ export default function FormSideNav({
     hints,
     acceptMissingHints,
     acceptRemovedHints,
+    appSettings,
 }) {
     const [filteredData, setFilteredData] = useState(data);
     const [searchActive, setSearchActive] = useState(false);
@@ -53,7 +54,10 @@ export default function FormSideNav({
             );
         } else if (openSection === "tags") {
             // check for related tags that could be missing
-            res = await getTagsMissingTags(formState[openSection]);
+            res = await getTagsMissingTags(
+                formState[openSection],
+                appSettings.TAGS_REL
+            );
         } else {
             setOpenSection(false);
         }

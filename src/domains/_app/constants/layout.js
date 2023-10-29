@@ -6,10 +6,36 @@ import Header from "@/src/domains/_app/constants/components/Header/Header";
 import Footer from "@/src/domains/_app/constants/components/Footer/Footer";
 import SessionUI from "@/src/domains/_app/constants/components/SessionUI/SessionUI";
 
+import { useDispatch } from "react-redux";
+import fetchS3SettingsFile from "@/src/domains/_app/actions/fetchS3SettingsFile.js";
+import {
+    changeSettings,
+    restoreDefaultSettings,
+} from "@/src/application/redux/slices/appSettingsSlice.js";
+
 export default function Layout({ children, getRandomMovie }) {
+    const dispatch = useDispatch();
+
+    const fetchAppSettings = async (objectURL) => {
+        const customSettings = await fetchS3SettingsFile(objectURL);
+        if (customSettings) {
+            dispatch(changeSettings(customSettings));
+        } else {
+            dispatch(restoreDefaultSettings());
+        }
+    };
+
     useEffect(() => {
         keepTheme();
     }, []);
+
+    useEffect(() => {
+        if (process.env.CUSTOM_SETTINGS) {
+            fetchAppSettings(process.env.CUSTOM_SETTINGS);
+        } else {
+            dispatch(restoreDefaultSettings());
+        }
+    }, [process.env.CUSTOM_SETTINGS]);
 
     return (
         <>
