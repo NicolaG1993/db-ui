@@ -1,6 +1,4 @@
-import { addToSessionPlaylist } from "@/src/application/redux/slices/sessionPlaylistSlice";
 import styles from "./Expandable.module.css";
-import { useDispatch } from "react-redux";
 
 export default function ToggleInfo({ el }) {
     return (

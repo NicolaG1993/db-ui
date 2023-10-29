@@ -17,6 +17,8 @@ import formHydrate from "@/src/domains/_app/utils/formHydrate";
 import { fetchDataForSideNav } from "@/src/domains/_app/actions/formFetchers";
 import uploadImage from "@/src/domains/_app/actions/uploadImage";
 import createItem from "@/src/domains/_app/actions/createItem";
+import { shallowEqual, useSelector } from "react-redux";
+import { selectAppSettings } from "@/src/application/redux/slices/appSettingsSlice";
 
 export default function Form({
     topicLabel,
@@ -29,6 +31,7 @@ export default function Form({
     //================================================================================
     const router = useRouter();
 
+    const appSettings = useSelector(selectAppSettings, shallowEqual);
     let form = dataStructureForms[topicLabel];
     let Component = form.formComponent;
 
@@ -70,7 +73,9 @@ export default function Form({
     // FETCH DATA FOR SIDENAV
     useEffect(() => {
         if (openSection && openSection !== "nationalities") {
-            fetchDataForSideNav(openSection).then((res) => setSideNavData(res));
+            fetchDataForSideNav(openSection, appSettings.TAGS_OBJ).then((res) =>
+                setSideNavData(res)
+            );
         } else {
             setSideNavData();
         }
@@ -262,7 +267,7 @@ export default function Form({
                 data={sideNavData}
                 form={form}
                 formState={formState}
-                originalFormState={propsData}
+                originalFormState={propsData || formState}
                 updateFormState={updateFormState}
                 openSection={openSection}
                 setOpenSection={setOpenSection}
@@ -270,6 +275,7 @@ export default function Form({
                 hints={hints}
                 acceptMissingHints={acceptMissingHints}
                 acceptRemovedHints={acceptRemovedHints}
+                appSettings={appSettings}
             />
         </div>
     );

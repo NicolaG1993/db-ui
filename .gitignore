@@ -33,7 +33,6 @@ yarn-error.log*
 
 .env
 .env*.local
-utils/db/data.js
-# utils/db/db.js
-# utils/db/setup.sql
 steps.txt
+src/application/settings/appSettingsCustom.js
+src/application/db/data.js

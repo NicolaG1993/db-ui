@@ -12,14 +12,13 @@ import {
 } from "@/src/application/utils/orderData";
 import { onlyUnique } from "@/src/application/utils/parsers";
 
-function parseTagsByType(obj) {
+function parseTagsByType(obj, TAGS_OBJ) {
     // console.log("parseTagsByType: ", obj);
-    // console.log("process.env.TAGS_OBJ: ", process.env.TAGS_OBJ);
+    // console.log("TAGS_OBJ: ", TAGS_OBJ);
 
     // using TAGS_OBJ to create parsedObj
-    const secretObj = JSON.parse(process.env.TAGS_OBJ);
     const parsedObj = {};
-    Object.entries(secretObj).map(([key, arr]) => {
+    Object.entries(TAGS_OBJ).map(([key, arr]) => {
         let currentObj = {};
         arr.map((str) => (currentObj[str] = obj[str]));
         parsedObj[key] = currentObj;
@@ -38,16 +37,16 @@ function parseTagsByType(obj) {
     return parsedObj;
 }
 
-function parseTagsByTypeSelection() {
-    const parsedObj = JSON.parse(process.env.TAGS_OBJ);
-    // console.log("💚 parseTagsByTypeSelection: ", parsedObj);
-    return parsedObj;
-} // SPOSTARE
+// function parseTagsByTypeSelection() {
+//     const parsedObj = JSON.parse(process.env.TAGS_OBJ);
+//     // console.log("💚 parseTagsByTypeSelection: ", parsedObj);
+//     return parsedObj;
+// } // SPOSTARE
 
-function parseCategoriesByTypeSelection() {
-    const parsedObj = JSON.parse(process.env.CATEGORY_TYPES);
-    return parsedObj;
-} // SPOSTARE
+// function parseCategoriesByTypeSelection(CATEGORY_TYPES) {
+//     const parsedObj = JSON.parse(CATEGORY_TYPES);
+//     return parsedObj;
+// } // SPOSTARE
 
 function parseTagsForUiList(arr) {
     let parsedObj = {};
@@ -236,17 +235,15 @@ const anyExist = (arr, values) =>
         return arr.includes(Number(value));
     });
 
-const tagsCheck = (tags) => {
+const tagsCheck = (tags, TAGS_REL) => {
     let parsedTags = [];
-    const relations = JSON.parse(process.env.TAGS_REL);
-    Object.entries(relations).map(([key, obj]) => {
+    Object.entries(TAGS_REL).map(([key, obj]) => {
         if (anyExist(tags, obj.related) && !anyExist(tags, [obj.id])) {
             //se tags contiene uno di questi valori e non contiene gia se stesso aggiungi obj.id a parsedTags
             parsedTags.push(Number(obj.id));
         }
     });
     return parsedTags;
-    // return [...parsedTags, ...tags];
 };
 
 const detectImage = (obj) => {
@@ -264,8 +261,6 @@ const detectImage = (obj) => {
 
 export {
     parseTagsByType,
-    parseTagsByTypeSelection,
-    parseCategoriesByTypeSelection,
     parseTagsForUiList,
     orderData,
     parseOrderOptions,
