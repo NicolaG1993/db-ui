@@ -1,5 +1,5 @@
 import Head from "next/head";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 import { keepTheme } from "@/src/domains/_app/constants/actions/themes";
 import Header from "@/src/domains/_app/constants/components/Header/Header";
@@ -13,21 +13,25 @@ import {
     restoreDefaultSettings,
 } from "@/src/application/redux/slices/appSettingsSlice.js";
 
-export default function Layout({ children, getRandomMovie }) {
-    const dispatch = useDispatch();
+import AuthModal from "@/src/domains/_app/components/Auth/AuthModal.js";
+import { useSelector } from "react-redux";
+import { selectUserState } from "@/src/application/redux/slices/userSlice.js";
 
-    const fetchAppSettings = async (objectURL) => {
-        const customSettings = await fetchS3SettingsFile(objectURL);
-        if (customSettings) {
-            dispatch(changeSettings(customSettings));
-        } else {
-            dispatch(restoreDefaultSettings());
-        }
-    };
+export default function Layout({ children, getRandomMovie }) {
+    //================================================================================
+    // State
+    //================================================================================
+    const dispatch = useDispatch();
+    const [user, setUser] = useState();
+    let userInfo = useSelector(selectUserState);
 
     useEffect(() => {
         keepTheme();
     }, []);
+
+    useEffect(() => {
+        setUser(userInfo);
+    }, [userInfo]);
 
     useEffect(() => {
         if (process.env.CUSTOM_SETTINGS) {
@@ -37,6 +41,21 @@ export default function Layout({ children, getRandomMovie }) {
         }
     }, [process.env.CUSTOM_SETTINGS]);
 
+    //================================================================================
+    // Functions
+    //================================================================================
+    const fetchAppSettings = async (objectURL) => {
+        const customSettings = await fetchS3SettingsFile(objectURL);
+        if (customSettings) {
+            dispatch(changeSettings(customSettings));
+        } else {
+            dispatch(restoreDefaultSettings());
+        }
+    };
+
+    //================================================================================
+    // Render UI
+    //================================================================================
     return (
         <>
             <Head>
@@ -50,10 +69,16 @@ export default function Layout({ children, getRandomMovie }) {
                 <meta name="author" content="NGD • Nicola Gaioni Design" />
                 <meta charSet="UTF-8" />
             </Head>
-            <Header getRandomMovie={getRandomMovie} />
-            {children}
-            <SessionUI />
-            <Footer />
+            {!user ? (
+                <AuthModal />
+            ) : (
+                <>
+                    <Header getRandomMovie={getRandomMovie} />
+                    {children}
+                    <SessionUI />
+                    <Footer />
+                </>
+            )}
         </>
     );
 }

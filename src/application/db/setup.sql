@@ -18,7 +18,15 @@
 -- DROP TABLE categoryRelation cascade;
 -- DROP TABLE tagRelation cascade;
 -- DROP TABLE nationalityRelation cascade;
+DROP TABLE users;
 
+CREATE TABLE users (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR NOT NULL CHECK (name != ''),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    psw VARCHAR(255) NOT NULL
+);
 
 CREATE TABLE actor(
     id SERIAL PRIMARY KEY,

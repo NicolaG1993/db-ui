@@ -31,8 +31,8 @@ export default function Form({
     //================================================================================
     const router = useRouter();
 
-    const appSettings = useSelector(selectAppSettings, shallowEqual);
-    let form = dataStructureForms[topicLabel];
+    const appSettings = useSelector(selectAppSettings);
+    const form = dataStructureForms[topicLabel];
     let Component = form.formComponent;
 
     const [formState, setFormState] = useState(form.emptyState);
@@ -44,12 +44,15 @@ export default function Form({
 
     const emptyHints = { missing: [], removed: [] };
     const [hints, setHints] = useState(emptyHints);
-
+    console.log("FORMSTATE: ", formState);
+    console.log("HINTS: ", hints);
+    console.log("SIDENAVDATA: ", sideNavData);
     //================================================================================
     // UseEffects
     //================================================================================
     // SET NEW ACTIVE FORM
     useEffect(() => {
+        console.log("🧠 topicLabel: ", topicLabel);
         setActiveForm(topicLabel); // senza questo il form cambia prima che nuovo emptyState venga selezionato
         setFormState(form.emptyState);
         setErrors({});
@@ -57,6 +60,7 @@ export default function Form({
 
     // RESET STATE ON FORM CHANGE
     useEffect(() => {
+        console.log("🧠 form: ", form); // per qualche ragione emptyState non é empty dopo accettare gli hints per actor 🧨🧨🧨
         form.emptyState && setFormState(form.emptyState);
     }, [form]);
 
@@ -82,10 +86,15 @@ export default function Form({
     }, [openSection]);
 
     useEffect(() => {
+        console.log("🧠 hints: ", hints);
         if (!hints?.missing?.length && !hints?.removed?.length) {
             setOpenSection(false);
         }
     }, [hints]);
+
+    useEffect(() => {
+        console.log("🧠 formState: ", formState);
+    }, [formState]);
 
     //================================================================================
     // Handle Form Data
@@ -204,10 +213,8 @@ export default function Form({
     };
 
     const handleHintsModal = (arrMissing, arrRemoved) => {
-        if (
-            (arrMissing && arrMissing.length) ||
-            (arrRemoved && arrRemoved.length)
-        ) {
+        console.log("🧠 handleHintsModal: ", { arrMissing, arrRemoved });
+        if (arrMissing?.length || arrRemoved?.length) {
             setHints({ missing: arrMissing, removed: arrRemoved });
         } else {
             setHints(emptyHints);
@@ -216,6 +223,7 @@ export default function Form({
     };
 
     const acceptMissingHints = (arr) => {
+        console.log("🧠 acceptMissingHints: ", arr);
         if (arr && arr.length) {
             setFormState({
                 ...formState,
@@ -226,6 +234,7 @@ export default function Form({
     };
 
     const acceptRemovedHints = (arr) => {
+        console.log("🧠 acceptRemovedHints: ", arr);
         if (arr && arr.length) {
             let newTags = formState.tags.filter((el) => !arr.includes(el));
             setFormState({
