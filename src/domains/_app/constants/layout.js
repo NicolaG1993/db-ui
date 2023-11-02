@@ -1,5 +1,5 @@
 import Head from "next/head";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 import { keepTheme } from "@/src/domains/_app/constants/actions/themes";
 import Header from "@/src/domains/_app/constants/components/Header/Header";
@@ -18,12 +18,28 @@ import { useSelector } from "react-redux";
 import { selectUserState } from "@/src/application/redux/slices/userSlice.js";
 
 export default function Layout({ children, getRandomMovie }) {
+    //================================================================================
+    // State
+    //================================================================================
     const dispatch = useDispatch();
-
-    //================================================================================
-    // Auth
-    //================================================================================
+    const [user, setUser] = useState();
     let userInfo = useSelector(selectUserState);
+
+    useEffect(() => {
+        keepTheme();
+    }, []);
+
+    useEffect(() => {
+        setUser(userInfo);
+    }, [userInfo]);
+
+    useEffect(() => {
+        if (process.env.CUSTOM_SETTINGS) {
+            fetchAppSettings(process.env.CUSTOM_SETTINGS);
+        } else {
+            dispatch(restoreDefaultSettings());
+        }
+    }, [process.env.CUSTOM_SETTINGS]);
 
     //================================================================================
     // Functions
@@ -36,18 +52,6 @@ export default function Layout({ children, getRandomMovie }) {
             dispatch(restoreDefaultSettings());
         }
     };
-
-    useEffect(() => {
-        keepTheme();
-    }, []);
-
-    useEffect(() => {
-        if (process.env.CUSTOM_SETTINGS) {
-            fetchAppSettings(process.env.CUSTOM_SETTINGS);
-        } else {
-            dispatch(restoreDefaultSettings());
-        }
-    }, [process.env.CUSTOM_SETTINGS]);
 
     //================================================================================
     // Render UI
@@ -65,7 +69,7 @@ export default function Layout({ children, getRandomMovie }) {
                 <meta name="author" content="NGD • Nicola Gaioni Design" />
                 <meta charSet="UTF-8" />
             </Head>
-            {!userInfo ? (
+            {!user ? (
                 <AuthModal />
             ) : (
                 <>

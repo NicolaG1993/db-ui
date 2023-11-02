@@ -24,9 +24,9 @@ export default function LoginForm({ handleTab }) {
     const router = useRouter();
     const dispatch = useDispatch();
     let userInfo = useSelector(selectUserState, shallowEqual);
-    if (userInfo) {
-        router.push("/");
-    }
+    // if (userInfo) {
+    //     router.push("/");
+    // }
 
     //================================================================================
     // Functions
