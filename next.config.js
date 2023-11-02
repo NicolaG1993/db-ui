@@ -22,6 +22,7 @@ const nextConfig = {
         // TAGS_OBJ: process.env.TAGS_OBJ,
         // TAGS_REL: process.env.TAGS_REL,
         CUSTOM_SETTINGS: process.env.CUSTOM_SETTINGS,
+        COOKIE_SECRET: process.env.COOKIE_SECRET,
     },
 };
 

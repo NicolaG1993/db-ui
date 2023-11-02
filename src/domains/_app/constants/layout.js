@@ -13,9 +13,21 @@ import {
     restoreDefaultSettings,
 } from "@/src/application/redux/slices/appSettingsSlice.js";
 
+import AuthModal from "@/src/domains/_app/components/Auth/AuthModal.js";
+import { useSelector } from "react-redux";
+import { selectUserState } from "@/src/application/redux/slices/userSlice.js";
+
 export default function Layout({ children, getRandomMovie }) {
     const dispatch = useDispatch();
 
+    //================================================================================
+    // Auth
+    //================================================================================
+    let userInfo = useSelector(selectUserState);
+
+    //================================================================================
+    // Functions
+    //================================================================================
     const fetchAppSettings = async (objectURL) => {
         const customSettings = await fetchS3SettingsFile(objectURL);
         if (customSettings) {
@@ -37,6 +49,9 @@ export default function Layout({ children, getRandomMovie }) {
         }
     }, [process.env.CUSTOM_SETTINGS]);
 
+    //================================================================================
+    // Render UI
+    //================================================================================
     return (
         <>
             <Head>
@@ -50,10 +65,16 @@ export default function Layout({ children, getRandomMovie }) {
                 <meta name="author" content="NGD • Nicola Gaioni Design" />
                 <meta charSet="UTF-8" />
             </Head>
-            <Header getRandomMovie={getRandomMovie} />
-            {children}
-            <SessionUI />
-            <Footer />
+            {!userInfo ? (
+                <AuthModal />
+            ) : (
+                <>
+                    <Header getRandomMovie={getRandomMovie} />
+                    {children}
+                    <SessionUI />
+                    <Footer />
+                </>
+            )}
         </>
     );
 }

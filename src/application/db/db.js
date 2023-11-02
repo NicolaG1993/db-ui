@@ -16,6 +16,21 @@ if (!db) {
 
 module.exports.db;
 
+/* USER */
+module.exports.newUser = (name, email, psw) => {
+    const myQuery = `INSERT INTO users 
+    (name, email, psw) 
+    VALUES ($1, $2, $3) 
+    RETURNING *`;
+    const keys = [name, email, psw];
+    return db.query(myQuery, keys);
+};
+module.exports.getUserByEmail = (email) => {
+    const myQuery = `SELECT * FROM users WHERE email = $1`;
+    const key = [email];
+    return db.query(myQuery, key);
+};
+
 /* NEW */
 module.exports.newActor = (name, pic, rating, bday, genre) => {
     const myQuery = `INSERT INTO actor 
@@ -158,6 +173,11 @@ module.exports.deleteRecord = (id, table, column) => {
 };
 
 /* GET */
+module.exports.getElementByID = (table, id) => {
+    const myQuery = `SELECT * FROM ${table} WHERE id = $1`;
+    const key = [id];
+    return db.query(myQuery, key);
+};
 module.exports.getActorByID = (id) => {
     const myQuery = `SELECT * FROM actor WHERE id = $1`;
     const key = [id];

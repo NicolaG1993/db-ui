@@ -1,0 +1,34 @@
+.formBox {
+    border: 1px solid var(--text);
+    border-radius: 12px;
+    padding: 1rem;
+    width: 360px;
+}
+
+.formBox h1 {
+    margin: 0 0 2rem 0;
+}
+
+.form {
+}
+
+.inputWrap {
+    margin-bottom: 0.75rem;
+}
+
+.inputWrap > input {
+    width: 100%;
+}
+
+.form-error {
+}
+
+.buttonWrap {
+}
+
+.changeTab {
+    cursor: pointer;
+}
+.changeTab:hover {
+    text-decoration: underline;
+}
