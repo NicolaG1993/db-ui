@@ -15,7 +15,7 @@ export default function MovieForm({
     errors,
     topicLabel,
 }) {
-    console.log("FORMSTATE: ", formState);
+    // console.log("FORMSTATE: ", formState);
     //================================================================================
     // Render UI
     //================================================================================
@@ -118,7 +118,7 @@ export default function MovieForm({
             </div>
             <div className={styles["form-col-right"]}>
                 <div className={styles["form-selector-interaction-box"]}>
-                    <span>{formState.actors.length} selected</span>
+                    <span>{formState.actors?.length} selected</span>
                     <div
                         onClick={() => {
                             setOpenSection("actors");
@@ -136,7 +136,7 @@ export default function MovieForm({
             </div>
             <div className={styles["form-col-right"]}>
                 <div className={styles["form-selector-interaction-box"]}>
-                    <span>{formState.studios.length} selected</span>
+                    <span>{formState.studios?.length} selected</span>
                     <div
                         onClick={() => {
                             setOpenSection("studios");
@@ -154,7 +154,7 @@ export default function MovieForm({
             </div>
             <div className={styles["form-col-right"]}>
                 <div className={styles["form-selector-interaction-box"]}>
-                    <span>{formState.distributions.length} selected</span>
+                    <span>{formState.distributions?.length} selected</span>
                     <div
                         onClick={() => {
                             setOpenSection("distributions");
@@ -198,7 +198,7 @@ export default function MovieForm({
             </div>
             <div className={styles["form-col-right"]}>
                 <div className={styles["form-selector-interaction-box"]}>
-                    <span>{formState.categories.length} selected</span>
+                    <span>{formState.categories?.length} selected</span>
                     <div
                         onClick={() => {
                             setOpenSection("categories");
@@ -216,7 +216,7 @@ export default function MovieForm({
             </div>
             <div className={styles["form-col-right"]}>
                 <div className={styles["form-selector-interaction-box"]}>
-                    <span>{formState.tags.length} selected</span>
+                    <span>{formState.tags?.length} selected</span>
                     <div
                         onClick={() => {
                             setOpenSection("tags");

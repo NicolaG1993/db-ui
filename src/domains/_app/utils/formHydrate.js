@@ -1,9 +1,9 @@
 import { parseFormProps } from "./formParsers";
 
 export default function formHydrate(formState, emptyState, propsData) {
-    console.log("🧠 formHydrate invoked ");
     if (Array.isArray(propsData)) {
-        return { ...form.emptyState, ids: propsData };
+        let newState = { ...emptyState, ids: propsData };
+        return newState;
     } else if (typeof propsData === "object") {
         let obj = {};
         Object.entries(propsData).map(([key, value], i) => {

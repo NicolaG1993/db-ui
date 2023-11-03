@@ -26,15 +26,18 @@ export default function Form({
     setOpenForm,
     handleEditsInParent,
 }) {
+    /* 
+    • Prendiamo topicLabel
+    */
+
     //================================================================================
     // Component State
     //================================================================================
     const router = useRouter();
-
     const appSettings = useSelector(selectAppSettings);
-    const form = dataStructureForms[topicLabel];
-    let Component = form.formComponent;
 
+    const [form, setForm] = useState(dataStructureForms[topicLabel]);
+    const Component = form.formComponent;
     const [formState, setFormState] = useState(form.emptyState);
     const [activeForm, setActiveForm] = useState(topicLabel);
     const [newImage, setNewImage] = useState();
@@ -44,24 +47,21 @@ export default function Form({
 
     const emptyHints = { missing: [], removed: [] };
     const [hints, setHints] = useState(emptyHints);
-    console.log("FORMSTATE: ", formState);
-    console.log("HINTS: ", hints);
-    console.log("SIDENAVDATA: ", sideNavData);
+
     //================================================================================
     // UseEffects
     //================================================================================
     // SET NEW ACTIVE FORM
     useEffect(() => {
-        console.log("🧠 topicLabel: ", topicLabel);
         setActiveForm(topicLabel); // senza questo il form cambia prima che nuovo emptyState venga selezionato
-        setFormState(form.emptyState);
+        setForm(dataStructureForms[topicLabel]);
+        setFormState(dataStructureForms[topicLabel].emptyState);
         setErrors({});
     }, [topicLabel]);
 
     // RESET STATE ON FORM CHANGE
     useEffect(() => {
-        console.log("🧠 form: ", form); // per qualche ragione emptyState non é empty dopo accettare gli hints per actor 🧨🧨🧨
-        form.emptyState && setFormState(form.emptyState);
+        setFormState(form.emptyState);
     }, [form]);
 
     //PARSE PROPSDATA
@@ -86,15 +86,10 @@ export default function Form({
     }, [openSection]);
 
     useEffect(() => {
-        console.log("🧠 hints: ", hints);
         if (!hints?.missing?.length && !hints?.removed?.length) {
             setOpenSection(false);
         }
     }, [hints]);
-
-    useEffect(() => {
-        console.log("🧠 formState: ", formState);
-    }, [formState]);
 
     //================================================================================
     // Handle Form Data
@@ -114,18 +109,18 @@ export default function Form({
         revokeObjectURL(img.file);
         setNewImage();
         if (formState.pic) {
-            setFormState({
-                ...formState,
+            setFormState((prev) => ({
+                ...prev,
                 pic: "",
-            });
+            }));
         }
     };
 
     const updateFormState = (val, topic) => {
-        setFormState({
-            ...formState,
+        setFormState((prev) => ({
+            ...prev,
             [topic]: val,
-        });
+        }));
     };
 
     const validateData = async (e) => {
@@ -213,7 +208,6 @@ export default function Form({
     };
 
     const handleHintsModal = (arrMissing, arrRemoved) => {
-        console.log("🧠 handleHintsModal: ", { arrMissing, arrRemoved });
         if (arrMissing?.length || arrRemoved?.length) {
             setHints({ missing: arrMissing, removed: arrRemoved });
         } else {
@@ -223,24 +217,22 @@ export default function Form({
     };
 
     const acceptMissingHints = (arr) => {
-        console.log("🧠 acceptMissingHints: ", arr);
         if (arr && arr.length) {
-            setFormState({
-                ...formState,
+            setFormState((prev) => ({
+                ...prev,
                 tags: arr,
-            });
+            }));
         }
         setHints((prev) => ({ ...prev, missing: [] }));
     };
 
     const acceptRemovedHints = (arr) => {
-        console.log("🧠 acceptRemovedHints: ", arr);
         if (arr && arr.length) {
             let newTags = formState.tags.filter((el) => !arr.includes(el));
-            setFormState({
-                ...formState,
+            setFormState((prev) => ({
+                ...prev,
                 tags: newTags,
-            });
+            }));
         }
         setHints((prev) => ({ ...prev, removed: [] }));
     };
@@ -255,7 +247,7 @@ export default function Form({
                     <h2>{topicLabel}</h2>
                 </div>
 
-                {Component && topicLabel === activeForm ? (
+                {Component && topicLabel === form.key ? (
                     <Component
                         formState={formState}
                         updateFormState={updateFormState}
@@ -272,20 +264,23 @@ export default function Form({
                 )}
             </div>
 
-            <FormSideNav
-                data={sideNavData}
-                form={form}
-                formState={formState}
-                originalFormState={propsData || formState}
-                updateFormState={updateFormState}
-                openSection={openSection}
-                setOpenSection={setOpenSection}
-                handleHintsModal={handleHintsModal}
-                hints={hints}
-                acceptMissingHints={acceptMissingHints}
-                acceptRemovedHints={acceptRemovedHints}
-                appSettings={appSettings}
-            />
+            {Component && topicLabel === form.key ? (
+                <FormSideNav
+                    data={sideNavData}
+                    formState={formState}
+                    originalFormState={propsData || formState}
+                    updateFormState={updateFormState}
+                    openSection={openSection}
+                    setOpenSection={setOpenSection}
+                    handleHintsModal={handleHintsModal}
+                    hints={hints}
+                    acceptMissingHints={acceptMissingHints}
+                    acceptRemovedHints={acceptRemovedHints}
+                    appSettings={appSettings}
+                />
+            ) : (
+                <></>
+            )}
         </div>
     );
 }

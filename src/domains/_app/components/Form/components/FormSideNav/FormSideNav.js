@@ -11,7 +11,6 @@ import getTagsMissingTags from "@/src/domains/_app/components/Form/actions/getTa
 
 export default function FormSideNav({
     data,
-    form,
     formState,
     originalFormState,
     updateFormState,
@@ -71,10 +70,9 @@ export default function FormSideNav({
 
     const handleSubmitMissingHints = (e) => {
         e.preventDefault();
+        const formData = new FormData(e.target);
 
-        const formData = new FormData(e.currentTarget);
-
-        let res = formState.tags;
+        let res = [...formState.tags]; // ! important to use spread here !
         for (const value of formData.values()) {
             res.push(value);
         }
@@ -83,7 +81,7 @@ export default function FormSideNav({
 
     const handleSubmitRemovedHints = (e) => {
         e.preventDefault();
-        const formData = new FormData(e.currentTarget);
+        const formData = new FormData(e.target);
 
         let res = [];
         for (const value of formData.values()) {
@@ -109,7 +107,7 @@ export default function FormSideNav({
                             </p>
                             <form
                                 id="missingHintsForm"
-                                onSubmit={(e) => handleSubmitMissingHints(e)}
+                                onSubmit={handleSubmitMissingHints}
                             >
                                 {hints.missing.map((el) => (
                                     <div key={`hint ` + el}>
@@ -152,7 +150,7 @@ export default function FormSideNav({
                             </p>
                             <form
                                 id="removedHintsForm"
-                                onSubmit={(e) => handleSubmitRemovedHints(e)}
+                                onSubmit={handleSubmitMissingHints}
                             >
                                 {hints.removed.map((el) => (
                                     <div key={`hint ` + el}>
