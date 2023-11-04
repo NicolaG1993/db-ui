@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { keepTheme } from "@/src/domains/_app/constants/actions/themes";
 import Header from "@/src/domains/_app/constants/components/Header/Header";
 import Footer from "@/src/domains/_app/constants/components/Footer/Footer";
-import SessionUI from "@/src/domains/_app/constants/components/SessionUI/SessionUI";
+import SessionPlaylist from "@/src/domains/_app/constants/components/SessionPlaylist/SessionPlaylist";
 
 import { useDispatch } from "react-redux";
 import fetchS3SettingsFile from "@/src/domains/_app/actions/fetchS3SettingsFile.js";
@@ -75,7 +75,7 @@ export default function Layout({ children, getRandomMovie }) {
                 <>
                     <Header getRandomMovie={getRandomMovie} />
                     {children}
-                    <SessionUI />
+                    <SessionPlaylist />
                     <Footer />
                 </>
             )}

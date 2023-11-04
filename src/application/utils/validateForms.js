@@ -1,14 +1,23 @@
 const titleValidation = (fieldName, fieldValue) => {
+    // if (fieldValue.trim() === "") {
+    //     return `Il ${fieldName} è richiesto`;
+    // } else if (
+    //     /[^a-zA-Z0-9&.,:+_ áéíóúàèìòùÁÉÍÓÚÀÈÌÒÙäöüÄÖÜ'`-]/.test(fieldValue)
+    // ) {
+    //     return null;
+    // } else if (fieldValue.trim().length < 3) {
+    //     return `Il ${fieldName} deve contenere almeno 3 lettere`;
+    // } else {
+    //     return "Caratteri non consentiti";
+    // }
+
     if (fieldValue.trim() === "") {
         return `Il ${fieldName} è richiesto`;
-    }
-    if (/[^a-zA-Z0-9&.,:+_ áéíóúàèìòùÁÉÍÓÚÀÈÌÒÙäöüÄÖÜ'`-]/.test(fieldValue)) {
+    } else if (fieldValue.trim().length < 3) {
+        return `Il ${fieldName} deve contenere almeno 3 lettere`;
+    } else {
         return null;
     }
-    if (fieldValue.trim().length < 3) {
-        return `Il ${fieldName} deve contenere almeno 3 lettere`;
-    }
-    return "Caratteri non consentiti";
 };
 
 const nicknameValidation = (fieldName, fieldValue) => {
@@ -52,6 +61,20 @@ const emailValidation = (email) => {
         return "È richiesta un'email";
     }
     return "Perfavore inserisci un'email valida";
+};
+
+const urlValidation = (url) => {
+    if (
+        /\b(https?|ftp|file):\/\/[\-A-Za-z0-9+&@#\/%?=~_|!:,.;]*[\-A-Za-z0-9+&@#\/%=~_|]/.test(
+            url
+        )
+    ) {
+        return null;
+    }
+    if (url.trim() === "") {
+        return "È richiesta un url";
+    }
+    return "Perfavore inserisci un url valido";
 };
 
 const passwordValidation = (password) => {
@@ -156,6 +179,7 @@ module.exports = {
     confirmPassword,
     addressValidation,
     slugValidation,
+    urlValidation,
 };
 
 /*

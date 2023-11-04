@@ -64,7 +64,7 @@
 
 /* SESSION UI */
 
-#SessionUI {
+#SessionPlaylist {
     position: fixed;
     bottom: 0;
     left: 0;
@@ -83,7 +83,8 @@
     border-radius: 12px;
     height: 100%;
     /* width: 100%; */
-    min-width: 310px;
+    /* min-width: 310px; */
+    min-width: 510px;
     font-size: 0.8rem;
 }
 
@@ -101,4 +102,49 @@
 }
 .nav-btn:hover {
     background-color: var(--bg300);
+}
+
+.counter {
+    position: absolute;
+    top: -12px;
+    right: -5px;
+    border-radius: 25px;
+    background: red;
+    color: var(--text);
+    padding: 0.2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 20px;
+    height: 20px;
+}
+/* .counter > span {
+    margin-bottom: 2px;
+} */
+
+/* ADD URL MODAL /move from here*/
+.modal {
+    position: fixed;
+    z-index: 20;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    margin-left: auto;
+    margin-right: auto;
+    background: red;
+    /* width: 200px;
+    height: 80px; */
+    border: 1px solid var(--text);
+    border-radius: 25px;
+}
+.modal-container {
+    width: 100%;
+    height: 100%;
+}
+.modal-close {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    cursor: pointer;
+    font-weight: bold;
 }

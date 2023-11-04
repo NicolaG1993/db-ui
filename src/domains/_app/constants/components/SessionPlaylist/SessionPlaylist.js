@@ -1,74 +1,79 @@
-import { useState, useEffect } from "react";
-import styles from "./SessionPlaylist.module.css";
-import Cookies from "js-cookie";
-import { shallowEqual, useDispatch, useSelector } from "react-redux";
-import {
-    deleteSessionPlaylist,
-    removeFromSessionPlaylist,
-    selectSessionPlaylist,
-    shuffleSessionPlaylist,
-} from "@/src/application/redux/slices/sessionPlaylistSlice";
-import Link from "next/link";
+import { useState } from "react";
+import { shallowEqual, useSelector } from "react-redux";
+import { selectSessionPlaylist } from "@/src/application/redux/slices/sessionPlaylistSlice";
+
+import SessionPlaylistUI from "./SessionPlaylistUI";
+import AddUrlForm from "@/src/domains/_app/constants/components/SessionPlaylist/components/AddUrlForm.js";
+import styles from "@/src/application/styles/Layout.module.css";
 
 export default function SessionPlaylist() {
-    // prendere array da cookie/redux
-
-    // render objects
-
-    /*
-    Features:
-        • rimuovi elemento (lista e cookie)
-        • elimina lista
-        • shuffle
-        • minimizza/espandi 🟢
-    */
-
-    const [data, setData] = useState();
+    const [nav, setNav] = useState(false);
+    const [addUrlModal, setAddUrlModal] = useState(false);
 
     let sessionPlaylist = useSelector(selectSessionPlaylist, shallowEqual);
-    const dispatch = useDispatch();
 
-    useEffect(() => {
-        setData(sessionPlaylist);
-    }, [sessionPlaylist]);
-
-    const removeFromPlaylist = (i) => {
-        dispatch(removeFromSessionPlaylist(i));
+    const openAddUrl = () => {
+        setAddUrlModal(true);
     };
-
-    const deletePlaylist = () => {
-        dispatch(deleteSessionPlaylist());
-    };
-
-    const shufflePlaylist = () => {
-        dispatch(shuffleSessionPlaylist());
+    const closeAddUrl = () => {
+        setAddUrlModal(false);
     };
 
     return (
-        <div id={styles["SessionPlaylist"]}>
-            <div className={styles["nav-btn"]}>
-                <button onClick={() => shufflePlaylist()}>Shuffle</button>
-                <button>Save</button>
-                <button onClick={() => deletePlaylist()}>Delete</button>
+        <>
+            <div
+                id={styles["SessionPlaylist"]}
+                style={{
+                    height: nav ? "650px" : "0",
+                    // minWidth: nav ? "200px" : "0",
+                }}
+            >
+                <div className={styles["nav-content"]}>
+                    {nav ? (
+                        <>
+                            <SessionPlaylistUI
+                                sessionPlaylist={sessionPlaylist}
+                                openAddUrl={openAddUrl}
+                            />
+                        </>
+                    ) : (
+                        <></>
+                    )}
+                </div>
+
+                <div
+                    className={styles["nav-btn"]}
+                    onClick={() => {
+                        setNav(!nav);
+                        closeAddUrl();
+                    }}
+                >
+                    <span>{nav ? "Minimize" : "Session Tab"}</span>
+                    {!nav && sessionPlaylist?.length ? (
+                        <div className={styles["counter"]}>
+                            <span>{sessionPlaylist.length}</span>
+                        </div>
+                    ) : (
+                        <></>
+                    )}
+                </div>
             </div>
 
-            <div className={styles["nav-content"]}>
-                {data && data.length ? (
-                    data.map((el, i) => (
-                        <div
-                            key={"session data " + i}
-                            className={styles["row"]}
+            {addUrlModal ? (
+                <div className={styles["modal"]}>
+                    <div className={styles["modal-container"]}>
+                        <span
+                            className={styles["modal-close"]}
+                            onClick={closeAddUrl}
                         >
-                            <Link href={`/el/movie/${el.id}`}>{el.title}</Link>
-                            <p onClick={() => removeFromPlaylist(i)}>X</p>
-                        </div>
-                    ))
-                ) : (
-                    <div className={styles["no-data-row"]}>
-                        <p>No data</p>
+                            X
+                        </span>
+                        <AddUrlForm closeAddUrl={closeAddUrl} />
                     </div>
-                )}
-            </div>
-        </div>
+                </div>
+            ) : (
+                <></>
+            )}
+        </>
     );
 }

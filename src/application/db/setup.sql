@@ -134,10 +134,17 @@ CREATE TABLE nationalityRelation(
     FOREIGN KEY (actorID) REFERENCES actor(id),
     UNIQUE (nationality, studioID, distributionID, actorID)
 );
+
 CREATE TABLE counter(
     id SERIAL PRIMARY KEY,
     movieID integer,
     FOREIGN KEY (movieID) REFERENCES movie(id),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+CREATE TABLE playlist(
+    id SERIAL PRIMARY KEY,
+    -- movieID integer,
+    -- url
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 

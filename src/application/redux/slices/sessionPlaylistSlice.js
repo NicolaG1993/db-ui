@@ -18,12 +18,29 @@ const sessionPlaylistSlice = createSlice({
             Cookies.set("sessionPlaylist", JSON.stringify(newState));
             state.sessionPlaylist = newState;
         },
+        // used to remove directly from playlist
         removeFromSessionPlaylist: (state, action) => {
             let newState = state.sessionPlaylist;
             newState.splice(action.payload, 1);
             Cookies.set("sessionPlaylist", JSON.stringify(newState));
             state.sessionPlaylist = newState;
         },
+        // used to remove playlist element from outside playlist
+        removeElementFromSessionPlaylist: (state, action) => {
+            let newState = state.sessionPlaylist;
+            if (action.payload.id) {
+                newState = newState.filter(
+                    ({ id }) => id !== action.payload.id
+                );
+            } else if (action.payload.url) {
+                newState = newState.filter(
+                    ({ url }) => url !== action.payload.url
+                );
+            }
+            Cookies.set("sessionPlaylist", JSON.stringify(newState));
+            state.sessionPlaylist = newState;
+        },
+
         shuffleSessionPlaylist: (state, action) => {
             let newState = shuffle(state.sessionPlaylist);
             Cookies.set("sessionPlaylist", JSON.stringify(newState));
@@ -39,6 +56,7 @@ const sessionPlaylistSlice = createSlice({
 export const {
     addToSessionPlaylist,
     removeFromSessionPlaylist,
+    removeElementFromSessionPlaylist,
     shuffleSessionPlaylist,
     deleteSessionPlaylist,
 } = sessionPlaylistSlice.actions;
