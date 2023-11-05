@@ -52,10 +52,18 @@ export default function SessionPlaylistUI({ sessionPlaylist, openAddUrl }) {
                         Shuffle ♾️
                     </button>
                     <button>Save 💾</button>
-                    <button>Editor ➡️</button>
+                    <button>
+                        <Link
+                            href={`/el/playlist/editor`}
+                            title={"Plalist editor"}
+                        >
+                            Editor ➡️
+                        </Link>
+                    </button>
                     <button onClick={() => openAddUrl()}>Add url ➕</button>
                     <button onClick={() => deletePlaylist()}>Delete ❌</button>
                 </div>
+
                 <div className={styles["nav-content"]}>
                     {data && data.length ? (
                         data.map((el, i) => (

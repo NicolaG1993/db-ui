@@ -60,15 +60,12 @@ export default function SessionPlaylist() {
             </div>
 
             {addUrlModal ? (
-                <div className={styles["modal"]}>
-                    <div className={styles["modal-container"]}>
-                        <span
-                            className={styles["modal-close"]}
-                            onClick={closeAddUrl}
-                        >
+                <div className={"modal"}>
+                    <div className={"modal-container"}>
+                        <span className={"modal-close"} onClick={closeAddUrl}>
                             X
                         </span>
-                        <AddUrlForm closeAddUrl={closeAddUrl} />
+                        <AddUrlForm closeModal={closeAddUrl} />
                     </div>
                 </div>
             ) : (

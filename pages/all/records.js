@@ -12,7 +12,7 @@ import ToggleSwitch from "@/src/domains/_app/components/ToggleSwitch/ToggleSwitc
 const fetchData = async () => {
     try {
         const res = await axios.get("/api/record/all");
-        console.log("fetchData activated: ", res);
+        // console.log("fetchData activated: ", res);
         return res.data;
     } catch (error) {
         console.error(error);

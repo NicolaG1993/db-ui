@@ -4,13 +4,13 @@ import {
     selectSessionPlaylist,
 } from "@/src/application/redux/slices/sessionPlaylistSlice";
 import { useDispatch, shallowEqual, useSelector } from "react-redux";
-import styles from "@/src/domains/_app/constants/components/SessionPlaylist/SessionPlaylist.module.css";
 import {
     titleValidation,
     urlValidation,
 } from "@/src/application/utils/validateForms.js";
+import styles from "@/src/domains/_app/constants/components/SessionPlaylist/components/AddUrlForm.module.css";
 
-export default function AddUrlForm({ closeAddUrl }) {
+export default function AddUrlForm({ closeModal }) {
     const [url, setUrl] = useState("");
     const [title, setTitle] = useState("");
     const [errors, setErrors] = useState({});
@@ -49,16 +49,16 @@ export default function AddUrlForm({ closeAddUrl }) {
 
         if (!allUrls.includes(url)) {
             // add to store and close form
-            const obj = { url, title: title ? title : "untitled" };
+            const obj = { url, title: title ? title : "Untitled url" };
             dispatch(addToSessionPlaylist(obj));
-            closeAddUrl();
+            closeModal();
         } else {
             setErrors({ url: "This url is already in the playlist" });
         }
     };
 
     return (
-        <div className={styles["url-form"]}>
+        <div className={styles["form"]}>
             <input
                 type="text"
                 placeholder={"Url"}
@@ -66,6 +66,7 @@ export default function AddUrlForm({ closeAddUrl }) {
                 id="Url"
                 onChange={(e) => setUrl(e.target.value)}
                 value={url}
+                required
             />
             <input
                 type="text"

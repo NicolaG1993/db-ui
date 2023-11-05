@@ -143,8 +143,9 @@ CREATE TABLE counter(
 );
 CREATE TABLE playlist(
     id SERIAL PRIMARY KEY,
-    -- movieID integer,
-    -- url
+    title VARCHAR(255) NOT NULL CHECK (title != ''),
+    -- movie ids and urls
+    -- user id
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
