@@ -49,9 +49,11 @@ export default function PlaylistEditor() {
     const [saveModal, setSaveModal] = useState(false);
 
     const openAddUrl = () => {
+        setSaveModal(false);
         setAddUrlModal(true);
     };
     const openSavePlaylist = () => {
+        setAddUrlModal(false);
         setSaveModal(true);
     };
     const closeModal = () => {
@@ -112,7 +114,10 @@ export default function PlaylistEditor() {
                         <span className={"modal-close"} onClick={closeModal}>
                             X
                         </span>
-                        <SavePlaylistForm closeModal={closeModal} />
+                        <SavePlaylistForm
+                            closeModal={closeModal}
+                            sessionPlaylist={sessionPlaylist}
+                        />
                     </div>
                 </div>
             )}

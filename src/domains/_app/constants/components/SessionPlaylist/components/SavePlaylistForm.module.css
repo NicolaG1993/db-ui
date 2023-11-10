@@ -1,13 +1,52 @@
 .form {
     width: 300px;
-    height: 200px;
-    padding: 1rem 1.5rem;
+    padding: 2.5rem 1.5rem;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
 }
-.form > input,
-.form > button {
-    margin: 0.25rem 0;
+
+.form-title {
+    font-weight: bold;
+    margin: 0 0 1rem 0;
+}
+
+.input-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+.input-wrapper > input {
+    width: 100%;
+}
+.input-wrapper > input,
+.input-wrapper > button {
+    /* margin: 0; */
+    /* width: 100%; */
+}
+.input-hints {
+    border: 1px solid var(--text);
+    width: 100%;
+    /* padding: 0 0.2rem; */
+    font-size: 0.85rem;
+    overflow-y: auto;
+    max-height: 250px;
+}
+.input-hints > p {
+    padding: 0.2rem;
+    margin: 0;
+    border-bottom: 1px solid var(--text);
+}
+.input-hints > p:last-child {
+    border-bottom: none;
+}
+.input-hints > p:hover {
+}
+.select {
+    cursor: pointer;
+}
+.select:hover {
+    background: var(--bg000);
 }

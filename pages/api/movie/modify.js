@@ -169,7 +169,7 @@ async function handler(req, res) {
                 "tagID"
             ));
 
-        console.log("COMPLETED!!", movie.rows[0]);
+        // console.log("COMPLETED!!", movie.rows[0]);
         res.status(200).json(movie.rows[0]);
     } catch (err) {
         console.log("ERROR!!", err);

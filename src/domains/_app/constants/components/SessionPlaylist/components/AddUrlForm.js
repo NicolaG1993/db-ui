@@ -59,6 +59,8 @@ export default function AddUrlForm({ closeModal }) {
 
     return (
         <div className={styles["form"]}>
+            <p className={styles["form-title"]}>Add url</p>
+
             <input
                 type="text"
                 placeholder={"Url"}

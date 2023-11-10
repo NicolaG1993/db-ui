@@ -31,7 +31,7 @@ async function handler(req, res) {
     //     tags = tagsCheck(tags);
     // }
 
-    console.log("actors: ", actors);
+    // console.log("actors: ", actors);
     //actor check
     if (actors.length) {
         // prende tags di actor e li aggiunge
