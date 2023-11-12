@@ -7,7 +7,7 @@ import {
     removeFromSessionPlaylist,
     shuffleSessionPlaylist,
 } from "@/src/application/redux/slices/sessionPlaylistSlice";
-import axios from "axios";
+// import axios from "axios";
 import Link from "next/link";
 import AddUrlForm from "@/src/domains/_app/constants/components/SessionPlaylist/components/AddUrlForm.js";
 import SavePlaylistForm from "@/src/domains/_app/constants/components/SessionPlaylist/components/SavePlaylistForm.js";
@@ -65,6 +65,9 @@ export default function PlaylistEditor() {
         <main>
             <div className={styles.heading}>
                 <h1>PLAYLISTS EDITOR</h1>
+                <Link href={`/all/playlists`} title={"All playlists"}>
+                    All playlists
+                </Link>
             </div>
 
             <div className={styles["nav-btn"]}>

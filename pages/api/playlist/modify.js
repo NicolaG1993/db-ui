@@ -13,10 +13,11 @@ export default async function handler(req, res) {
         addedRelations,
         removedRelations,
     } = req.body;
+
     try {
         //edit playlist
         if (title) {
-            await editPlaylist(id, title);
+            await editPlaylist(Number(id), title, Number(user));
         }
 
         // create relations

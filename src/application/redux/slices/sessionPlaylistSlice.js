@@ -46,9 +46,15 @@ const sessionPlaylistSlice = createSlice({
             Cookies.set("sessionPlaylist", JSON.stringify(newState));
             state.sessionPlaylist = newState;
         },
+
         deleteSessionPlaylist: (state) => {
             Cookies.remove("sessionPlaylist");
             state.sessionPlaylist = [];
+        },
+
+        loadSessionPlaylist: (state, action) => {
+            Cookies.set("sessionPlaylist", JSON.stringify(action.payload));
+            state.sessionPlaylist = action.payload;
         },
     },
 });
@@ -59,7 +65,10 @@ export const {
     removeElementFromSessionPlaylist,
     shuffleSessionPlaylist,
     deleteSessionPlaylist,
+    loadSessionPlaylist,
 } = sessionPlaylistSlice.actions;
+
 export const selectSessionPlaylist = (state) =>
     state.sessionPlaylist.sessionPlaylist;
+
 export default sessionPlaylistSlice;

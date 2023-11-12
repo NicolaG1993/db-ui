@@ -182,12 +182,13 @@ module.exports.editPicURL = (pic, id, table) => {
     const keys = [pic, id];
     return db.query(myQuery, keys);
 };
-module.exports.editPlaylist = (id, title) => {
+module.exports.editPlaylist = (id, title, user) => {
     const myQuery = `UPDATE playlist 
         SET title = COALESCE($2, title)
         WHERE id = $1
+        AND userID = $3
         RETURNING *`;
-    const keys = [id, title];
+    const keys = [id, title, user];
     return db.query(myQuery, keys);
 };
 
@@ -338,7 +339,7 @@ module.exports.getAllRecords = () => {
 };
 
 /* GET ALL WITH INFOS */
-module.exports.getAllPlaylistsWithInfos = (str) => {
+module.exports.getAllPlaylistsWithInfos = (str, user) => {
     const myQuery = `SELECT
         playlist.*,
         movies_JSON.movies
@@ -364,11 +365,12 @@ module.exports.getAllPlaylistsWithInfos = (str) => {
             ON playlist.id = movies_JSON.playlistID
 
     WHERE playlist.title ILIKE '%' || $1 || '%'
+    AND playlist.userID = $2
     ORDER BY created_at DESC`;
-    const key = [str];
-    return db.query(myQuery, key);
+    const keys = [str, user];
+    return db.query(myQuery, keys);
 };
-module.exports.getPlaylistWithInfos = (id) => {
+module.exports.getPlaylistWithInfos = (id, user) => {
     const myQuery = `SELECT
         playlist.*,
         movies_JSON.movies
@@ -393,9 +395,10 @@ module.exports.getPlaylistWithInfos = (id) => {
             ) AS movies_JSON
             ON playlist.id = movies_JSON.playlistID
 
-    WHERE playlist.id = $1`;
-    const key = [id];
-    return db.query(myQuery, key);
+    WHERE playlist.id = $1
+    AND playlist.userID = $2`;
+    const keys = [id, user];
+    return db.query(myQuery, keys);
 };
 
 module.exports.getAllMoviesWithInfos = (str, limit, offset, order) => {

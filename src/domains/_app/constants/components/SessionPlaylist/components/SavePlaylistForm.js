@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useRouter } from "next/router";
 import { titleValidation } from "@/src/application/utils/validateForms.js";
 import styles from "@/src/domains/_app/constants/components/SessionPlaylist/components/SavePlaylistForm.module.css";
 import fetchAllPlaylists from "@/src/domains/playlists/actions/fetchAllPlaylists.js";
@@ -13,6 +14,7 @@ import { useSelector } from "react-redux";
 import { selectUserState } from "@/src/application/redux/slices/userSlice.js";
 import { useDispatch } from "react-redux";
 import { deleteSessionPlaylist } from "@/src/application/redux/slices/sessionPlaylistSlice";
+import { getError } from "@/src/application/utils/error";
 
 export default function SavePlaylistForm({ closeModal, sessionPlaylist }) {
     /*
@@ -25,6 +27,7 @@ export default function SavePlaylistForm({ closeModal, sessionPlaylist }) {
     */
 
     // STATE //
+    const router = useRouter();
     const dispatch = useDispatch();
     let userInfo = useSelector(selectUserState);
 
@@ -46,32 +49,46 @@ export default function SavePlaylistForm({ closeModal, sessionPlaylist }) {
     }, [sessionPlaylist]);
 
     useEffect(() => {
-        validateTitle(title);
-
-        if (Object.keys(errors).length === 0) {
+        if (match) {
+            setHints([]); // se abbiamo selezionato un match il title ha un update, ma non vogliamo vedere hints
+        } else {
             if (title) {
                 searchHints(title);
             } else {
-                setHints([]); // all hints here 🧨
+                setHints([]); // all hints here: se vogliamo mostrare sempre la lista
             }
-        } else {
-            setHints([]);
         }
     }, [title]);
 
     useEffect(() => {
-        if (hints) {
+        console.log("Hints changed: ", hints);
+        if (hints.length) {
             let res = findMatch(hints, title, "title");
-            setMatch(res);
-        } else {
-            setMatch(true);
+            if (res) {
+                setMatch(res);
+            } else {
+                setMatch();
+            }
+        } else if (!match) {
+            // setMatch(true);
+            setMatch();
+        } else if (match?.title !== title) {
+            setMatch();
         }
     }, [hints]);
+
+    useEffect(() => {
+        console.log("match changed: ", match);
+        if (match) {
+            setHints([]);
+        } else {
+        }
+    }, [match]);
 
     // UTILS //
     const getAllPlaylists = async () => {
         try {
-            let data = await fetchAllPlaylists();
+            let data = await fetchAllPlaylists("", userInfo.id);
             setAllPlaylists(data);
         } catch (err) {
             setErrors({ server: err });
@@ -87,7 +104,7 @@ export default function SavePlaylistForm({ closeModal, sessionPlaylist }) {
                 newErrObj.title = titleCheck;
             }
         }
-        setErrors(newErrObj);
+        return newErrObj;
     };
 
     const searchHints = (title) => {
@@ -97,15 +114,27 @@ export default function SavePlaylistForm({ closeModal, sessionPlaylist }) {
 
     const handleSelect = (obj) => {
         setMatch(obj);
+        setErrors({});
+        setTitle(obj.title);
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setErrors({});
 
-        if (newElements) {
-            askUser();
+        const newErrObj = validateTitle(title);
+        console.log("newErrObj: ", newErrObj);
+
+        if (Object.keys(newErrObj).length === 0) {
+            if (newElements.lenght) {
+                askUser();
+            } else {
+                confirmSubmit(sessionPlaylist, title);
+            }
         } else {
-            confirmSubmit(sessionPlaylist, title);
+            console.log("INVALID INPUTS", newErrObj);
+            setErrors(newErrObj);
+            return;
         }
     };
 
@@ -129,20 +158,26 @@ export default function SavePlaylistForm({ closeModal, sessionPlaylist }) {
             setNewElementsModal(false);
             closeModal();
         } catch (err) {
-            console.log("err: ", err);
-            setErrors({ server: err });
+            console.log("err: ", getError(err));
+            setErrors({ server: getError(err) });
         }
     };
 
     const confirmSubmit = async (newPlaylist, title) => {
         console.log("confirmSubmit invoked: ", { newPlaylist, title });
-        if (match) {
-            await editPlaylist(match, title, newPlaylist, userInfo); // TEST 🧨
-        } else {
-            await createPlaylist(title, newPlaylist, userInfo);
+        try {
+            if (match) {
+                await editPlaylist(match, title, newPlaylist, userInfo); // TEST 🧨
+            } else {
+                await createPlaylist(title, newPlaylist, userInfo);
+            }
+            // clear session store state on success
+            dispatch(deleteSessionPlaylist());
+            router.push("/all/playlists");
+        } catch (err) {
+            console.log("err: ", getError(err));
+            setErrors({ server: getError(err) });
         }
-        // clear session store state on success
-        dispatch(deleteSessionPlaylist());
     };
 
     console.log("SavePlaylistForm: ", {
@@ -179,16 +214,18 @@ export default function SavePlaylistForm({ closeModal, sessionPlaylist }) {
 
                     {title && (
                         <div className={styles["input-hints"]}>
-                            {hints.lenght ? (
+                            {hints.length ? (
                                 hints.map((el) => (
                                     <p
                                         key={"playlist: " + el.title}
                                         className={styles["select"]}
-                                        onClick={handleSelect(el)}
+                                        onClick={() => handleSelect(el)}
                                     >
                                         {el.title}
                                     </p>
                                 ))
+                            ) : match ? (
+                                <></>
                             ) : (
                                 <p>New playlist...</p>
                             )}
@@ -214,6 +251,14 @@ export default function SavePlaylistForm({ closeModal, sessionPlaylist }) {
                     </button>
                 </div>
             )}
+
+            {Object.keys(errors).length > 0 &&
+                Object.entries(errors).map(([key, value]) => (
+                    <div key={"error: " + key}>
+                        <p>ERROR {key}:</p>
+                        <p>{value}</p>
+                    </div>
+                ))}
         </>
     );
 }

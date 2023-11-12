@@ -14,14 +14,17 @@ export default async function editPlaylist(
         userInfo,
     });
     // get original playlist from db first
-    let originalPlaylist = await axios.get(`/api/playlist/${match.id}`); // TEST 🧨
-    console.log("originalPlaylist: ", originalPlaylist);
+    const id = match.id;
+    let originalPlaylist = await axios.get(`/api/playlist/${id}`, {
+        params: { user: userInfo.id },
+    });
     originalPlaylist = originalPlaylist.data;
+    console.log("originalPlaylist: ", originalPlaylist);
 
     // find new and deleted relations
     let relationsObj = {};
-    relationsObj = parsePlaylistRelationsEdit(newPlaylist, originalPlaylist); // TEST 🧨
-
+    relationsObj = parsePlaylistRelationsEdit(newPlaylist, originalPlaylist); // FIXME // relations changes not working 🧨
+    console.log("relationsObj: ", relationsObj);
     if (
         relationsObj?.addedRelations ||
         relationsObj?.removedRelations ||
@@ -29,7 +32,7 @@ export default async function editPlaylist(
     ) {
         // edit playlist and/or relations
         let res = await axios.post("/api/playlist/modify", {
-            id: match.id,
+            id,
             title,
             // playlistContent: newPlaylist,
             ...relationsObj,
