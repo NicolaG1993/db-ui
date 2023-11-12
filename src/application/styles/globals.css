@@ -222,6 +222,17 @@ select:hover {
     /* outline: 1px solid var(--bg500); */
 }
 
+/* GLOBAL ELEMENTS */
+.heading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+.heading > a:hover {
+    font-weight: 500;
+}
+
 /* CUSTOM ELEMENTS */
 #Overlay {
     position: fixed;

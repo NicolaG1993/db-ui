@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { selectUserState } from "@/src/application/redux/slices/userSlice.js";
 // import axios from "axios";
-// import Link from "next/link";
+import Link from "next/link";
 
 import PlaylistsList from "@/src/domains/playlists/components/PlaylistsList/PlaylistsList.js";
 import fetchAllPlaylists from "@/src/domains/playlists/actions/fetchAllPlaylists.js";
@@ -11,7 +11,6 @@ import deletePlaylist from "@/src/domains/playlists/actions/deletePlaylist.js";
 import styles from "@/src/application/styles/Records.module.css";
 
 export default function Playlists() {
-    // TODO: shows all playlists and links to them
     let userInfo = useSelector(selectUserState);
 
     const [allPlaylists, setAllPlaylists] = useState([]);
@@ -52,8 +51,11 @@ export default function Playlists() {
 
     return (
         <main>
-            <div className={styles.heading}>
-                <h1>ALL PLAYLISTS</h1>
+            <div className={"heading"}>
+                <h1>YOUR PLAYLISTS</h1>
+                <Link href={`/el/playlist/editor`} title={"Playlist editor"}>
+                    Session playlist editor →
+                </Link>
             </div>
 
             <PlaylistsList

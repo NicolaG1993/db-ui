@@ -12,6 +12,9 @@ export default function SessionPlaylist() {
 
     let sessionPlaylist = useSelector(selectSessionPlaylist, shallowEqual);
 
+    const close = () => {
+        setNav(false);
+    };
     const openAddUrl = () => {
         setAddUrlModal(true);
     };
@@ -34,6 +37,7 @@ export default function SessionPlaylist() {
                             <SessionPlaylistUI
                                 sessionPlaylist={sessionPlaylist}
                                 openAddUrl={openAddUrl}
+                                close={close}
                             />
                         </>
                     ) : (

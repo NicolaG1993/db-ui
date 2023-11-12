@@ -75,6 +75,13 @@ export default function Header({ getRandomMovie }) {
                         onMouseEnter={() => seMenuOpen(false)}
                         onMouseLeave={() => seMenuOpen(false)}
                     >
+                        <Link href="/all/playlists">Your playlists</Link>
+                    </li>
+
+                    <li
+                        onMouseEnter={() => seMenuOpen(false)}
+                        onMouseLeave={() => seMenuOpen(false)}
+                    >
                         <Link href="/all/records">Records</Link>
                     </li>
 

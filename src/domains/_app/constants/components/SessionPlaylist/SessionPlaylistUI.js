@@ -9,7 +9,11 @@ import {
 } from "@/src/application/redux/slices/sessionPlaylistSlice";
 import Link from "next/link";
 
-export default function SessionPlaylistUI({ sessionPlaylist, openAddUrl }) {
+export default function SessionPlaylistUI({
+    sessionPlaylist,
+    openAddUrl,
+    close,
+}) {
     // prendere array da cookie/redux
 
     // render objects
@@ -51,8 +55,8 @@ export default function SessionPlaylistUI({ sessionPlaylist, openAddUrl }) {
                     <button onClick={() => shufflePlaylist()}>
                         Shuffle ♾️
                     </button>
-                    <button>Save 💾</button>
-                    <button>
+                    {/* <button>Save 💾</button> */}
+                    <button onClick={() => close()}>
                         <Link
                             href={`/el/playlist/editor`}
                             title={"Plalist editor"}

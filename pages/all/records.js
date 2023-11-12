@@ -75,7 +75,7 @@ export default function Records() {
 
     return (
         <main>
-            <div className={styles.heading}>
+            <div>
                 <h1>ALL RECORDS</h1>
             </div>
 

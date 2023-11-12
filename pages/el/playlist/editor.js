@@ -63,10 +63,10 @@ export default function PlaylistEditor() {
 
     return (
         <main>
-            <div className={styles.heading}>
+            <div className={"heading"}>
                 <h1>PLAYLISTS EDITOR</h1>
                 <Link href={`/all/playlists`} title={"All playlists"}>
-                    All playlists
+                    ← All playlists
                 </Link>
             </div>
 
