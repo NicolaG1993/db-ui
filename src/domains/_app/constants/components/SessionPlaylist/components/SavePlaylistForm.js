@@ -126,7 +126,7 @@ export default function SavePlaylistForm({ closeModal, sessionPlaylist }) {
         console.log("newErrObj: ", newErrObj);
 
         if (Object.keys(newErrObj).length === 0) {
-            if (newElements.lenght) {
+            if (newElements.length) {
                 askUser();
             } else {
                 confirmSubmit(sessionPlaylist, title);
@@ -188,6 +188,7 @@ export default function SavePlaylistForm({ closeModal, sessionPlaylist }) {
         match,
         newElementsModal,
         newElements,
+        sessionPlaylist,
         userInfo,
     });
 
@@ -242,6 +243,8 @@ export default function SavePlaylistForm({ closeModal, sessionPlaylist }) {
                     </p>
 
                     <button onClick={(e) => handleNewItems(e)}>Confirm</button>
+
+                    {/* 🧨🧨🧨 TODO 🧨🧨🧨 */}
                     <button
                         onClick={() =>
                             confirmSubmitWithoutUrls(sessionPlaylist)
@@ -262,3 +265,13 @@ export default function SavePlaylistForm({ closeModal, sessionPlaylist }) {
         </>
     );
 }
+
+/*
+TO TEST:
+🧠 create playlist with new urls but dont accept them
+
+🧠 modify playlist
+🧠 add new urls when modifing existing playlist 
+🧠 modify playlist with new urls but dont accept them
+🧠 ...?
+*/

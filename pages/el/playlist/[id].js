@@ -43,12 +43,16 @@ export default function Playlist() {
                     </div>
 
                     <div>
-                        {playlist.movies.map((el, i) => (
-                            <PlaylistMovie
-                                key={"movie " + el.title + " " + i}
-                                movie={el}
-                            />
-                        ))}
+                        {playlist.movies ? (
+                            playlist.movies.map((el, i) => (
+                                <PlaylistMovie
+                                    key={"movie " + el.title + " " + i}
+                                    movie={el}
+                                />
+                            ))
+                        ) : (
+                            <p>No movies</p>
+                        )}
                     </div>
                 </>
             ) : (
