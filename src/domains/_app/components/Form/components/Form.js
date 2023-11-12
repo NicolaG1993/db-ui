@@ -26,10 +26,6 @@ export default function Form({
     setOpenForm,
     handleEditsInParent,
 }) {
-    /* 
-    • Prendiamo topicLabel
-    */
-
     //================================================================================
     // Component State
     //================================================================================

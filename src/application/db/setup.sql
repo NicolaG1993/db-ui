@@ -134,6 +134,7 @@ CREATE TABLE nationalityRelation(
     FOREIGN KEY (actorID) REFERENCES actor(id),
     UNIQUE (nationality, studioID, distributionID, actorID)
 );
+
 CREATE TABLE counter(
     id SERIAL PRIMARY KEY,
     movieID integer,
@@ -141,6 +142,21 @@ CREATE TABLE counter(
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+CREATE TABLE playlist(
+    id SERIAL PRIMARY KEY,
+    title VARCHAR(255) NOT NULL CHECK (title != ''),
+    userID integer,
+    FOREIGN KEY (userID) REFERENCES users(id),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+CREATE TABLE movie_playlist(
+    id SERIAL PRIMARY KEY,
+    movieID integer,
+    playlistID integer,
+    FOREIGN KEY (movieID) REFERENCES movie(id),
+    FOREIGN KEY (playlistID) REFERENCES playlist(id),
+    UNIQUE (movieID, playlistID)
+);
 
 
 -- ALTER TABLE clips

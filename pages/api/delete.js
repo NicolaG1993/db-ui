@@ -1,5 +1,7 @@
 import { deleteRecord } from "@/src/application/db/db.js";
 
+// 🧠🧠🧠 check if it's really working for every case (relations foreign keys conflicts)
+// tested only for counter // playlist not working
 export default async function handler(req, res) {
     const { id, table } = req.body;
 
@@ -47,6 +49,9 @@ export default async function handler(req, res) {
         if (table === "counter") {
             await deleteRecord(Number(id), "counter", "id");
         }
+        // if (table === "playlist") {
+        // await deleteRecord(Number(id), "movie_playlist", "playlistID");
+        // }
 
         res.status(200).json(rows[0]);
     } catch (err) {

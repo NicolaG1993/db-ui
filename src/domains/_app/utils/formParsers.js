@@ -46,7 +46,7 @@ const cleanFalseRelations = (obj) => {
 };
 
 // used to extract new realtions from array of objects
-let newRelationsStandardMethod = (arr, propsData, key) => {
+const newRelationsStandardMethod = (arr, propsData, key) => {
     return arr
         .filter(
             (o) =>
@@ -58,8 +58,21 @@ let newRelationsStandardMethod = (arr, propsData, key) => {
         .map((el) => el.id); // get only the ids
 };
 
+// used to extract new realtions from array of objects - only for movies
+const newRelationsMoviesMethod = (arr, propsData, key) => {
+    return arr
+        .filter(
+            (o) =>
+                !propsData[key]
+                    .filter((el) => el.title) // skip any corrupted element saved before in db
+                    .map((el) => el.title) // modify the rest
+                    .includes(o.title) // check if includes the user selected x
+        )
+        .map((el) => el.id); // get only the ids
+};
+
 // used to extract new realtions from array - only for nationalities
-let newRelationsNationalitiesMethod = (arr, propsData, key) => {
+const newRelationsNationalitiesMethod = (arr, propsData, key) => {
     return arr
         .filter(
             (o) =>
@@ -183,4 +196,9 @@ function parseDataForForm(obj) {
 }
 */
 
-export { parseFormProps, parseFormRelationsEdit, parseFormRelationsPromise };
+export {
+    parseFormProps,
+    parseFormRelationsEdit,
+    parseFormRelationsPromise,
+    newRelationsMoviesMethod,
+};

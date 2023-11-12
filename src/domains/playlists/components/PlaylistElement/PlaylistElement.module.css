@@ -1,0 +1,55 @@
+.playlist {
+    display: grid;
+    grid-template-columns: 250px 80px auto auto auto;
+    border: 1px solid var(--text);
+    padding: 1rem;
+    margin: 1rem;
+    font-size: 0.85rem;
+    border-radius: 1rem;
+    cursor: pointer;
+    background-color: var(--bg500);
+    transition: 0.1s ease;
+}
+.playlist:hover {
+    background-color: var(--bg400);
+}
+
+.playlist .title {
+    font-size: 0.95rem;
+    font-weight: 500;
+    letter-spacing: 1px;
+}
+.playlist .created_at {
+    font-size: 0.65rem;
+}
+
+.playlist p,
+.playlist a {
+    margin: 0;
+    align-self: center;
+}
+
+.playlist > p:nth-child(2),
+.playlist > .btn,
+.playlist > a {
+    justify-self: center;
+}
+.playlist > p:nth-child(2) {
+    height: 25px;
+    padding-top: 1px;
+}
+.playlist .btn {
+    background-color: var(--bg000);
+    width: 60px;
+    height: 25px;
+    text-align: center;
+    align-self: center;
+    border-radius: 6px;
+    padding: 0.2rem 0.5rem;
+    font-size: 0.7rem;
+    margin: 0 0.2rem;
+}
+
+.playlist > .btn:last-child {
+    margin: 0 0 0 0.2rem;
+}

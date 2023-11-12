@@ -1,0 +1,15 @@
+.row {
+    display: flex;
+    padding: 0.5rem;
+    align-items: center;
+    background: var(--bg500);
+    transition: 0.15s ease;
+    border: 1px solid var(--text);
+    margin-bottom: 1rem;
+    border-radius: 1rem;
+    font-size: 0.95rem;
+    letter-spacing: 1px;
+}
+.row:hover {
+    background: var(--bg400);
+}

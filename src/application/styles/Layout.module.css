@@ -64,7 +64,7 @@
 
 /* SESSION UI */
 
-#SessionUI {
+#SessionPlaylist {
     position: fixed;
     bottom: 0;
     left: 0;
@@ -83,7 +83,8 @@
     border-radius: 12px;
     height: 100%;
     /* width: 100%; */
-    min-width: 310px;
+    /* min-width: 310px; */
+    min-width: 510px;
     font-size: 0.8rem;
 }
 
@@ -102,3 +103,21 @@
 .nav-btn:hover {
     background-color: var(--bg300);
 }
+
+.counter {
+    position: absolute;
+    top: -12px;
+    right: -5px;
+    border-radius: 25px;
+    background: red;
+    color: var(--text);
+    padding: 0.2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 20px;
+    height: 20px;
+}
+/* .counter > span {
+    margin-bottom: 2px;
+} */

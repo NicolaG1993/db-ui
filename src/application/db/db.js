@@ -88,6 +88,26 @@ module.exports.newRecord = (id) => {
     const key = [id];
     return db.query(myQuery, key);
 };
+module.exports.newPlaylist = (title, user) => {
+    const myQuery = `INSERT INTO playlist
+    (title, userID)
+    VALUES ($1, $2) 
+    RETURNING *`;
+    const keys = [title, user];
+    return db.query(myQuery, keys);
+};
+module.exports.newMoviesFromUrls = (arr) => {
+    const myQuery = `INSERT INTO movie (title, urls)
+    SELECT
+        datajson->'title',
+        ARRAY [datajson->'url']
+    FROM 
+        jsonb_array_elements($1::jsonb)
+        AS t(datajson)
+    RETURNING *`;
+    const key = [arr];
+    return db.query(myQuery, key);
+};
 
 /* EDIT */
 module.exports.editActor = (id, name, pic, rating, bday, genre) => {
@@ -148,18 +168,27 @@ module.exports.editRecord = (id, date) => {
 };
 module.exports.editRecords = (ids, date) => {
     const myQuery = `UPDATE counter 
-        SET created_at = $2
-        WHERE id = ANY($1)
-        RETURNING *`;
+    SET created_at = $2
+    WHERE id = ANY($1)
+    RETURNING *`;
     const keys = [ids, date];
     return db.query(myQuery, keys);
 };
 module.exports.editPicURL = (pic, id, table) => {
     const myQuery = `UPDATE ${table} 
-        SET pic = $1
-        WHERE id = $2
-        RETURNING *`;
+    SET pic = $1
+    WHERE id = $2
+    RETURNING *`;
     const keys = [pic, id];
+    return db.query(myQuery, keys);
+};
+module.exports.editPlaylist = (id, title, user) => {
+    const myQuery = `UPDATE playlist 
+        SET title = COALESCE($2, title)
+        WHERE id = $1
+        AND userID = $3
+        RETURNING *`;
+    const keys = [id, title, user];
     return db.query(myQuery, keys);
 };
 
@@ -210,6 +239,11 @@ module.exports.getTagByID = (id) => {
 };
 module.exports.getRecordByID = (id) => {
     const myQuery = `SELECT * FROM counter WHERE movieID = $1`;
+    const key = [id];
+    return db.query(myQuery, key);
+};
+module.exports.getPlaylistByID = (id) => {
+    const myQuery = `SELECT * FROM playlist WHERE id = $1`;
     const key = [id];
     return db.query(myQuery, key);
 };
@@ -305,6 +339,68 @@ module.exports.getAllRecords = () => {
 };
 
 /* GET ALL WITH INFOS */
+module.exports.getAllPlaylistsWithInfos = (str, user) => {
+    const myQuery = `SELECT
+        playlist.*,
+        movies_JSON.movies
+    FROM
+        playlist
+        
+        LEFT JOIN
+
+            (SELECT
+                movie_playlist.playlistID,
+                JSON_AGG(
+                    JSON_BUILD_OBJECT(
+                        'id', movie.id,
+                        'title', movie.title                 
+                        )
+                    ) AS movies
+            FROM
+                movie_playlist
+                JOIN movie ON movie.id = movie_playlist.movieID
+            GROUP BY
+                movie_playlist.playlistID
+            ) AS movies_JSON
+            ON playlist.id = movies_JSON.playlistID
+
+    WHERE playlist.title ILIKE '%' || $1 || '%'
+    AND playlist.userID = $2
+    ORDER BY created_at DESC`;
+    const keys = [str, user];
+    return db.query(myQuery, keys);
+};
+module.exports.getPlaylistWithInfos = (id, user) => {
+    const myQuery = `SELECT
+        playlist.*,
+        movies_JSON.movies
+    FROM
+        playlist
+        
+        LEFT JOIN
+
+            (SELECT
+                movie_playlist.playlistID,
+                JSON_AGG(
+                    JSON_BUILD_OBJECT(
+                        'id', movie.id,
+                        'title', movie.title                 
+                        )
+                    ) AS movies
+            FROM
+                movie_playlist
+                JOIN movie ON movie.id = movie_playlist.movieID
+            GROUP BY
+                movie_playlist.playlistID
+            ) AS movies_JSON
+            ON playlist.id = movies_JSON.playlistID
+
+    WHERE playlist.id = $1
+    AND playlist.userID = $2`;
+    const keys = [id, user];
+    return db.query(myQuery, keys);
+};
+
 module.exports.getAllMoviesWithInfos = (str, limit, offset, order) => {
     const myQuery = `SELECT 
         movie.*,

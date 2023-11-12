@@ -222,6 +222,17 @@ select:hover {
     /* outline: 1px solid var(--bg500); */
 }
 
+/* GLOBAL ELEMENTS */
+.heading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+.heading > a:hover {
+    font-weight: 500;
+}
+
 /* CUSTOM ELEMENTS */
 #Overlay {
     position: fixed;
@@ -306,4 +317,31 @@ select:hover {
 }
 .subBox:last-child {
     flex-direction: row-reverse;
+}
+
+/* ADD URL MODAL /move from here*/
+.modal {
+    position: fixed;
+    z-index: 20;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    margin-left: auto;
+    margin-right: auto;
+    background: red;
+    /* width: 200px;
+    height: 80px; */
+    border: 1px solid var(--text);
+    border-radius: 25px;
+}
+.modal-container {
+    width: 100%;
+    height: 100%;
+}
+.modal-close {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    cursor: pointer;
+    font-weight: bold;
 }
