@@ -10,7 +10,6 @@ export default function PageNav({ totalCount, goToPage, step, selectedPage }) {
         );
         const totalPages = options.length;
 
-        console.log({ totalCount, totalPages, goToPage, step, selectedPage });
         return (
             <div className={styles.wrap}>
                 <button
