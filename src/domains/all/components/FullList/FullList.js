@@ -12,6 +12,7 @@ import FullListSearchBar from "./FullListSearchBar";
 import FullListDisplayer from "./FullListDisplayer";
 import fetchAllData from "../../actions/fetchAllData";
 import fetchFilteredData from "../../actions/fetchFilteredData";
+import scrollToTop from "@/src/domains/_app/utils/scrollToTop";
 
 export default function FullList({ tableName }) {
     //================================================================================
@@ -131,7 +132,10 @@ export default function FullList({ tableName }) {
     //================================================================================
     // Filters
     //================================================================================
-    const goToPage = (val) => setSelectedPage(val);
+    const goToPage = (val) => {
+        setSelectedPage(val);
+        scrollToTop();
+    };
 
     const handleSearchBar = (e) => {
         e.preventDefault();

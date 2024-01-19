@@ -3,7 +3,7 @@ import PageNav from "../Filters/PageNav/PageNav";
 import styles from "./FullListDisplayer.module.css";
 import { parseOrderOptions } from "@/src/domains/_app/utils/parsers";
 
-export default function FullListDiplayer({
+export default function FullListDisplayer({
     table,
     tableName,
     displayData,
