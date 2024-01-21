@@ -28,6 +28,7 @@ export default function Layout({ children, getRandomMovie }) {
 
     useEffect(() => {
         keepTheme();
+        authCheck();
     }, []);
 
     useEffect(() => {
