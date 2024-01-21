@@ -3,7 +3,7 @@ import { newMoviesFromUrls } from "@/src/application/db/db.js";
 export default async function handler(req, res) {
     let { newElements } = req.body;
     let parsedObj = JSON.stringify(newElements);
-    parsedObj = parsedObj.replaceAll('"', "'");
+    // parsedObj = parsedObj.replaceAll('"', "'");
 
     console.log("🌶️ parsedObj: ", parsedObj);
     try {
