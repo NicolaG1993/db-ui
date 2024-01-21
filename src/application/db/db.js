@@ -1015,3 +1015,20 @@ module.exports.getIDsByNames = (arr, table) => {
     const key = [arr];
     return db.query(myQuery, key);
 };
+
+/*
+CREATE TABLE movie(
+    id SERIAL PRIMARY KEY,
+    title VARCHAR(255) NOT NULL CHECK (title != ''),
+    urls text[]
+);
+
+INSERT INTO movie (title, urls)
+    SELECT
+        datajson->'title',
+        ARRAY [datajson->'url'],
+    FROM 
+        jsonb_array_elements('[{"url":"www.test.com","title":"Some title"}]'::jsonb)
+        AS t(datajson)
+    RETURNING *
+*/

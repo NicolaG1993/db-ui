@@ -3,6 +3,9 @@ import { newMoviesFromUrls } from "@/src/application/db/db.js";
 export default async function handler(req, res) {
     let { newElements } = req.body;
     let parsedObj = JSON.stringify(newElements);
+    parsedObj = parsedObj.replaceAll('"', "'");
+
+    console.log("🌶️ parsedObj: ", parsedObj);
     try {
         // url deve essere una stringa, sql query la trasforma in text[] in automatico
         const { rows } = await newMoviesFromUrls(parsedObj);

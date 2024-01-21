@@ -53,6 +53,7 @@ export default function PlaylistEditor() {
         setAddUrlModal(true);
     };
     const openSavePlaylist = () => {
+        console.log("openSavePlaylist invoked");
         setAddUrlModal(false);
         setSaveModal(true);
     };
