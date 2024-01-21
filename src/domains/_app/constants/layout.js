@@ -23,6 +23,7 @@ export default function Layout({ children, getRandomMovie }) {
     //================================================================================
     const dispatch = useDispatch();
     const [user, setUser] = useState();
+    const [showAuthModal, setShowAuthModal] = useState(true);
     let userInfo = useSelector(selectUserState);
 
     useEffect(() => {
@@ -31,6 +32,7 @@ export default function Layout({ children, getRandomMovie }) {
 
     useEffect(() => {
         setUser(userInfo);
+        userInfo && setShowAuthModal(false);
     }, [userInfo]);
 
     useEffect(() => {
@@ -53,6 +55,14 @@ export default function Layout({ children, getRandomMovie }) {
         }
     };
 
+    const authCheck = () => {
+        if (process.env.NODE_ENV === "development") {
+            setShowAuthModal(false);
+        } else if (process.env.NODE_ENV === "production") {
+            setShowAuthModal(true);
+        }
+    };
+
     //================================================================================
     // Render UI
     //================================================================================
@@ -69,7 +79,7 @@ export default function Layout({ children, getRandomMovie }) {
                 <meta name="author" content="NGD • Nicola Gaioni Design" />
                 <meta charSet="UTF-8" />
             </Head>
-            {!user ? (
+            {showAuthModal ? (
                 <AuthModal />
             ) : (
                 <>
