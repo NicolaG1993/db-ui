@@ -13,10 +13,17 @@ import editPlaylist from "@/src/domains/_app/constants/components/SessionPlaylis
 import { useSelector } from "react-redux";
 import { selectUserState } from "@/src/application/redux/slices/userSlice.js";
 import { useDispatch } from "react-redux";
-import { deleteSessionPlaylist } from "@/src/application/redux/slices/sessionPlaylistSlice";
+import {
+    deleteSessionPlaylist,
+    updateSessionPlaylist,
+} from "@/src/application/redux/slices/sessionPlaylistSlice";
 import { getError } from "@/src/application/utils/error";
 
 export default function SavePlaylistForm({ closeModal, sessionPlaylist }) {
+    console.log("✅SavePlaylistForm rendering: ", {
+        closeModal,
+        sessionPlaylist,
+    });
     /*
     • set title - if not generate unique one from date
     • user can select playlist to update instead - same thing goes for not unique title (it will update prev version)
@@ -44,8 +51,9 @@ export default function SavePlaylistForm({ closeModal, sessionPlaylist }) {
     }, []);
 
     useEffect(() => {
-        const urlObjects = sessionPlaylist.filter((el) => el.url);
-        setNewElements(urlObjects);
+        const newObjects = sessionPlaylist.filter((el) => el.url);
+        console.log("newObjects: ", newObjects);
+        setNewElements(newObjects);
     }, [sessionPlaylist]);
 
     useEffect(() => {
@@ -87,11 +95,12 @@ export default function SavePlaylistForm({ closeModal, sessionPlaylist }) {
 
     // UTILS //
     const getAllPlaylists = async () => {
+        console.log("getAllPlaylists: ", userInfo);
         try {
             let data = await fetchAllPlaylists("", userInfo.id);
             setAllPlaylists(data);
         } catch (err) {
-            setErrors({ server: err });
+            setErrors({ server: getError(err) });
         }
     };
 
@@ -153,6 +162,12 @@ export default function SavePlaylistForm({ closeModal, sessionPlaylist }) {
                 sessionPlaylist
             );
             console.log("data: ", data);
+            // What if storeNewItemsFromUrls works but then confirmSubmit fails?
+            // The playlist will contain new items but they will be already saved in the db
+            // If we try save again it will save them again
+            // we need to dispatch the new playlist first
+            // 🧠🧠🧠 I could add another step to the modal (like: clips added to the db -> confirm playlist) 🧠🧠🧠
+            dispatch(updateSessionPlaylist(data));
             // then invoke "confirmSubmit"
             confirmSubmit(data, title);
             setNewElementsModal(false);
@@ -180,7 +195,7 @@ export default function SavePlaylistForm({ closeModal, sessionPlaylist }) {
         }
     };
 
-    console.log("SavePlaylistForm: ", {
+    console.log("💩SavePlaylistForm: ", {
         hints,
         title,
         errors,
@@ -195,7 +210,14 @@ export default function SavePlaylistForm({ closeModal, sessionPlaylist }) {
     // RENDER //
     return (
         <>
-            {!newElementsModal ? (
+            {Object.keys(errors).length > 0 ? (
+                Object.entries(errors).map(([key, value]) => (
+                    <div key={"error: " + key}>
+                        <p>ERROR {key}:</p>
+                        <p>{value}</p>
+                    </div>
+                ))
+            ) : !newElementsModal ? (
                 <div className={styles["form"]}>
                     <p className={styles["form-title"]}>Save playlist</p>
                     <div className={styles["input-wrapper"]}>
@@ -254,14 +276,6 @@ export default function SavePlaylistForm({ closeModal, sessionPlaylist }) {
                     </button>
                 </div>
             )}
-
-            {Object.keys(errors).length > 0 &&
-                Object.entries(errors).map(([key, value]) => (
-                    <div key={"error: " + key}>
-                        <p>ERROR {key}:</p>
-                        <p>{value}</p>
-                    </div>
-                ))}
         </>
     );
 }

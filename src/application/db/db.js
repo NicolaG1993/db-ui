@@ -99,8 +99,8 @@ module.exports.newPlaylist = (title, user) => {
 module.exports.newMoviesFromUrls = (arr) => {
     const myQuery = `INSERT INTO movie (title, urls)
     SELECT
-        datajson->'title',
-        ARRAY [datajson->'url']
+        datajson->>'title',
+        ARRAY [datajson->>'url']
     FROM 
         jsonb_array_elements($1::jsonb)
         AS t(datajson)

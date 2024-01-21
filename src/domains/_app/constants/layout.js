@@ -15,7 +15,10 @@ import {
 
 import AuthModal from "@/src/domains/_app/components/Auth/AuthModal.js";
 import { useSelector } from "react-redux";
-import { selectUserState } from "@/src/application/redux/slices/userSlice.js";
+import {
+    selectUserState,
+    userLogin,
+} from "@/src/application/redux/slices/userSlice.js";
 
 export default function Layout({ children, getRandomMovie }) {
     //================================================================================
@@ -28,6 +31,7 @@ export default function Layout({ children, getRandomMovie }) {
 
     useEffect(() => {
         keepTheme();
+        authCheck();
     }, []);
 
     useEffect(() => {
@@ -58,6 +62,7 @@ export default function Layout({ children, getRandomMovie }) {
     const authCheck = () => {
         if (process.env.NODE_ENV === "development") {
             setShowAuthModal(false);
+            dispatch(userLogin({ id: 3 })); // setting id to enable API requests in DEV
         } else if (process.env.NODE_ENV === "production") {
             setShowAuthModal(true);
         }

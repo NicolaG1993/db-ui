@@ -56,6 +56,10 @@ const sessionPlaylistSlice = createSlice({
             Cookies.set("sessionPlaylist", JSON.stringify(action.payload));
             state.sessionPlaylist = action.payload;
         },
+        updateSessionPlaylist: (state, action) => {
+            Cookies.set("sessionPlaylist", JSON.stringify(action.payload));
+            state.sessionPlaylist = action.payload;
+        },
     },
 });
 
@@ -66,6 +70,7 @@ export const {
     shuffleSessionPlaylist,
     deleteSessionPlaylist,
     loadSessionPlaylist,
+    updateSessionPlaylist,
 } = sessionPlaylistSlice.actions;
 
 export const selectSessionPlaylist = (state) =>
