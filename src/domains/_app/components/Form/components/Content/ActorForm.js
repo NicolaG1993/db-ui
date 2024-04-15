@@ -1,5 +1,6 @@
 import Image from "next/image";
 import styles from "@/src/application/styles/AdminDashboard.module.css";
+import InputSocials from "../../../Inputs/InputSocials/InputSocials";
 
 export default function ActorForm({
     formState,
@@ -196,6 +197,19 @@ export default function ActorForm({
                         Select
                     </div>
                 </div>
+            </div>
+
+            <div className={styles["form-col-left"]}>
+                <label>
+                    <h4>Socials</h4>
+                </label>
+            </div>
+
+            <div className={styles["form-col-right"]}>
+                <InputSocials
+                    formState={formState}
+                    setFormState={updateFormState}
+                />
             </div>
 
             <div

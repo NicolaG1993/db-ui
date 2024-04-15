@@ -33,9 +33,9 @@ export default function Form({
     const appSettings = useSelector(selectAppSettings);
 
     const [form, setForm] = useState(dataStructureForms[topicLabel]);
-    const Component = form.formComponent;
+    const FormComponent = form.formComponent;
     const [formState, setFormState] = useState(form.emptyState);
-    const [activeForm, setActiveForm] = useState(topicLabel);
+    const [activeForm, setActiveForm] = useState(topicLabel); // delete?
     const [newImage, setNewImage] = useState();
     const [errors, setErrors] = useState({});
     const [openSection, setOpenSection] = useState(false);
@@ -243,9 +243,10 @@ export default function Form({
                     <h2>{topicLabel}</h2>
                 </div>
 
-                {Component && topicLabel === form.key ? (
-                    <Component
+                {FormComponent && topicLabel === form.key ? (
+                    <FormComponent
                         formState={formState}
+                        propsData={propsData}
                         updateFormState={updateFormState}
                         validateData={validateData}
                         confirmChanges={confirmChanges}
@@ -260,7 +261,7 @@ export default function Form({
                 )}
             </div>
 
-            {Component && topicLabel === form.key ? (
+            {FormComponent && topicLabel === form.key ? (
                 <FormSideNav
                     data={sideNavData}
                     formState={formState}
@@ -280,3 +281,6 @@ export default function Form({
         </div>
     );
 }
+
+// 🧠 SPIKE: I should have all these props in a dedicated store 🧠
+// formState, propsData, etc...

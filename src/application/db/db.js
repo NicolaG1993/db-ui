@@ -32,12 +32,31 @@ module.exports.getUserByEmail = (email) => {
 };
 
 /* NEW */
-module.exports.newActor = (name, pic, rating, bday, genre) => {
+module.exports.newActor = (
+    name,
+    pic,
+    rating,
+    bday,
+    genre,
+    twitter,
+    instagram,
+    more_urls
+) => {
     const myQuery = `INSERT INTO actor 
-    (name, pic, rating, birthday, genre) 
-    VALUES ($1, $2, $3, $4, $5) 
+    (name, pic, rating, birthday, genre, twitter, instagram, more_urls) 
+    VALUES ($1, $2, $3, $4, $5, $6, $7, $8) 
     RETURNING *`;
-    const keys = [name, pic, rating, bday, genre];
+    const keys = [
+        name,
+        pic,
+        rating,
+        bday,
+        genre,
+        twitter,
+
+        instagram,
+        more_urls,
+    ];
     return db.query(myQuery, keys);
 };
 module.exports.newMovie = (title, pic, rating, urls, release) => {
@@ -110,12 +129,32 @@ module.exports.newMoviesFromUrls = (arr) => {
 };
 
 /* EDIT */
-module.exports.editActor = (id, name, pic, rating, bday, genre) => {
+module.exports.editActor = (
+    id,
+    name,
+    pic,
+    rating,
+    bday,
+    genre,
+    twitter,
+    instagram,
+    more_urls
+) => {
     const myQuery = `UPDATE actor 
-        SET name = COALESCE($2, name), pic = $3, rating = $4, birthday = $5, genre = $6
+        SET name = COALESCE($2, name), pic = $3, rating = $4, birthday = $5, genre = $6, twitter = $7, instagram = $8, more_urls = $9
         WHERE id = $1
         RETURNING *`;
-    const keys = [id, name, pic, rating, bday, genre];
+    const keys = [
+        id,
+        name,
+        pic,
+        rating,
+        bday,
+        genre,
+        twitter,
+        instagram,
+        more_urls,
+    ];
     return db.query(myQuery, keys);
 };
 module.exports.editMovie = (id, title, pic, rating, urls, release) => {

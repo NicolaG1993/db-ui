@@ -17,7 +17,7 @@ export default function Actor({
     openForm,
     setOpenForm,
 }) {
-    // console.log("itemInfos: ", itemInfos);
+    console.log("item: ", { item, itemInfos });
     let { pic, rating, movies, nameType } = item;
     return (
         <div id={styles.Actor} className={styles.elWrap}>
@@ -169,6 +169,51 @@ export default function Actor({
                         )}
                     </div>
                 </div>
+
+                <div className={styles.elRow}>
+                    <span>Social: </span>
+                    <div>
+                        {item.twitter && (
+                            <a
+                                href={item.twitter}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className={styles.linkEl}
+                            >
+                                <p>{item.twitter}</p>
+                            </a>
+                        )}
+                        {item.instagram && (
+                            <a
+                                href={item.instagram}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className={styles.linkEl}
+                            >
+                                <p>{item.instagram}</p>
+                            </a>
+                        )}
+                    </div>
+                </div>
+
+                {item.more_urls && (
+                    <div className={styles.elRow}>
+                        <span>Links: </span>
+                        <div>
+                            {item.more_urls.map((url, i) => (
+                                <a
+                                    href={url}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    key={`${url} ${i}`}
+                                    className={styles.linkEl}
+                                >
+                                    <p>{url}</p>
+                                </a>
+                            ))}
+                        </div>
+                    </div>
+                )}
             </div>
 
             <div className={styles.infoWrap}>

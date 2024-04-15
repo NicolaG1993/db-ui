@@ -1,6 +1,7 @@
 import { parseFormProps } from "./formParsers";
 
 export default function formHydrate(formState, emptyState, propsData) {
+    console.log("hidrate! ", { formState, emptyState, propsData });
     if (Array.isArray(propsData)) {
         let newState = { ...emptyState, ids: propsData };
         return newState;
@@ -9,6 +10,11 @@ export default function formHydrate(formState, emptyState, propsData) {
         Object.entries(propsData).map(([key, value], i) => {
             if (value) {
                 let parsedValue = parseFormProps(key, value);
+
+                if (key === "more_urls") {
+                    key = "moreUrls"; // DEBT 🔥
+                }
+
                 obj[key] = parsedValue;
             }
         });

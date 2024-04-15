@@ -14,22 +14,26 @@ const parseFormProps = (key, value) => {
         return value.map((el) => el.name);
     } else if (key === "movies") {
         return value.map((el) => el.title);
-    } else if (
-        key === "pic" ||
-        key === "id" ||
-        key === "name" ||
-        key === "title" ||
-        key === "nationalities" ||
-        key === "genre" ||
-        key === "rating" ||
-        key === "created_at" ||
-        key === "type" ||
-        key === "nameType" ||
-        key === "group" ||
-        key === "urls"
-    ) {
+    } else {
         return value;
     }
+    // else if (
+    //     key === "pic" ||
+    //     key === "id" ||
+    //     key === "name" ||
+    //     key === "title" ||
+    //     key === "nationalities" ||
+    //     key === "genre" ||
+    //     key === "rating" ||
+    //     key === "created_at" ||
+    //     key === "type" ||
+    //     key === "nameType" ||
+    //     key === "group" ||
+    //     key === "urls"
+    // ) {
+    //     return value;
+    // }
+    // 🧠 Ho commentato questa condition per fare l'hydrate di ActorForm on edit - non so se rompe qualcos'altro 🧠
 };
 
 // remove all null, undefined, etc.. from relations obj before calling API - just to be sure we dont have to store in DB wrong values

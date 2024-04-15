@@ -5,6 +5,8 @@ import {
 } from "@/src/application/db/db.js";
 
 export default async function handler(req, res) {
+    console.log("new actor: ", req.body);
+
     let {
         name,
         pic,
@@ -16,6 +18,9 @@ export default async function handler(req, res) {
         categories,
         tags,
         genre,
+        twitter,
+        instagram,
+        moreUrls,
     } = req.body;
     if (!name) {
         return res.status(422).send({ error: ["Missing one or more fields"] });
@@ -30,7 +35,10 @@ export default async function handler(req, res) {
             pic,
             Number(rating),
             birthday,
-            genre
+            genre,
+            twitter,
+            instagram,
+            moreUrls || []
         );
         tags &&
             tags.length &&

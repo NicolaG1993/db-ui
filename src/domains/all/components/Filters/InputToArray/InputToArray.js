@@ -1,6 +1,9 @@
 import { useState } from "react";
 import styles from "@/src/application/styles/AdminDashboard.module.css";
 
+// FIX: Questo component é salvato nel domain "all" ma viene usato anche in forms to create and edit
+// quindi va o spostato nel domain "_app" o duplicato, forse anche gli altri component in questo directory
+
 export default function InputToArray({
     topic,
     topicID,
