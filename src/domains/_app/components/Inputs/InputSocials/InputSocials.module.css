@@ -1,0 +1,49 @@
+.openInputBtn {
+    margin-bottom: 0.75rem;
+}
+
+.inputWrap,
+.buttonsWrap {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.75rem;
+}
+
+.inputWrap > input {
+    margin-right: 0.75rem;
+}
+
+.buttonsWrap > button:nth-child(1) {
+    margin-right: 0.75rem;
+}
+
+.urlsWrap {
+    display: flex;
+    flex-direction: column;
+}
+
+.urlsWrap > .socialElement {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid var(--bg500);
+    border-radius: 12px;
+    padding: 0.25rem 0.75rem;
+    margin: 0.25rem;
+}
+
+.urlsWrap > .socialElement p {
+    margin: 0;
+}
+
+.urlsWrap > .socialElement p:nth-child(1) {
+    overflow: hidden;
+    font-size: 0.75rem;
+}
+.urlsWrap > .socialElement p:nth-child(2) {
+    font-weight: bold;
+    cursor: pointer;
+}
+.urlsWrap > .socialElement p:nth-child(2):hover {
+    color: var(--bg900);
+}

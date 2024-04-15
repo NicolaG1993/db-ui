@@ -13,6 +13,9 @@ async function handler(req, res) {
         rating,
         birthday,
         genre,
+        twitter,
+        instagram,
+        moreUrls,
         addedRelations,
         removedRelations,
     } = req.body;
@@ -31,7 +34,11 @@ async function handler(req, res) {
             pic,
             Number(rating),
             birthday,
-            genre
+            genre,
+            twitter,
+
+            instagram,
+            moreUrls || []
         );
 
         // ADD RELATIONS

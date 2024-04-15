@@ -35,7 +35,10 @@ CREATE TABLE actor(
     pic VARCHAR(255),
     rating DECIMAL,
     birthday TIMESTAMP,
-    genre VARCHAR(255)
+    genre VARCHAR(255),
+    twitter VARCHAR(255),
+    instagram VARCHAR(255),
+    more_urls text[],
 );
 
 CREATE TABLE movie(
