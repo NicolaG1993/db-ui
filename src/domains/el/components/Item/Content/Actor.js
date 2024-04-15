@@ -5,6 +5,8 @@ import Form from "@/src/domains/_app/components/Form/components/Form";
 import RelationsList from "../../RelationsList/RelationsList";
 import { detectImage } from "@/src/domains/_app/utils/parsers";
 import { formatDateEU, getAge } from "@/src/application/utils/convertTimestamp";
+import IG_icon from "/public/IG_icon.svg";
+import X_icon from "/public/X_icon.svg";
 
 export default function Actor({
     label,
@@ -173,24 +175,24 @@ export default function Actor({
                 <div className={styles.elRow}>
                     <span>Social: </span>
                     <div>
-                        {item.twitter && (
-                            <a
-                                href={item.twitter}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className={styles.linkEl}
-                            >
-                                <p>{item.twitter}</p>
-                            </a>
-                        )}
                         {item.instagram && (
                             <a
                                 href={item.instagram}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className={styles.linkEl}
+                                className={styles.iconLink}
                             >
-                                <p>{item.instagram}</p>
+                                <X_icon />
+                            </a>
+                        )}
+                        {item.twitter && (
+                            <a
+                                href={item.twitter}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className={styles.iconLink}
+                            >
+                                <IG_icon />
                             </a>
                         )}
                     </div>
