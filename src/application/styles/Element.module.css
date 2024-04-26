@@ -193,16 +193,19 @@
     /* margin-top: 3em; */
     margin: 0.5rem 0.25rem;
     display: flex;
+    flex-wrap: wrap;
+
     /* flex-direction: column; */
 }
 
 .buttonsWrap button {
-    width: 140px;
+    width: 50%;
     margin: 0.5em;
     line-height: 2em;
     border-radius: 10px;
     border: none;
     cursor: pointer;
+    flex-grow: 2;
 }
 .buttonsWrap button:hover {
     background-color: var(--bg700);
