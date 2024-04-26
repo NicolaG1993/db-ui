@@ -79,6 +79,7 @@
 }
 
 #SessionBtn {
+    position: relative;
 }
 
 .counter {
