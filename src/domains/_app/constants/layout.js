@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { keepTheme } from "@/src/domains/_app/constants/actions/themes";
 import Header from "@/src/domains/_app/constants/components/Header/Header";
 import Footer from "@/src/domains/_app/constants/components/Footer/Footer";
+import Widgets from "@/src/domains/_app/constants/components/Widgets/Widgets";
 import SessionPlaylist from "@/src/domains/_app/constants/components/SessionPlaylist/SessionPlaylist";
 
 import { useDispatch } from "react-redux";
@@ -19,6 +20,9 @@ import {
     selectUserState,
     userLogin,
 } from "@/src/application/redux/slices/userSlice.js";
+import styles from "@/src/application/styles/Layout.module.css";
+import RandomNumberButton from "./components/Widgets/RandomNumberButton";
+import SessionPlaylistButton from "./components/Widgets/SessionPlaylistButton";
 
 export default function Layout({ children, getRandomMovie }) {
     //================================================================================
@@ -90,7 +94,7 @@ export default function Layout({ children, getRandomMovie }) {
                 <>
                     <Header getRandomMovie={getRandomMovie} />
                     {children}
-                    <SessionPlaylist />
+                    <Widgets />
                     <Footer />
                 </>
             )}

@@ -4,17 +4,14 @@ import { selectSessionPlaylist } from "@/src/application/redux/slices/sessionPla
 
 import SessionPlaylistUI from "./SessionPlaylistUI";
 import AddUrlForm from "@/src/domains/_app/constants/components/SessionPlaylist/components/AddUrlForm.js";
-import styles from "@/src/application/styles/Layout.module.css";
+import styles from "@/src/domains/_app/constants/components/SessionPlaylist/SessionPlaylist.module.css";
 
-export default function SessionPlaylist() {
-    const [nav, setNav] = useState(false);
+export default function SessionPlaylist({ open, closeWidget }) {
+    // const [nav, setNav] = useState(false);
     const [addUrlModal, setAddUrlModal] = useState(false);
 
     let sessionPlaylist = useSelector(selectSessionPlaylist, shallowEqual);
 
-    const close = () => {
-        setNav(false);
-    };
     const openAddUrl = () => {
         setAddUrlModal(true);
     };
@@ -22,48 +19,15 @@ export default function SessionPlaylist() {
         setAddUrlModal(false);
     };
 
-    return (
+    // TODO: Maybe move modal out of here?
+    return open ? (
         <>
-            <div
-                id={styles["SessionPlaylist"]}
-                style={{
-                    height: nav ? "650px" : "0",
-                    // minWidth: nav ? "200px" : "0",
-                }}
-            >
-                <div className={styles["nav-content"]}>
-                    {nav ? (
-                        <>
-                            <SessionPlaylistUI
-                                sessionPlaylist={sessionPlaylist}
-                                openAddUrl={openAddUrl}
-                                close={close}
-                            />
-                        </>
-                    ) : (
-                        <></>
-                    )}
-                </div>
-
-                <div
-                    className={styles["nav-btn"]}
-                    onClick={() => {
-                        setNav(!nav);
-                        closeAddUrl();
-                    }}
-                >
-                    <span>{nav ? "Minimize" : "Session Tab"}</span>
-                    {!nav && sessionPlaylist?.length ? (
-                        <div className={styles["counter"]}>
-                            <span>{sessionPlaylist.length}</span>
-                        </div>
-                    ) : (
-                        <></>
-                    )}
-                </div>
-            </div>
-
-            {addUrlModal ? (
+            <SessionPlaylistUI
+                sessionPlaylist={sessionPlaylist}
+                openAddUrl={openAddUrl}
+                close={close}
+            />
+            {addUrlModal && (
                 <div className={"modal"}>
                     <div className={"modal-container"}>
                         <span className={"modal-close"} onClick={closeAddUrl}>
@@ -72,9 +36,9 @@ export default function SessionPlaylist() {
                         <AddUrlForm closeModal={closeAddUrl} />
                     </div>
                 </div>
-            ) : (
-                <></>
             )}
         </>
+    ) : (
+        <></>
     );
 }
