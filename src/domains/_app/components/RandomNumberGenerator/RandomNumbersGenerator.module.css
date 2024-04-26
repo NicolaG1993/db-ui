@@ -1,0 +1,143 @@
+#RandomNumberGenerator {
+    padding: 0.75rem 0.5rem;
+    width: 100%;
+}
+
+#RandomNumberGenerator {
+    width: 100%;
+    /* margin-top: var(--size700); */
+    display: flex;
+    flex-wrap: wrap;
+    /* row-gap: var(--size700); */
+    row-gap: 0.5rem;
+    justify-content: space-between;
+}
+
+.form-wrap > form {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: auto;
+    row-gap: 0.5rem;
+    column-gap: 0.5rem;
+    /* margin-right: var(--size500); */
+    margin-right: 2rem;
+    margin-left: 0.5rem;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    margin-bottom: 1rem;
+    /* padding-left: 25px; */
+    border-left: 2px solid var(--text);
+    width: 100%;
+    background: var(--bg600);
+}
+
+.grid-column-1to2 {
+    grid-column-start: 1;
+    grid-column-end: 2;
+}
+.grid-column-2to3 {
+    grid-column-start: 2;
+    grid-column-end: 3;
+}
+.grid-column-2to4 {
+    grid-column-start: 2;
+    grid-column-end: 4;
+}
+.grid-column-3to4 {
+    grid-column-start: 3;
+    grid-column-end: 4;
+}
+.grid-column-4to5 {
+    grid-column-start: 4;
+    grid-column-end: 5;
+}
+.grid-column-1to3 {
+    grid-column-start: 1;
+    grid-column-end: 3;
+}
+.grid-column-1to5 {
+    grid-column-start: 1;
+    grid-column-end: 5;
+}
+.grid-column-3to5 {
+    grid-column-start: 3;
+    grid-column-end: 5;
+}
+.grid-column-2to5 {
+    grid-column-start: 2;
+    grid-column-end: 5;
+}
+
+/* 
+#RandomNumberGenerator input[type="number"],
+#RandomNumberGenerator select {
+    color: var(--text);
+    background-color: var(--bg000);
+    border: 2px var(--text) solid;
+} */
+
+.form-wrap > form input[type="number"],
+.form-wrap > form select {
+    width: 100%;
+    height: 25px;
+    /* margin-right: 5px; */
+}
+
+.submit-box {
+    margin-top: auto;
+}
+
+#RandomNumberGenerator button {
+    border: 2px var(--text) solid;
+    padding: 0.5rem;
+    margin-top: 0.5rem;
+    text-align: center;
+    cursor: pointer;
+    font-weight: bold;
+    /* width: 350px; */
+    /* width: 100%; */
+    font-family: var(--fontB);
+    text-transform: uppercase;
+    font-size: 12px;
+    color: var(--text);
+    background-color: var(--bg200);
+    transition: 0.2s ease;
+}
+#RandomNumberGenerator button:hover {
+    color: var(--text-inverted);
+    background-color: var(--bg500);
+}
+.grid-column-1to5 > button {
+    width: 100%;
+    margin-bottom: 0.25rem;
+}
+
+.form-results {
+    /* width: 450px; */
+    display: flex;
+    align-items: center;
+    width: 100%;
+    margin-right: 2rem;
+    margin-left: 0.5rem;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    border-left: 2px solid var(--text);
+    background: var(--bg600);
+}
+.form-results > div:nth-child(1) {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+.form-results > button:nth-child(2) {
+    width: 180px;
+}
+.results-box {
+    margin-bottom: 0.5rem;
+    min-height: 50px;
+}
+.form-results p {
+    margin-bottom: 5px;
+}
