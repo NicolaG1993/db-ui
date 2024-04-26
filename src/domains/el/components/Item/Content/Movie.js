@@ -5,6 +5,7 @@ import Form from "@/src/domains/_app/components/Form/components/Form";
 import { formatDateEU } from "@/src/application/utils/convertTimestamp";
 import RecordsCounter from "../RecordsCounter";
 import RelationsList from "../../RelationsList/RelationsList";
+import SessionPlaylistAddBtn from "../SessionPlaylistAddBtn";
 
 export default function Movie({
     label,
@@ -234,8 +235,14 @@ export default function Movie({
                 </div>
 
                 <div className={styles.buttonsWrap}>
+                    <SessionPlaylistAddBtn el={item} />
                     <button onClick={() => setOpenForm(true)}>Modify</button>
-                    <button onClick={() => handleDelete(id)}>Delete</button>
+                    <button
+                        onClick={() => handleDelete(id)}
+                        className="button-danger"
+                    >
+                        Delete
+                    </button>
                 </div>
             </div>
 

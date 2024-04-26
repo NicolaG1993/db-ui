@@ -17,6 +17,7 @@
 
     --overlay: rgba(0, 0, 0, 0.3);
     --overlayB: rgba(50, 50, 50, 0.9);
+
     --text: white;
 }
 
@@ -125,6 +126,8 @@ body {
 }
 html {
     color-scheme: dark;
+    --dangerBg000: rgb(186, 0, 0);
+    --dangerBg100: rgb(215, 61, 61);
 }
 body {
     background: var(--bg400);
@@ -189,6 +192,20 @@ button:disabled {
     border: 2px solid var(--bg700);
     cursor: no-drop;
 }
+.button-danger {
+    background-color: var(--dangerBg100);
+    border: 2px solid var(--dangerBg000);
+    border-radius: 3px;
+    color: white;
+    cursor: pointer;
+}
+/* 
+not working on top of "button" style
+.button-danger:hover {
+    background-color: var(--dangerBg000);
+    border: 2px solid var(--dangerBg100);
+    color: white;
+} */
 
 input,
 select {
