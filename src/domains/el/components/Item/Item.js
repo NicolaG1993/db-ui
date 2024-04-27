@@ -1,15 +1,34 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import axios from "axios";
 import styles from "@/src/application/styles/Element.module.css";
 import dataStructureItems from "@/src/application/settings/dataStructureItems";
 import { parseTagsForUiList } from "@/src/domains/_app/utils/parsers";
 import Head from "next/head";
+import fetchItem from "../../actions/fetchItem";
+import {
+    selectItemStore,
+    selectSelectedItem,
+    selectItemIsLoaded,
+    selectItem,
+    activateLoadingItem,
+} from "@/src/application/redux/slices/itemSlice";
+import { shallowEqual, useDispatch, useSelector } from "react-redux";
+import deleteItem from "../../actions/deleteItem";
+import ItemSkeleton from "./ItemSkeleton";
 
 export default function Item({ label }) {
     //================================================================================
+    // Item Store State
+    //================================================================================
+    let selectedItem = useSelector(selectSelectedItem);
+    // let itemStore = useSelector(selectItemStore, shallowEqual);
+    let itemIsLoaded = useSelector(selectItemIsLoaded, shallowEqual);
+
+    //================================================================================
     // Component State
     //================================================================================
+
     const structure = dataStructureItems[label];
     let { ItemComponent, group } = structure;
 
@@ -22,13 +41,69 @@ export default function Item({ label }) {
     const { id } = router.query;
 
     //================================================================================
+    // Actions
+    //================================================================================
+    const dispatch = useDispatch();
+
+    //================================================================================
+    // Functions
+    //================================================================================
+    const extractItemInfos = (item) => {
+        let tagsObj = {};
+        item.tags.map((tag) => {
+            if (tagsObj[tag.type]) {
+                tagsObj[tag.type].push(tag);
+            } else {
+                tagsObj[tag.type] = [tag];
+            }
+        });
+        let finalObj = {};
+        // forse questo non serve, posso modificare tagsObj, ma per ora lo faccio cosi - xk not 100% sure 🧠
+        Object.entries(tagsObj).map(([key, value]) => {
+            finalObj[key] = value && value.length ? value : null;
+        });
+        setItemInfos(finalObj);
+    };
+
+    const handleEdits = async () => {
+        const fetchedItem = await fetchData(id, label, structure);
+        dispatch(selectItem(fetchedItem));
+    };
+
+    //================================================================================
+    // API Requests
+    //================================================================================
+    const fetchData = useCallback(async (id, label, structure) => {
+        const fetchedItem = await fetchItem(id, label, structure);
+        delete fetchedItem.ItemComponent;
+        return fetchedItem;
+    }, []);
+
+    const handleDelete = async () => {
+        dispatch(activateLoadingItem());
+        let res = await deleteItem(item.id, label);
+        if (res) {
+            dispatch(selectItem(undefined));
+            router.push(`/all/${group}`);
+        }
+    };
+
+    //================================================================================
     // UseEffects
     //================================================================================
     useEffect(() => {
-        if (id) {
-            fetchData();
+        async function fetch() {
+            if (id) {
+                const fetchedItem = await fetchData(id, label, structure);
+                dispatch(selectItem(fetchedItem));
+            }
         }
-    }, [id]);
+        fetch();
+    }, [id, label, structure, fetchData, dispatch]);
+
+    useEffect(() => {
+        setItem(selectedItem);
+    }, [selectedItem]);
 
     useEffect(() => {
         if (item) {
@@ -54,60 +129,12 @@ export default function Item({ label }) {
     }, [item]);
 
     //================================================================================
-    // Functions
-    //================================================================================
-    const extractItemInfos = (item) => {
-        let tagsObj = {};
-        item.tags.map((tag) => {
-            if (tagsObj[tag.type]) {
-                tagsObj[tag.type].push(tag);
-            } else {
-                tagsObj[tag.type] = [tag];
-            }
-        });
-        let finalObj = {};
-        // forse questo non serve, posso modificare tagsObj, ma per ora lo faccio cosi - xk not 100% sure 🧠
-        Object.entries(tagsObj).map(([key, value]) => {
-            finalObj[key] = value && value.length ? value : null;
-        });
-        setItemInfos(finalObj);
-    };
-
-    const handleEdits = () => {
-        fetchData();
-    };
-
-    //================================================================================
-    // API Requests
-    //================================================================================
-    const fetchData = async () => {
-        try {
-            const { data } = await axios.get(`/api/${label}/${id}`);
-            setItem({ ...data, ...structure });
-        } catch (err) {
-            console.log("ERROR!", err);
-        }
-    };
-
-    const handleDelete = async () => {
-        try {
-            const { data } = await axios.delete(`/api/delete`, {
-                headers: {},
-                data: { id: item.id, table: label },
-            });
-            router.push(`/all/${group}`);
-        } catch (err) {
-            console.log("ERROR in delete!", err);
-        }
-    };
-
-    //================================================================================
     // Render UI
     //================================================================================
 
     return (
         <main id={"ElMain"} className={styles.main}>
-            {item ? (
+            {item && itemIsLoaded ? (
                 <>
                     <Head>
                         <title>{item.name || item.title}</title>
@@ -133,7 +160,7 @@ export default function Item({ label }) {
                     )}
                 </>
             ) : (
-                <p>Loading...</p>
+                <ItemSkeleton />
             )}
         </main>
     );

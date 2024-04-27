@@ -61,3 +61,53 @@
 .menuWrap div:hover {
     background-color: var(--bg500);
 }
+
+/* APP BLUR + TRANSITIONS */
+#AppBlur {
+    height: 100vh;
+    width: 100vw;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+.fadeOut {
+    opacity: 0;
+    /* transition: opacity 1.5s ease; */
+    /* background: rgb(var(--gradient000)); */
+    /* background: linear-gradient(
+        0deg,
+        rgba(var(--gradient000), 0.95) 0%,
+        rgba(var(--gradient000), 0.55) 30%,
+        rgba(var(--gradient000), 0.2) 100%
+    ); */
+    transition: opacity 1s ease-out;
+    -moz-transition: opacity 1s ease-out;
+    -webkit-transition: opacity 1s ease-out;
+    -o-transition: opacity 1s ease-out;
+}
+.fadeOut.fadeIn {
+    opacity: 1;
+    background: rgb(var(--gradient000));
+    background: linear-gradient(
+        0deg,
+        rgba(var(--gradient000), 0.95) 0%,
+        rgba(var(--gradient000), 0.55) 30%,
+        rgba(var(--gradient000), 0.2) 100%
+    );
+    transition: opacity 1s ease-out;
+    -moz-transition: opacity 1s ease-out;
+    -webkit-transition: opacity 1s ease-out;
+    -o-transition: opacity 1s ease-out;
+}
+
+.blurBox {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
