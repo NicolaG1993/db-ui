@@ -1,13 +1,27 @@
 import Link from "next/link";
 import { useState } from "react";
-
 import styles from "@/src/application/styles/Layout.module.css";
-
 import { useRouter } from "next/router";
 import { getRandomMovieID } from "@/src/domains/_app/actions/customFetchers";
+import { useDispatch } from "react-redux";
+import { activateLoadingItem } from "@/src/application/redux/slices/itemSlice";
+import getRandomMovie from "../../../actions/getRandomMovie";
 
-export default function Header({ getRandomMovie }) {
+export default function Header() {
+    const dispatch = useDispatch();
+    const router = useRouter();
+
     const [menuOpen, seMenuOpen] = useState(false);
+
+    const setLoadingItem = () => {
+        dispatch(activateLoadingItem());
+    };
+
+    const handleRandomMovie = async () => {
+        setLoadingItem();
+        const id = await getRandomMovie();
+        router.push(`/el/movie/${id}`);
+    };
 
     const Menu = () => (
         <div
@@ -96,7 +110,7 @@ export default function Header({ getRandomMovie }) {
                         onMouseEnter={() => seMenuOpen(false)}
                         onMouseLeave={() => seMenuOpen(false)}
                     >
-                        <p onClick={() => getRandomMovie()}>Random movie</p>
+                        <p onClick={() => handleRandomMovie()}>Random movie</p>
                     </li>
 
                     <li

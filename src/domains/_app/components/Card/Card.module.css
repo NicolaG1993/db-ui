@@ -8,7 +8,8 @@
     margin: 0;
 }
 
-.gridElement > a {
+.fakeLink {
+    cursor: pointer;
     width: 250px;
     height: 320px;
     border: 2px solid var(--text);
@@ -16,12 +17,12 @@
     transition: 0.2s ease;
     display: inline-block;
 }
-.gridElement:hover > a {
+.gridElement:hover > .fakeLink {
     background-color: var(--bg500);
     border: 2px solid var(--text);
 }
 
-.gridElement > a {
+.fakeLink {
     width: 250px;
     height: 320px;
     border: 2px solid var(--bg600);
@@ -30,7 +31,7 @@
     border-radius: 12px;
 }
 
-.gridElement > a > div:nth-child(1) {
+.fakeLink > div:nth-child(1) {
     width: 100%;
     height: 80%;
     height: 250px;
@@ -42,11 +43,11 @@
     background-size: cover;
     background-attachment: scroll; /* importante per proporzioni su ios */
 }
-.gridElement > a > div:nth-child(1) img {
+.fakeLink > div:nth-child(1) img {
     border-radius: 12px 12px 0 0;
 }
 
-.gridElement > a > div:nth-child(2) {
+.fakeLink > div:nth-child(2) {
     width: 100%;
     height: 70px;
     height: 20%;

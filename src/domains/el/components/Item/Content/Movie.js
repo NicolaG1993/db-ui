@@ -28,16 +28,16 @@ export default function Movie({
         studios,
         distributions,
     } = item;
-
     return (
         <div id={styles.Movie} className={styles.elWrap}>
             <div className={styles.infoWrap}>
                 <div className={styles.picWrap}>
                     <Image
+                        placeholder={"/no-image.png"}
                         src={pic ? pic : "/no-image.png"}
                         alt={item[nameType]}
-                        fill
                         style={{ objectFit: "cover" }}
+                        fill
                     />
                 </div>
 
@@ -204,7 +204,7 @@ export default function Movie({
 
                 <div className={styles.elRow}>
                     <span>Tot. Actors: </span>
-                    <p>{actors.length}</p>
+                    <p>{actors?.length}</p>
                 </div>
             </div>
 
@@ -212,7 +212,7 @@ export default function Movie({
                 <div className={styles.infoHeadingWrap}>
                     <h3>CAST</h3>
 
-                    {actors.length > 0 && (
+                    {actors?.length > 0 && (
                         <Link href="/search">see all ({actors.length})</Link>
                     )}
                 </div>

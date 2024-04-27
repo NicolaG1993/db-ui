@@ -19,7 +19,6 @@ export default function Actor({
     openForm,
     setOpenForm,
 }) {
-    console.log("item: ", { item, itemInfos });
     let { pic, rating, movies, nameType } = item;
     return (
         <div id={styles.Actor} className={styles.elWrap}>
@@ -344,7 +343,7 @@ export default function Actor({
 
                 <div className={styles.elRow}>
                     <span>Tot. Clips: </span>
-                    <p>{movies.length}</p>
+                    <p>{movies?.length}</p>
                 </div>
             </div>
 
@@ -352,7 +351,7 @@ export default function Actor({
                 <div className={styles.infoHeadingWrap}>
                     <h3>MOVIES</h3>
 
-                    {movies.length > 0 && (
+                    {movies?.length > 0 && (
                         <Link href="/search">see all ({movies.length})</Link>
                     )}
                 </div>

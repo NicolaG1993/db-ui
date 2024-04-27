@@ -7,7 +7,7 @@ import Footer from "@/src/domains/_app/constants/components/Footer/Footer";
 import Widgets from "@/src/domains/_app/constants/components/Widgets/Widgets";
 import SessionPlaylist from "@/src/domains/_app/constants/components/SessionPlaylist/SessionPlaylist";
 
-import { useDispatch } from "react-redux";
+import { shallowEqual, useDispatch } from "react-redux";
 import fetchS3SettingsFile from "@/src/domains/_app/actions/fetchS3SettingsFile.js";
 import {
     changeSettings,
@@ -23,20 +23,38 @@ import {
 import styles from "@/src/application/styles/Layout.module.css";
 import RandomNumberButton from "./components/Widgets/RandomNumberButton";
 import SessionPlaylistButton from "./components/Widgets/SessionPlaylistButton";
+import { selectItemIsLoading } from "@/src/application/redux/slices/itemSlice";
+import AppBlur from "./components/AppBlur/AppBlur";
 
-export default function Layout({ children, getRandomMovie }) {
+export default function Layout({ children }) {
     //================================================================================
     // State
     //================================================================================
     const dispatch = useDispatch();
     const [user, setUser] = useState();
+    const [showLoadingScreen, setShowLoadingScreen] = useState(false);
     const [showAuthModal, setShowAuthModal] = useState(true);
+    const [renderingApp, setRenderingApp] = useState(true); // forse si potrebbe spostare in redux
     let userInfo = useSelector(selectUserState);
+    let itemIsLoading = useSelector(selectItemIsLoading, shallowEqual);
 
     useEffect(() => {
         keepTheme();
         authCheck();
     }, []);
+
+    useEffect(() => {
+        if (!renderingApp) {
+            const delay = itemIsLoading ? 0 : 1.5;
+
+            const timer = setTimeout(() => {
+                setShowLoadingScreen(itemIsLoading);
+            }, delay * 1000);
+
+            return () => clearTimeout(timer);
+        }
+        setRenderingApp(false);
+    }, [itemIsLoading]);
 
     useEffect(() => {
         setUser(userInfo);
@@ -92,7 +110,8 @@ export default function Layout({ children, getRandomMovie }) {
                 <AuthModal />
             ) : (
                 <>
-                    <Header getRandomMovie={getRandomMovie} />
+                    {showLoadingScreen && <AppBlur visible={itemIsLoading} />}
+                    <Header />
                     {children}
                     <Widgets />
                     <Footer />
