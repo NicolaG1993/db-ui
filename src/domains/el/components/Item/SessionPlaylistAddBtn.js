@@ -35,10 +35,15 @@ export default function SessionPlaylistAddBtn({ el }) {
     }, [sessionPlaylist]);
 
     return isClone ? (
-        <button onClick={() => deleteFromPlaylist(el)}>
+        <button
+            onClick={() => deleteFromPlaylist(el)}
+            className="button-standard"
+        >
             Remove from session
         </button>
     ) : (
-        <button onClick={() => addToPlaylist(el)}>Add to session</button>
+        <button onClick={() => addToPlaylist(el)} className="button-standard">
+            Add to session
+        </button>
     );
 }

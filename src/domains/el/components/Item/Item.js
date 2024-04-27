@@ -75,7 +75,7 @@ export default function Item({ label }) {
     //================================================================================
     const fetchData = useCallback(async (id, label, structure) => {
         const fetchedItem = await fetchItem(id, label, structure);
-        delete fetchedItem.ItemComponent;
+        if (fetchedItem) delete fetchedItem.ItemComponent;
         return fetchedItem;
     }, []);
 
