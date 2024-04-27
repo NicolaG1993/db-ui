@@ -9,7 +9,7 @@ import {
 } from "@/src/application/redux/slices/sessionPlaylistSlice";
 // import axios from "axios";
 import Link from "next/link";
-import AddUrlForm from "@/src/domains/_app/constants/components/SessionPlaylist/components/AddUrlForm.js";
+import AddNewForm from "@/src/domains/_app/constants/components/SessionPlaylist/components/AddNewForm.js";
 import SavePlaylistForm from "@/src/domains/_app/constants/components/SessionPlaylist/components/SavePlaylistForm.js";
 import styles from "@/src/domains/_app/constants/components/SessionPlaylist/SessionPlaylist.module.css";
 
@@ -127,7 +127,7 @@ export default function PlaylistEditor() {
                         <span className={"modal-close"} onClick={closeModal}>
                             X
                         </span>
-                        <AddUrlForm closeModal={closeModal} />
+                        <AddNewForm closeModal={closeModal} />
                     </div>
                 </div>
             )}
