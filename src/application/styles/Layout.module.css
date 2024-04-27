@@ -74,9 +74,16 @@
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    background: rgb(var(--gradient000));
+    background: linear-gradient(
+        0deg,
+        rgba(var(--gradient000), 0.95) 0%,
+        rgba(var(--gradient000), 0.55) 30%,
+        rgba(var(--gradient000), 0.2) 100%
+    );
 }
 .fadeOut {
-    opacity: 0;
+    /* opacity: 0; */
     /* transition: opacity 1.5s ease; */
     /* background: rgb(var(--gradient000)); */
     /* background: linear-gradient(
@@ -85,13 +92,13 @@
         rgba(var(--gradient000), 0.55) 30%,
         rgba(var(--gradient000), 0.2) 100%
     ); */
-    transition: opacity 1s ease-out;
+    /* transition: opacity 1s ease-out;
     -moz-transition: opacity 1s ease-out;
     -webkit-transition: opacity 1s ease-out;
-    -o-transition: opacity 1s ease-out;
+    -o-transition: opacity 1s ease-out; */
 }
 .fadeOut.fadeIn {
-    opacity: 1;
+    /* opacity: 1; */
     background: rgb(var(--gradient000));
     background: linear-gradient(
         0deg,
@@ -99,10 +106,10 @@
         rgba(var(--gradient000), 0.55) 30%,
         rgba(var(--gradient000), 0.2) 100%
     );
-    transition: opacity 1s ease-out;
+    /* transition: opacity 1s ease-out;
     -moz-transition: opacity 1s ease-out;
     -webkit-transition: opacity 1s ease-out;
-    -o-transition: opacity 1s ease-out;
+    -o-transition: opacity 1s ease-out; */
 }
 
 .blurBox {

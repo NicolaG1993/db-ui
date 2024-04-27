@@ -1,22 +1,19 @@
 import styles from "@/src/application/styles/Layout.module.css";
 import { useEffect, useRef, useState } from "react";
 import PuffLoader from "react-spinners/PuffLoader";
+import { motion } from "framer-motion";
 
 export default function AppBlur(visible) {
     let [spinnerColor, setSpinnerColor] = useState("#ffffff");
 
-    const div = useRef(null);
+    // const div = useRef(null);
 
-    const showBlur = () => {
-        div.current.classList.add("fadeIn");
-    };
-    const hideBlur = () => {
-        div.current.classList.remove("fadeIn");
-    };
-
-    useEffect(() => {
-        visible ? showBlur() : hideBlur();
-    }, [visible]);
+    // const showBlur = () => {
+    //     div.current.classList.add("fadeIn");
+    // };
+    // const hideBlur = () => {
+    //     div.current.classList.remove("fadeIn");
+    // };
 
     // const override = {
     //     display: "block",
@@ -25,10 +22,16 @@ export default function AppBlur(visible) {
     // };
 
     return (
-        <div
+        <motion.div
             id={styles.AppBlur}
-            className={`${styles.fadeOut} ${visible ? styles.fadeIn : ""}`}
-            ref={div}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{
+                repeat: 1,
+                repeatType: "reverse",
+                duration: 0.6,
+                repeatDelay: 0.2,
+            }}
         >
             <div className={styles.blurBox}>
                 {/* <p>Loading...</p> */}
@@ -40,6 +43,6 @@ export default function AppBlur(visible) {
                     data-testid="loader"
                 />
             </div>
-        </div>
+        </motion.div>
     );
 }
