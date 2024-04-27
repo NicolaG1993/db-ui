@@ -124,6 +124,7 @@ export default function InputSocials({
                             <button
                                 type="button"
                                 onClick={() => toggleNewSocialInput()}
+                                className="button-standard"
                             >
                                 Cancel
                             </button>
@@ -135,6 +136,7 @@ export default function InputSocials({
                                         newSocialType
                                     )
                                 }
+                                className="button-standard"
                             >
                                 Add social
                             </button>

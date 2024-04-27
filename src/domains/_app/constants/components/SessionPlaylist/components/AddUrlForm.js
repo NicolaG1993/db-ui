@@ -78,7 +78,9 @@ export default function AddUrlForm({ closeModal }) {
                 onChange={(e) => setTitle(e.target.value)}
                 value={title}
             />
-            <button onClick={validateData}>Confirm</button>
+            <button onClick={validateData} className="button-standard">
+                Confirm
+            </button>
 
             {Object.keys(errors).lenght !== 0 && (
                 <div className={styles["form-error"]}>

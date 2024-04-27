@@ -66,10 +66,16 @@ export default function FiltersBar({
                         deleteAllFilters({});
                         setFilterSelect(undefined);
                     }}
+                    className="button-standard"
                 >
                     Remove filters
                 </button>
-                <button onClick={() => closeFilters(false)}>Close</button>
+                <button
+                    onClick={() => closeFilters(false)}
+                    className="button-standard"
+                >
+                    Close
+                </button>
             </div>
         </div>
     );

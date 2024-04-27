@@ -171,7 +171,9 @@ export default function RegistrationForm({ handleTab }) {
                     )}
                 </div>
                 <div className={styles.buttonWrap}>
-                    <button type="submit">Create user</button>
+                    <button type="submit" className="button-standard">
+                        Create user
+                    </button>
                 </div>
             </form>
 

@@ -136,7 +136,8 @@ body {
 html {
     color-scheme: dark;
     --dangerBg000: rgb(186, 0, 0);
-    --dangerBg100: rgb(215, 61, 61);
+    --dangerBg100: red;
+    --dangerBg200: rgb(215, 61, 61);
     ---shadow000:  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
 body {
@@ -195,9 +196,9 @@ button:hover {
      box-shadow: var(--shadow000);
 }
 button:disabled {
-    color: var(--bg900);
-    background-color: var(--bg700);
-    border: 1px solid var(--bg700);
+    color: var(--bg700);
+    background-color: var(--bg300);
+    border: 1px solid var(--bg500);
     cursor: no-drop;
 }
 
@@ -212,8 +213,8 @@ button:disabled {
 }
 
 .button-danger {
-    background-color: var(--dangerBg100);
-    border: 1px solid var(--dangerBg100);
+    background-color: var(--dangerBg200);
+    border: 1px solid var(--dangerBg200);
     color: white;
 }
 .button-danger:hover {

@@ -90,7 +90,7 @@ export default function LoginForm({ handleTab }) {
                     />
                 </div>
                 <div className={styles.buttonWrap}>
-                    <button>Login</button>
+                    <button className="button-standard">Login</button>
                 </div>
             </form>
 

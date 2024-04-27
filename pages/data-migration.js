@@ -35,7 +35,9 @@ export default function DataMigration() {
     return (
         <main>
             <h1>Data Migration</h1>
-            <button onClick={handleSubmit}>Execute</button>
+            <button onClick={handleSubmit} className="button-standard">
+                Execute
+            </button>
         </main>
     );
 }

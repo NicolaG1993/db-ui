@@ -50,11 +50,14 @@ export default function SessionPlaylistUI({
         <>
             <div id={styles["SessionPlaylistUI"]}>
                 <div className={styles["nav-btn"]}>
-                    <button onClick={() => shufflePlaylist()}>
+                    <button
+                        onClick={() => shufflePlaylist()}
+                        className="button-standard"
+                    >
                         Shuffle ♾️
                     </button>
-                    {/* <button>Save 💾</button> */}
-                    <button onClick={() => close()}>
+                    {/* <button className="button-standard">Save 💾</button> */}
+                    <button onClick={() => close()} className="button-standard">
                         <Link
                             href={`/el/playlist/editor`}
                             title={"Plalist editor"}
@@ -62,8 +65,18 @@ export default function SessionPlaylistUI({
                             Editor ➡️
                         </Link>
                     </button>
-                    <button onClick={() => openAddUrl()}>Add url ➕</button>
-                    <button onClick={() => deletePlaylist()}>Delete ❌</button>
+                    <button
+                        onClick={() => openAddUrl()}
+                        className="button-standard"
+                    >
+                        Add url ➕
+                    </button>
+                    <button
+                        onClick={() => deletePlaylist()}
+                        className="button-standard"
+                    >
+                        Delete ❌
+                    </button>
                 </div>
 
                 <div className={styles["movie-list"]}>

@@ -84,8 +84,8 @@
     top: -12px;
     right: -5px;
     border-radius: 25px;
-    background: red;
-    color: var(--text);
+    background: var(--dangerBg100);
+    color: white;
     padding: 0.2rem;
     display: flex;
     justify-content: center;

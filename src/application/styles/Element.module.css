@@ -158,15 +158,16 @@
 }
 
 /* COUNTER ROW */
+/*
 .counterWrap {
     display: flex;
-    /* flex-direction: column; */
 }
 .counterWrap button {
     height: 20px;
     width: auto;
     cursor: pointer;
 }
+*/
 
 .recordsWrap > span {
     cursor: pointer;

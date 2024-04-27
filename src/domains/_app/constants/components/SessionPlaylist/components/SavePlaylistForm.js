@@ -230,7 +230,10 @@ export default function SavePlaylistForm({ closeModal, sessionPlaylist }) {
                             value={title}
                             required
                         />
-                        <button onClick={(e) => handleSubmit(e)}>
+                        <button
+                            onClick={(e) => handleSubmit(e)}
+                            className="button-standard"
+                        >
                             {match ? "Update" : "Save"}
                         </button>
                     </div>
@@ -264,13 +267,19 @@ export default function SavePlaylistForm({ closeModal, sessionPlaylist }) {
                         Please confirm if you want to add them to the database
                     </p>
 
-                    <button onClick={(e) => handleNewItems(e)}>Confirm</button>
+                    <button
+                        onClick={(e) => handleNewItems(e)}
+                        className="button-standard"
+                    >
+                        Confirm
+                    </button>
 
                     {/* 🧨🧨🧨 TODO 🧨🧨🧨 */}
                     <button
                         onClick={() =>
                             confirmSubmitWithoutUrls(sessionPlaylist)
                         }
+                        className="button-standard"
                     >
                         Delete them
                     </button>

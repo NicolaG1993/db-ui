@@ -72,15 +72,35 @@ export default function PlaylistEditor() {
             </div>
 
             <div className={styles["nav-btn"]}>
-                <button onClick={() => shufflePlaylist()}>Shuffle ♾️</button>
-                <button onClick={() => openSavePlaylist()}>Save 💾</button>
+                <button
+                    onClick={() => shufflePlaylist()}
+                    className="button-standard"
+                >
+                    Shuffle ♾️
+                </button>
+                <button
+                    onClick={() => openSavePlaylist()}
+                    className="button-standard"
+                >
+                    Save 💾
+                </button>
                 <button>
                     <Link href={`/all/movies`} title={"Add item"}>
                         Add 🗃️
                     </Link>
                 </button>
-                <button onClick={() => openAddUrl()}>Add url ➕</button>
-                <button onClick={() => deletePlaylist()}>Delete ❌</button>
+                <button
+                    onClick={() => openAddUrl()}
+                    className="button-standard"
+                >
+                    Add url ➕
+                </button>
+                <button
+                    onClick={() => deletePlaylist()}
+                    className="button-standard"
+                >
+                    Delete ❌
+                </button>
             </div>
 
             <div className={styles["nav-content"]}>

@@ -129,7 +129,9 @@ export default function RandomNumberGenerator({ open, closeWidget }) {
                 </div>
 
                 <div className={styles["grid-column-1to5"]}>
-                    <button type="submit">Generate</button>
+                    <button type="submit" className="button-standard">
+                        Generate
+                    </button>
                 </div>
             </form>
 
@@ -141,7 +143,11 @@ export default function RandomNumberGenerator({ open, closeWidget }) {
                             <p>{result.map((el) => `${el} `)}</p>
                         </div>
 
-                        <button onClick={clearResults} type="button">
+                        <button
+                            onClick={clearResults}
+                            type="button"
+                            className="button-standard"
+                        >
                             Clear Result
                         </button>
                     </div>

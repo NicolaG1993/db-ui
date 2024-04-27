@@ -127,6 +127,7 @@ export default function FormSideNav({
                                         onClick={() =>
                                             handleHintsModal([], hints.removed)
                                         }
+                                        className="button-standard"
                                     >
                                         Skip
                                     </button>
@@ -134,6 +135,7 @@ export default function FormSideNav({
                                         title="Confirm your choice"
                                         type="submit"
                                         form="missingHintsForm"
+                                        className="button-standard"
                                     >
                                         Confirm
                                     </button>
@@ -170,6 +172,7 @@ export default function FormSideNav({
                                         onClick={() =>
                                             handleHintsModal(hints.missing, [])
                                         }
+                                        className="button-standard"
                                     >
                                         Skip
                                     </button>
@@ -177,6 +180,7 @@ export default function FormSideNav({
                                         title="Confirm your choice"
                                         type="submit"
                                         form="removedHintsForm"
+                                        className="button-standard"
                                     >
                                         Confirm
                                     </button>

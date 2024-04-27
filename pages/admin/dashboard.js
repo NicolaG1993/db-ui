@@ -30,12 +30,20 @@ export default function Dashboard() {
                 <h1>Admin Dashboard</h1>
 
                 <div className={styles.content}>
-                    <button onClick={() => setAddForm(true)}>+ Add Data</button>
+                    <button
+                        onClick={() => setAddForm(true)}
+                        className="button-standard"
+                    >
+                        + Add Data
+                    </button>
                     <button disabled onClick={(e) => addTest(e)}>
                         RUN TEST
                     </button>
                     <button disabled>Data Migration</button>
-                    <button onClick={() => setAppSettings(true)}>
+                    <button
+                        onClick={() => setAppSettings(true)}
+                        className="button-standard"
+                    >
                         Settings
                     </button>
                 </div>

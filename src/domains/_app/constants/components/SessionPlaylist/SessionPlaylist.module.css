@@ -15,6 +15,7 @@
     margin: 0.5rem;
     width: 90px;
     text-align: center;
+    border-radius: 3px;
 }
 .nav-btn > button:first-child {
     margin-left: 0.1rem;
