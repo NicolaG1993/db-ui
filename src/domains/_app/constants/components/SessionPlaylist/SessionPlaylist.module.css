@@ -28,15 +28,41 @@
     overflow-y: auto;
     height: 100%;
     /* max-height: 400px; */
-    padding-bottom: 0.5rem;
+    /* padding-bottom: 0.5rem; */
     border-bottom: 2px solid var(--bg800);
+}
+
+.list-header {
+    margin: 0 0.33rem;
+    border-bottom: 2px solid var(--bg700);
+}
+.header {
+    display: grid;
+    align-items: center;
+    grid-template-columns: 70px 1fr 60px;
+    padding: 0 0.5rem;
+    color: var(--bg900);
+    font-weight: bold;
+}
+.header > p:first-child {
+    padding-left: 0.25rem;
 }
 
 .row {
     display: grid;
     align-items: center;
-    grid-template-columns: 1fr 40px;
+    grid-template-columns: 70px 1fr 40px;
     padding: 0 0.5rem;
+    margin: 0 0.33rem;
+    border-bottom: 2px solid var(--bg700);
+}
+.row > select {
+    margin-right: 1.75rem;
+    font-size: 12px;
+}
+.row > select > option {
+    font-size: 12px;
+    background: var(--bg600);
 }
 .row > a:hover {
     text-decoration: underline;

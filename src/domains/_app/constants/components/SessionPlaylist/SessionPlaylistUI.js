@@ -6,8 +6,10 @@ import {
     deleteSessionPlaylist,
     removeFromSessionPlaylist,
     shuffleSessionPlaylist,
+    updateSessionPlaylist,
 } from "@/src/application/redux/slices/sessionPlaylistSlice";
 import Link from "next/link";
+import moveArrayItem from "@/src/domains/_app/utils/moveArrayItem";
 
 export default function SessionPlaylistUI({
     sessionPlaylist,
@@ -30,10 +32,6 @@ export default function SessionPlaylistUI({
 
     const dispatch = useDispatch();
 
-    useEffect(() => {
-        setData(sessionPlaylist);
-    }, [sessionPlaylist]);
-
     const removeFromPlaylist = (i) => {
         dispatch(removeFromSessionPlaylist(i));
     };
@@ -45,6 +43,31 @@ export default function SessionPlaylistUI({
     const shufflePlaylist = () => {
         dispatch(shuffleSessionPlaylist());
     };
+
+    const overridePlaylist = (playlist) => {
+        dispatch(updateSessionPlaylist(playlist));
+    };
+
+    const createOrderOptions = (data, rawIndex) =>
+        data.map((el, i) => {
+            return (
+                <option
+                    key={`order option: ${i + 1} ${rawIndex + 1}`}
+                    value={i}
+                >
+                    {i + 1}
+                </option>
+            );
+        });
+
+    const orderList = ({ oldIndex, newIndex, data }) => {
+        const newData = moveArrayItem(data, oldIndex, newIndex);
+        overridePlaylist(newData);
+    };
+
+    useEffect(() => {
+        setData(sessionPlaylist);
+    }, [sessionPlaylist]);
 
     return (
         <>
@@ -79,6 +102,14 @@ export default function SessionPlaylistUI({
                     </button>
                 </div>
 
+                <div className={styles["list-header"]}>
+                    <div className={styles["header"]}>
+                        <p>#</p>
+                        <p>Title</p>
+                        <p>Actions</p>
+                    </div>
+                </div>
+
                 <div className={styles["movie-list"]}>
                     {data && data.length ? (
                         data.map((el, i) => (
@@ -86,6 +117,19 @@ export default function SessionPlaylistUI({
                                 key={"session data " + i}
                                 className={styles["row"]}
                             >
+                                <select
+                                    name="selectListPosition"
+                                    value={i}
+                                    onChange={(e) =>
+                                        orderList({
+                                            oldIndex: i,
+                                            newIndex: Number(e.target.value),
+                                            data,
+                                        })
+                                    }
+                                >
+                                    {createOrderOptions(data, i)}
+                                </select>
                                 <Link href={`/el/movie/${el.id}`}>
                                     {el.title}
                                 </Link>

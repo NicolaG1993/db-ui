@@ -1,4 +1,4 @@
-import styles from "@/src/application/styles/Layout.module.css";
+import styles from "@/src/domains/_app/constants/Layout.module.css";
 import { useEffect, useRef, useState } from "react";
 import PuffLoader from "react-spinners/PuffLoader";
 import { motion } from "framer-motion";

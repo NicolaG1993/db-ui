@@ -84,10 +84,12 @@
     /* width: 420px; */
     overflow-y: auto;
     padding-right: 2em;
+    font-size: 15px;
 }
 
 .form h4 {
     margin: 0 1em 0 0;
+    color: var(--bg900);
 }
 .form input {
     width: 100%;
