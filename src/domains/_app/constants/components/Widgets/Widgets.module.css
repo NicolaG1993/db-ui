@@ -48,31 +48,35 @@
 
 .widget-btn {
     cursor: pointer;
-    background-color: var(--bg100);
+    background-color: var(--bg200);
     padding: 0.5rem;
     border-radius: 50px;
     font-size: 0.65rem;
     font-weight: bold;
-    border: 2px solid var(--bg600);
+    border: 2px solid var(--bg800);
     /* position: absolute;
     bottom: 0;
     left: 0; */
     margin-right: 1rem;
     width: 7rem;
     text-align: center;
+    transition: 0.08s ease-out;
 }
 .widget-btn:hover {
-    background-color: var(--bg300);
+    background-color: var(--bg400);
+    border: 2px solid var(--bg800);
 }
 
 .widget-btn-selected {
     border: 2px solid var(--text);
-    background-color: var(--bg300);
+    background-color: var(--bg200);
     text-decoration: underline;
+    transition: 0.08s ease-out;
 }
 .widget-btn-selected:hover {
-    border: 2px solid var(--bg600);
-    background-color: var(--bg100);
+    /* border: 2px solid var(--bg600); */
+    border: 2px solid var(--text);
+    background-color: var(--bg400);
 }
 
 #SessionBtn {

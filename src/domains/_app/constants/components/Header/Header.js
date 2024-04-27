@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { useState } from "react";
-import styles from "@/src/application/styles/Layout.module.css";
+import styles from "@/src/domains/_app/constants/Layout.module.css";
 import { useRouter } from "next/router";
 import { getRandomMovieID } from "@/src/domains/_app/actions/customFetchers";
 import { useDispatch } from "react-redux";

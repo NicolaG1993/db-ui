@@ -20,7 +20,7 @@ import {
     selectUserState,
     userLogin,
 } from "@/src/application/redux/slices/userSlice.js";
-import styles from "@/src/application/styles/Layout.module.css";
+import styles from "@/src/domains/_app/constants/Layout.module.css";
 import RandomNumberButton from "./components/Widgets/RandomNumberButton";
 import SessionPlaylistButton from "./components/Widgets/SessionPlaylistButton";
 import { selectItemIsLoading } from "@/src/application/redux/slices/itemSlice";

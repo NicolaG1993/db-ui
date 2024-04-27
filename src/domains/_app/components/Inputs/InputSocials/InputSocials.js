@@ -148,7 +148,7 @@ export default function InputSocials({
                 </>
             ) : (
                 <button
-                    className={styles.openInputBtn}
+                    className={`button-standard ${styles.openInputBtn}`}
                     type="button"
                     onClick={() => toggleNewSocialInput()}
                 >
