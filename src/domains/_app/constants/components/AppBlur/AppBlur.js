@@ -29,8 +29,8 @@ export default function AppBlur(visible) {
             transition={{
                 repeat: 1,
                 repeatType: "reverse",
-                duration: 0.6,
-                repeatDelay: 0.2,
+                duration: 0.5,
+                repeatDelay: 0.1,
             }}
         >
             <div className={styles.blurBox}>
