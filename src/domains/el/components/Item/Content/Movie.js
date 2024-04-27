@@ -235,7 +235,9 @@ export default function Movie({
                 </div>
 
                 <div className={styles.buttonsWrap}>
-                    <SessionPlaylistAddBtn el={item} />
+                    <SessionPlaylistAddBtn
+                        el={{ id: item.id, title: item.title }}
+                    />
                     <button onClick={() => setOpenForm(true)}>Modify</button>
                     <button
                         onClick={() => handleDelete(id)}
