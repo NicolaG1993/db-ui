@@ -8,15 +8,27 @@ const initialState = {
         : [],
 };
 
+// TESTARE: Ho due tab aperte e modifico SessionPlaylist da entrambe
+// devo sempre guardare cosa giá cé in cookie
 const sessionPlaylistSlice = createSlice({
     name: "sessionPlaylist",
     initialState,
     reducers: {
         addToSessionPlaylist: (state, action) => {
-            let newState = state.sessionPlaylist;
+            console.log("addToSessionPlaylist", {
+                state,
+                payload: action.payload,
+                cookieValue: JSON.parse(Cookies.get("sessionPlaylist")),
+            });
+            let newState = JSON.parse(Cookies.get("sessionPlaylist"));
             newState.push(action.payload);
             Cookies.set("sessionPlaylist", JSON.stringify(newState));
             state.sessionPlaylist = newState;
+            console.log("addToSessionPlaylist after", {
+                state,
+                newState,
+                cookieValue: JSON.parse(Cookies.get("sessionPlaylist")),
+            });
         },
         // used to remove directly from playlist
         removeFromSessionPlaylist: (state, action) => {

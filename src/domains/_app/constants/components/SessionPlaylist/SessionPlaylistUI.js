@@ -46,8 +46,6 @@ export default function SessionPlaylistUI({
         dispatch(shuffleSessionPlaylist());
     };
 
-    console.log("DATA: ", data);
-
     return (
         <>
             <div id={styles["SessionPlaylistUI"]}>

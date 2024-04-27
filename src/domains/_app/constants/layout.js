@@ -45,7 +45,7 @@ export default function Layout({ children }) {
 
     useEffect(() => {
         if (!renderingApp) {
-            const delay = itemIsLoading ? 0 : 1.5;
+            const delay = itemIsLoading ? 0 : 1.4;
 
             const timer = setTimeout(() => {
                 setShowLoadingScreen(itemIsLoading);
