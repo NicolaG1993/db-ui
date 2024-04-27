@@ -138,7 +138,7 @@ html {
     --dangerBg000: rgb(186, 0, 0);
     --dangerBg100: red;
     --dangerBg200: rgb(215, 61, 61);
-    ---shadow000:  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    --shadow000: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
 body {
     background: var(--bg400);
@@ -190,10 +190,10 @@ button {
     /* border-radius: 3px; */
     border-radius: 10px;
     cursor: pointer;
-    transition: .08s ease-out;
+    transition: 0.08s ease-out;
 }
 button:hover {
-     box-shadow: var(--shadow000);
+    box-shadow: var(--shadow000);
 }
 button:disabled {
     color: var(--bg700);
@@ -352,7 +352,7 @@ select:hover {
     flex-direction: row-reverse;
 }
 
-/* ADD URL MODAL /move from here*/
+/* ADD NEW MODAL /move from here*/
 .modal {
     position: fixed;
     z-index: 20;
@@ -361,11 +361,12 @@ select:hover {
     transform: translate(-50%, -50%);
     margin-left: auto;
     margin-right: auto;
-    background: red;
+    background: var(--bg500);
     /* width: 200px;
     height: 80px; */
     border: 1px solid var(--text);
     border-radius: 25px;
+    box-shadow: var(--shadow000);
 }
 .modal-container {
     width: 100%;

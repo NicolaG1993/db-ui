@@ -8,9 +8,9 @@ import {
     titleValidation,
     urlValidation,
 } from "@/src/application/utils/validateForms.js";
-import styles from "@/src/domains/_app/constants/components/SessionPlaylist/components/AddUrlForm.module.css";
+import styles from "@/src/domains/_app/constants/components/SessionPlaylist/components/AddNewForm.module.css";
 
-export default function AddUrlForm({ closeModal }) {
+export default function AddNewForm({ closeModal }) {
     const [url, setUrl] = useState("");
     const [title, setTitle] = useState("");
     const [errors, setErrors] = useState({});
@@ -59,7 +59,7 @@ export default function AddUrlForm({ closeModal }) {
 
     return (
         <div className={styles["form"]}>
-            <p className={styles["form-title"]}>Add url</p>
+            <p className={styles["form-title"]}>Add new</p>
 
             <input
                 type="text"

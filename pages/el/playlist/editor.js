@@ -93,7 +93,7 @@ export default function PlaylistEditor() {
                     onClick={() => openAddUrl()}
                     className="button-standard"
                 >
-                    Add url ➕
+                    Add new ➕
                 </button>
                 <button
                     onClick={() => deletePlaylist()}

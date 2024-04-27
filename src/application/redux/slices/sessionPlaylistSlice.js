@@ -15,21 +15,27 @@ const sessionPlaylistSlice = createSlice({
     initialState,
     reducers: {
         addToSessionPlaylist: (state, action) => {
-            let newState = JSON.parse(Cookies.get("sessionPlaylist"));
+            let newState = Cookies.get("sessionPlaylist")
+                ? JSON.parse(Cookies.get("sessionPlaylist"))
+                : state.sessionPlaylist;
             newState.push(action.payload);
             Cookies.set("sessionPlaylist", JSON.stringify(newState));
             state.sessionPlaylist = newState;
         },
         // used to remove directly from playlist
         removeFromSessionPlaylist: (state, action) => {
-            let newState = JSON.parse(Cookies.get("sessionPlaylist"));
+            let newState = Cookies.get("sessionPlaylist")
+                ? JSON.parse(Cookies.get("sessionPlaylist"))
+                : state.sessionPlaylist;
             newState.splice(action.payload, 1);
             Cookies.set("sessionPlaylist", JSON.stringify(newState));
             state.sessionPlaylist = newState;
         },
         // used to remove playlist element from outside playlist
         removeElementFromSessionPlaylist: (state, action) => {
-            let newState = state.JSON.parse(Cookies.get("sessionPlaylist"));
+            let newState = Cookies.get("sessionPlaylist")
+                ? JSON.parse(Cookies.get("sessionPlaylist"))
+                : state.sessionPlaylist;
             if (action.payload.id) {
                 newState = newState.filter(
                     ({ id }) => id !== action.payload.id

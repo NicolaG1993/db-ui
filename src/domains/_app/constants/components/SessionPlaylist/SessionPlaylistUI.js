@@ -11,7 +11,7 @@ import Link from "next/link";
 
 export default function SessionPlaylistUI({
     sessionPlaylist,
-    openAddUrl,
+    openAddNew,
     close,
 }) {
     // prendere array da cookie/redux
@@ -66,10 +66,10 @@ export default function SessionPlaylistUI({
                         </Link>
                     </button>
                     <button
-                        onClick={() => openAddUrl()}
+                        onClick={() => openAddNew()}
                         className="button-standard"
                     >
-                        Add url ➕
+                        Add new ➕
                     </button>
                     <button
                         onClick={() => deletePlaylist()}
