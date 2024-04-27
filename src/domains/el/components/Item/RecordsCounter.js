@@ -56,7 +56,12 @@ export default function RecordsCounter({ id }) {
                             : 0
                         : "Loading..."}
                 </span>
-                <button onClick={() => handleAddCounter()}>+1</button>
+                <button
+                    onClick={() => handleAddCounter()}
+                    className="button-standard"
+                >
+                    +1
+                </button>
             </div>
 
             <div className={styles.recordsWrap}>

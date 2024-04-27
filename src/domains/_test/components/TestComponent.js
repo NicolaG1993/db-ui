@@ -80,7 +80,9 @@ export default function TestComponent({ formState, updateState }) {
                 />
             </div>
 
-            <button onClick={handleSubmit}>DELETE</button>
+            <button onClick={handleSubmit} className="button-danger">
+                DELETE
+            </button>
         </form>
     );
 }

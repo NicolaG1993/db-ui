@@ -11,6 +11,7 @@
 }
 .resultsBox > p {
     margin: 0.6rem 0.8rem;
+    font-size: 12px;
 }
 
 .resultsBlock {
@@ -27,7 +28,7 @@
     justify-content: space-between;
 }
 .resultsHeading > span:nth-child(1) {
-    font-size: 14px;
+    font-size: 12px;
     font-weight: bold;
 }
 .resultsHeading > a:nth-child(2) {
@@ -45,7 +46,7 @@
 .results > a {
     padding: 0.2rem 0.6rem;
     border-top: 1px solid var(--bg500);
-    font-size: 14px;
+    font-size: 12px;
 }
 .results > a:hover {
     background: var(--bg800);

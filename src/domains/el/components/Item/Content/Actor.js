@@ -436,8 +436,16 @@ export default function Actor({
                 </div>
 
                 <div className={styles.buttonsWrap}>
-                    <button onClick={() => setOpenForm(true)}>Modify</button>
-                    <button onClick={() => handleDelete(item.id)}>
+                    <button
+                        onClick={() => setOpenForm(true)}
+                        className="button-standard"
+                    >
+                        Modify
+                    </button>
+                    <button
+                        onClick={() => handleDelete(item.id)}
+                        className="button-danger"
+                    >
                         Delete
                     </button>
                 </div>

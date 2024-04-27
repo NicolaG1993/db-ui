@@ -238,7 +238,12 @@ export default function Movie({
                     <SessionPlaylistAddBtn
                         el={{ id: item.id, title: item.title }}
                     />
-                    <button onClick={() => setOpenForm(true)}>Modify</button>
+                    <button
+                        onClick={() => setOpenForm(true)}
+                        className="button-standard"
+                    >
+                        Modify
+                    </button>
                     <button
                         onClick={() => handleDelete(id)}
                         className="button-danger"

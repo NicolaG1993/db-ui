@@ -7,7 +7,7 @@ export default function SearchBar({
     handleBlur,
 }) {
     return (
-        <div className={styles.searchbar}>
+        <div id={styles.Searchbar}>
             <input
                 type="text"
                 placeholder="Search something..."
@@ -16,7 +16,9 @@ export default function SearchBar({
                 onFocus={handleFocus}
                 onBlur={handleBlur}
             ></input>
-            <button>SEARCH</button>
+            <button id={styles.SearchBtn} className="button-standard">
+                SEARCH
+            </button>
         </div>
     );
 }

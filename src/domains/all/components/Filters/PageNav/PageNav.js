@@ -17,6 +17,7 @@ export default function PageNav({ totalCount, goToPage, step, selectedPage }) {
                         (e) => goToPage(selectedPage - 1, "page") // passo page perché potrebbe servirmi x cookies in futuro
                     }
                     disabled={selectedPage <= 1}
+                    className="button-standard"
                 >
                     -1
                 </button>
@@ -31,6 +32,7 @@ export default function PageNav({ totalCount, goToPage, step, selectedPage }) {
                 <button
                     onClick={(e) => goToPage(selectedPage + 1, "page")}
                     disabled={selectedPage === totalPages}
+                    className="button-standard"
                 >
                     +1
                 </button>

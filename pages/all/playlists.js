@@ -89,8 +89,16 @@ export default function Playlists() {
                                 <strong>{elToDelete.title}</strong>? This
                                 playlist will be forever lost
                             </p>
-                            <button onClick={cancelDelete}>Go back</button>
-                            <button onClick={() => confirmDelete()}>
+                            <button
+                                onClick={cancelDelete}
+                                className="button-standard"
+                            >
+                                Go back
+                            </button>
+                            <button
+                                onClick={() => confirmDelete()}
+                                className="button-danger"
+                            >
                                 Confirm
                             </button>
                         </div>

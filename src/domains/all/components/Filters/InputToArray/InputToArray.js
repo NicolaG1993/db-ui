@@ -46,6 +46,7 @@ export default function InputToArray({
                     <button
                         type="button"
                         onClick={() => handleAddInputToArray()}
+                        className="button-standard"
                     >
                         Add
                     </button>

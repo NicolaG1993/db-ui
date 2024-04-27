@@ -114,7 +114,9 @@ export default function CategoryForm({
             <div
                 className={`${styles["form-col-left"]} ${styles["buttons-box"]}`}
             >
-                <button type="submit">Confirm</button>
+                <button type="submit" className="button-standard">
+                    Confirm
+                </button>
             </div>
         </form>
     );

@@ -22,7 +22,9 @@ export default function SearchBarSmall({
                 onFocus={handleFocus}
                 onBlur={handleBlur}
             ></input>
-            <button onClick={(e) => handleClear(e)}>Clear</button>
+            <button onClick={(e) => handleClear(e)} className="button-standard">
+                Clear
+            </button>
         </div>
     );
 }

@@ -1,8 +1,10 @@
 #SessionPlaylistUI {
-    max-height: 100%;
-    overflow-y: auto;
+    height: 100%;
+    overflow-y: hidden;
     /* margin: 0.5rem; */
-    padding: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    padding: 0 0.5rem 0.5rem 0.5rem;
 }
 
 .nav-btn {
@@ -13,12 +15,21 @@
     margin: 0.5rem;
     width: 90px;
     text-align: center;
+    border-radius: 3px;
 }
 .nav-btn > button:first-child {
     margin-left: 0.1rem;
 }
 .nav-btn > button:last-child {
     margin-right: 0.1rem;
+}
+
+.movie-list {
+    overflow-y: auto;
+    height: 100%;
+    /* max-height: 400px; */
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--bg800);
 }
 
 .row {

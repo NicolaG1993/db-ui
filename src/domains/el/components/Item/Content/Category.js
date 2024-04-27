@@ -166,8 +166,18 @@ export default function Category({
                 </div>
 
                 <div className={styles.buttonsWrap}>
-                    <button onClick={() => setOpenForm(true)}>Modify</button>
-                    <button onClick={() => handleDelete(id)}>Delete</button>
+                    <button
+                        onClick={() => setOpenForm(true)}
+                        className="button-standard"
+                    >
+                        Modify
+                    </button>
+                    <button
+                        onClick={() => handleDelete(id)}
+                        className="button-danger"
+                    >
+                        Delete
+                    </button>
                 </div>
             </div>
 

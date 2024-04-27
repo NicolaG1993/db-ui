@@ -20,7 +20,7 @@
 
     --text: white;
 
-    --gradient000: 0, 0, 0;
+    --gradient000: 30, 30, 30;
 }
 
 .theme-grey {
@@ -40,7 +40,7 @@
     --overlay: rgba(97, 97, 97, 0.3);
     --overlayB: rgba(134, 134, 134, 0.9);
     --text: white;
-    --gradient000: 0, 0, 0;
+    --gradient000: 42, 42, 42;
 }
 
 .theme-light {
@@ -60,7 +60,7 @@
     --overlay: rgba(255, 255, 255, 0.3);
     --overlayB: rgba(200, 200, 200, 0.9);
     --text: rgb(30, 30, 30);
-    --gradient000: 0, 0, 0;
+    --gradient000: 126, 126, 126;
 }
 
 .theme-night {
@@ -80,7 +80,7 @@
     --overlay: rgba(0, 1, 77, 0.3);
     --overlayB: rgba(14, 14, 32, 0.9);
     --text: white;
-    --gradient000: 0, 0, 0;
+    --gradient000: 2, 2, 22;
 }
 
 .theme-sunset {
@@ -100,11 +100,11 @@
     --overlay: rgba(184, 72, 80, 0.3);
     --overlayB: rgba(101, 73, 141, 0.9);
     --text: rgb(5, 5, 5);
-    --gradient000: 0, 0, 0;
+    --gradient000: 101, 73, 141;
 }
 
 .theme-nature {
-    --bg000: rgb(43, 68, 59);
+    --bg000: rgb(42, 76, 64);
     --bg100: rgb(60, 98, 85);
     --bg200: rgb(71, 121, 103);
     --bg300: rgb(97, 135, 110);
@@ -120,7 +120,7 @@
     --overlay: rgba(43, 68, 59, 0.3);
     --overlayB: rgba(110, 156, 126, 0.9);
     --text: rgb(5, 5, 5);
-    --gradient000: 0, 0, 0;
+    --gradient000: 42, 76, 64;
 }
 
 /* GLOBAL */
@@ -136,7 +136,9 @@ body {
 html {
     color-scheme: dark;
     --dangerBg000: rgb(186, 0, 0);
-    --dangerBg100: rgb(215, 61, 61);
+    --dangerBg100: red;
+    --dangerBg200: rgb(215, 61, 61);
+    --shadow000: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
 body {
     background: var(--bg400);
@@ -185,36 +187,41 @@ ul {
 }
 
 button {
-    background-color: var(--bg800);
-    border: 2px solid var(--bg800);
-    border-radius: 3px;
-    color: var(--text);
+    /* border-radius: 3px; */
+    border-radius: 10px;
     cursor: pointer;
+    transition: 0.08s ease-out;
 }
 button:hover {
-    background-color: var(--bg700);
-    border: 2px solid var(--bg700);
+    box-shadow: var(--shadow000);
 }
 button:disabled {
-    color: var(--bg900);
-    background-color: var(--bg700);
-    border: 2px solid var(--bg700);
+    color: var(--bg700);
+    background-color: var(--bg300);
+    border: 1px solid var(--bg500);
     cursor: no-drop;
 }
-.button-danger {
-    background-color: var(--dangerBg100);
-    border: 2px solid var(--dangerBg000);
-    border-radius: 3px;
-    color: white;
-    cursor: pointer;
+
+.button-standard {
+    background-color: var(--bg600);
+    border: 1px solid var(--bg600);
+    color: var(--text);
 }
-/* 
-not working on top of "button" style
+.button-standard:hover {
+    background-color: var(--bg800);
+    border: 1px solid var(--bg800);
+}
+
+.button-danger {
+    background-color: var(--dangerBg200);
+    border: 1px solid var(--dangerBg200);
+    color: white;
+}
 .button-danger:hover {
     background-color: var(--dangerBg000);
-    border: 2px solid var(--dangerBg100);
+    border: 1px solid var(--dangerBg000);
     color: white;
-} */
+}
 
 input,
 select {
@@ -345,7 +352,7 @@ select:hover {
     flex-direction: row-reverse;
 }
 
-/* ADD URL MODAL /move from here*/
+/* ADD NEW MODAL /move from here*/
 .modal {
     position: fixed;
     z-index: 20;
@@ -354,11 +361,12 @@ select:hover {
     transform: translate(-50%, -50%);
     margin-left: auto;
     margin-right: auto;
-    background: red;
+    background: var(--bg500);
     /* width: 200px;
     height: 80px; */
     border: 1px solid var(--text);
     border-radius: 25px;
+    box-shadow: var(--shadow000);
 }
 .modal-container {
     width: 100%;

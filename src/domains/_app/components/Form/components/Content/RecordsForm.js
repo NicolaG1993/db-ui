@@ -34,7 +34,9 @@ export default function RecordsForm({
             <div
                 className={`${styles["form-col-left"]} ${styles["buttons-box"]}`}
             >
-                <button type="submit">Confirm</button>
+                <button type="submit" className="button-standard">
+                    Confirm
+                </button>
                 {/* <button onClick={distribute()}>Distribute all</button> */}
             </div>
         </form>

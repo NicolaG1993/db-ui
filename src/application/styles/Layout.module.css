@@ -78,8 +78,8 @@
     background: linear-gradient(
         0deg,
         rgba(var(--gradient000), 0.95) 0%,
-        rgba(var(--gradient000), 0.55) 30%,
-        rgba(var(--gradient000), 0.2) 100%
+        rgba(var(--gradient000), 0.55) 80%,
+        rgba(var(--gradient000), 0.15) 100%
     );
 }
 .fadeOut {
@@ -99,13 +99,13 @@
 }
 .fadeOut.fadeIn {
     /* opacity: 1; */
-    background: rgb(var(--gradient000));
-    background: linear-gradient(
+    /* background: rgb(var(--gradient000)); */
+    /* background: linear-gradient(
         0deg,
-        rgba(var(--gradient000), 0.95) 0%,
-        rgba(var(--gradient000), 0.55) 30%,
-        rgba(var(--gradient000), 0.2) 100%
-    );
+        rgba(var(--gradient000), 0.55) 0%,
+        rgba(var(--gradient000), 0.5) 30%,
+        rgba(var(--gradient000), 0.15) 100%
+    ); */
     /* transition: opacity 1s ease-out;
     -moz-transition: opacity 1s ease-out;
     -webkit-transition: opacity 1s ease-out;
