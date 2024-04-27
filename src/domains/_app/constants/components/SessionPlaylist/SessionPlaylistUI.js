@@ -66,7 +66,7 @@ export default function SessionPlaylistUI({
                     <button onClick={() => deletePlaylist()}>Delete ❌</button>
                 </div>
 
-                <div className={styles["nav-content"]}>
+                <div className={styles["movie-list"]}>
                     {data && data.length ? (
                         data.map((el, i) => (
                             <div

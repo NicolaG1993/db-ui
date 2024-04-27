@@ -20,6 +20,9 @@ export default function SessionPlaylist({ open, closeWidget }) {
     };
 
     // TODO: Maybe move modal out of here?
+    // TODO: migliorare addUrl Modal e Form
+    // SPIKE: Dovrei gia poter assegnare qua valori per i nuovi movies (categories, tags, etc...)
+
     return open ? (
         <>
             <SessionPlaylistUI
