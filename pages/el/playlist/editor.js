@@ -70,7 +70,6 @@ export default function PlaylistEditor() {
                     ← All playlists
                 </Link>
             </div>
-
             <div className={styles["nav-btn"]}>
                 <button
                     onClick={() => shufflePlaylist()}
@@ -102,7 +101,6 @@ export default function PlaylistEditor() {
                     Delete ❌
                 </button>
             </div>
-
             <div className={styles["nav-content"]}>
                 {sessionPlaylist && sessionPlaylist.length ? (
                     sessionPlaylist.map((el, i) => (
@@ -121,6 +119,7 @@ export default function PlaylistEditor() {
                 )}
             </div>
 
+            {/* vedi session playlist */}
             {addUrlModal && (
                 <div className={"modal"}>
                     <div className={"modal-container"}>
