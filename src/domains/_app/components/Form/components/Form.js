@@ -25,6 +25,7 @@ export default function Form({
     propsData,
     setOpenForm,
     handleEditsInParent,
+    parentIsWaiting,
 }) {
     //================================================================================
     // Component State
@@ -173,7 +174,12 @@ export default function Form({
                         };
                         createItem(finalState, form, formState, propsData).then(
                             ({ data }) => {
-                                propsData && handleEditsInParent(); // this run only in modify form
+                                if (
+                                    (propsData || parentIsWaiting) &&
+                                    handleEditsInParent
+                                ) {
+                                    handleEditsInParent(data);
+                                }
                                 setOpenForm && setOpenForm(false);
                                 router.push(`/el/${topicLabel}/${data.id}`);
                             }
@@ -184,7 +190,12 @@ export default function Form({
                 // user doesnt want to use any image or nothing changed
                 createItem(formState, form, formState, propsData)
                     .then(({ data }) => {
-                        propsData && handleEditsInParent();
+                        if (
+                            (propsData || parentIsWaiting) &&
+                            handleEditsInParent
+                        ) {
+                            handleEditsInParent(data);
+                        }
                         setOpenForm && setOpenForm(false);
                         topicLabel !== "record" &&
                             topicLabel !== "records" &&

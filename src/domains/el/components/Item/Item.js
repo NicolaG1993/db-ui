@@ -1,21 +1,25 @@
 import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import axios from "axios";
+// import axios from "axios";
 import styles from "@/src/application/styles/Element.module.css";
 import dataStructureItems from "@/src/application/settings/dataStructureItems";
 import { parseTagsForUiList } from "@/src/domains/_app/utils/parsers";
 import Head from "next/head";
-import fetchItem from "../../actions/fetchItem";
+import fetchItem from "@/src/domains/el/actions/fetchItem";
 import {
     selectItemStore,
     selectSelectedItem,
     selectItemIsLoaded,
     selectItem,
     activateLoadingItem,
+    setStoreError,
 } from "@/src/application/redux/slices/itemSlice";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
-import deleteItem from "../../actions/deleteItem";
-import ItemSkeleton from "./ItemSkeleton";
+import deleteItem from "@/src/domains/el/actions/deleteItem";
+import ItemSkeleton from "@/src/domains/el/components/Item/ItemSkeleton";
+// import ErrorUI from "@/src/domains/_app/components/Error/ErrorUI";
+import { getError } from "@/src/application/utils/error";
+import { useErrorBoundary } from "react-error-boundary";
 
 export default function Item({ label }) {
     //================================================================================
@@ -37,13 +41,17 @@ export default function Item({ label }) {
     const [parsedObj, setParsedObj] = useState(false);
     const [openForm, setOpenForm] = useState(false);
 
-    const router = useRouter();
-    const { id } = router.query;
+    // should i save errors in store instead?
+    // and have a special overlay for it?
+    // const [apiError, setApiError] = useState();
 
     //================================================================================
-    // Actions
+    // Hooks
     //================================================================================
     const dispatch = useDispatch();
+    const router = useRouter();
+    const { id } = router.query;
+    const { showBoundary } = useErrorBoundary();
 
     //================================================================================
     // Functions
@@ -70,13 +78,32 @@ export default function Item({ label }) {
         dispatch(selectItem(fetchedItem));
     };
 
+    const handleStoreError = (error) => {
+        console.log("handleStoreError: ", error);
+        // dispatch(setStoreError(error));
+        // useErrorHandler();
+        showBoundary(error);
+    };
+
     //================================================================================
     // API Requests
     //================================================================================
+
     const fetchData = useCallback(async (id, label, structure) => {
-        const fetchedItem = await fetchItem(id, label, structure);
-        if (fetchedItem) delete fetchedItem.ItemComponent;
-        return fetchedItem;
+        // Correct error handling here // Work in progress...
+        // Apply to all App after finishing 🧠
+        const res = await fetchItem(id, label, structure);
+        if (res.status === 200 && res.data) {
+            return res.data;
+        } else if (res.error) {
+            console.log("res.error: ", res.error);
+            // setApiError();
+            handleStoreError({
+                code: res.status,
+                message: getError(res.error),
+            });
+            // .... to complete 🧠🧠🧠
+        }
     }, []);
 
     const handleDelete = async () => {

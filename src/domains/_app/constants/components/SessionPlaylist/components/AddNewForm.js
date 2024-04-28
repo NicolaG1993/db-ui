@@ -1,3 +1,5 @@
+// OBSOLETE: DELETE THIS COMPONENT 🌶️
+// After fixing editor.js with proper Form component instead
 import { useState } from "react";
 import {
     addToSessionPlaylist,

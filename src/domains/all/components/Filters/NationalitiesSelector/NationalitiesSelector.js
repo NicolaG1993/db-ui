@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import Error from "@/src/domains/_app/components/Error/Error";
+import ErrorUI from "@/src/domains/_app/components/Error/components/ErrorUI/ErrorUI";
 import allNationalities from "@/src/application/settings/allNationalities";
 import standardStyles from "../InputsSelector/InputsSelector.module.css";
 
@@ -83,7 +83,7 @@ export default function NationalitiesSelector(props) {
     return (
         <>
             {error ? (
-                <Error error={error} styles={null} />
+                <ErrorUI error={error} styles={null} />
             ) : renderReady ? (
                 renderValues(allNationalities.map((el) => el.name))
             ) : (

@@ -1,11 +1,11 @@
-import standardStyles from "./Error.module.css";
+import standardStyles from "./ErrorUI.module.css";
 
 //////////////////////////////
 // ERROR COMPONENT
 //////////////////////////////
-export default function Error(props) {
+export default function ErrorUI(props) {
     let styles = props.styles || standardStyles;
-    props.error && console.error("Error: ", props.error);
+    props.error && console.error("ErrorUI: ", props.error);
 
     return (
         <div className={styles.err}>

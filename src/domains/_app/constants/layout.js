@@ -23,8 +23,12 @@ import {
 import styles from "@/src/domains/_app/constants/Layout.module.css";
 import RandomNumberButton from "./components/Widgets/RandomNumberButton";
 import SessionPlaylistButton from "./components/Widgets/SessionPlaylistButton";
-import { selectItemIsLoading } from "@/src/application/redux/slices/itemSlice";
+import {
+    selectItemIsLoading,
+    selectItemStoreError,
+} from "@/src/application/redux/slices/itemSlice";
 import AppBlur from "./components/AppBlur/AppBlur";
+import ErrorApp from "@/src/domains/_app/components/Error/components/ErrorApp/ErrorApp";
 
 export default function Layout({ children }) {
     //================================================================================
@@ -38,10 +42,42 @@ export default function Layout({ children }) {
     let userInfo = useSelector(selectUserState);
     let itemIsLoading = useSelector(selectItemIsLoading, shallowEqual);
 
+    // const [appError, setAppError] = useState();
+    // let itemStoreError = useSelector(selectItemStoreError, shallowEqual);
+
+    //================================================================================
+    // Functions
+    //================================================================================
+    const fetchAppSettings = async (objectURL) => {
+        const customSettings = await fetchS3SettingsFile(objectURL);
+        if (customSettings) {
+            dispatch(changeSettings(customSettings));
+        } else {
+            dispatch(restoreDefaultSettings());
+        }
+    };
+
+    const authCheck = () => {
+        if (process.env.NODE_ENV === "development") {
+            setShowAuthModal(false);
+            dispatch(userLogin({ id: 3 })); // setting id to enable API requests in DEV
+        } else if (process.env.NODE_ENV === "production") {
+            setShowAuthModal(true);
+        }
+    };
+
+    //================================================================================
+    // UseEffects
+    //================================================================================
     useEffect(() => {
         keepTheme();
         authCheck();
     }, []);
+
+    // useEffect(() => {
+    //     // NOT WORKING: BUT WHY?!?!? APP CRASH MAYBE?
+    //     appError && console.log("error changes 🌸🌸🌸: ", appError);
+    // }, [appError]);
 
     useEffect(() => {
         if (!renderingApp) {
@@ -69,26 +105,16 @@ export default function Layout({ children }) {
         }
     }, [process.env.CUSTOM_SETTINGS]);
 
-    //================================================================================
-    // Functions
-    //================================================================================
-    const fetchAppSettings = async (objectURL) => {
-        const customSettings = await fetchS3SettingsFile(objectURL);
-        if (customSettings) {
-            dispatch(changeSettings(customSettings));
-        } else {
-            dispatch(restoreDefaultSettings());
-        }
-    };
-
-    const authCheck = () => {
-        if (process.env.NODE_ENV === "development") {
-            setShowAuthModal(false);
-            dispatch(userLogin({ id: 3 })); // setting id to enable API requests in DEV
-        } else if (process.env.NODE_ENV === "production") {
-            setShowAuthModal(true);
-        }
-    };
+    // useEffect(() => {
+    //     if (itemStoreError) {
+    //         const storeError = itemStoreError;
+    //         console.log("ErrorApp: ", storeError);
+    //         setAppError(storeError);
+    //     } else {
+    //         setAppError();
+    //         // close ?
+    //     }
+    // }, [itemStoreError]);
 
     //================================================================================
     // Render UI
@@ -106,6 +132,10 @@ export default function Layout({ children }) {
                 <meta name="author" content="NGD • Nicola Gaioni Design" />
                 <meta charSet="UTF-8" />
             </Head>
+
+            {/* NOT RENDERING FOR SOME REASON */}
+            {/* {appError ? <ErrorApp error={appError} /> : <></>} */}
+
             {showAuthModal ? (
                 <AuthModal />
             ) : (

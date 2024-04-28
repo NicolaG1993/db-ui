@@ -6,6 +6,10 @@ import store from "@/src/application/redux/store";
 // import { getRandomMovieID } from "@/src/domains/_app/actions/customFetchers";
 import Layout from "@/src/domains/_app/constants/layout";
 
+import { ErrorBoundary } from "react-error-boundary";
+// import ErrorBoundary from "@/src/domains/_app/components/Error/components/ErrorApp/ErrorBoundary";
+import ErrorApp from "@/src/domains/_app/components/Error/components/ErrorApp/ErrorApp";
+
 export default function App({ Component, pageProps }) {
     //================================================================================
     // Layout Functions
@@ -18,6 +22,13 @@ export default function App({ Component, pageProps }) {
     }; // non si puó importare axios e fare fetch dentro Persistent Component come Layout o Header (non vere pages)
 */
 
+    function logError(error, info) {
+        // Use your preferred error logging service
+        console.error("Caught an error:", error, info);
+        // Do something with the error, e.g. log to an external API
+        // <ErrorBoundary FallbackComponent={ErrorFallback} onError={logError}>
+    }
+
     //================================================================================
     // Render APP
     //================================================================================
@@ -26,9 +37,11 @@ export default function App({ Component, pageProps }) {
             anchorOrigin={{ vertical: "top", horizontal: "center" }}
         >
             <Provider store={store}>
-                <Layout>
-                    <Component {...pageProps} />
-                </Layout>
+                <ErrorBoundary FallbackComponent={ErrorApp} onError={logError}>
+                    <Layout>
+                        <Component {...pageProps} />
+                    </Layout>
+                </ErrorBoundary>
             </Provider>
         </SnackbarProvider>
     );

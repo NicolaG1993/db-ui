@@ -15,10 +15,10 @@ export default function SessionPlaylistAddBtn({ el }) {
 
     const [isClone, setIsClone] = useState(false);
 
-    const addToPlaylist = async (obj) => {
+    const addToPlaylist = (obj) => {
         dispatch(addToSessionPlaylist(obj));
     };
-    const deleteFromPlaylist = async (obj) => {
+    const deleteFromPlaylist = (obj) => {
         dispatch(removeElementFromSessionPlaylist(obj));
     };
 
