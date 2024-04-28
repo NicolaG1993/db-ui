@@ -30,7 +30,6 @@ export default function SessionPlaylist({ open, closeWidget }) {
     // SPIKE: Dovrei gia poter assegnare qua valori per i nuovi movies (categories, tags, etc...)
 
     const addToPlaylist = (obj) => {
-        console.log("OBJ: ", obj);
         const { id, title } = obj;
         // questa fn viene invocata dopo che MovieForm ha finito di creare il nuovo movie
         // voglio prenderlo e aggiungerlo in fondo alla lista

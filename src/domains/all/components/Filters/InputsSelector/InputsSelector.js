@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import Error from "@/src/domains/_app/components/Error/Error";
+import ErrorUI from "@/src/domains/_app/components/Error/components/ErrorUI/ErrorUI";
 import standardStyles from "./InputsSelector.module.css";
 
 export default function InputsSelector(props) {
@@ -89,7 +89,7 @@ export default function InputsSelector(props) {
     return (
         <>
             {error ? (
-                <Error error={error} styles={null} />
+                <ErrorUI error={error} styles={null} />
             ) : renderReady ? (
                 renderValues(props.arr)
             ) : (

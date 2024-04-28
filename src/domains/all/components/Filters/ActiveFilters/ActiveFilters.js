@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import Error from "@/src/domains/_app/components/Error/Error";
+import ErrorUI from "@/src/domains/_app/components/Error/components/ErrorUI/ErrorUI";
 import standardStyles from "../InputsSelector/InputsSelector.module.css";
 
 export default function ActiveFilters(props) {
@@ -43,7 +43,7 @@ export default function ActiveFilters(props) {
     return (
         <>
             {error ? (
-                <Error error={error} styles={null} />
+                <ErrorUI error={error} styles={null} />
             ) : (
                 <div className={styles.categoryDropdown}>
                     {filters &&

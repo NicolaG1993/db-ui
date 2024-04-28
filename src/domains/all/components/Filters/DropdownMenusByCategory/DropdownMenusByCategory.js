@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import standardStyles from "@/src/domains/all/components/Filters/InputsSelector/InputsSelector.module.css";
-import Error from "@/src/domains/_app/components/Error/Error";
+import ErrorUI from "@/src/domains/_app/components/Error/components/ErrorUI/ErrorUI";
 import updateFilters from "@/src/domains/all/components/Filters/DropdownMenusByCategory/actions/updateFilters";
 import { getMenusState } from "@/src/domains/all/components/Filters/DropdownMenusByCategory/actions/getMenusStates";
 
@@ -175,7 +175,7 @@ export default function DropdownMenusByCategory(props) {
     return (
         <>
             {error ? (
-                <Error error={error} styles={null} />
+                <ErrorUI error={error} styles={null} />
             ) : renderReady ? (
                 renderAllData(props.obj)
             ) : (
