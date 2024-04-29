@@ -9,6 +9,17 @@
     justify-content: center;
     height: 100vh;
     width: 100vw;
+    background: rgb(var(--gradient000));
+    background: linear-gradient(
+        0deg,
+        rgba(var(--gradient000), 0.95) 0%,
+        rgba(var(--gradient000), 0.55) 80%,
+        rgba(var(--gradient000), 0.35) 100%
+    );
+    padding-bottom: 25%;
+}
+#ErrorApp > div {
+    max-width: 450px;
 }
 
 .error-wrap {
@@ -16,13 +27,10 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    margin-bottom: 25%;
 }
-
 .error-wrap > div {
     display: flex;
 }
-
 .error-code {
     font-size: 180px;
     line-height: 180px;
@@ -30,22 +38,36 @@
     margin: 0;
 }
 .error-message-wrap {
-    margin: 0 0 2rem 0;
+    margin: 0.5rem 0 1.5rem 0;
 }
 .error-message-label {
     padding: 0 0.5rem 0 0;
     font-weight: bold;
+    color: var(--bg900);
 }
 .error-message-value {
     font-style: italic;
+    text-decoration: underline;
 }
-.error-btns {
+
+.user-message-wrap {
+    margin: 0 0 3.5rem 0;
+}
+.user-message {
+    text-align: center;
+    margin: 0;
+    font-size: 14px;
+    color: var(--bg900);
+}
+
+.buttons-wrap {
+    display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
     height: 100px;
 }
-.error-btns > button {
+.buttons-wrap > button {
     width: 180px;
     height: 40px;
 }

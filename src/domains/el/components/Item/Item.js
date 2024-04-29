@@ -78,13 +78,6 @@ export default function Item({ label }) {
         dispatch(selectItem(fetchedItem));
     };
 
-    const handleStoreError = (error) => {
-        console.log("handleStoreError: ", error);
-        // dispatch(setStoreError(error));
-        // useErrorHandler();
-        showBoundary(error);
-    };
-
     //================================================================================
     // API Requests
     //================================================================================
@@ -96,13 +89,10 @@ export default function Item({ label }) {
         if (res.status === 200 && res.data) {
             return res.data;
         } else if (res.error) {
-            console.log("res.error: ", res.error);
-            // setApiError();
-            handleStoreError({
+            showBoundary({
                 code: res.status,
                 message: getError(res.error),
             });
-            // .... to complete 🧠🧠🧠
         }
     }, []);
 
