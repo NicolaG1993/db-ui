@@ -7,8 +7,9 @@ const getHomeData = async () => {
             groupAResp: [],
             groupBResp: [],
         },
-        error: undefined,
         status: undefined,
+        error: undefined,
+        message: undefined,
     };
     try {
         let { data } = await axios.get(`/api/home`);
@@ -31,8 +32,9 @@ const getHomeData = async () => {
         res.status = 200;
     } catch (error) {
         res.data = undefined;
-        res.error = error;
         res.status = error.response.status;
+        res.error = error;
+        res.message = getError(res.error);
     }
     return res;
 };

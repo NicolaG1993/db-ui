@@ -91,7 +91,7 @@ export default function Item({ label }) {
         } else if (res.error) {
             showBoundary({
                 code: res.status,
-                message: getError(res.error),
+                message: res.message,
             });
         }
     }, []);

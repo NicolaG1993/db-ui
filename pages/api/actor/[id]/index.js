@@ -107,7 +107,6 @@ export default async function handler(req, res) {
                 "actorID"
             );
             if (nationalityRelations.rows.length) {
-                console.log("RESPONSE!!! :", nationalityRelations.rows.length);
                 rows[0].nationalities = nationalityRelations.rows.map(
                     (el) => el.nationality
                 );

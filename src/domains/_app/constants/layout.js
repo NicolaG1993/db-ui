@@ -23,12 +23,9 @@ import {
 import styles from "@/src/domains/_app/constants/Layout.module.css";
 import RandomNumberButton from "./components/Widgets/RandomNumberButton";
 import SessionPlaylistButton from "./components/Widgets/SessionPlaylistButton";
-import {
-    selectItemIsLoading,
-    selectItemStoreError,
-} from "@/src/application/redux/slices/itemSlice";
+import { selectItemIsLoading } from "@/src/application/redux/slices/itemSlice";
 import AppBlur from "./components/AppBlur/AppBlur";
-import ErrorApp from "@/src/domains/_app/components/Error/components/ErrorApp/ErrorApp";
+// import { useErrorBoundary } from "react-error-boundary";
 
 export default function Layout({ children }) {
     //================================================================================
@@ -41,7 +38,7 @@ export default function Layout({ children }) {
     const [renderingApp, setRenderingApp] = useState(true); // forse si potrebbe spostare in redux
     let userInfo = useSelector(selectUserState);
     let itemIsLoading = useSelector(selectItemIsLoading, shallowEqual);
-
+    // const { showBoundary } = useErrorBoundary();
     // const [appError, setAppError] = useState();
     // let itemStoreError = useSelector(selectItemStoreError, shallowEqual);
 
@@ -49,11 +46,18 @@ export default function Layout({ children }) {
     // Functions
     //================================================================================
     const fetchAppSettings = async (objectURL) => {
-        const customSettings = await fetchS3SettingsFile(objectURL);
-        if (customSettings) {
-            dispatch(changeSettings(customSettings));
+        const res = await fetchS3SettingsFile(objectURL);
+        if (res.status === 200) {
+            if (res.data) {
+                dispatch(changeSettings(res.data));
+            } else {
+                dispatch(restoreDefaultSettings());
+            }
         } else {
-            dispatch(restoreDefaultSettings());
+            // showBoundary({
+            //     code: res.status,
+            //     message: res.message,
+            // }); // not working here // layout is parent of errorboundary
         }
     };
 
@@ -61,6 +65,7 @@ export default function Layout({ children }) {
         if (process.env.NODE_ENV === "development") {
             setShowAuthModal(false);
             dispatch(userLogin({ id: 3 })); // setting id to enable API requests in DEV
+            // need to find a better way to do this ? not sure if its safe to share this id on git history
         } else if (process.env.NODE_ENV === "production") {
             setShowAuthModal(true);
         }
@@ -104,17 +109,6 @@ export default function Layout({ children }) {
             dispatch(restoreDefaultSettings());
         }
     }, [process.env.CUSTOM_SETTINGS]);
-
-    // useEffect(() => {
-    //     if (itemStoreError) {
-    //         const storeError = itemStoreError;
-    //         console.log("ErrorApp: ", storeError);
-    //         setAppError(storeError);
-    //     } else {
-    //         setAppError();
-    //         // close ?
-    //     }
-    // }, [itemStoreError]);
 
     //================================================================================
     // Render UI

@@ -1,3 +1,4 @@
+import { getError } from "@/src/application/utils/error";
 import axios from "axios";
 
 const fetchItem = async (id, label, structure) => {
@@ -7,8 +8,11 @@ const fetchItem = async (id, label, structure) => {
         delete res.ItemComponent;
         return { status: 200, data: res };
     } catch (error) {
-        console.error("fetchItem ERROR!", error);
-        return { status: error.response.status, error };
+        return {
+            status: error.response.status,
+            error,
+            message: getError(error),
+        };
     }
 };
 

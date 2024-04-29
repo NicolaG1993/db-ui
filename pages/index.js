@@ -3,7 +3,6 @@ import ShortList from "@/src/domains/_app/components/ShortList/ShortList";
 import HomeHeading from "@/src/domains/home/components/HomeHeading";
 import HomeSearchbar from "@/src/domains/home/components/HomeSearchBar";
 import { useErrorBoundary } from "react-error-boundary";
-import { getError } from "@/src/application/utils/error";
 import getHomeData from "@/src/domains/home/actions/getHomeData";
 
 export default function Home() {
@@ -29,7 +28,7 @@ export default function Home() {
         } else if (res.error) {
             showBoundary({
                 code: res.status,
-                message: getError(res.error),
+                message: res.message,
             });
         }
     };

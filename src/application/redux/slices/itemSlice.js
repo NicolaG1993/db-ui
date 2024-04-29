@@ -37,6 +37,5 @@ export const selectItemStore = (state) => state.itemStore;
 export const selectSelectedItem = (state) => state.itemStore.selectedItem;
 export const selectItemIsLoading = (state) => state.itemStore.loading;
 export const selectItemIsLoaded = (state) => state.itemStore.itemIsLoaded;
-export const selectItemStoreError = (state) => state.itemStore.error;
 
 export default itemSlice;
