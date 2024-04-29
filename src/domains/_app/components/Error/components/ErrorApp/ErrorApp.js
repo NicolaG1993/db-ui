@@ -1,15 +1,16 @@
 import { useRouter } from "next/router";
 import styles from "./ErrorApp.module.css";
-import { useErrorBoundary } from "react-error-boundary";
 
 export default function ErrorApp({ error, resetErrorBoundary }) {
     const router = useRouter();
-    const { resetBoundary } = useErrorBoundary();
+    // const { resetBoundary } = useErrorBoundary();
 
-    const reloadPage = () => router.reload();
-    const goHome = () => {
-        router.push("/");
-        resetBoundary();
+    const reloadPage = () => resetErrorBoundary();
+    // const reloadPage = () => router.reload();
+    const goHome = async () => {
+        await router.push("/");
+        router.reload();
+        // resetErrorBoundary();
     };
 
     return (

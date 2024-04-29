@@ -12,7 +12,7 @@
     background: rgb(var(--gradient000));
     background: linear-gradient(
         0deg,
-        rgba(var(--gradient000), 0.95) 0%,
+        rgba(var(--gradient000), 0.9) 0%,
         rgba(var(--gradient000), 0.55) 80%,
         rgba(var(--gradient000), 0.35) 100%
     );
