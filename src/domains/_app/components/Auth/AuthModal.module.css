@@ -24,11 +24,21 @@
 }
 
 .buttonWrap {
+    margin: 1.5rem 0;
+}
+
+.buttonWrap button {
+    border-radius: 3px;
+    padding: 0.33rem 0.75rem;
 }
 
 .changeTab {
     cursor: pointer;
+    margin: 0;
+    font-size: 13px;
+    color: var(--bg900);
 }
 .changeTab:hover {
     text-decoration: underline;
+    color: var(--text);
 }

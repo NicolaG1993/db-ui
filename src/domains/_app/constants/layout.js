@@ -32,7 +32,7 @@ export default function Layout({ children }) {
     // State
     //================================================================================
     const dispatch = useDispatch();
-    const [user, setUser] = useState();
+    // const [user, setUser] = useState();
     const [showLoadingScreen, setShowLoadingScreen] = useState(false);
     const [showAuthModal, setShowAuthModal] = useState(true);
     const [renderingApp, setRenderingApp] = useState(true); // forse si potrebbe spostare in redux
@@ -98,7 +98,7 @@ export default function Layout({ children }) {
     }, [itemIsLoading]);
 
     useEffect(() => {
-        setUser(userInfo);
+        // setUser(userInfo);
         userInfo && setShowAuthModal(false);
     }, [userInfo]);
 
