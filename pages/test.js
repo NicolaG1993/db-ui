@@ -65,7 +65,6 @@ const submitForm = async (obj) => {
 
         if (imageRes?.code === 200) {
             finalRes = await createItem(imageRes.data);
-            return { data: finalRes, code: 200 };
         } else {
             // ? throw error
             // try delete this and throw error here
@@ -73,8 +72,8 @@ const submitForm = async (obj) => {
         }
     } else {
         finalRes = await createItem(obj);
-        return { data: finalRes, code: 200 };
     }
+    return { data: finalRes, code: 200 };
 };
 
 const createItem = async (obj) => {

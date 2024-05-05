@@ -32,14 +32,11 @@ export default function App({ Component, pageProps }) {
             anchorOrigin={{ vertical: "top", horizontal: "center" }}
         >
             <Provider store={store}>
-                <Layout>
-                    <ErrorBoundary
-                        FallbackComponent={ErrorApp}
-                        onError={logError}
-                    >
+                <ErrorBoundary FallbackComponent={ErrorApp} onError={logError}>
+                    <Layout>
                         <Component {...pageProps} />
-                    </ErrorBoundary>
-                </Layout>
+                    </Layout>
+                </ErrorBoundary>
             </Provider>
         </SnackbarProvider>
     );

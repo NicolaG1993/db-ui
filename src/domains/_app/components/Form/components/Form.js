@@ -1,7 +1,10 @@
+"use client";
+
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { shallowEqual, useSelector } from "react-redux";
 import { useErrorBoundary } from "react-error-boundary";
+import Cookies from "js-cookie";
 import styles from "@/src/application/styles/AdminDashboard.module.css";
 import {
     createObjectURL,
@@ -19,6 +22,7 @@ import { fetchDataForSideNav } from "@/src/domains/_app/actions/formFetchers";
 import { selectAppSettings } from "@/src/application/redux/slices/appSettingsSlice";
 import submitForm from "@/src/domains/_app/components/Form/actions/submitForm";
 import { getError } from "@/src/application/utils/error";
+import getSavedState from "@/src/domains/_app/components/Form/utils/getSavedState"; // 🧠 do i really need to call it so many times ? 🧠
 
 export default function Form({
     topicLabel,
@@ -32,11 +36,13 @@ export default function Form({
     //================================================================================
     const router = useRouter();
     const appSettings = useSelector(selectAppSettings);
-    const { showBoundary } = useErrorBoundary();
+    const { showBoundary } = useErrorBoundary(); // not found ?!?!
 
     const [form, setForm] = useState(dataStructureForms[topicLabel]);
     const FormComponent = form.formComponent;
-    const [formState, setFormState] = useState(form.emptyState);
+    const [formState, setFormState] = useState(
+        getSavedState(topicLabel, form.emptyState)
+    );
     const [activeForm, setActiveForm] = useState(topicLabel); // delete?
     const [newImage, setNewImage] = useState();
     const [errors, setErrors] = useState({});
@@ -50,18 +56,25 @@ export default function Form({
     //================================================================================
     // UseEffects
     //================================================================================
+
     // SET NEW ACTIVE FORM
     useEffect(() => {
+        loadNewActiveForm(topicLabel);
+    }, [topicLabel]);
+
+    const loadNewActiveForm = (topicLabel) => {
         setIsLoading(true);
         setActiveForm(topicLabel); // senza questo il form cambia prima che nuovo emptyState venga selezionato
         setForm(dataStructureForms[topicLabel]);
-        setFormState(dataStructureForms[topicLabel].emptyState);
+        setFormState(
+            getSavedState(topicLabel, dataStructureForms[topicLabel].emptyState)
+        ); // 🧠 non posso usare direttamente form.emptyState ? 🧠
         setErrors({});
-    }, [topicLabel]);
+    };
 
     // RESET STATE ON FORM CHANGE
     useEffect(() => {
-        setFormState(form.emptyState);
+        setFormState(getSavedState(topicLabel, form.emptyState));
         setIsLoading(false);
     }, [form]);
 
@@ -71,7 +84,7 @@ export default function Form({
             let newState = formHydrate(formState, form.emptyState, propsData); // hydrate form on modify
             setFormState(newState);
         } else {
-            setFormState(form.emptyState); // set empty form on add new
+            setFormState(getSavedState(topicLabel, form.emptyState)); // set empty form on add new
         }
         // setIsLoading(false);
     }, [propsData]);
@@ -115,6 +128,11 @@ export default function Form({
                 ...prev,
                 pic: "",
             }));
+
+            Cookies.set(
+                "formState",
+                JSON.stringify({ formLabel: topicLabel, formState })
+            );
         }
     };
 
@@ -123,6 +141,16 @@ export default function Form({
             ...prev,
             [topic]: val,
         }));
+
+        console.log("🌶️ formState: ", { formState, topicLabel }); // 🧠 why there is a loose boolean inside formState ??? remove pls
+        Cookies.set(
+            "formState",
+            JSON.stringify({ formLabel: topicLabel, formState })
+        );
+
+        // set cookies
+
+        // delete cookies after submit
     };
 
     const validateData = async (e) => {
@@ -167,27 +195,31 @@ export default function Form({
 
         if (Object.keys(errors).length === 0) {
             !isLoading && setIsLoading(true);
-            try {
-                const { data } = await submitForm({
-                    formState,
-                    newImage,
-                    form,
-                    propsData,
-                });
 
-                if ((propsData || parentIsWaiting) && handleEditsInParent) {
-                    handleEditsInParent(data);
-                }
-                setOpenForm && setOpenForm(false);
-                topicLabel !== "record" &&
-                    topicLabel !== "records" &&
-                    router.push(`/el/${topicLabel}/${data.id}`);
-            } catch (error) {
-                showBoundary({
-                    code: error.response.status,
-                    message: getError(error),
+            submitForm({
+                formState,
+                newImage,
+                form,
+                propsData,
+            })
+                .then(({ data }) => {
+                    if ((propsData || parentIsWaiting) && handleEditsInParent) {
+                        handleEditsInParent(data);
+                    }
+                    Cookies.remove("formState");
+                    setOpenForm && setOpenForm(false);
+                    topicLabel !== "record" &&
+                        topicLabel !== "records" &&
+                        router.push(`/el/${topicLabel}/${data.id}`);
+                })
+                .catch((error) => {
+                    // save form state in cookie or state 🔴
+                    // ...
+                    showBoundary({
+                        code: error.response.status,
+                        message: getError(error),
+                    });
                 });
-            }
 
             setIsLoading(false);
         }

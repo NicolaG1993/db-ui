@@ -5,14 +5,17 @@ import {
 } from "@/src/domains/_app/utils/formParsers.js";
 
 // BETA 💛
-export default async function createItem(obj, form, formState, propsData) {
-    // console.log("createItem invoked 💚: ", { obj, form, formState, propsData });
+export default async function createItem({ formState, form, propsData }) {
+    console.log("createItem invoked 🧠: ", { formState, form, propsData });
     let relatedData;
     if (form.relations) {
+        // 🔴 invece di chiamare API per avere relations potrei passare direttamente id da component - invece di name
+        // é inutile API qui perché id di relations sono unici e non modificabili
         relatedData = await parseFormRelationsPromise(
             form.relations,
             formState
-        ); // posso usare direttamente obj ogni volta invece di formState ? 🧠 se sí eliminare 3 prop
+        );
+        console.log("🧠 relatedData: ", relatedData);
     }
 
     if (propsData) {
@@ -23,11 +26,11 @@ export default async function createItem(obj, form, formState, propsData) {
             (relationsObj = parseFormRelationsEdit(relatedData, propsData));
 
         return axios.put(form.APImodify, {
-            ...obj,
+            ...formState,
             ...relationsObj,
         });
         // return axios.put(`/api/${topicLabel}/modify`, {
-        //     ...obj,
+        //     ...formState,
         //     ...relationsObj,
         // });
     } else {
@@ -43,11 +46,11 @@ export default async function createItem(obj, form, formState, propsData) {
         });
 
         return axios.post(form.APInew, {
-            ...obj,
+            ...formState,
             ...relatedData,
         });
         // return axios.post(`/api/${topicLabel}/new`, {
-        //     ...obj,
+        //     ...formState,
         //     ...relatedData,
         // });
     }
