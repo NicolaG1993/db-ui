@@ -30,3 +30,7 @@
     display: grid;
     grid-template-columns: 1fr auto;
 }
+
+.searchbar button {
+    border-radius: 3px;
+}

@@ -1,9 +1,9 @@
-import axios from "axios";
 import { useEffect, useState } from "react";
-import { sortByObjDate } from "@/src/application/utils/orderData";
 import ShortList from "@/src/domains/_app/components/ShortList/ShortList";
 import HomeHeading from "@/src/domains/home/components/HomeHeading";
 import HomeSearchbar from "@/src/domains/home/components/HomeSearchBar";
+import { useErrorBoundary } from "react-error-boundary";
+import getHomeData from "@/src/domains/home/actions/getHomeData";
 
 export default function Home() {
     //================================================================================
@@ -11,36 +11,25 @@ export default function Home() {
     //================================================================================
     const [groupA, setGroupA] = useState();
     const [groupB, setGroupB] = useState();
+    const { showBoundary } = useErrorBoundary();
 
     //================================================================================
     // Initial Fetch
     //================================================================================
     const fetchData = async () => {
-        try {
-            let groupAResp;
-            let groupBResp;
-
-            let { data } = await axios.get(`/api/home`);
-            if (data) {
-                if (data.groupA) {
-                    groupAResp = sortByObjDate(
-                        data.groupA,
-                        "created_at",
-                        "asc"
-                    );
-                    setGroupA(groupAResp.reverse().slice(0, 6));
-                }
-                if (data.groupB) {
-                    groupBResp = sortByObjDate(
-                        data.groupB,
-                        "created_at",
-                        "desc"
-                    );
-                    setGroupB(groupBResp.slice(0, 6));
-                }
+        const res = await getHomeData();
+        if (res.status === 200 && res.data) {
+            if (res.data.groupAResp) {
+                setGroupA(res.data.groupAResp);
             }
-        } catch (error) {
-            console.error("❤❤❤ FETCH ERROR: ", error);
+            if (res.data.groupBResp) {
+                setGroupB(res.data.groupBResp);
+            }
+        } else if (res.error) {
+            showBoundary({
+                code: res.status,
+                message: res.message,
+            });
         }
     };
 

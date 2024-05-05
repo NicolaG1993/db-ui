@@ -39,6 +39,11 @@ export default function SessionPlaylist({ open, closeWidget }) {
         }
     };
 
+    const addNewToPlaylist = (obj) => {
+        addToPlaylist(obj);
+        closeAddNew();
+    };
+
     if (open) {
         return (
             <>
@@ -56,7 +61,7 @@ export default function SessionPlaylist({ open, closeWidget }) {
                             </div>
                             <Form
                                 topicLabel={"movie"}
-                                handleEditsInParent={addToPlaylist}
+                                handleEditsInParent={addNewToPlaylist}
                                 parentIsWaiting={true}
                             />
                         </div>

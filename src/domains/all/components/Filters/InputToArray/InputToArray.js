@@ -67,7 +67,7 @@ export default function InputToArray({
                             <button
                                 type="button"
                                 onClick={() => handleRemoveSelectedInput(i)}
-                                className={styles["form-input-sub-btn"]}
+                                className="button-standard"
                             >
                                 X
                             </button>

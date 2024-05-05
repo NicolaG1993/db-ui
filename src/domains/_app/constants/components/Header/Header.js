@@ -2,14 +2,15 @@ import Link from "next/link";
 import { useState } from "react";
 import styles from "@/src/domains/_app/constants/Layout.module.css";
 import { useRouter } from "next/router";
-import { getRandomMovieID } from "@/src/domains/_app/actions/customFetchers";
 import { useDispatch } from "react-redux";
 import { activateLoadingItem } from "@/src/application/redux/slices/itemSlice";
-import getRandomMovie from "../../../actions/getRandomMovie";
+import getRandomMovie from "@/src/domains/_app/actions/getRandomMovie";
+// import { useErrorBoundary } from "react-error-boundary";
 
 export default function Header() {
     const dispatch = useDispatch();
     const router = useRouter();
+    // const { showBoundary } = useErrorBoundary();
 
     const [menuOpen, seMenuOpen] = useState(false);
 
@@ -19,8 +20,15 @@ export default function Header() {
 
     const handleRandomMovie = async () => {
         setLoadingItem();
-        const id = await getRandomMovie();
-        router.push(`/el/movie/${id}`);
+        const res = await getRandomMovie();
+        if (res.status === 200 && res.data) {
+            router.push(`/el/movie/${res.data}`);
+        } else if (res.error) {
+            //  showBoundary({
+            //      code: res.status,
+            //      message: res.message,
+            //  });
+        }
     };
 
     const Menu = () => (
