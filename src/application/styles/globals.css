@@ -379,3 +379,18 @@ select:hover {
     cursor: pointer;
     font-weight: bold;
 }
+
+/* FORMS GLOBAL ELEMENTS */
+.form-error {
+    background: var(--dangerBg100);
+    color: white;
+    border: 1px solid var(--text);
+    padding: 0.15rem 0.25rem;
+    font-size: 13px;
+    /* letter-spacing: 0.01rem; */
+    margin-top: 0.5rem;
+    border-radius: 3px;
+}
+.input-error {
+    border: 1px solid var(--dangerBg100);
+}

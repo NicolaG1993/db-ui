@@ -6,6 +6,7 @@ export default function RecordsForm({
     validateData,
     confirmChanges,
     errors,
+    isLoading,
 }) {
     //================================================================================
     // Render UI
@@ -34,7 +35,11 @@ export default function RecordsForm({
             <div
                 className={`${styles["form-col-left"]} ${styles["buttons-box"]}`}
             >
-                <button type="submit" className="button-standard">
+                <button
+                    type="submit"
+                    disabled={isLoading}
+                    className="button-standard"
+                >
                     Confirm
                 </button>
                 {/* <button onClick={distribute()}>Distribute all</button> */}

@@ -1,7 +1,8 @@
-import styles from "@/src/application/styles/AdminDashboard.module.css";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-
+import { shallowEqual, useSelector } from "react-redux";
+import { useErrorBoundary } from "react-error-boundary";
+import styles from "@/src/application/styles/AdminDashboard.module.css";
 import {
     createObjectURL,
     revokeObjectURL,
@@ -15,10 +16,9 @@ import dataStructureForms from "@/src/application/settings/dataStructureForms";
 import FormSideNav from "@/src/domains/_app/components/Form/components/FormSideNav/FormSideNav.js";
 import formHydrate from "@/src/domains/_app/utils/formHydrate";
 import { fetchDataForSideNav } from "@/src/domains/_app/actions/formFetchers";
-import uploadImage from "@/src/domains/_app/actions/uploadImage";
-import createItem from "@/src/domains/_app/actions/createItem";
-import { shallowEqual, useSelector } from "react-redux";
 import { selectAppSettings } from "@/src/application/redux/slices/appSettingsSlice";
+import submitForm from "@/src/domains/_app/components/Form/actions/submitForm";
+import { getError } from "@/src/application/utils/error";
 
 export default function Form({
     topicLabel,
@@ -32,6 +32,7 @@ export default function Form({
     //================================================================================
     const router = useRouter();
     const appSettings = useSelector(selectAppSettings);
+    const { showBoundary } = useErrorBoundary();
 
     const [form, setForm] = useState(dataStructureForms[topicLabel]);
     const FormComponent = form.formComponent;
@@ -41,6 +42,7 @@ export default function Form({
     const [errors, setErrors] = useState({});
     const [openSection, setOpenSection] = useState(false);
     const [sideNavData, setSideNavData] = useState(undefined);
+    const [isLoading, setIsLoading] = useState(true);
 
     const emptyHints = { missing: [], removed: [] };
     const [hints, setHints] = useState(emptyHints);
@@ -50,6 +52,7 @@ export default function Form({
     //================================================================================
     // SET NEW ACTIVE FORM
     useEffect(() => {
+        setIsLoading(true);
         setActiveForm(topicLabel); // senza questo il form cambia prima che nuovo emptyState venga selezionato
         setForm(dataStructureForms[topicLabel]);
         setFormState(dataStructureForms[topicLabel].emptyState);
@@ -59,6 +62,7 @@ export default function Form({
     // RESET STATE ON FORM CHANGE
     useEffect(() => {
         setFormState(form.emptyState);
+        setIsLoading(false);
     }, [form]);
 
     //PARSE PROPSDATA
@@ -69,6 +73,7 @@ export default function Form({
         } else {
             setFormState(form.emptyState); // set empty form on add new
         }
+        // setIsLoading(false);
     }, [propsData]);
 
     // FETCH DATA FOR SIDENAV
@@ -156,61 +161,35 @@ export default function Form({
 
     const confirmChanges = async (e) => {
         e.preventDefault();
-
-        if (formState.birthday === "") {
-            formState.birthday = null;
-        }
+        /////////////////////////
+        // Handle errors properly!
+        // 🔥 image upload (TODO) + item edit (TODO) + form validation (DONE)
 
         if (Object.keys(errors).length === 0) {
-            //questa parte é cosí perché utilizzo archivio locale su pc per questo progetto
-            //qui se no dovrei fare upload img su db e salvare quel link
-            if (newImage) {
-                // user added a new image
-                uploadImage(newImage.file, form.group)
-                    .then((imgRes) => {
-                        let finalState = {
-                            ...formState,
-                            pic: imgRes.data[0].Location,
-                        };
-                        createItem(finalState, form, formState, propsData).then(
-                            ({ data }) => {
-                                if (
-                                    (propsData || parentIsWaiting) &&
-                                    handleEditsInParent
-                                ) {
-                                    handleEditsInParent(data);
-                                }
-                                setOpenForm && setOpenForm(false);
-                                router.push(`/el/${topicLabel}/${data.id}`);
-                            }
-                        );
-                    })
-                    .catch((err) => console.log("🧡🧡🧡 ERR: ", err));
-            } else {
-                // user doesnt want to use any image or nothing changed
-                createItem(formState, form, formState, propsData)
-                    .then(({ data }) => {
-                        if (
-                            (propsData || parentIsWaiting) &&
-                            handleEditsInParent
-                        ) {
-                            handleEditsInParent(data);
-                        }
-                        setOpenForm && setOpenForm(false);
-                        topicLabel !== "record" &&
-                            topicLabel !== "records" &&
-                            router.push(`/el/${topicLabel}/${data.id}`); // forse fare Form Component separato per "record" page, in caso si volessero fare cose diverse al suo interno
-                    })
-                    .catch((err) => console.log("ERROR: ", err));
+            !isLoading && setIsLoading(true);
+            try {
+                const { data } = await submitForm({
+                    formState,
+                    newImage,
+                    form,
+                    propsData,
+                });
+
+                if ((propsData || parentIsWaiting) && handleEditsInParent) {
+                    handleEditsInParent(data);
+                }
+                setOpenForm && setOpenForm(false);
+                topicLabel !== "record" &&
+                    topicLabel !== "records" &&
+                    router.push(`/el/${topicLabel}/${data.id}`);
+            } catch (error) {
+                showBoundary({
+                    code: error.response.status,
+                    message: getError(error),
+                });
             }
-        } else {
-            console.log("INVALID INPUTS", errors);
-            // Object.values(errors).map((err) =>
-            //     enqueueSnackbar(err, {
-            //         variant: "error",
-            //     })
-            // );
-            return;
+
+            setIsLoading(false);
         }
     };
 
@@ -266,6 +245,7 @@ export default function Form({
                         deleteImage={deleteImage}
                         setOpenSection={setOpenSection}
                         errors={errors}
+                        isLoading={isLoading}
                     />
                 ) : (
                     <p>Loading...</p>

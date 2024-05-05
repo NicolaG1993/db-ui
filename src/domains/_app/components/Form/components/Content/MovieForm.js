@@ -14,6 +14,7 @@ export default function MovieForm({
     setOpenSection,
     errors,
     topicLabel,
+    isLoading,
 }) {
     // console.log("FORMSTATE: ", formState);
     //================================================================================
@@ -91,6 +92,7 @@ export default function MovieForm({
                     onChange={(e) => updateFormState(e.target.value, "title")}
                     onBlur={(e) => validateData(e)}
                     value={formState.title}
+                    className={errors.title && "input-error"}
                 />
                 {errors.title && (
                     <div className={"form-error"}>{errors.title}</div>
@@ -245,7 +247,11 @@ export default function MovieForm({
             <div
                 className={`${styles["form-col-left"]} ${styles["buttons-box"]}`}
             >
-                <button type="submit" className="button-standard">
+                <button
+                    type="submit"
+                    disabled={isLoading}
+                    className="button-standard"
+                >
                     Confirm
                 </button>
             </div>

@@ -12,8 +12,9 @@ export default function CategoryForm({
     setOpenSection,
     errors,
     topicLabel,
+    isLoading,
 }) {
-    console.log(formState);
+    console.log({ formState, isLoading });
     //================================================================================
     // Render UI
     //================================================================================
@@ -114,7 +115,11 @@ export default function CategoryForm({
             <div
                 className={`${styles["form-col-left"]} ${styles["buttons-box"]}`}
             >
-                <button type="submit" className="button-standard">
+                <button
+                    type="submit"
+                    disabled={isLoading}
+                    className="button-standard"
+                >
                     Confirm
                 </button>
             </div>

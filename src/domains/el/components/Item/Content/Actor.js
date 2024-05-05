@@ -471,7 +471,7 @@ export default function Actor({
     );
 }
 
-/**
+/*
  * Bisogna fare in modo che UI sia dinamica (es. attore != movie != studio)
  * si puo fare come per in Form
  * si puo fare come esistono 3 presets (1x attore, 1x movie, 1x altro) e vengono scelti in base a label

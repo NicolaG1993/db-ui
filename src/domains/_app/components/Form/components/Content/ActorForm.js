@@ -12,6 +12,7 @@ export default function ActorForm({
     deleteImage,
     setOpenSection,
     errors,
+    isLoading,
 }) {
     //================================================================================
     // Render UI
@@ -215,7 +216,11 @@ export default function ActorForm({
             <div
                 className={`${styles["form-col-left"]} ${styles["buttons-box"]}`}
             >
-                <button type="submit" className="button-standard">
+                <button
+                    type="submit"
+                    disabled={isLoading}
+                    className="button-standard"
+                >
                     Confirm
                 </button>
             </div>

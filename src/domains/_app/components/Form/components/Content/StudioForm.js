@@ -12,6 +12,7 @@ export default function StudioForm({
     deleteImage,
     setOpenSection,
     errors,
+    isLoading,
 }) {
     console.log("*formState* ", formState);
     //================================================================================
@@ -137,7 +138,11 @@ export default function StudioForm({
             <div
                 className={`${styles["form-col-left"]} ${styles["buttons-box"]}`}
             >
-                <button type="submit" className="button-standard">
+                <button
+                    type="submit"
+                    disabled={isLoading}
+                    className="button-standard"
+                >
                     Confirm
                 </button>
             </div>

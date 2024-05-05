@@ -16,7 +16,7 @@ export default async function createItem(obj, form, formState, propsData) {
     }
 
     if (propsData) {
-        // MODIFY //
+        // 🟢 MODIFY //
         /* parse relations for db */
         let relationsObj = {};
         relatedData &&
@@ -31,7 +31,7 @@ export default async function createItem(obj, form, formState, propsData) {
         //     ...relationsObj,
         // });
     } else {
-        // NEW //
+        // 🟢 NEW //
         /* parse data for db */
         Object.entries(relatedData).map(([key, arr], i) => {
             if (key === "nationalities") {
