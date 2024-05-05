@@ -143,14 +143,12 @@ export default function Form({
         }));
 
         console.log("🌶️ formState: ", { formState, topicLabel }); // 🧠 why there is a loose boolean inside formState ??? remove pls
-        Cookies.set(
-            "formState",
-            JSON.stringify({ formLabel: topicLabel, formState })
-        );
-
-        // set cookies
-
-        // delete cookies after submit
+        if (!propsData) {
+            Cookies.set(
+                "formState",
+                JSON.stringify({ formLabel: topicLabel, formState })
+            );
+        }
     };
 
     const validateData = async (e) => {
