@@ -48,16 +48,18 @@ export default function ActiveFilters(props) {
                 <div className={styles.categoryDropdown}>
                     {filters &&
                         filters.map((el) => (
-                            <div key={"selected " + el}>
+                            <div key={"selected " + el.id}>
                                 <span
                                     className={styles.selectedEl}
                                     onClick={() =>
                                         setFilters([
-                                            ...filters.filter((x) => x !== el),
+                                            ...filters.filter(
+                                                (x) => x.id !== el.id
+                                            ),
                                         ])
                                     }
                                 >
-                                    {el}
+                                    {el.name}
                                 </span>
                             </div>
                         ))}

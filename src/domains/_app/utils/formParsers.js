@@ -11,9 +11,9 @@ const parseFormProps = (key, value) => {
         key === "categories" ||
         key === "tags"
     ) {
-        return value.map((el) => el.name);
+        return value.map((el) => el);
     } else if (key === "movies") {
-        return value.map((el) => el.title);
+        return value.map((el) => el);
     } else {
         return value;
     }

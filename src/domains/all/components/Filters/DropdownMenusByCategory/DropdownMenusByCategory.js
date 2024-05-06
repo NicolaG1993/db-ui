@@ -4,11 +4,129 @@ import ErrorUI from "@/src/domains/_app/components/Error/components/ErrorUI/Erro
 import updateFilters from "@/src/domains/all/components/Filters/DropdownMenusByCategory/actions/updateFilters";
 import { getMenusState } from "@/src/domains/all/components/Filters/DropdownMenusByCategory/actions/getMenusStates";
 
+const loopObject = (object) => Object.entries(object); // utils 🧠
+
+function DropdownMenus({ menuStructure, dropdownMenus }) {
+    const renderAllData = (menuStructure) => {
+        let objectEntries = loopObject(menuStructure);
+        console.log("renderAllData: ", {
+            menuStructure,
+            dropdownMenus,
+            objectEntries,
+        });
+        return checkEntries(objectEntries, 1);
+    };
+
+    const checkEntries = (array, level) => {
+        console.log("checkEntries: ", { array, level });
+        return array.map(([key, values], i) =>
+            renderCategory(values, key, level, dropdownMenus)
+        );
+    };
+
+    const renderCategory = (values, key, level, dropdownMenus) => {
+        console.log("🔥 renderCategory: ", {
+            values,
+            key,
+            level,
+            dropdownMenus,
+        });
+
+        // TODO ...
+    };
+
+    // return <></>;
+    return renderAllData(menuStructure);
+}
+
 export default function DropdownMenusByCategory(props) {
     //////////////////////////////
     // STATE
     //////////////////////////////
-    // console.log("*Rendering *DropdownMenusByCategory* ", props);
+
+    console.log("*🌸 Rendering *DropdownMenusByCategory* ", props);
+
+    // TODO:
+    // props.menuStructure contiene solo names
+    // abbinargli gli ids corrispondenti (da tags che riceviamo da API on render)
+    // renderizzarli nel gruppo corretto
+    // handle add
+    // handle remove
+    // handle tags hints
+
+    const [error, setError] = useState();
+    const [dropdownMenus, setDropdownMenus] = useState({});
+    const [renderReady, setRenderReady] = useState(false);
+    const [stateObj, setStateObj] = useState({}); // ??? elimina ???
+
+    let styles = props.styles
+        ? { ...standardStyles, ...props.styles }
+        : standardStyles;
+
+    useEffect(() => {
+        if (!props.menuStructure) {
+            setError("Error: props.menuStructure is missing");
+        } else if (typeof props.menuStructure !== "object") {
+            setError("Error: props.menuStructure is not an object");
+        } else if (props.filters && !Array.isArray(props.filters)) {
+            setError("Error: props.filters is not an array");
+        } else {
+            handleMenus(stateObj);
+        }
+    }, []);
+
+    //////////////////////////////
+    // SET DROPDOWN MENUS
+    //////////////////////////////
+    const handleMenus = (stateObj) => {
+        // rename handleMenus() to hydrateDropdowns() 🧠
+        // rename getMenusState() to getDropdownsState() 🧠
+        let { res, err } = getMenusState({
+            stateObj,
+            propsObj: props.menuStructure,
+            dropdownMenus,
+        });
+        console.log("🧠 handleMenus: ", {
+            stateObj,
+            res,
+            err,
+        });
+        err && setError(err); // 🧠 handle Error correctly - now we are just storing it 🧠
+        setDropdownMenus(res); // rename setDropdownMenus() to setDropdownsState() 🧠
+        setRenderReady(true);
+    };
+
+    //////////////////////////////
+    // DOM
+    //////////////////////////////
+
+    return (
+        <DropdownMenus
+            menuStructure={props.menuStructure}
+            dropdownMenus={dropdownMenus}
+        />
+    );
+    // return <div className={styles.categoryDropdown}>...</div>;
+
+    // return (
+    //     <>
+    //         {error ? (
+    //             <ErrorUI error={error} styles={null} />
+    //         ) : renderReady ? (
+    //             renderAllData(props.menuStructure)
+    //         ) : (
+    //             "Loading"
+    //         )}
+    //     </>
+    // );
+}
+
+/*
+export default function DropdownMenusByCategory(props) {
+    //////////////////////////////
+    // STATE
+    //////////////////////////////
+    console.log("*Rendering *DropdownMenusByCategory* ", props);
     const [error, setError] = useState();
     const [stateObj, setStateObj] = useState({});
     const [dropdownMenus, setDropdownMenus] = useState({});
@@ -22,10 +140,10 @@ export default function DropdownMenusByCategory(props) {
     const loopObject = (object) => Object.entries(object);
 
     useEffect(() => {
-        if (!props.obj) {
-            setError("Error: props.obj is missing");
-        } else if (typeof props.obj !== "object") {
-            setError("Error: props.obj is not an object");
+        if (!props.menuStructure) {
+            setError("Error: props.menuStructure is missing");
+        } else if (typeof props.menuStructure !== "object") {
+            setError("Error: props.menuStructure is not an object");
         } else if (props.filters && !Array.isArray(props.filters)) {
             setError("Error: props.filters is not an array");
         } else {
@@ -52,35 +170,21 @@ export default function DropdownMenusByCategory(props) {
         setFilters(array);
     };
 
-    //////////////////////////////
-    // SET DROPDOWN MENUS
-    //////////////////////////////
-    const handleMenus = (stateObj) => {
-        let { res, err } = getMenusState({
-            stateObj,
-            propsObj: props.obj,
-            dropdownMenus,
-        });
-        err && setError(err);
-        setDropdownMenus(res);
-        setRenderReady(true);
-    };
+
 
     //////////////////////////////
     // RENDERING
     //////////////////////////////
-    const renderAllData = (object) => {
-        let objectEntries = loopObject(object);
-        return checkEntries(objectEntries, 1);
-    };
-
-    const checkEntries = (array, level) => {
-        return array.map(([key, values], i) =>
-            renderCategory(values, key, level, dropdownMenus)
-        );
-    };
+ 
+   
 
     const renderCategory = (values, key, level, dropdownMenus) => {
+        console.log("🔥 renderCategory: ", {
+            values,
+            key,
+            level,
+            dropdownMenus,
+        });
         if (values) {
             if (Array.isArray(values)) {
                 return (
@@ -143,7 +247,7 @@ export default function DropdownMenusByCategory(props) {
     };
 
     const renderValues = (array, key) => {
-        // console.log("renderValues ACTIVATED 🧨", { array, key });
+        console.log("renderValues ACTIVATED 🧨", { array, key });
         return (
             <div className={styles.categoryDropdown}>
                 {array.map((it) => {
@@ -177,7 +281,7 @@ export default function DropdownMenusByCategory(props) {
             {error ? (
                 <ErrorUI error={error} styles={null} />
             ) : renderReady ? (
-                renderAllData(props.obj)
+                renderAllData(props.menuStructure)
             ) : (
                 "Loading"
             )}
@@ -187,3 +291,5 @@ export default function DropdownMenusByCategory(props) {
 
 // FARE CUSTOM COMPONENTS DI QUESTO 🧠👍
 // È GIA PRONTO!
+
+*/

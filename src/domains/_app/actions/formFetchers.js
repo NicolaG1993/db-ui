@@ -13,8 +13,22 @@ const fetchDataForSideNav = async (topic, TAGS_OBJ) => {
             });
             if (topic === "tags") {
                 let result = groupJsonByValue(res.data, "type");
+                console.log("😋 fetchDataForSideNav tags: ", {
+                    topic,
+                    itemLabel,
+                    TAGS_OBJ,
+                    result,
+                    res,
+                    response: parseTagsByType(result, TAGS_OBJ),
+                });
                 return parseTagsByType(result, TAGS_OBJ);
             } else {
+                console.log("😋 fetchDataForSideNav: ", {
+                    topic,
+                    itemLabel,
+                    TAGS_OBJ,
+                    response: res.data,
+                });
                 return res.data;
             }
         } catch (error) {

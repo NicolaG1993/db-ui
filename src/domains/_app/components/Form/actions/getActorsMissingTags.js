@@ -8,19 +8,27 @@ export default async function getActorsMissingTags(
 ) {
     try {
         //NEW TAGS
-        const { data } = await axios.get("/api/actor/by-name", {
-            params: { items: JSON.stringify(actors) },
+        const { data } = await axios.get("/api/actor/by-id", {
+            params: { items: JSON.stringify(actors.map((el) => el.id)) },
         });
 
-        let extractedNames = originalFormState.actors.map((el) => el.name);
-        const removedActors = extractedNames.filter(
-            (el) => !actors.includes(el)
+        // let extractedOriginalIDs = originalFormState.actors.map(
+        //     (el) => el.id
+        // );
+        let extractedActorsIDs = actors.map((el) => el.id);
+        const removedActors = originalFormState.actors.filter(
+            (el) => !extractedActorsIDs.includes(el.id)
         );
 
         let removedActorsRes;
         if (removedActors && removedActors.length) {
-            const res = await axios.get("/api/actor/by-name", {
-                params: { items: JSON.stringify(removedActors) },
+            // We dont need this, we could just filter formState
+            // but now formState is storing only id and name - should store all object
+            // then change this! 🧠
+            const res = await axios.get("/api/actor/by-id", {
+                params: {
+                    items: JSON.stringify(removedActors.map((el) => el.id)),
+                },
             });
             removedActorsRes = res.data;
         }
@@ -28,28 +36,43 @@ export default async function getActorsMissingTags(
         // PARSING RESPONSE
         // NEW TAGS
         let allTags = []; // all active cast tags
+        let allTagsIds = [];
         if (data && data.length) {
             data.map((actor) => {
-                let onlyTagNames = actor.tags.map((t) => t.name);
-                allTags = mergeArrays(allTags, onlyTagNames);
+                allTags = mergeArrays(allTags, actor.tags);
+                allTagsIds = allTags.map((t) => t.id);
             });
         }
-        const missingTags = allTags.filter((el) => !tags.includes(el));
+
+        const tagsIdOnly = tags.map((t) => t.id);
+
+        let missingTags = allTags.filter((el) => !tagsIdOnly.includes(el.id));
 
         // REMOVED TAGS
         let removedTags = [];
         if (removedActorsRes && allTags.length) {
             removedActorsRes.map((actor) => {
-                let onlyTagNames = actor.tags.map((t) => t.name); // all tags from removed cast
-                let uniqueTags = onlyTagNames.filter(
-                    (el) => !allTags.includes(el)
+                //  let onlyTagIds = actor.tags.map((t) => t.id); // all tags from removed cast
+                // let allTagsIds = allTags.map((t) => t.id); // all tags from removed cast
+                let uniqueTags = actor.tags.filter(
+                    (el) => !allTagsIds.includes(el.id)
                 ); // all tags from removed cast not present in actual cast tags
-                removedTags = tags.filter((el) => uniqueTags.includes(el)); // all unique tags present in original state tags - the final values to remove!
+                removedTags = tags.filter((el) =>
+                    uniqueTags.map(({ id }) => id).includes(el.id)
+                ); // all unique tags present in original state tags - the final values to remove!
             });
         }
 
-        // return missingTags;
-        return { missingTags, removedTags };
+        const deleteDuplicates = (arr) =>
+            arr.filter(
+                (value, index, self) =>
+                    index === self.findIndex((t) => t.id === value.id)
+            ); // make utils
+
+        return {
+            missingTags: deleteDuplicates(missingTags),
+            removedTags: deleteDuplicates(removedTags),
+        };
     } catch (err) {
         console.log("getActorsMissingTags ERROR: ", err);
         return err;

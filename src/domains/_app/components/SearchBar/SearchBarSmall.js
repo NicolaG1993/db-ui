@@ -17,7 +17,7 @@ export default function SearchBarSmall({
             <input
                 type="text"
                 placeholder="Search..."
-                value={searchBar}
+                value={searchBar || ""}
                 onChange={setSearchBar}
                 onFocus={handleFocus}
                 onBlur={handleBlur}

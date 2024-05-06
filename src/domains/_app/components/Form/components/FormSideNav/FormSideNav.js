@@ -22,11 +22,25 @@ export default function FormSideNav({
     acceptRemovedHints,
     appSettings,
 }) {
+    console.log("FormSideNav: ", {
+        data,
+        formState,
+        originalFormState,
+        updateFormState,
+        openSection,
+        setOpenSection,
+        handleHintsModal,
+        hints,
+        acceptMissingHints,
+        acceptRemovedHints,
+        appSettings,
+    });
     const [filteredData, setFilteredData] = useState(data);
     const [searchActive, setSearchActive] = useState(false);
 
     useEffect(() => {
         setFilteredData(data);
+        console.log("data: ", data);
         setSearchActive(false);
     }, [data]);
 
@@ -51,12 +65,14 @@ export default function FormSideNav({
                 formState.tags,
                 originalFormState
             );
+            console.log("RES 1: ", res);
         } else if (openSection === "tags") {
             // check for related tags that could be missing
             res = await getTagsMissingTags(
                 formState[openSection],
                 appSettings.TAGS_REL
             );
+            console.log("RES 2: ", res);
         } else {
             setOpenSection(false);
         }
@@ -110,15 +126,17 @@ export default function FormSideNav({
                                 onSubmit={handleSubmitMissingHints}
                             >
                                 {hints.missing.map((el) => (
-                                    <div key={`hint ` + el}>
+                                    <div key={`hint missing ` + el.id}>
                                         <input
                                             type="checkbox"
-                                            id={el}
-                                            name={el}
+                                            id={el.id}
+                                            name={el.name}
                                             value={el}
                                             defaultChecked
                                         />
-                                        <label htmlFor={el}>{el}</label>
+                                        <label htmlFor={el.name}>
+                                            {el.name}
+                                        </label>
                                     </div>
                                 ))}
                                 <div>
@@ -155,15 +173,17 @@ export default function FormSideNav({
                                 onSubmit={handleSubmitMissingHints}
                             >
                                 {hints.removed.map((el) => (
-                                    <div key={`hint ` + el}>
+                                    <div key={`hint removed ` + el.id}>
                                         <input
                                             type="checkbox"
-                                            id={el}
-                                            name={el}
+                                            id={el.id}
+                                            name={el.name}
                                             value={el}
-                                            defaultChecked
+                                            // defaultChecked
                                         />
-                                        <label htmlFor={el}>{el}</label>
+                                        <label htmlFor={el.name}>
+                                            {el.name}
+                                        </label>
                                     </div>
                                 ))}
                                 <div>
@@ -216,7 +236,7 @@ export default function FormSideNav({
                                     typeof filteredData === "object" &&
                                     !Array.isArray(filteredData) && (
                                         <DropdownMenusByCategory
-                                            obj={filteredData}
+                                            menuStructure={filteredData}
                                             filters={formState[openSection]}
                                             handleChildState={updateFormState}
                                             topic={openSection}
@@ -225,7 +245,9 @@ export default function FormSideNav({
                                 {filteredData && filteredData.length && (
                                     <InputsSelector
                                         arr={filteredData.map((el) =>
-                                            el.name ? el.name : el
+                                            el.id && el.name
+                                                ? { id: el.id, name: el.name }
+                                                : el
                                         )}
                                         filters={formState[openSection]}
                                         handleChildState={updateFormState}

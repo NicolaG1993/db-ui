@@ -3,6 +3,8 @@ import ErrorUI from "@/src/domains/_app/components/Error/components/ErrorUI/Erro
 import standardStyles from "./InputsSelector.module.css";
 
 export default function InputsSelector(props) {
+    console.log("*InputsSelector* ", props);
+
     //////////////////////////////
     // STATE
     //////////////////////////////
@@ -59,22 +61,22 @@ export default function InputsSelector(props) {
             <div className={styles.categoryDropdown}>
                 {array.map((it) => {
                     return props.filters &&
-                        props.filters.find((x) => it === x) ? (
-                        <div key={"value: " + it}>
+                        props.filters.find((x) => it.id === x.id) ? (
+                        <div key={"value: " + it.id}>
                             <span
                                 className={styles.selectedEl}
                                 onClick={() => updateFilters(it, "remove")}
                             >
-                                {it}
+                                {it.name}
                             </span>
                         </div>
                     ) : (
-                        <div key={"value: " + it}>
+                        <div key={"value: " + it.id}>
                             <span
                                 className={styles.unselectedEl}
                                 onClick={() => updateFilters(it, "add")}
                             >
-                                {it}
+                                {it.name}
                             </span>
                         </div>
                     );
