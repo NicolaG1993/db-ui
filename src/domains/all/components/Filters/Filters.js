@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import DropdownMenusByCategory from "./DropdownMenusByCategory/DropdownMenusByCategory";
+import DropdownMenusByLevel from "./DropdownMenusByLevel/DropdownMenusByLevel";
 import styles from "@/src/application/styles/Home.module.css";
 import axios from "axios";
 import InputsSelector from "./InputsSelector/InputsSelector";
@@ -161,7 +161,7 @@ const FiltersUI = ({
                                     <div className={styles.content}>
                                         {typeof data === "object" &&
                                             !Array.isArray(data) && (
-                                                <DropdownMenusByCategory
+                                                <DropdownMenusByLevel
                                                     obj={data}
                                                     filters={filters[topic]}
                                                     handleChildState={
@@ -194,7 +194,7 @@ const FiltersUI = ({
                                             />
                                         )}
                                         {/* {topic === "type" && (
-                                        <DropdownMenusByCategory
+                                        <DropdownMenusByLevel
                                             filters={filters[topic]}
                                             handleChildState={updateFilters}
                                             obj={obj}

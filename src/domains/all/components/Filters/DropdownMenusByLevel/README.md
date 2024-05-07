@@ -1,3 +1,7 @@
+08.05.2024
+BIG REFACTOR DONE
+THIS TEXT IS OBSOLETE!
+
 # COMPONENTS DOCUMENTATION 📚
 
 ## ABOUT THE PACKAGE 🔍
@@ -15,14 +19,14 @@ $\mathfrak{\color{lime}{to \ do }}$
 
 ### 📌 SELECTORS:
 
-#### `DropdownMenusByCategory(props)`
+#### `DropdownMenusByLevel(props)`
 
 **Info**
 
 -   Component used to render an object in a dropdown menu scheme, with the possibility to select inputs and return them to parent component (important: use this returned array for global state like Redux or variables, not to update parent component state - this will cause a re-render)
 -   The dropdowns menus can be opened and closed, and the selected inputs inside will change color on click by user
 -   Personalized styles can be passed as argument, as well as a personalized function to handle selected inputs data
--   The component will loop through an object creating an obj-kinda-ui: any key will become a category to open, then it loops any nested object value the same way, untill we meet an array of simple values (like strings), those will be rendered as inputs to select
+-   The component will loop through an object creating an obj-kinda-ui: any key will become a category (level) to open, then it loops any nested object value the same way, untill we meet an array of simple values (like strings), those will be rendered as inputs to select
 -   There is no limit for nesting objects inside other objects
 
 **Imports**
@@ -80,3 +84,7 @@ $\mathfrak{\color{lime}{to \ do }}$
 -   use some preset css if `props.styles` is missing ✔
 
 $\mathfrak{\color{lime}{to \ do }}$
+
+08.05.2024
+BIG REFACTOR DONE
+THIS TEXT IS OBSOLETE!

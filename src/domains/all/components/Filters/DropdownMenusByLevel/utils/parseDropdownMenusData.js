@@ -1,21 +1,7 @@
-/* DELETE
-const checkEntries = ({ array, index }) => {
-    console.log("checkEntries: ", { array, index });
-    // return array.map(([key, values], i) =>
-    //     renderCategory({ values, key, index, dropdownMenus })
-    // );
-    return array.map(([key, values], i) => {
-        renderCategory({ values, key, index, dropdownMenus });
-    });
-};
-*/
-
 import loopObject from "@/src/domains/_app/utils/loopObject";
 
-//////////////
-
-const renderCategory = ({ values, key, index, dropdownMenus }) => {
-    console.log("🔥 renderCategory: ", {
+const renderLevel = ({ values, key, index, dropdownMenus }) => {
+    console.log("🔥 renderLevel: ", {
         values,
         key,
         index,
@@ -25,11 +11,11 @@ const renderCategory = ({ values, key, index, dropdownMenus }) => {
         if (Array.isArray(values)) {
             return (
                 <div
-                    className={styles.categoryWrap}
+                    className={styles.levelWrap}
                     key={"index: " + index + " key: " + key}
                 >
                     <div
-                        className={styles.category}
+                        className={styles.level}
                         onClick={() =>
                             setDropdownMenus({
                                 ...dropdownMenus,
@@ -53,11 +39,11 @@ const renderCategory = ({ values, key, index, dropdownMenus }) => {
 
             return (
                 <div
-                    className={styles.categoryWrap}
+                    className={styles.levelWrap}
                     key={"index: " + index + " key: " + key}
                 >
                     <div
-                        className={styles.category}
+                        className={styles.level}
                         onClick={() =>
                             setDropdownMenus({
                                 ...dropdownMenus,
@@ -72,7 +58,7 @@ const renderCategory = ({ values, key, index, dropdownMenus }) => {
                         <span>{objectEntries.length}</span>
                     </div>
                     {dropdownMenus[index][key] && (
-                        <div className={styles.categoryDropdown}>
+                        <div className={styles.levelDropdown}>
                             <Res />
                         </div>
                     )}
@@ -82,4 +68,4 @@ const renderCategory = ({ values, key, index, dropdownMenus }) => {
     }
 };
 
-export { renderCategory };
+export { renderLevel };

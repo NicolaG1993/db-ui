@@ -1,6 +1,6 @@
 import styles from "@/src/application/styles/AdminDashboard.module.css";
 import ActiveFilters from "@/src/domains/all/components/Filters/ActiveFilters/ActiveFilters";
-import DropdownMenusByCategory from "@/src/domains/all/components/Filters/DropdownMenusByCategory/DropdownMenusByCategory";
+import DropdownMenusByLevel from "@/src/domains/all/components/Filters/DropdownMenusByLevel/DropdownMenusByLevel";
 import InputsSelector from "@/src/domains/all/components/Filters/InputsSelector/InputsSelector";
 import NationalitiesSelector from "@/src/domains/all/components/Filters/NationalitiesSelector/NationalitiesSelector";
 import FormSideNavSearchBar from "@/src/domains/_app/components/Form/components/FormSideNav/components/FormSideNavSearchBar.js";
@@ -235,7 +235,7 @@ export default function FormSideNav({
                                 {filteredData &&
                                     typeof filteredData === "object" &&
                                     !Array.isArray(filteredData) && (
-                                        <DropdownMenusByCategory
+                                        <DropdownMenusByLevel
                                             menuStructure={filteredData}
                                             filters={formState[openSection]}
                                             handleChildState={updateFormState}

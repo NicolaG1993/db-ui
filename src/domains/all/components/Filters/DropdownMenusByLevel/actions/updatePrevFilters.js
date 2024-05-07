@@ -1,5 +1,4 @@
-const updateFilters = (val, action, props, filters) => {
-    console.log("updateFilters: ", { val, action, props, filters });
+const updatePrevFilters = (val, action, props, filters) => {
     let res = [];
     if (action === "add") {
         // update only if value is not present in array already, bug prevention
@@ -15,4 +14,4 @@ const updateFilters = (val, action, props, filters) => {
     return res;
 };
 
-export default updateFilters;
+export default updatePrevFilters;

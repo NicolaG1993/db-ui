@@ -1,9 +1,9 @@
-import checkCategoryValuesError from "@/src/domains/all/components/Filters/DropdownMenusByCategory/actions/checkCategoryValuesError";
+import checkLevelValuesError from "@/src/domains/all/components/Filters/DropdownMenusByLevel/actions/checkLevelValuesError";
 
 // USED TO CREATE AN OBJECT WITH AN OBJECT INSIDE FOR EVERY LEVEL, EVERY OBJECT CONTAINS THE BOOLEAN VALUES FOR ALL THAT LEVEL
 // SO THE LEVELS ARE STORED SEPARETELY: BY LEVEL - NOT NESTED INSIDE EACHOTHERS es. {1:{}, 2: {}}
 
-const getMenusState = ({ stateObj, propsObj, dropdownMenus }) => {
+const getDropdownsState = ({ stateObj, propsObj, dropdownMenus }) => {
     // PARSE AND SET DROPDOWN MENUS STATE 1st
     let newObj = {};
     let objectEntries = Object.entries(propsObj);
@@ -13,7 +13,7 @@ const getMenusState = ({ stateObj, propsObj, dropdownMenus }) => {
         newObj[key] = false;
         stateObj = { ...stateObj, 1: newObj };
 
-        error = checkCategoryValuesError(val, key); // check for errors
+        error = checkLevelValuesError(val, key); // check for errors
 
         if (typeof val === "object" && !Array.isArray(val)) {
             let { res, err } = getSubMenusState({
@@ -34,6 +34,9 @@ const getMenusState = ({ stateObj, propsObj, dropdownMenus }) => {
     return { res: stateObj, err: error };
 };
 
+export default getDropdownsState;
+
+// NOT USED OUTSIDE THIS FILE
 const getSubMenusState = ({ catValues, level, stateObj, dropdownMenus }) => {
     let newObj = {};
     let levelObj = {
@@ -57,7 +60,7 @@ const getSubMenusState = ({ catValues, level, stateObj, dropdownMenus }) => {
             [level]: levelObj,
         };
 
-        error = checkCategoryValuesError(val, key); // check for errors
+        error = checkLevelValuesError(val, key); // check for errors
 
         if (typeof val === "object" && !Array.isArray(val)) {
             getSubMenusState({
@@ -71,4 +74,6 @@ const getSubMenusState = ({ catValues, level, stateObj, dropdownMenus }) => {
     return { res: stateObj, err: error };
 };
 
-export { getMenusState, getSubMenusState };
+/*
+export { getDropdownsState, getSubMenusState };
+*/
