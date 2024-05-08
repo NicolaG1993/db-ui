@@ -163,7 +163,7 @@ export default function Studio({
                         </div>
 
                         <Form
-                            topicLabel={label}
+                            formLabel={label}
                             propsData={item}
                             handleEditsInParent={handleEdits}
                             setOpenForm={setOpenForm}

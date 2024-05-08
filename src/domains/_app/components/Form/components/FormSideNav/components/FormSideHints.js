@@ -1,9 +1,45 @@
-export default function FormSideNavHints({
+export default function FormSideHints({
     hints,
-    handleSubmitMissingHints,
-    handleHintsModal,
+    acceptMissingHints,
+    acceptRemovedHints,
+    handleHints,
 }) {
-    console.log("⬜ FormSideNavHints: ", { hints });
+    console.log("⬜ FormSideHints: ", { hints });
+    // potremmo aggiungere anche un'altra lista: "Suggested tags"
+
+    const handleSubmitMissingHints = (e) => {
+        e.preventDefault();
+        const formData = new FormData(e.target);
+
+        for (const field of formData) {
+            let name = field[0];
+            let value = field[1];
+
+            console.log("🌻 field: ", { name, value });
+        }
+
+        let res = [...formState.tags]; // ! important to use spread here !
+        for (const value of formData.values()) {
+            console.log("handleSubmitMissingHints: ", {
+                target: e.target,
+                formDataValue: JSON.parse(value),
+            });
+            res.push(JSON.parse(value));
+        }
+        acceptMissingHints(res);
+    };
+
+    const handleSubmitRemovedHints = (e) => {
+        e.preventDefault();
+        const formData = new FormData(e.target);
+
+        let res = [];
+        for (const value of formData.values()) {
+            res.push(JSON.parse(value));
+        }
+        acceptRemovedHints(res);
+    };
+
     return (
         <div>
             {hints.missing?.length > 0 && (
@@ -31,9 +67,7 @@ export default function FormSideNavHints({
                         <div>
                             <button
                                 title="Skip this step"
-                                onClick={() =>
-                                    handleHintsModal([], hints.removed)
-                                }
+                                onClick={() => handleHints([], hints.removed)}
                                 className="button-standard"
                             >
                                 Skip
@@ -76,9 +110,7 @@ export default function FormSideNavHints({
                         <div>
                             <button
                                 title="Skip this step"
-                                onClick={() =>
-                                    handleHintsModal(hints.missing, [])
-                                }
+                                onClick={() => handleHints(hints.missing, [])}
                                 className="button-standard"
                             >
                                 Skip

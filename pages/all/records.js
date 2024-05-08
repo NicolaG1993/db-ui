@@ -366,14 +366,14 @@ export default function Records() {
                     <div className={styles.formWrapContainer}>
                         {!multipleSelection ? (
                             <Form
-                                topicLabel={"record"}
+                                formLabel={"record"}
                                 propsData={rec}
                                 handleEditsInParent={handleEdits}
                                 setOpenForm={setOpenForm}
                             />
                         ) : (
                             <Form
-                                topicLabel={"records"}
+                                formLabel={"records"}
                                 propsData={recs}
                                 handleEditsInParent={handleEdits}
                                 setOpenForm={setOpenForm}

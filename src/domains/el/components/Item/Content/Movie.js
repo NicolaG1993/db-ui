@@ -271,7 +271,7 @@ export default function Movie({
                         </div>
 
                         <Form
-                            topicLabel={label}
+                            formLabel={label}
                             propsData={item}
                             handleEditsInParent={handleEdits}
                             setOpenForm={setOpenForm}

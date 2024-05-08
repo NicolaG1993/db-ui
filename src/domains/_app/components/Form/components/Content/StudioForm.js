@@ -1,6 +1,6 @@
 import Image from "next/image";
-import styles from "@/src/application/styles/AdminDashboard.module.css";
-import { useEffect, useState } from "react";
+import styles from "@/src/domains/_app/components/Form/components/Form.module.css";
+// import { useEffect, useState } from "react";
 
 export default function StudioForm({
     formState,
@@ -10,7 +10,8 @@ export default function StudioForm({
     newImage,
     addLocalImages,
     deleteImage,
-    setOpenSection,
+    closeSideNav,
+    openSideNav,
     errors,
     isLoading,
 }) {
@@ -127,7 +128,7 @@ export default function StudioForm({
                     <span>{formState.nationalities.length} selected</span>
                     <div
                         onClick={() => {
-                            setOpenSection("nationalities");
+                            openSideNav("nationalities");
                         }}
                     >
                         Select

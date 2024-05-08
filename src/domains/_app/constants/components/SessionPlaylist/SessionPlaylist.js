@@ -60,7 +60,7 @@ export default function SessionPlaylist({ open, closeWidget }) {
                                 <span onClick={closeAddNew}>X</span>
                             </div>
                             <Form
-                                topicLabel={"movie"}
+                                formLabel={"movie"}
                                 handleEditsInParent={addNewToPlaylist}
                                 parentIsWaiting={true}
                             />

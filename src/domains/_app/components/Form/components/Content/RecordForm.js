@@ -1,4 +1,4 @@
-import styles from "@/src/application/styles/AdminDashboard.module.css";
+import styles from "@/src/domains/_app/components/Form/components/Form.module.css";
 
 export default function RecordForm({
     formState,

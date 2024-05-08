@@ -1,5 +1,5 @@
 import Image from "next/image";
-import styles from "@/src/application/styles/AdminDashboard.module.css";
+import styles from "@/src/domains/_app/components/Form/components/Form.module.css";
 import { useEffect, useState } from "react";
 import InputToArray from "@/src/domains/all/components/Filters/InputToArray/InputToArray";
 
@@ -11,9 +11,9 @@ export default function MovieForm({
     newImage,
     addLocalImages,
     deleteImage,
-    setOpenSection,
+    closeSideNav,
+    openSideNav,
     errors,
-    topicLabel,
     isLoading,
 }) {
     console.log("MovieForm: ", { formState });
@@ -123,7 +123,7 @@ export default function MovieForm({
                     <span>{formState.actors?.length} selected</span>
                     <div
                         onClick={() => {
-                            setOpenSection("actors");
+                            openSideNav("actors");
                         }}
                     >
                         Select
@@ -141,7 +141,7 @@ export default function MovieForm({
                     <span>{formState.studios?.length} selected</span>
                     <div
                         onClick={() => {
-                            setOpenSection("studios");
+                            openSideNav("studios");
                         }}
                     >
                         Select
@@ -159,7 +159,7 @@ export default function MovieForm({
                     <span>{formState.distributions?.length} selected</span>
                     <div
                         onClick={() => {
-                            setOpenSection("distributions");
+                            openSideNav("distributions");
                         }}
                     >
                         Select
@@ -204,7 +204,7 @@ export default function MovieForm({
                     <span>{formState.categories?.length} selected</span>
                     <div
                         onClick={() => {
-                            setOpenSection("categories");
+                            openSideNav("categories");
                         }}
                     >
                         Select
@@ -222,7 +222,7 @@ export default function MovieForm({
                     <span>{formState.tags?.length} selected</span>
                     <div
                         onClick={() => {
-                            setOpenSection("tags");
+                            openSideNav("tags");
                         }}
                     >
                         Select

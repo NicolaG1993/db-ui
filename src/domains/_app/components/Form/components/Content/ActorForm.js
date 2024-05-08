@@ -1,6 +1,6 @@
 import Image from "next/image";
-import styles from "@/src/application/styles/AdminDashboard.module.css";
-import InputSocials from "../../../Inputs/InputSocials/InputSocials";
+import styles from "@/src/domains/_app/components/Form/components/Form.module.css";
+import InputSocials from "@/src/domains/_app/components/Inputs/InputSocials/InputSocials";
 
 export default function ActorForm({
     formState,
@@ -10,7 +10,8 @@ export default function ActorForm({
     newImage,
     addLocalImages,
     deleteImage,
-    setOpenSection,
+    closeSideNav,
+    openSideNav,
     errors,
     isLoading,
 }) {
@@ -147,7 +148,7 @@ export default function ActorForm({
                     <span>{formState.nationalities.length} selected</span>
                     <div
                         onClick={() => {
-                            setOpenSection("nationalities");
+                            openSideNav("nationalities");
                         }}
                     >
                         Select
@@ -194,7 +195,7 @@ export default function ActorForm({
                     <span>{formState.tags.length} selected</span>
                     <div
                         onClick={() => {
-                            setOpenSection("tags");
+                            openSideNav("tags");
                         }}
                     >
                         Select

@@ -61,7 +61,7 @@ export default function AddNewWrap({ setAddForm }) {
                         </li>
                     </ul>
                 </div>
-                <Form topicLabel={UI} />
+                <Form formLabel={UI} />
             </div>
         </div>
     );

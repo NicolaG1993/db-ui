@@ -1,4 +1,4 @@
-import styles from "@/src/application/styles/AdminDashboard.module.css";
+import styles from "@/src/domains/_app/components/Form/components/Form.module.css";
 import ActiveFilters from "@/src/domains/all/components/Filters/ActiveFilters/ActiveFilters";
 import DropdownMenusByLevel from "@/src/domains/all/components/Filters/DropdownMenusByLevel/DropdownMenusByLevel";
 import InputsSelector from "@/src/domains/all/components/Filters/InputsSelector/InputsSelector";
@@ -7,8 +7,8 @@ import FormSideNavSearchBar from "@/src/domains/_app/components/Form/components/
 import { useEffect, useState } from "react";
 import { searchData } from "@/src/domains/_app/utils/filterData.js";
 import getActorsMissingTags from "@/src/domains/_app/components/Form/actions/getActorsMissingTags.js";
-import getTagsMissingTags from "@/src/domains/_app/components/Form/actions/getTagsMissingTags.js";
-import FormSideNavHints from "./components/FormSideNavHints";
+import extractMissingTags from "@/src/domains/_app/components/Form/actions/extractMissingTags.js";
+// import FormSideNavHints from "@/src/domains/_app/components/Form/components/FormSideNav/components/FormSideNavHints";
 
 export default function FormSideNav({
     data,
@@ -16,9 +16,9 @@ export default function FormSideNav({
     formState,
     originalFormState,
     updateFormState,
-    openSection,
-    setOpenSection,
-    handleHintsModal,
+    topic, // check value after refactor 🧠
+    handleDrawer,
+    handleHints,
     hints,
     acceptMissingHints,
     acceptRemovedHints,
@@ -30,9 +30,9 @@ export default function FormSideNav({
         formState,
         originalFormState,
         updateFormState,
-        openSection,
-        setOpenSection,
-        handleHintsModal,
+        topic,
+        handleDrawer,
+        handleHints,
         hints,
         acceptMissingHints,
         acceptRemovedHints,
@@ -40,7 +40,7 @@ export default function FormSideNav({
     });
     const [sourceData, setSourceData] = useState(parsedData || data);
     const [filteredData, setFilteredData] = useState(sourceData);
-    const [searchActive, setSearchActive] = useState(false);
+    const [searchActive, setSearchActive] = useState(false); // ? 🧠 cosa fa ?
 
     useEffect(() => {
         const selected = parsedData ? parsedData : data;
@@ -61,155 +61,107 @@ export default function FormSideNav({
         }
     };
 
-    const closeSideNav = async (openSection, data) => {
+    const closeSideNav = async (topic, data) => {
         let res;
 
         // check possible tags updates from selected actors
-        if (openSection === "actors") {
-            // 🧠 i refactored getTagsMissingTags without API calls, maybe i can do it also here?
+        if (topic === "actors") {
+            // 🧠 i refactored extractMissingTags without API calls, maybe i can do it also here?
             res = await getActorsMissingTags(
-                formState[openSection],
+                formState[topic],
                 formState.tags,
                 originalFormState,
                 data
             );
             console.log("getActorsMissingTags: ", res);
-        } else if (openSection === "tags") {
+        } else if (topic === "tags") {
             // check for related tags that could be missing
-            res = getTagsMissingTags(
-                formState[openSection],
+            res = extractMissingTags(
+                formState[topic],
                 appSettings.TAGS_REL,
                 data
             );
-            console.log("getTagsMissingTags: ", res);
+            console.log("extractMissingTags: ", res);
         } else {
-            setOpenSection(false);
+            handleSideNav(false);
         }
 
-        if (res && res.missingTags && res.removedTags) {
-            handleHintsModal(res.missingTags, res.removedTags);
+        if (res?.missingTags && res?.removedTags) {
+            handleHints(res.missingTags, res.removedTags);
         } else {
-            setOpenSection(false);
+            handleSideNav(false);
         }
-    };
-
-    const handleSubmitMissingHints = (e) => {
-        e.preventDefault();
-        const formData = new FormData(e.target);
-
-        let res = [...formState.tags]; // ! important to use spread here !
-        for (const value of formData.values()) {
-            console.log("handleSubmitMissingHints: ", {
-                target: e.target,
-                formDataValue: JSON.parse(value),
-            });
-            res.push(JSON.parse(value));
-        }
-        acceptMissingHints(res);
-    };
-
-    const handleSubmitRemovedHints = (e) => {
-        e.preventDefault();
-        const formData = new FormData(e.target);
-
-        let res = [];
-        for (const value of formData.values()) {
-            res.push(JSON.parse(value));
-        }
-        acceptRemovedHints(res);
-    };
+    }; // TO BE CONTINUED ... 💡💡💡
 
     return (
-        <div
-            className={styles.sidewrap}
-            style={{
-                transform: openSection ? "translateX(0)" : "translateX(498px)",
-            }}
-        >
-            {/* 🧠 CREATE COMPONENT FOR THIS PART 🧠 */}
-            {hints && (hints.missing?.length || hints.removed?.length) ? (
-                <FormSideNavHints
-                    hints={hints}
-                    handleSubmitMissingHints={handleSubmitMissingHints}
-                    handleHintsModal={handleHintsModal}
-                />
-            ) : (
-                <>
-                    <div className={styles.nav}>
-                        <p>
-                            {openSection &&
-                                openSection.charAt(0).toUpperCase() +
-                                    openSection.slice(1)}
-                        </p>
-                        <span onClick={() => closeSideNav(openSection, data)}>
-                            X
-                        </span>
+        <>
+            <div className={styles.nav}>
+                <p>{topic && topic.charAt(0).toUpperCase() + topic.slice(1)}</p>
+                <span onClick={() => closeSideNav(topic, data)}>X</span>
+            </div>
+
+            <div className={styles.sidewrapContent}>
+                <div className={styles.sidewrapHeader}>
+                    <div className={styles.wrapper}>
+                        <FormSideNavSearchBar
+                            topic={topic}
+                            data={sourceData}
+                            handleSearch={filterData}
+                        />
                     </div>
-
-                    <div className={styles.sidewrapContent}>
-                        <div className={styles.sidewrapHeader}>
-                            <div className={styles.wrapper}>
-                                <FormSideNavSearchBar
-                                    openSection={openSection}
-                                    data={sourceData}
-                                    handleSearch={filterData}
-                                />
-                            </div>
-                        </div>
-                        <div className={styles.sidewrapBody}>
-                            <div className={styles.wrapper}>
-                                {filteredData &&
-                                    typeof filteredData === "object" &&
-                                    !Array.isArray(filteredData) && (
-                                        <DropdownMenusByLevel
-                                            menuStructure={filteredData}
-                                            filters={formState[openSection]}
-                                            handleChildState={updateFormState}
-                                            topic={openSection}
-                                        />
-                                    )}
-                                {filteredData && filteredData.length && (
-                                    <InputsSelector
-                                        arr={filteredData.map((el) =>
-                                            el.id && el.name
-                                                ? { id: el.id, name: el.name }
-                                                : el
-                                        )}
-                                        filters={formState[openSection]}
-                                        handleChildState={updateFormState}
-                                        topic={openSection}
-                                    />
-                                )}
-
-                                {openSection === "nationalities" && (
-                                    <NationalitiesSelector
-                                        filters={formState[openSection]}
-                                        handleChildState={updateFormState}
-                                        topic={openSection}
-                                    />
-                                    // <InputSelector
-                                    //     topic={openSection}
-                                    //     topicID={openSection}
-                                    //     formState={formState}
-                                    //     updateFormState={updateFormState}
-                                    //     setOpenSection={setOpenSection}
-                                    //     propsData={allNationalities}
-                                    // />
-                                )}
-                            </div>
-
-                            <div className={styles.wrapper}>
-                                <ActiveFilters
-                                    arr={formState[openSection]}
+                </div>
+                <div className={styles.sidewrapBody}>
+                    <div className={styles.wrapper}>
+                        {filteredData &&
+                            typeof filteredData === "object" &&
+                            !Array.isArray(filteredData) && (
+                                <DropdownMenusByLevel
+                                    menuStructure={filteredData}
+                                    filters={formState[topic]}
                                     handleChildState={updateFormState}
-                                    // styles={styles}
-                                    topic={openSection}
+                                    topic={topic}
                                 />
-                            </div>
-                        </div>
+                            )}
+                        {filteredData && filteredData.length && (
+                            <InputsSelector
+                                arr={filteredData.map((el) =>
+                                    el.id && el.name
+                                        ? { id: el.id, name: el.name }
+                                        : el
+                                )}
+                                filters={formState[topic]}
+                                handleChildState={updateFormState}
+                                topic={topic}
+                            />
+                        )}
+
+                        {topic === "nationalities" && (
+                            <NationalitiesSelector
+                                filters={formState[topic]}
+                                handleChildState={updateFormState}
+                                topic={topic}
+                            />
+                            // <InputSelector
+                            //     topic={topic}
+                            //     topicID={topic}
+                            //     formState={formState}
+                            //     updateFormState={updateFormState}
+                            //     handleDrawer={handleDrawer}
+                            //     propsData={allNationalities}
+                            // />
+                        )}
                     </div>
-                </>
-            )}
-        </div>
+
+                    <div className={styles.wrapper}>
+                        <ActiveFilters
+                            arr={formState[topic]}
+                            handleChildState={updateFormState}
+                            // styles={styles}
+                            topic={topic}
+                        />
+                    </div>
+                </div>
+            </div>
+        </>
     );
 }

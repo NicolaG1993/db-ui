@@ -459,7 +459,7 @@ export default function Actor({
                         </div>
 
                         <Form
-                            topicLabel={label}
+                            formLabel={label}
                             propsData={item}
                             handleEditsInParent={handleEdits}
                             setOpenForm={setOpenForm}

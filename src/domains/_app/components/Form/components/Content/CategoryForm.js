@@ -1,5 +1,5 @@
 import Image from "next/image";
-import styles from "@/src/application/styles/AdminDashboard.module.css";
+import styles from "@/src/domains/_app/components/Form/components/Form.module.css";
 
 export default function CategoryForm({
     formState,
@@ -9,9 +9,9 @@ export default function CategoryForm({
     newImage,
     addLocalImages,
     deleteImage,
-    setOpenSection,
+    closeSideNav,
+    openSideNav,
     errors,
-    topicLabel,
     isLoading,
 }) {
     console.log({ formState, isLoading });

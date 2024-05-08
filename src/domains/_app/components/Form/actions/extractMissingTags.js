@@ -1,7 +1,7 @@
 import extractMissingTagsIDs from "@/src/domains/_app/components/Form/utils/extractMissingTagsIDs";
 
-export default function getTagsMissingTags(tags, TAGS_REL, sourceData) {
-    console.log("getTagsMissingTags 1: ", { tags, TAGS_REL, sourceData });
+export default function extractMissingTags(tags, relationsObj, sourceData) {
+    console.log("extractMissingTags 1: ", { tags, relationsObj, sourceData });
 
     /*
         // call API for retrieving ids full objects
@@ -12,15 +12,16 @@ export default function getTagsMissingTags(tags, TAGS_REL, sourceData) {
 
     //    const data = sourceData.map(t => )
 
-    // console.log("getTagsMissingTags 2: ", { data });
+    // console.log("extractMissingTags 2: ", { data });
     // const idsArr = extractIDs(tags);
-    // console.log("getTagsMissingTags 2: ", { idsArr });
+    // console.log("extractMissingTags 2: ", { idsArr });
 
     // 🔴🔴🔴 BUG HERE! NOT RETURNIG WHAT WE EXPECT
     // we want an array of tag objects
-    const missingTagsIDs = extractMissingTagsIDs(tags, TAGS_REL);
+    const missingTagsIDs = extractMissingTagsIDs(tags, relationsObj);
     const missingTags = sourceData.filter((t) => missingTagsIDs.includes(t.id));
-    console.log("getTagsMissingTags 3: ", {
+
+    console.log("extractMissingTags 2: ", {
         missingTagsIDs,
         missingTags,
     });
@@ -37,11 +38,11 @@ export default function getTagsMissingTags(tags, TAGS_REL, sourceData) {
 
     // const missingRelationsNames = extractNames(res.data);
 
-    // console.log("getTagsMissingTags 4: ", {
+    // console.log("extractMissingTags 4: ", {
     //     res,
     //     missingRelationsNames,
     // });
 
     return { missingTags, removedTags: [] };
-    // TODO: removedTags ? why only empty array ?
+    //  we will never need removedTags this with tags, only with actors
 }

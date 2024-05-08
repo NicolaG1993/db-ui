@@ -5,7 +5,7 @@ import { useRouter } from "next/router";
 import { shallowEqual, useSelector } from "react-redux";
 import { useErrorBoundary } from "react-error-boundary";
 import Cookies from "js-cookie";
-import styles from "@/src/application/styles/AdminDashboard.module.css";
+import styles from "@/src/domains/_app/components/Form/components/Form.module.css";
 import {
     createObjectURL,
     revokeObjectURL,
@@ -16,22 +16,29 @@ import {
     nicknameValidation,
 } from "@/src/application/utils/validateForms.js";
 import dataStructureForms from "@/src/application/settings/dataStructureForms";
-import FormSideNav from "@/src/domains/_app/components/Form/components/FormSideNav/FormSideNav.js";
 import formHydrate from "@/src/domains/_app/utils/formHydrate";
 import { fetchDataForSideNav } from "@/src/domains/_app/actions/formFetchers";
 import { selectAppSettings } from "@/src/application/redux/slices/appSettingsSlice";
 import submitForm from "@/src/domains/_app/components/Form/actions/submitForm";
 import { getError } from "@/src/application/utils/error";
 import getSavedState from "@/src/domains/_app/components/Form/utils/getSavedState"; // 🧠 do i really need to call it so many times ? 🧠
+import FormDrawer from "./FormDrawer/FormDrawer";
+import FormDrawerContent from "./FormDrawer/FormDrawerContent";
 
 export default function Form({
-    topicLabel,
+    formLabel,
     propsData,
     setOpenForm,
     handleEditsInParent,
     parentIsWaiting,
 }) {
-    // console.log("Form propsData: ", propsData);
+    console.log("✅ Form propsData: ", {
+        formLabel,
+        propsData,
+        setOpenForm,
+        handleEditsInParent,
+        parentIsWaiting,
+    });
     //================================================================================
     // Component State
     //================================================================================
@@ -39,15 +46,13 @@ export default function Form({
     const appSettings = useSelector(selectAppSettings);
     const { showBoundary } = useErrorBoundary(); // not found ?!?!
 
-    const [form, setForm] = useState(dataStructureForms[topicLabel]);
+    const [form, setForm] = useState(dataStructureForms[formLabel]);
     const FormComponent = form.formComponent;
     const [formState, setFormState] = useState(
-        getSavedState(topicLabel, form.emptyState)
+        getSavedState(formLabel, form.emptyState)
     );
-    const [activeForm, setActiveForm] = useState(topicLabel); // delete?
     const [newImage, setNewImage] = useState();
     const [errors, setErrors] = useState({});
-    const [openSection, setOpenSection] = useState(false);
     const [sideNavData, setSideNavData] = useState({
         data: undefined,
         parsedData: undefined,
@@ -57,30 +62,37 @@ export default function Form({
     const emptyHints = { missing: [], removed: [] };
     const [hints, setHints] = useState(emptyHints);
 
+    // used to determine if the hints modal is open or not
+    // we also need to store the value somehow - string
+    // const [activeForm, setActiveForm] = useState(formLabel); // delete? 🔴 // the selected form (actor, movie, etc..)
+    const [drawerIsOpen, setDrawerIsOpen] = useState(false); // the drawer state: true/false
+    const [sideNavTopic, setSideNavTopic] = useState(false); // the selected site nav tab: false/string
+    const [hintsIsOpen, setHintsIsOpen] = useState(false); // the hints tab: true/false
+
     //================================================================================
     // UseEffects
     //================================================================================
 
     // SET NEW ACTIVE FORM
     useEffect(() => {
-        loadNewActiveForm(topicLabel);
-    }, [topicLabel]);
+        loadNewActiveForm(formLabel);
+    }, [formLabel]);
 
-    const loadNewActiveForm = (topicLabel) => {
+    const loadNewActiveForm = (formLabel) => {
         setIsLoading(true);
-        setActiveForm(topicLabel); // senza questo il form cambia prima che nuovo emptyState venga selezionato
-        setForm(dataStructureForms[topicLabel]);
+        setForm(dataStructureForms[formLabel]);
         setFormState(
-            getSavedState(topicLabel, dataStructureForms[topicLabel].emptyState)
+            getSavedState(formLabel, dataStructureForms[formLabel].emptyState)
         ); // 🧠 non posso usare direttamente form.emptyState ? 🧠
         setErrors({});
     };
 
     // RESET STATE ON FORM CHANGE
     useEffect(() => {
-        setFormState(getSavedState(topicLabel, form.emptyState));
+        setFormState(getSavedState(formLabel, form.emptyState));
         setIsLoading(false);
     }, [form]);
+    setActiveForm(formLabel); // senza questo il form cambia prima che nuovo emptyState venga selezionato
 
     //PARSE PROPSDATA
     useEffect(() => {
@@ -88,15 +100,15 @@ export default function Form({
             let newState = formHydrate(formState, form.emptyState, propsData); // hydrate form on modify
             setFormState(newState);
         } else {
-            setFormState(getSavedState(topicLabel, form.emptyState)); // set empty form on add new
+            setFormState(getSavedState(formLabel, form.emptyState)); // set empty form on add new
         }
         // setIsLoading(false);
     }, [propsData]);
 
-    // FETCH DATA FOR SIDENAV
+    // FETCH DATA FOR DRAWER
     useEffect(() => {
-        if (openSection && openSection !== "nationalities") {
-            fetchDataForSideNav(openSection, appSettings.TAGS_OBJ).then(
+        if (sideNavTopic && sideNavTopic !== "nationalities") {
+            fetchDataForSideNav(sideNavTopic, appSettings.TAGS_OBJ).then(
                 (res) => {
                     console.log("RESSSS: ", res);
                     setSideNavData(res);
@@ -108,15 +120,17 @@ export default function Form({
                 parsedData: undefined,
             });
         }
-    }, [openSection]);
+    }, [sideNavTopic]);
 
     useEffect(() => {
         if (!hints?.missing?.length && !hints?.removed?.length) {
-            setOpenSection(false);
+            handleDrawer(false);
+            // 🧠 I think i can refactor this, we should not closing the tab this way
+            // just run setSideNavTopic(false) in the right position of the code 🧠
+        } else {
+            // handleDrawer(true);
         }
     }, [hints]);
-    // 🧠 I think i can refactor this, we should not closing the tab this way
-    // just run setOpenSection(false) in the right position of the code 🧠
 
     //================================================================================
     // Handle Form Data
@@ -141,10 +155,7 @@ export default function Form({
                 pic: "",
             }));
 
-            Cookies.set(
-                "formState",
-                JSON.stringify({ formLabel: topicLabel, formState })
-            );
+            Cookies.set("formState", JSON.stringify({ formLabel, formState }));
         }
     };
 
@@ -154,12 +165,9 @@ export default function Form({
             [topic]: val,
         }));
 
-        // console.log("🌶️ formState: ", { formState, topicLabel }); // 🧠 why there is a loose boolean inside formState ??? remove pls
+        // console.log("🌶️ formState: ", { formState, formLabel }); // 🧠 why there is a loose boolean inside formState ??? remove pls
         if (!propsData) {
-            Cookies.set(
-                "formState",
-                JSON.stringify({ formLabel: topicLabel, formState })
-            );
+            Cookies.set("formState", JSON.stringify({ formLabel, formState }));
         }
     };
 
@@ -218,13 +226,11 @@ export default function Form({
                     }
                     Cookies.remove("formState");
                     setOpenForm && setOpenForm(false);
-                    topicLabel !== "record" &&
-                        topicLabel !== "records" &&
-                        router.push(`/el/${topicLabel}/${data.id}`);
+                    formLabel !== "record" &&
+                        formLabel !== "records" &&
+                        router.push(`/el/${formLabel}/${data.id}`);
                 })
                 .catch((error) => {
-                    // save form state in cookie or state 🔴
-                    // ...
                     showBoundary({
                         code: error.response.status,
                         message: getError(error),
@@ -235,36 +241,110 @@ export default function Form({
         }
     };
 
-    const handleHintsModal = (arrMissing, arrRemoved) => {
+    const handleHints = (arrMissing, arrRemoved) => {
         if (arrMissing?.length || arrRemoved?.length) {
             setHints({ missing: arrMissing, removed: arrRemoved });
         } else {
             setHints(emptyHints);
-            setOpenSection(false);
         }
     };
 
-    const acceptMissingHints = (arr) => {
-        console.log("💦acceptMissingHints: ", arr);
-        if (arr && arr.length) {
+    const acceptMissingHints = (newArr, discardedArr) => {
+        console.log("💦acceptMissingHints: ", { newArr, discardedArr });
+        // 🧠 The non selected shuold stay stored in state!!!
+        if (newArr && newArr.length) {
             setFormState((prev) => ({
                 ...prev,
-                tags: arr,
+                tags: newArr, // 🔴 "tags" should be flexible - not hardcoded
             }));
         }
         setHints((prev) => ({ ...prev, missing: [] }));
     };
 
-    const acceptRemovedHints = (arr) => {
+    const acceptRemovedHints = (arr, discardedArr) => {
+        // 🧠 The non selected shuold stay stored in state!!!
         if (arr && arr.length) {
             let newTags = formState.tags.filter((el) => !arr.includes(el));
             setFormState((prev) => ({
                 ...prev,
-                tags: newTags,
+                tags: newTags, // 🔴 "tags" should be flexible - not hardcoded
             }));
         }
         setHints((prev) => ({ ...prev, removed: [] }));
     };
+
+    const handleDrawer = (newVal) => {
+        if (typeof newVal == "boolean" || typeof newVal == "string") {
+            setSideNavTopic(newVal);
+        } else {
+            setSideNavTopic((prev) => !prev);
+        }
+    };
+
+    /*
+    const handleDrawerTab = (newVal) => {
+        // 🧠🧠🧠 GET ADMITTED FORM LABELS FROM SETTINGS ?
+        if (newVal === "nav") {
+            if (FormComponent && formLabel === form.key) {
+                setSideNavTopic(newVal);
+                setDrawerIsOpen(true);
+            } else {
+                setDrawerIsOpen(false);
+            }
+        } else if (newVal === "hints") {
+            if (hints?.missing?.length || hints?.removed?.length) {
+                setSideNavTopic(newVal);
+                setDrawerIsOpen(true);
+            } else {
+                setDrawerIsOpen(false);
+            }
+        } else {
+            setDrawerIsOpen(false);
+        }
+    };
+    */
+
+    // useEffect(() => {
+    //     if (!drawerIsOpen)
+    // }, [hints, drawerIsOpen]);
+
+    // used to open/close side nav + drawer
+    const closeSideNav = (hints) => {
+        if (hints) {
+            openHintsNav();
+        } else {
+            setSideNavTopic(false);
+            setDrawerIsOpen(false);
+        }
+    };
+    const openSideNav = (val) => {
+        if (val) {
+            setDrawerIsOpen(true);
+            setSideNavTopic(val);
+        }
+    };
+
+    const openHintsNav = () => {
+        setDrawerIsOpen(true);
+        setSideNavTopic(false);
+        setHintsIsOpen(true);
+    };
+
+    const closeHintsNav = () => {
+        setDrawerIsOpen(false);
+        setSideNavTopic(true);
+        setHintsIsOpen(false);
+    };
+
+    // TO BE CONTINUED ... 💡
+
+    // 🔴🔴🔴 NEED TO FIX CONDITION FOR RENDERING DRAWER + CONDITIONS FOR TABS 🔴🔴🔴
+
+    // store value for selected "form" ✅ no need, value gets set from parent "formLabel"
+
+    // store value for "drawer" state
+    // store value for "side nav" state
+    // store value for "hints nav" state
 
     //================================================================================
     // Render UI
@@ -273,46 +353,53 @@ export default function Form({
         <div className={styles.formWrapContainer}>
             <div className={styles.formWrap}>
                 <div>
-                    <h2>{topicLabel}</h2>
+                    <h2>{formLabel}</h2>
                 </div>
 
-                {FormComponent && topicLabel === form.key ? (
+                {FormComponent && formLabel === form.key ? (
                     <FormComponent
-                        formState={formState}
                         propsData={propsData}
-                        updateFormState={updateFormState}
-                        validateData={validateData}
-                        confirmChanges={confirmChanges}
+                        formState={formState}
                         newImage={newImage}
-                        addLocalImages={addLocalImages}
-                        deleteImage={deleteImage}
-                        setOpenSection={setOpenSection}
                         errors={errors}
                         isLoading={isLoading}
+                        updateFormState={updateFormState}
+                        confirmChanges={confirmChanges}
+                        validateData={validateData}
+                        closeSideNav={closeSideNav}
+                        openSideNav={openSideNav}
+                        addLocalImages={addLocalImages}
+                        deleteImage={deleteImage}
                     />
                 ) : (
                     <p>Loading...</p>
                 )}
             </div>
 
-            {FormComponent && topicLabel === form.key ? (
-                <FormSideNav
+            <FormDrawer
+                isOpen={drawerIsOpen}
+                closeDrawer={() => handleDrawer(false)}
+            >
+                <FormDrawerContent
+                    drawerIsOpen={drawerIsOpen}
+                    sideNavIsOpen={sideNavTopic}
+                    hintsIsOpen={hintsIsOpen}
+                    topic={sideNavTopic}
                     data={sideNavData.data}
                     parsedData={sideNavData.parsedData}
+                    propsData={propsData}
                     formState={formState}
-                    originalFormState={propsData || formState}
-                    updateFormState={updateFormState}
-                    openSection={openSection}
-                    setOpenSection={setOpenSection}
-                    handleHintsModal={handleHintsModal}
                     hints={hints}
+                    appSettings={appSettings}
+                    updateFormState={updateFormState}
+                    handleDrawer={handleDrawer}
+                    closeSideNav={closeSideNav}
+                    openSideNav={openSideNav}
+                    handleHints={handleHints} // DO I NEED THIS? i think is deletable somehow - maybe not 🧠
                     acceptMissingHints={acceptMissingHints}
                     acceptRemovedHints={acceptRemovedHints}
-                    appSettings={appSettings}
                 />
-            ) : (
-                <></>
-            )}
+            </FormDrawer>
         </div>
     );
 }

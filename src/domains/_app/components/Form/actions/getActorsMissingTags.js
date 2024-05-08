@@ -6,6 +6,17 @@ export default async function getActorsMissingTags(
     tags,
     originalFormState
 ) {
+    console.log("🔴 getActorsMissingTags: ", {
+        actors,
+        tags,
+        originalFormState,
+    });
+    // 🧠 IN TEORIA "ACTOR" OBJECT LO RICEVO GIA NEL FORM
+    // NO NEED TO CALL API AGAIN
+
+    // INVECE NO... VALUES IN FORM ARE ONLY {name, id}
+    // 🔴🔴🔴 VEDERE SE DEVO CAMBIARE BE - O SE FILTRO OBJECT DA QUALCHE PARTE 🔴🔴🔴
+    // UPDATE: DEVO SPOSTARE FETCH - USARLO PER POPULATE SIDENAV - Cosí abbiamo gia tutto da la`
     try {
         //NEW TAGS
         const { data } = await axios.get("/api/actor/by-id", {
