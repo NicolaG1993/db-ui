@@ -21,7 +21,10 @@ const fetchDataForSideNav = async (topic, TAGS_OBJ) => {
                     res,
                     response: parseTagsByType(result, TAGS_OBJ),
                 });
-                return parseTagsByType(result, TAGS_OBJ);
+                return {
+                    parsedData: parseTagsByType(result, TAGS_OBJ),
+                    data: res.data,
+                };
             } else {
                 console.log("😋 fetchDataForSideNav: ", {
                     topic,
@@ -29,7 +32,7 @@ const fetchDataForSideNav = async (topic, TAGS_OBJ) => {
                     TAGS_OBJ,
                     response: res.data,
                 });
-                return res.data;
+                return { data: res.data, parsedData: undefined };
             }
         } catch (error) {
             console.error(error);

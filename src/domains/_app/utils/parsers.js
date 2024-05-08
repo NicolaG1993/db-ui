@@ -231,17 +231,6 @@ const anyExist = (arr, values) =>
         return arr.includes(Number(value));
     });
 
-const tagsCheck = (tags, TAGS_REL) => {
-    let parsedTags = [];
-    Object.entries(TAGS_REL).map(([key, obj]) => {
-        if (anyExist(tags, obj.related) && !anyExist(tags, [obj.id])) {
-            //se tags contiene uno di questi valori e non contiene gia se stesso aggiungi obj.id a parsedTags
-            parsedTags.push(Number(obj.id));
-        }
-    });
-    return parsedTags;
-};
-
 const detectImage = (obj) => {
     if (obj && obj.movies && obj.movies.length) {
         let validElements = obj.movies.filter((el) => el.pic);
@@ -260,8 +249,8 @@ export {
     parseTagsForUiList,
     orderData,
     parseOrderOptions,
-    tagsCheck,
     detectImage,
     extractIDs,
     extractNames,
+    anyExist,
 };

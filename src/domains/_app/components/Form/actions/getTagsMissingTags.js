@@ -1,27 +1,31 @@
-import axios from "axios";
-import {
-    tagsCheck,
-    extractIDs,
-    extractNames,
-} from "@/src/domains/_app/utils/parsers";
+import extractMissingTagsIDs from "@/src/domains/_app/components/Form/utils/extractMissingTagsIDs";
 
-export default async function getTagsMissingTags(tags, TAGS_REL) {
-    console.log("getTagsMissingTags 1: ", { tags, TAGS_REL });
-    try {
+export default function getTagsMissingTags(tags, TAGS_REL, sourceData) {
+    console.log("getTagsMissingTags 1: ", { tags, TAGS_REL, sourceData });
+
+    /*
         // call API for retrieving ids full objects
         const { data } = await axios.get("/api/list/filtered", {
             params: { arr: JSON.stringify(tags), table: "tag", column: "name" },
         }); // I might not need this anymore, i have them already from previous screen 🧠
-        console.log("getTagsMissingTags 2: ", { data });
-        const idsArr = extractIDs(data);
+        */
 
-        const missingRelationsIDs = tagsCheck(idsArr, TAGS_REL);
+    //    const data = sourceData.map(t => )
 
-        console.log("getTagsMissingTags 3: ", {
-            idsArr,
-            missingRelationsIDs,
-        });
+    // console.log("getTagsMissingTags 2: ", { data });
+    // const idsArr = extractIDs(tags);
+    // console.log("getTagsMissingTags 2: ", { idsArr });
 
+    // 🔴🔴🔴 BUG HERE! NOT RETURNIG WHAT WE EXPECT
+    // we want an array of tag objects
+    const missingTagsIDs = extractMissingTagsIDs(tags, TAGS_REL);
+    const missingTags = sourceData.filter((t) => missingTagsIDs.includes(t.id));
+    console.log("getTagsMissingTags 3: ", {
+        missingTagsIDs,
+        missingTags,
+    });
+
+    /*
         const res = await axios.get("/api/list/filtered", {
             params: {
                 arr: JSON.stringify(missingRelationsIDs),
@@ -29,17 +33,15 @@ export default async function getTagsMissingTags(tags, TAGS_REL) {
                 column: "id",
             },
         });
+        */
 
-        const missingRelationsNames = extractNames(res.data);
+    // const missingRelationsNames = extractNames(res.data);
 
-        console.log("getTagsMissingTags 4: ", {
-            res,
-            missingRelationsNames,
-        });
+    // console.log("getTagsMissingTags 4: ", {
+    //     res,
+    //     missingRelationsNames,
+    // });
 
-        return { missingTags: missingRelationsNames, removedTags: [] };
-    } catch (err) {
-        console.log("getTagsMissingTags ERROR: ", err);
-        return err;
-    }
+    return { missingTags, removedTags: [] };
+    // TODO: removedTags ? why only empty array ?
 }

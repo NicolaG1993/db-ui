@@ -3,7 +3,7 @@ import {
     newRelations,
     getRelationsByArr,
 } from "@/src/application/db/db.js";
-// import { tagsCheck } from "@/src/domains/_app/utils/parsers";
+// import { extractMissingTagsIDs } from "@/src/domains/_app/utils/parsers";
 
 async function handler(req, res) {
     let {
@@ -28,7 +28,7 @@ async function handler(req, res) {
     if (categories.length) {
     }
     // if (tags.length) {
-    //     tags = tagsCheck(tags);
+    //     tags = extractMissingTagsIDs(tags);
     // }
 
     // console.log("actors: ", actors);

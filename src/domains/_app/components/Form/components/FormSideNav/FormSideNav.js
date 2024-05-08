@@ -8,9 +8,11 @@ import { useEffect, useState } from "react";
 import { searchData } from "@/src/domains/_app/utils/filterData.js";
 import getActorsMissingTags from "@/src/domains/_app/components/Form/actions/getActorsMissingTags.js";
 import getTagsMissingTags from "@/src/domains/_app/components/Form/actions/getTagsMissingTags.js";
+import FormSideNavHints from "./components/FormSideNavHints";
 
 export default function FormSideNav({
     data,
+    parsedData,
     formState,
     originalFormState,
     updateFormState,
@@ -24,6 +26,7 @@ export default function FormSideNav({
 }) {
     console.log("🌹 FormSideNav: ", {
         data,
+        parsedData,
         formState,
         originalFormState,
         updateFormState,
@@ -35,42 +38,48 @@ export default function FormSideNav({
         acceptRemovedHints,
         appSettings,
     });
-    const [filteredData, setFilteredData] = useState(data);
+    const [sourceData, setSourceData] = useState(parsedData || data);
+    const [filteredData, setFilteredData] = useState(sourceData);
     const [searchActive, setSearchActive] = useState(false);
 
     useEffect(() => {
-        setFilteredData(data);
-        // console.log("data: ", data);
+        const selected = parsedData ? parsedData : data;
+        setSourceData(selected);
+        setFilteredData(selected);
+        // console.log("sourceData: ", selected);
         setSearchActive(false);
-    }, [data]);
+    }, [data, parsedData]);
 
     const filterData = (str) => {
         if (str) {
-            let arr = searchData(data, str);
+            let arr = searchData(sourceData, str);
             setFilteredData(arr);
             setSearchActive(true);
         } else {
-            setFilteredData(data);
+            setFilteredData(sourceData);
             setSearchActive(false);
         }
     };
 
-    const closeSideNav = async (openSection) => {
+    const closeSideNav = async (openSection, data) => {
         let res;
 
         // check possible tags updates from selected actors
         if (openSection === "actors") {
+            // 🧠 i refactored getTagsMissingTags without API calls, maybe i can do it also here?
             res = await getActorsMissingTags(
                 formState[openSection],
                 formState.tags,
-                originalFormState
+                originalFormState,
+                data
             );
             console.log("getActorsMissingTags: ", res);
         } else if (openSection === "tags") {
             // check for related tags that could be missing
-            res = await getTagsMissingTags(
+            res = getTagsMissingTags(
                 formState[openSection],
-                appSettings.TAGS_REL
+                appSettings.TAGS_REL,
+                data
             );
             console.log("getTagsMissingTags: ", res);
         } else {
@@ -90,7 +99,11 @@ export default function FormSideNav({
 
         let res = [...formState.tags]; // ! important to use spread here !
         for (const value of formData.values()) {
-            res.push(value);
+            console.log("handleSubmitMissingHints: ", {
+                target: e.target,
+                formDataValue: JSON.parse(value),
+            });
+            res.push(JSON.parse(value));
         }
         acceptMissingHints(res);
     };
@@ -101,7 +114,7 @@ export default function FormSideNav({
 
         let res = [];
         for (const value of formData.values()) {
-            res.push(value);
+            res.push(JSON.parse(value));
         }
         acceptRemovedHints(res);
     };
@@ -113,102 +126,13 @@ export default function FormSideNav({
                 transform: openSection ? "translateX(0)" : "translateX(498px)",
             }}
         >
+            {/* 🧠 CREATE COMPONENT FOR THIS PART 🧠 */}
             {hints && (hints.missing?.length || hints.removed?.length) ? (
-                <div>
-                    {hints.missing?.length > 0 && (
-                        <>
-                            <p>
-                                We have found some new tags for you, select
-                                which one to add:
-                            </p>
-                            <form
-                                id="missingHintsForm"
-                                onSubmit={handleSubmitMissingHints}
-                            >
-                                {hints.missing.map((el) => (
-                                    <div key={`hint missing ` + el.id}>
-                                        <input
-                                            type="checkbox"
-                                            id={el.id}
-                                            name={el.name}
-                                            value={el}
-                                            defaultChecked
-                                        />
-                                        <label htmlFor={el.name}>
-                                            {el.name}
-                                        </label>
-                                    </div>
-                                ))}
-                                <div>
-                                    <button
-                                        title="Skip this step"
-                                        onClick={() =>
-                                            handleHintsModal([], hints.removed)
-                                        }
-                                        className="button-standard"
-                                    >
-                                        Skip
-                                    </button>
-                                    <button
-                                        title="Confirm your choice"
-                                        type="submit"
-                                        form="missingHintsForm"
-                                        className="button-standard"
-                                    >
-                                        Confirm
-                                    </button>
-                                </div>
-                            </form>
-                        </>
-                    )}
-
-                    {hints.removed?.length > 0 && (
-                        <>
-                            <p>
-                                We have found some tags that could be removed,
-                                select which one are obsolete:
-                            </p>
-                            <form
-                                id="removedHintsForm"
-                                onSubmit={handleSubmitMissingHints}
-                            >
-                                {hints.removed.map((el) => (
-                                    <div key={`hint removed ` + el.id}>
-                                        <input
-                                            type="checkbox"
-                                            id={el.id}
-                                            name={el.name}
-                                            value={el}
-                                            // defaultChecked
-                                        />
-                                        <label htmlFor={el.name}>
-                                            {el.name}
-                                        </label>
-                                    </div>
-                                ))}
-                                <div>
-                                    <button
-                                        title="Skip this step"
-                                        onClick={() =>
-                                            handleHintsModal(hints.missing, [])
-                                        }
-                                        className="button-standard"
-                                    >
-                                        Skip
-                                    </button>
-                                    <button
-                                        title="Confirm your choice"
-                                        type="submit"
-                                        form="removedHintsForm"
-                                        className="button-standard"
-                                    >
-                                        Confirm
-                                    </button>
-                                </div>
-                            </form>
-                        </>
-                    )}
-                </div>
+                <FormSideNavHints
+                    hints={hints}
+                    handleSubmitMissingHints={handleSubmitMissingHints}
+                    handleHintsModal={handleHintsModal}
+                />
             ) : (
                 <>
                     <div className={styles.nav}>
@@ -217,7 +141,9 @@ export default function FormSideNav({
                                 openSection.charAt(0).toUpperCase() +
                                     openSection.slice(1)}
                         </p>
-                        <span onClick={() => closeSideNav(openSection)}>X</span>
+                        <span onClick={() => closeSideNav(openSection, data)}>
+                            X
+                        </span>
                     </div>
 
                     <div className={styles.sidewrapContent}>
@@ -225,7 +151,7 @@ export default function FormSideNav({
                             <div className={styles.wrapper}>
                                 <FormSideNavSearchBar
                                     openSection={openSection}
-                                    data={data}
+                                    data={sourceData}
                                     handleSearch={filterData}
                                 />
                             </div>

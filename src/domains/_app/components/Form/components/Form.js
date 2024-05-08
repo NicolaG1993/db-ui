@@ -48,7 +48,10 @@ export default function Form({
     const [newImage, setNewImage] = useState();
     const [errors, setErrors] = useState({});
     const [openSection, setOpenSection] = useState(false);
-    const [sideNavData, setSideNavData] = useState(undefined);
+    const [sideNavData, setSideNavData] = useState({
+        data: undefined,
+        parsedData: undefined,
+    });
     const [isLoading, setIsLoading] = useState(true);
 
     const emptyHints = { missing: [], removed: [] };
@@ -93,11 +96,17 @@ export default function Form({
     // FETCH DATA FOR SIDENAV
     useEffect(() => {
         if (openSection && openSection !== "nationalities") {
-            fetchDataForSideNav(openSection, appSettings.TAGS_OBJ).then((res) =>
-                setSideNavData(res)
+            fetchDataForSideNav(openSection, appSettings.TAGS_OBJ).then(
+                (res) => {
+                    console.log("RESSSS: ", res);
+                    setSideNavData(res);
+                }
             );
         } else {
-            setSideNavData();
+            setSideNavData({
+                data: undefined,
+                parsedData: undefined,
+            });
         }
     }, [openSection]);
 
@@ -106,6 +115,8 @@ export default function Form({
             setOpenSection(false);
         }
     }, [hints]);
+    // 🧠 I think i can refactor this, we should not closing the tab this way
+    // just run setOpenSection(false) in the right position of the code 🧠
 
     //================================================================================
     // Handle Form Data
@@ -234,6 +245,7 @@ export default function Form({
     };
 
     const acceptMissingHints = (arr) => {
+        console.log("💦acceptMissingHints: ", arr);
         if (arr && arr.length) {
             setFormState((prev) => ({
                 ...prev,
@@ -285,7 +297,8 @@ export default function Form({
 
             {FormComponent && topicLabel === form.key ? (
                 <FormSideNav
-                    data={sideNavData}
+                    data={sideNavData.data}
+                    parsedData={sideNavData.parsedData}
                     formState={formState}
                     originalFormState={propsData || formState}
                     updateFormState={updateFormState}
