@@ -1,17 +1,16 @@
 import { useEffect, useState } from "react";
-import standardStyles from "@/src/domains/all/components/Filters/InputsSelector/InputsSelector.module.css";
-import ErrorUI from "@/src/domains/_app/components/Error/components/ErrorUI/ErrorUI";
+import standardStyles from "@/src/domains/all/components/Filters/DropdownMenusByLevel/DropdownMenusByLevel.module.css";
 import updatePrevFilters from "@/src/domains/all/components/Filters/DropdownMenusByLevel/actions/updatePrevFilters";
 import getDropdownsState from "@/src/domains/all/components/Filters/DropdownMenusByLevel/actions/getDropdownsState";
-import { renderLevel } from "./utils/parseDropdownMenusData";
-import loopObject from "@/src/domains/_app/utils/loopObject";
 import renderDropdownLevel from "@/src/domains/all/components/Filters/DropdownMenusByLevel/utils/renderDropdownLevel";
+// import ErrorUI from "@/src/domains/_app/components/Error/components/ErrorUI/ErrorUI";
 
 /*
 TODO:
 ✅ controllare cosa fa updatePrevFilters 
 ✅ fix selected tags not detected
 ✅ creare files per ogni component e utils
+⬜ fix tag hints not working
 ⬜ fix props loops - we have to implement a store for this and refactor some more, not sure
 ⬜ testare con oggetti dummy (ogni oggetto: movie, actor, record, tag, ...)
 ⬜ Fix G.Michaels infos + fix bug if still there (when adding a tag and saving they all got deleted)
@@ -35,8 +34,8 @@ export default function DropdownMenusByLevel(props) {
     const [error, setError] = useState();
     const [dropdownsState, setDropdownsState] = useState({});
     const [renderReady, setRenderReady] = useState(false);
-    const [stateObj, setStateObj] = useState({}); // ??? elimina ???
     const [filters, setFilters] = useState(props.filters || []);
+    // const [stateObj, setStateObj] = useState({}); // ??? elimina ???
 
     let styles = props.styles
         ? { ...standardStyles, ...props.styles }
@@ -50,7 +49,7 @@ export default function DropdownMenusByLevel(props) {
         } else if (props.filters && !Array.isArray(props.filters)) {
             setError("Error: props.filters is not an array");
         } else {
-            hydrateDropdowns(stateObj);
+            hydrateDropdowns();
         }
     }, []);
 
@@ -68,14 +67,13 @@ export default function DropdownMenusByLevel(props) {
     //////////////////////////////
     // FUNCTIONS
     //////////////////////////////
-    const hydrateDropdowns = (stateObj) => {
+    const hydrateDropdowns = () => {
         let { res, err } = getDropdownsState({
-            stateObj,
+            stateObj: {},
             propsObj: props.menuStructure,
             dropdownsState,
         });
         console.log("🧠 handleMenus: ", {
-            stateObj,
             res,
             err,
         });

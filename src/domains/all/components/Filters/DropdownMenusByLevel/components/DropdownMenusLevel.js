@@ -7,7 +7,7 @@ export default function DropdownMenusLevel({
     index,
     styles,
     menuStructure,
-    dropdownMenus,
+    dropdownsState,
     filters,
     handleFilters,
     handleMenus,
@@ -23,7 +23,7 @@ export default function DropdownMenusLevel({
             nextMenuStructure: menuStructure[groupKey],
             index: index++,
             styles,
-            dropdownMenus,
+            dropdownsState,
             filters,
             handleFilters,
             handleMenus, // 🧠 questa fn fa un giro assurdo come prop, non ideale 🧠
@@ -36,7 +36,7 @@ export default function DropdownMenusLevel({
         styles,
         menuStructure,
         objectEntries,
-        dropdownMenus,
+        dropdownsState,
     });
 
     return (
@@ -49,10 +49,10 @@ export default function DropdownMenusLevel({
                 onClick={
                     () =>
                         handleMenus({
-                            ...dropdownMenus,
+                            ...dropdownsState,
                             [index]: {
-                                ...dropdownMenus[index],
-                                [groupKey]: !dropdownMenus[index][groupKey],
+                                ...dropdownsState[index],
+                                [groupKey]: !dropdownsState[index][groupKey],
                             },
                         }) // FIX : error when i click 2 times on a group
                 }
@@ -60,7 +60,7 @@ export default function DropdownMenusLevel({
                 <span>• {groupKey}</span>
                 <span>{objectEntries.length}</span>
             </div>
-            {dropdownMenus[index][groupKey] && (
+            {dropdownsState[index][groupKey] && (
                 <div className={styles.levelDropdown}>
                     <DropdownMenusLevelChilds />
                 </div>

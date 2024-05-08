@@ -219,14 +219,10 @@ const parseOrderOptions = (arr) => {
     );
 };
 
-const extractIDs = (data) => {
-    // receive arr of objects // return arr of ids
-    return data.map(({ id }) => id);
-};
-const extractNames = (data) => {
-    // receive arr of objects // return arr of ids
-    return data.map(({ name }) => name);
-};
+// receive arr of objects // return arr of ids
+const extractIDs = (data) => data.map(({ id }) => id);
+// receive arr of objects // return arr of ids
+const extractNames = (data) => data.map(({ name }) => name);
 
 //  arr é l'array da filtrare, values sono i valori da cercare
 // se uno dei valori é presente in arr torna true

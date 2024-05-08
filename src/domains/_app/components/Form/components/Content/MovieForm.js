@@ -16,7 +16,7 @@ export default function MovieForm({
     topicLabel,
     isLoading,
 }) {
-    // console.log("FORMSTATE: ", formState);
+    console.log("MovieForm: ", { formState });
     //================================================================================
     // Render UI
     //================================================================================
@@ -187,6 +187,7 @@ export default function MovieForm({
                     }
                     onBlur={(e) => validateData(e)}
                     value={formState.rating}
+                    placeholder="Type your rating (max 5.00)"
                 />
                 {errors.rating && (
                     <div className={"form-error"}>{errors.rating}</div>

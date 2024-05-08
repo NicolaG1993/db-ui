@@ -3,7 +3,13 @@ import checkLevelValuesError from "@/src/domains/all/components/Filters/Dropdown
 // USED TO CREATE AN OBJECT WITH AN OBJECT INSIDE FOR EVERY LEVEL, EVERY OBJECT CONTAINS THE BOOLEAN VALUES FOR ALL THAT LEVEL
 // SO THE LEVELS ARE STORED SEPARETELY: BY LEVEL - NOT NESTED INSIDE EACHOTHERS es. {1:{}, 2: {}}
 
-const getDropdownsState = ({ stateObj, propsObj, dropdownMenus }) => {
+const getDropdownsState = ({ stateObj, propsObj, dropdownsState }) => {
+    console.log("🧠 getDropdownsState: ", {
+        stateObj,
+        propsObj,
+        dropdownsState,
+    });
+
     // PARSE AND SET DROPDOWN MENUS STATE 1st
     let newObj = {};
     let objectEntries = Object.entries(propsObj);
@@ -20,7 +26,7 @@ const getDropdownsState = ({ stateObj, propsObj, dropdownMenus }) => {
                 catValues: val,
                 level: 2,
                 stateObj,
-                dropdownMenus,
+                dropdownsState,
             });
 
             if (err) {
@@ -37,11 +43,11 @@ const getDropdownsState = ({ stateObj, propsObj, dropdownMenus }) => {
 export default getDropdownsState;
 
 // NOT USED OUTSIDE THIS FILE
-const getSubMenusState = ({ catValues, level, stateObj, dropdownMenus }) => {
+const getSubMenusState = ({ catValues, level, stateObj, dropdownsState }) => {
     let newObj = {};
     let levelObj = {
         ...stateObj[level],
-        ...dropdownMenus[level],
+        ...dropdownsState[level],
     };
     let error;
 
@@ -56,7 +62,7 @@ const getSubMenusState = ({ catValues, level, stateObj, dropdownMenus }) => {
 
         stateObj = {
             ...stateObj,
-            ...dropdownMenus,
+            ...dropdownsState,
             [level]: levelObj,
         };
 
@@ -67,7 +73,7 @@ const getSubMenusState = ({ catValues, level, stateObj, dropdownMenus }) => {
                 catValues: val,
                 level: Number(level) + 1,
                 stateObj,
-                dropdownMenus,
+                dropdownsState,
             });
         }
     });

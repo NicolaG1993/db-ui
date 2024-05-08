@@ -22,19 +22,19 @@ export default function FormSideNav({
     acceptRemovedHints,
     appSettings,
 }) {
-    // console.log("FormSideNav: ", {
-    //     data,
-    //     formState,
-    //     originalFormState,
-    //     updateFormState,
-    //     openSection,
-    //     setOpenSection,
-    //     handleHintsModal,
-    //     hints,
-    //     acceptMissingHints,
-    //     acceptRemovedHints,
-    //     appSettings,
-    // });
+    console.log("🌹 FormSideNav: ", {
+        data,
+        formState,
+        originalFormState,
+        updateFormState,
+        openSection,
+        setOpenSection,
+        handleHintsModal,
+        hints,
+        acceptMissingHints,
+        acceptRemovedHints,
+        appSettings,
+    });
     const [filteredData, setFilteredData] = useState(data);
     const [searchActive, setSearchActive] = useState(false);
 
@@ -65,14 +65,14 @@ export default function FormSideNav({
                 formState.tags,
                 originalFormState
             );
-            // console.log("RES 1: ", res);
+            console.log("getActorsMissingTags: ", res);
         } else if (openSection === "tags") {
             // check for related tags that could be missing
             res = await getTagsMissingTags(
                 formState[openSection],
                 appSettings.TAGS_REL
             );
-            // console.log("RES 2: ", res);
+            console.log("getTagsMissingTags: ", res);
         } else {
             setOpenSection(false);
         }

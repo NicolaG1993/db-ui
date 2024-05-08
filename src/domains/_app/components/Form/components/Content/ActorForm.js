@@ -14,6 +14,7 @@ export default function ActorForm({
     errors,
     isLoading,
 }) {
+    console.log("ActorForm: ", { formState });
     //================================================================================
     // Render UI
     //================================================================================
@@ -175,6 +176,7 @@ export default function ActorForm({
                     }
                     onBlur={(e) => validateData(e)}
                     value={formState.rating}
+                    placeholder="Type your rating (max 5.00)"
                 />
                 {errors.rating && (
                     <div className={"form-error"}>{errors.rating}</div>

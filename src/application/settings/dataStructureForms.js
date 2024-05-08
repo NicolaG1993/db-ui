@@ -13,7 +13,7 @@ const dataStructureForms = {
             birthday: "", // null ?
             nationalities: [],
             tags: [],
-            // rating?
+            rating: null,
         },
         key: "actor",
         group: "actors",
@@ -36,7 +36,7 @@ const dataStructureForms = {
             distributions: [],
             categories: [],
             tags: [],
-            // rating?
+            rating: null,
         },
         key: "movie",
         group: "movies",

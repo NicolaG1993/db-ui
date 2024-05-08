@@ -1,11 +1,11 @@
 import loopObject from "@/src/domains/_app/utils/loopObject";
 
-const renderLevel = ({ values, key, index, dropdownMenus }) => {
+const renderLevel = ({ values, key, index, dropdownsState }) => {
     console.log("🔥 renderLevel: ", {
         values,
         key,
         index,
-        dropdownMenus,
+        dropdownsState,
     });
     if (values) {
         if (Array.isArray(values)) {
@@ -18,10 +18,10 @@ const renderLevel = ({ values, key, index, dropdownMenus }) => {
                         className={styles.level}
                         onClick={() =>
                             setDropdownMenus({
-                                ...dropdownMenus,
+                                ...dropdownsState,
                                 [index]: {
-                                    ...dropdownMenus[index],
-                                    [key]: !dropdownMenus[index][key],
+                                    ...dropdownsState[index],
+                                    [key]: !dropdownsState[index][key],
                                 },
                             })
                         }
@@ -30,7 +30,7 @@ const renderLevel = ({ values, key, index, dropdownMenus }) => {
                         <span>{values.length}</span>
                     </div>
 
-                    {dropdownMenus[index][key] && renderValues(values, key)}
+                    {dropdownsState[index][key] && renderValues(values, key)}
                 </div>
             );
         } else if (typeof values === "object") {
@@ -46,10 +46,10 @@ const renderLevel = ({ values, key, index, dropdownMenus }) => {
                         className={styles.level}
                         onClick={() =>
                             setDropdownMenus({
-                                ...dropdownMenus,
+                                ...dropdownsState,
                                 [index]: {
-                                    ...dropdownMenus[index],
-                                    [key]: !dropdownMenus[index][key],
+                                    ...dropdownsState[index],
+                                    [key]: !dropdownsState[index][key],
                                 },
                             })
                         }
@@ -57,7 +57,7 @@ const renderLevel = ({ values, key, index, dropdownMenus }) => {
                         <span>• {key}</span>
                         <span>{objectEntries.length}</span>
                     </div>
-                    {dropdownMenus[index][key] && (
+                    {dropdownsState[index][key] && (
                         <div className={styles.levelDropdown}>
                             <Res />
                         </div>

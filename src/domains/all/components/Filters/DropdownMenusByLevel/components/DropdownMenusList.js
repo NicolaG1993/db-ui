@@ -6,7 +6,7 @@ export default function DropdownMenusList({
     index,
     styles,
     menuStructure,
-    dropdownMenus,
+    dropdownsState,
     filters,
     handleMenus,
     handleFilters,
@@ -21,7 +21,7 @@ export default function DropdownMenusList({
         index,
         styles,
         menuStructure,
-        dropdownMenus,
+        dropdownsState,
         filters,
     });
     return (
@@ -33,10 +33,10 @@ export default function DropdownMenusList({
                 className={styles.level}
                 onClick={() =>
                     handleMenus({
-                        ...dropdownMenus,
+                        ...dropdownsState,
                         [index]: {
-                            ...dropdownMenus[index],
-                            [groupKey]: !dropdownMenus[index][groupKey],
+                            ...dropdownsState[index],
+                            [groupKey]: !dropdownsState[index][groupKey],
                         },
                     })
                 }
@@ -45,7 +45,7 @@ export default function DropdownMenusList({
                 <span>{values.length}</span>
             </div>
 
-            {dropdownMenus[index][groupKey] &&
+            {dropdownsState[index][groupKey] &&
                 renderDropdownElements({
                     array: values,
                     groupKey,
