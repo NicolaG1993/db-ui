@@ -73,10 +73,6 @@ export default function DropdownMenusByLevel(props) {
             propsObj: props.menuStructure,
             dropdownsState,
         });
-        console.log("🧠 handleMenus: ", {
-            res,
-            err,
-        });
         err && setError(err); // 🧠 handle Error correctly - now we are just storing it 🧠
         setDropdownsState(res);
         setRenderReady(true);

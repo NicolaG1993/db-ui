@@ -1,8 +1,7 @@
-"use client";
-
+// DELETE THIS FILE (OR THE OTHER) WHEN DONE TESTING STUFF 🧠
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { shallowEqual, useSelector } from "react-redux";
+import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import { useErrorBoundary } from "react-error-boundary";
 import Cookies from "js-cookie";
 import styles from "@/src/domains/_app/components/Form/components/Form.module.css";
@@ -15,15 +14,31 @@ import {
     textValidation,
     nicknameValidation,
 } from "@/src/application/utils/validateForms.js";
-import dataStructureForms from "@/src/application/settings/dataStructureForms";
-import formHydrate from "@/src/domains/_app/utils/formHydrate";
-import { fetchDataForSideNav } from "@/src/domains/_app/actions/formFetchers";
-import { selectAppSettings } from "@/src/application/redux/slices/appSettingsSlice";
-import submitForm from "@/src/domains/_app/components/Form/actions/submitForm";
-import { getError } from "@/src/application/utils/error";
-import getSavedState from "@/src/domains/_app/components/Form/utils/getSavedState"; // 🧠 do i really need to call it so many times ? 🧠
 import FormDrawer from "./FormDrawer/FormDrawer";
 import FormDrawerContent from "./FormDrawer/FormDrawerContent";
+import { selectAppSettings } from "@/src/application/redux/slices/appSettingsSlice";
+import {
+    loadNewActiveForm,
+    selectFormComponent,
+    selectFormState,
+    selectFormStoreErrors,
+    selectFormStoreHints,
+    selectFormStoreNewImage,
+    selectFormStoreSettings,
+    selectFormStoreUI,
+    selectFormSideNavTopic,
+    updateSideNavData,
+    addNewImage,
+    removeImage,
+    validateForm,
+    startLoading,
+    handlePostSuccess,
+    closeSideNav,
+    openHintsNav,
+    selectFormIsLoading,
+    selectFormStore,
+} from "@/src/application/redux/slices/formSlice";
+import dataStructureForms from "@/src/application/settings/dataStructureForms";
 
 export default function Form({
     formLabel,
@@ -32,187 +47,125 @@ export default function Form({
     handleEditsInParent,
     parentIsWaiting,
 }) {
-    console.log("✅ Form propsData: ", {
-        formLabel,
-        propsData,
-        setOpenForm,
-        handleEditsInParent,
-        parentIsWaiting,
-    });
-    //================================================================================
-    // Component State
-    //================================================================================
+    ////////////////////////////////
+    ////////// TESTING /////////////
+    ////////////////////////////////
+    const dispatch = useDispatch();
     const router = useRouter();
     const appSettings = useSelector(selectAppSettings);
-    const { showBoundary } = useErrorBoundary(); // not found ?!?!
+    const { showBoundary } = useErrorBoundary(); // not found ?!?! // solved ?
 
-    const [form, setForm] = useState(dataStructureForms[formLabel]);
-    const FormComponent = form.formComponent;
-    const [formState, setFormState] = useState(
-        getSavedState(formLabel, form.emptyState)
-    );
-    const [newImage, setNewImage] = useState();
-    const [errors, setErrors] = useState({});
-    const [sideNavData, setSideNavData] = useState({
-        data: undefined,
-        parsedData: undefined,
-    });
-    const [isLoading, setIsLoading] = useState(true);
+    // We get the settings trough the component + props
+    // The rest will be setup and stored in store // also we cannot store formComponent in store
+    // 🧠 I need to test this by switching form tabs and loading new form when one is alredy open
 
-    const emptyHints = { missing: [], removed: [] };
-    const [hints, setHints] = useState(emptyHints);
+    // let formStore = useSelector(selectFormStore, shallowEqual);
+    let form = useSelector(selectFormStoreSettings, shallowEqual);
+    let uiState = useSelector(selectFormStoreUI, shallowEqual);
+    let hints = useSelector(selectFormStoreHints, shallowEqual);
+    let formState = useSelector(selectFormState, shallowEqual);
+    let newImage = useSelector(selectFormStoreNewImage, shallowEqual);
+    let formErrors = useSelector(selectFormStoreErrors, shallowEqual);
+    let isLoading = useSelector(selectFormIsLoading, shallowEqual);
+    // let FormComponent = useSelector(selectFormComponent, shallowEqual); // 🧠 components non salvabili in redux
+    // const FormComponent = dataStructureForms[formLabel].formComponent; // non ho trovato altra soluzione che rimuovere FormComponent da formSlice
+    // const [FormComponent, SetFormComponent] = useState();
 
-    // used to determine if the hints modal is open or not
-    // we also need to store the value somehow - string
-    // const [activeForm, setActiveForm] = useState(formLabel); // delete? 🔴 // the selected form (actor, movie, etc..)
-    const [drawerIsOpen, setDrawerIsOpen] = useState(false); // the drawer state: true/false
-    const [sideNavTopic, setSideNavTopic] = useState(false); // the selected site nav tab: false/string
-    const [hintsIsOpen, setHintsIsOpen] = useState(false); // the hints tab: true/false
+    const formObj = dataStructureForms[formLabel];
+    const FormComponent = dataStructureForms[formLabel]?.formComponent;
 
-    //================================================================================
-    // UseEffects
-    //================================================================================
-
-    // SET NEW ACTIVE FORM
     useEffect(() => {
-        loadNewActiveForm(formLabel);
-    }, [formLabel]);
-
-    const loadNewActiveForm = (formLabel) => {
-        setIsLoading(true);
-        setForm(dataStructureForms[formLabel]);
-        setFormState(
-            getSavedState(formLabel, dataStructureForms[formLabel].emptyState)
-        ); // 🧠 non posso usare direttamente form.emptyState ? 🧠
-        setErrors({});
-    };
-
-    // RESET STATE ON FORM CHANGE
-    useEffect(() => {
-        setFormState(getSavedState(formLabel, form.emptyState));
-        setIsLoading(false);
-    }, [form]);
-    setActiveForm(formLabel); // senza questo il form cambia prima che nuovo emptyState venga selezionato
-
-    //PARSE PROPSDATA
-    useEffect(() => {
-        if (propsData) {
-            let newState = formHydrate(formState, form.emptyState, propsData); // hydrate form on modify
-            setFormState(newState);
-        } else {
-            setFormState(getSavedState(formLabel, form.emptyState)); // set empty form on add new
+        if (formLabel && formObj) {
+            // console.log("dipatchNewForm: ", { formLabel, formObj, propsData });
+            let { formComponent, ...rest } = formObj;
+            let payload = {
+                formLabel,
+                form: rest,
+                propsData,
+            };
+            dispatch(loadNewActiveForm(payload));
         }
-        // setIsLoading(false);
-    }, [propsData]);
+    }, [formLabel, formObj, propsData, dispatch]);
+
+    /*
+    1. 🟢 setup form store - we want all these states to be stored there
+    2. 🟢 Create actions to interact with store
+    3a.🟡 Double check store initial values (not breaking app)
+    3b.🟡 Also remember cookie for previous formState
+    4. 🟡 Move as much code as possible outside the components (action, reducers, utils, ...)
+    */
 
     // FETCH DATA FOR DRAWER
     useEffect(() => {
-        if (sideNavTopic && sideNavTopic !== "nationalities") {
-            fetchDataForSideNav(sideNavTopic, appSettings.TAGS_OBJ).then(
-                (res) => {
-                    console.log("RESSSS: ", res);
-                    setSideNavData(res);
-                }
-            );
-        } else {
-            setSideNavData({
-                data: undefined,
-                parsedData: undefined,
+        if (uiState?.sideNavTopic && uiState.sideNavTopic !== "nationalities") {
+            fetchDataForSideNav(
+                uiState.sideNavTopic,
+                appSettings.TAGS_OBJ
+            ).then((res) => {
+                dispatch(updateSideNavData(res));
             });
-        }
-    }, [sideNavTopic]);
+        } else {
+            dispatch(
+                updateSideNavData({
+                    data: undefined,
+                    parsedData: undefined,
+                })
+            );
+        } // TODO: error handling? 🧠
+    }, [uiState]);
 
     useEffect(() => {
         if (!hints?.missing?.length && !hints?.removed?.length) {
-            handleDrawer(false);
+            // handleDrawer(false);
+            closeSideNav();
             // 🧠 I think i can refactor this, we should not closing the tab this way
-            // just run setSideNavTopic(false) in the right position of the code 🧠
+            // just run setSideNavTopic(false) in the right position of the code 🧠 maybe ?
         } else {
-            // handleDrawer(true);
+            openHintsNav();
         }
     }, [hints]);
 
-    //================================================================================
-    // Handle Form Data
-    //================================================================================
+    /* NO NEEDED
     const addLocalImages = (e) => {
-        /* version for hosted App */
+        // version for hosted App
         const file = {
             location: createObjectURL([...e.target.files][0]),
             key: [...e.target.files][0].name,
             file: [...e.target.files][0],
         }; // use the spread syntax to get it as an array
-        setNewImage(file);
+        dispatch(addNewImage(file));
     };
 
     const deleteImage = (img) => {
-        /* version for hosted App */
+        // version for hosted App 
         revokeObjectURL(img.file);
-        setNewImage();
-        if (formState.pic) {
-            setFormState((prev) => ({
-                ...prev,
-                pic: "",
-            }));
-
-            Cookies.set("formState", JSON.stringify({ formLabel, formState }));
-        }
+        dispatch(removeImage(file));
     };
 
-    const updateFormState = (val, topic) => {
-        setFormState((prev) => ({
-            ...prev,
-            [topic]: val,
-        }));
-
-        // console.log("🌶️ formState: ", { formState, formLabel }); // 🧠 why there is a loose boolean inside formState ??? remove pls
-        if (!propsData) {
-            Cookies.set("formState", JSON.stringify({ formLabel, formState }));
-        }
-    };
 
     const validateData = async (e) => {
         const { id, name, value } = e.target;
-        let newErrObj = { ...errors };
+        dispatch(validateForm({ id, name, value }));
+    };
+    */
 
-        //validate values
-        if (id === "Name") {
-            const resp = nicknameValidation(id, value);
-            if (resp) {
-                setErrors({ ...errors, [name]: resp });
-            } else {
-                delete newErrObj[name];
-                setErrors(newErrObj);
-            }
-        }
-        if (id === "Title") {
-            const resp = textValidation(value);
-            if (resp) {
-                setErrors({ ...errors, [name]: resp });
-            } else {
-                delete newErrObj[name];
-                setErrors(newErrObj);
-            }
-        }
-        if (id === "Rating") {
-            const resp = decimalValidation(id, value);
-            if (resp) {
-                setErrors({ ...errors, [name]: resp });
-            } else {
-                delete newErrObj[name];
-                setErrors(newErrObj);
-            }
-        }
-    }; // forse qualcosa bisogna acora aggiungere da altri forms? 💛
-
-    const confirmChanges = async (e) => {
+    // 🧠 There must be a way to transform this into a store action
+    const confirmChanges = async ({
+        e,
+        formState,
+        newImage,
+        form,
+        propsData,
+        formLabel,
+        setOpenForm,
+    }) => {
         e.preventDefault();
-        /////////////////////////
-        // Handle errors properly!
-        // 🔥 image upload (TODO) + item edit (TODO) + form validation (DONE)
+        // 🧠 Handle API errors properly!
+        // API Errors to handle: image upload (TODO) + item edit (TODO) + form validation (DONE)
 
-        if (Object.keys(errors).length === 0) {
-            !isLoading && setIsLoading(true);
+        if (Object.keys(formErrors).length === 0) {
+            dispatch(startLoading());
+            // dispatch(postForm({ formState, newImage, form, propsData }));
 
             submitForm({
                 formState,
@@ -224,8 +177,10 @@ export default function Form({
                     if ((propsData || parentIsWaiting) && handleEditsInParent) {
                         handleEditsInParent(data);
                     }
-                    Cookies.remove("formState");
-                    setOpenForm && setOpenForm(false);
+
+                    dispatch(handlePostSuccess());
+                    setOpenForm && setOpenForm(false); // forse non necessario ?
+
                     formLabel !== "record" &&
                         formLabel !== "records" &&
                         router.push(`/el/${formLabel}/${data.id}`);
@@ -236,119 +191,36 @@ export default function Form({
                         message: getError(error),
                     });
                 });
-
-            setIsLoading(false);
         }
     };
 
-    const handleHints = (arrMissing, arrRemoved) => {
-        if (arrMissing?.length || arrRemoved?.length) {
-            setHints({ missing: arrMissing, removed: arrRemoved });
-        } else {
-            setHints(emptyHints);
-        }
-    };
+    console.log("RENDERING FORM COMPONENT: ", {
+        isLoading,
+        // isLoading: formStore.isLoading,
+        FormComponent,
+    });
 
-    const acceptMissingHints = (newArr, discardedArr) => {
-        console.log("💦acceptMissingHints: ", { newArr, discardedArr });
-        // 🧠 The non selected shuold stay stored in state!!!
-        if (newArr && newArr.length) {
-            setFormState((prev) => ({
-                ...prev,
-                tags: newArr, // 🔴 "tags" should be flexible - not hardcoded
-            }));
-        }
-        setHints((prev) => ({ ...prev, missing: [] }));
-    };
+    ////////////////////////////////
+    ////////////////////////////////
+    ////////////////////////////////
+    return (
+        <div className={styles.formWrapContainer}>
+            <div className={styles.formWrap}>
+                {/* 🧠 Header dovrebbe essere uno :slot stile svelte 🧠 */}
+                <div>
+                    <h2>{formLabel}</h2>
+                </div>
 
-    const acceptRemovedHints = (arr, discardedArr) => {
-        // 🧠 The non selected shuold stay stored in state!!!
-        if (arr && arr.length) {
-            let newTags = formState.tags.filter((el) => !arr.includes(el));
-            setFormState((prev) => ({
-                ...prev,
-                tags: newTags, // 🔴 "tags" should be flexible - not hardcoded
-            }));
-        }
-        setHints((prev) => ({ ...prev, removed: [] }));
-    };
-
-    const handleDrawer = (newVal) => {
-        if (typeof newVal == "boolean" || typeof newVal == "string") {
-            setSideNavTopic(newVal);
-        } else {
-            setSideNavTopic((prev) => !prev);
-        }
-    };
-
-    /*
-    const handleDrawerTab = (newVal) => {
-        // 🧠🧠🧠 GET ADMITTED FORM LABELS FROM SETTINGS ?
-        if (newVal === "nav") {
-            if (FormComponent && formLabel === form.key) {
-                setSideNavTopic(newVal);
-                setDrawerIsOpen(true);
-            } else {
-                setDrawerIsOpen(false);
-            }
-        } else if (newVal === "hints") {
-            if (hints?.missing?.length || hints?.removed?.length) {
-                setSideNavTopic(newVal);
-                setDrawerIsOpen(true);
-            } else {
-                setDrawerIsOpen(false);
-            }
-        } else {
-            setDrawerIsOpen(false);
-        }
-    };
-    */
-
-    // useEffect(() => {
-    //     if (!drawerIsOpen)
-    // }, [hints, drawerIsOpen]);
-
-    // used to open/close side nav + drawer
-    const closeSideNav = (hints) => {
-        if (hints) {
-            openHintsNav();
-        } else {
-            setSideNavTopic(false);
-            setDrawerIsOpen(false);
-        }
-    };
-    const openSideNav = (val) => {
-        if (val) {
-            setDrawerIsOpen(true);
-            setSideNavTopic(val);
-        }
-    };
-
-    const openHintsNav = () => {
-        setDrawerIsOpen(true);
-        setSideNavTopic(false);
-        setHintsIsOpen(true);
-    };
-
-    const closeHintsNav = () => {
-        setDrawerIsOpen(false);
-        setSideNavTopic(true);
-        setHintsIsOpen(false);
-    };
-
-    // TO BE CONTINUED ... 💡
-
-    // 🔴🔴🔴 NEED TO FIX CONDITION FOR RENDERING DRAWER + CONDITIONS FOR TABS 🔴🔴🔴
-
-    // store value for selected "form" ✅ no need, value gets set from parent "formLabel"
-
-    // store value for "drawer" state
-    // store value for "side nav" state
-    // store value for "hints nav" state
-
-    //================================================================================
-    // Render UI
-    //================================================================================
+                {!isLoading && FormComponent ? (
+                    <FormComponent confirmChanges={confirmChanges} />
+                ) : (
+                    // 🧠 Fare loader migliore
+                    <p>Loading form...</p>
+                )}
+            </div>
+        </div>
+    );
+    /* TODO!!!
     return (
         <div className={styles.formWrapContainer}>
             <div className={styles.formWrap}>
@@ -370,6 +242,7 @@ export default function Form({
                         openSideNav={openSideNav}
                         addLocalImages={addLocalImages}
                         deleteImage={deleteImage}
+                        setOpenForm={setOpenForm}
                     />
                 ) : (
                     <p>Loading...</p>
@@ -396,13 +269,12 @@ export default function Form({
                     closeSideNav={closeSideNav}
                     openSideNav={openSideNav}
                     handleHints={handleHints} // DO I NEED THIS? i think is deletable somehow - maybe not 🧠
+                    closeHintsNav={closeHintsNav}
                     acceptMissingHints={acceptMissingHints}
                     acceptRemovedHints={acceptRemovedHints}
                 />
             </FormDrawer>
         </div>
     );
+    */
 }
-
-// 🧠 SPIKE: I should have all these props in a dedicated store 🧠
-// formState, propsData, etc...

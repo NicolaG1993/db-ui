@@ -1,25 +1,57 @@
 import Image from "next/image";
 import styles from "@/src/domains/_app/components/Form/components/Form.module.css";
 import InputSocials from "@/src/domains/_app/components/Inputs/InputSocials/InputSocials";
+import {
+    addNewImage,
+    selectFormIsLoadingResponse,
+    selectFormPropsData,
+    selectFormState,
+    selectFormStoreSettings,
+    selectFormStoreUI,
+    selectFormStoreHints,
+    selectFormStoreNewImage,
+    selectFormStoreErrors,
+    selectFormIsLoading,
+    removeImage,
+    validateForm,
+    updateFormState,
+    openSideNav,
+} from "@/src/application/redux/slices/formSlice";
+import { shallowEqual, useDispatch, useSelector } from "react-redux";
 
 export default function ActorForm({
-    formState,
-    updateFormState,
-    validateData,
     confirmChanges,
-    newImage,
-    addLocalImages,
-    deleteImage,
-    closeSideNav,
-    openSideNav,
-    errors,
-    isLoading,
-    setOpenForm,
+    // formState,
+    // updateFormState,
+    // validateData,
+    // newImage,
+    // addLocalImages,
+    // deleteImage,
+    // closeSideNav,
+    // openSideNav,
+    // errors,
+    // isLoading,
+    // setOpenForm,
 }) {
-    // console.log("ActorForm: ", { formState });
+    let formState = useSelector(selectFormState, shallowEqual);
+    let propsData = useSelector(selectFormPropsData, shallowEqual);
+    let form = useSelector(selectFormStoreSettings, shallowEqual);
+    let uiState = useSelector(selectFormStoreUI, shallowEqual);
+    let hints = useSelector(selectFormStoreHints, shallowEqual);
+    let newImage = useSelector(selectFormStoreNewImage, shallowEqual);
+    let errors = useSelector(selectFormStoreErrors, shallowEqual);
+    let isLoading = useSelector(selectFormIsLoading, shallowEqual);
+    let isLoadingResponse = useSelector(
+        selectFormIsLoadingResponse,
+        shallowEqual
+    );
+
+    const dispatch = useDispatch();
     //================================================================================
     // Render UI
     //================================================================================
+    console.log("♟️ ActorForm: ", { formState });
+
     return (
         <form
             onSubmit={(e) =>
@@ -29,7 +61,7 @@ export default function ActorForm({
                     newImage,
                     form,
                     propsData,
-                    formLabel,
+                    formLabel: form.key,
                     setOpenForm,
                 })
             }
@@ -55,7 +87,13 @@ export default function ActorForm({
                             />
                             <span
                                 className={styles["form-delete-image"]}
-                                onClick={() => deleteImage(newImage)}
+                                onClick={() =>
+                                    dispatch(
+                                        removeImage({
+                                            imgFile: newImage,
+                                        })
+                                    )
+                                }
                             >
                                 X
                             </span>
@@ -70,7 +108,7 @@ export default function ActorForm({
                             />
                             <span
                                 className={styles["form-delete-image"]}
-                                onClick={() => deleteImage("")} // testare 💛
+                                onClick={() => dispatch(removeImage())} // testare 💛
                             >
                                 X
                             </span>
@@ -82,7 +120,13 @@ export default function ActorForm({
                                 type="file"
                                 name="filename"
                                 accept="image/png, image/jpeg, image/webp"
-                                onChange={(e) => addLocalImages(e)}
+                                onChange={(e) =>
+                                    dispatch(
+                                        addNewImage({
+                                            imgFile: [...e.target.files[0]], // use the spread syntax to get it as an array
+                                        })
+                                    )
+                                }
                             />
                         </div>
                     )}
@@ -102,9 +146,22 @@ export default function ActorForm({
                     id="Name"
                     maxLength="50"
                     onChange={(e) =>
-                        updateFormState(e.target.value, e.target.name)
+                        dispatch(
+                            updateFormState({
+                                val: e.target.value,
+                                topic: e.target.name,
+                            })
+                        )
                     }
-                    onBlur={(e) => validateData(e)}
+                    onBlur={(e) =>
+                        dispatch(
+                            validateForm({
+                                name: e.target.name,
+                                value: e.target.value,
+                                id: e.target.id,
+                            })
+                        )
+                    }
                     value={formState.name}
                 />
                 {errors.name && (
@@ -124,7 +181,12 @@ export default function ActorForm({
                     id="Genre"
                     value={formState.genre}
                     onChange={(e) =>
-                        updateFormState(e.target.value, e.target.name)
+                        dispatch(
+                            updateFormState({
+                                val: e.target.value,
+                                topic: e.target.name,
+                            })
+                        )
                     }
                 >
                     <option value="female">F</option>
@@ -145,7 +207,12 @@ export default function ActorForm({
                     name="birthday"
                     id="Birthday"
                     onChange={(e) =>
-                        updateFormState(e.target.value, e.target.name)
+                        dispatch(
+                            updateFormState({
+                                val: e.target.value,
+                                topic: e.target.name,
+                            })
+                        )
                     }
                     value={formState.birthday}
                 />
@@ -159,10 +226,11 @@ export default function ActorForm({
 
             <div className={styles["form-col-right"]}>
                 <div className={styles["form-selector-interaction-box"]}>
-                    <span>{formState.nationalities.length} selected</span>
+                    {/* FIX: <span>{formState.nationalities.length} selected</span> */}
+                    <span>{0} selected</span>
                     <div
                         onClick={() => {
-                            openSideNav("nationalities");
+                            dispatch(openSideNav("nationalities"));
                         }}
                     >
                         Select
@@ -184,12 +252,24 @@ export default function ActorForm({
                     step="0.01"
                     max="5"
                     onChange={(e) =>
-                        updateFormState(
-                            Number(parseFloat(e.target.value).toFixed(2)),
-                            e.target.name
+                        dispatch(
+                            updateFormState({
+                                val: Number(
+                                    parseFloat(e.target.value).toFixed(2)
+                                ),
+                                topic: e.target.name,
+                            })
                         )
                     }
-                    onBlur={(e) => validateData(e)}
+                    onBlur={(e) =>
+                        dispatch(
+                            validateForm({
+                                name: e.target.name,
+                                value: e.target.value,
+                                id: e.target.id,
+                            })
+                        )
+                    }
                     value={formState.rating}
                     placeholder="Type your rating (max 5.00)"
                 />
@@ -209,7 +289,7 @@ export default function ActorForm({
                     <span>{formState.tags.length} selected</span>
                     <div
                         onClick={() => {
-                            openSideNav("tags");
+                            dispatch(openSideNav("tags"));
                         }}
                     >
                         Select
@@ -226,7 +306,7 @@ export default function ActorForm({
             <div className={styles["form-col-right"]}>
                 <InputSocials
                     formState={formState}
-                    setFormState={updateFormState}
+                    setFormState={updateFormState} // in questo caso passiamo fn perché diventerá esternal component - ma dovremmo gestirla prima lo stesso -.-
                 />
             </div>
 

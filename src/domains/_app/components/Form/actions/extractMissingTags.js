@@ -1,7 +1,7 @@
 import extractMissingTagsIDs from "@/src/domains/_app/components/Form/utils/extractMissingTagsIDs";
 
 export default function extractMissingTags(tags, relationsObj, sourceData) {
-    console.log("extractMissingTags 1: ", { tags, relationsObj, sourceData });
+    // console.log("extractMissingTags 1: ", { tags, relationsObj, sourceData });
 
     /*
         // call API for retrieving ids full objects
@@ -21,10 +21,10 @@ export default function extractMissingTags(tags, relationsObj, sourceData) {
     const missingTagsIDs = extractMissingTagsIDs(tags, relationsObj);
     const missingTags = sourceData.filter((t) => missingTagsIDs.includes(t.id));
 
-    console.log("extractMissingTags 2: ", {
-        missingTagsIDs,
-        missingTags,
-    });
+    // console.log("extractMissingTags 2: ", {
+    //     missingTagsIDs,
+    //     missingTags,
+    // });
 
     /*
         const res = await axios.get("/api/list/filtered", {

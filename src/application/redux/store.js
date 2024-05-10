@@ -3,6 +3,7 @@ import appSettingsSlice from "./slices/appSettingsSlice";
 import sessionPlaylistSlice from "./slices/sessionPlaylistSlice";
 import userSlice from "./slices/userSlice";
 import itemSlice from "./slices/itemSlice";
+import formSlice from "./slices/formSlice";
 
 // config the store
 const store = configureStore({
@@ -11,6 +12,7 @@ const store = configureStore({
         sessionPlaylist: sessionPlaylistSlice.reducer,
         user: userSlice.reducer,
         itemStore: itemSlice.reducer,
+        formStore: formSlice.reducer,
     },
     devTools: true,
 });

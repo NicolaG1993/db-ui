@@ -11,7 +11,7 @@ const renderDropdownLevel = ({
     handleMenus, // queste due fn vanno rimosse da props in qualche modo
     handleFilters, // queste due fn vanno rimosse da props in qualche modo
 }) => {
-    console.log("renderDropdownLevel: ", {
+    console.log("🟢 renderDropdownLevel: ", {
         nextMenuStructure,
         index,
         styles,

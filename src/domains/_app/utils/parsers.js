@@ -33,7 +33,7 @@ function parseTagsByType(obj, TAGS_OBJ) {
         noTypeData = [...noTypeData, ...obj[""]];
     }
     parsedObj.Unknown["No Type"] = noTypeData;
-    console.log("parsedObj: ", parsedObj);
+    // console.log("parsedObj: ", parsedObj);
     return parsedObj;
 }
 

@@ -2,25 +2,68 @@ import Image from "next/image";
 import styles from "@/src/domains/_app/components/Form/components/Form.module.css";
 import { useEffect, useState } from "react";
 import InputToArray from "@/src/domains/all/components/Filters/InputToArray/InputToArray";
+import {
+    loadNewActiveForm,
+    selectFormComponent,
+    selectFormState,
+    selectFormStoreErrors,
+    selectFormStoreHints,
+    selectFormStoreNewImage,
+    selectFormStoreSettings,
+    selectFormStoreUI,
+    selectFormPropsData,
+    selectFormSideNavTopic,
+    updateSideNavData,
+    addNewImage,
+    removeImage,
+    validateForm,
+    startLoading,
+    handlePostSuccess,
+    closeSideNav,
+    openHintsNav,
+    selectFormIsLoading,
+    selectFormIsLoadingResponse,
+    updateFormState,
+    openSideNav,
+} from "@/src/application/redux/slices/formSlice";
+import { shallowEqual, useDispatch, useSelector } from "react-redux";
+import { useAppDispatch } from "@/src/application/redux/lib/hooks";
 
 export default function MovieForm({
-    formState,
-    updateFormState,
-    validateData,
-    confirmChanges,
-    newImage,
-    addLocalImages,
-    deleteImage,
-    closeSideNav,
-    openSideNav,
-    errors,
-    isLoading,
-    setOpenForm,
+    // formState,
+    confirmChanges, // turn into action ? 🧠
+    // newImage,
+    // addLocalImages,
+    // deleteImage,
+    // closeSideNav,
+    // openSideNav,
+    // errors,
+    // isLoading,
+    // setOpenForm,
 }) {
-    console.log("♟️ MovieForm: ", { formState });
+    let formState = useSelector(selectFormState, shallowEqual);
+    let propsData = useSelector(selectFormPropsData, shallowEqual);
+    let form = useSelector(selectFormStoreSettings, shallowEqual);
+    let uiState = useSelector(selectFormStoreUI, shallowEqual);
+    let hints = useSelector(selectFormStoreHints, shallowEqual);
+    let newImage = useSelector(selectFormStoreNewImage, shallowEqual);
+    let errors = useSelector(selectFormStoreErrors, shallowEqual);
+    let isLoading = useSelector(selectFormIsLoading, shallowEqual);
+    let isLoadingResponse = useSelector(
+        selectFormIsLoadingResponse,
+        shallowEqual
+    );
+
+    const dispatch = useDispatch();
+
+    // const handleBlur = ({ id, name, value }) => {
+    //     dispatch(validateForm({ id, name, value }));
+    // };
     //================================================================================
     // Render UI
     //================================================================================
+    console.log("♟️ MovieForm: ", { formState });
+
     return (
         <form
             onSubmit={(e) =>
@@ -30,7 +73,7 @@ export default function MovieForm({
                     newImage,
                     form,
                     propsData,
-                    formLabel,
+                    formLabel: form.key,
                     setOpenForm,
                 })
             }
@@ -50,14 +93,19 @@ export default function MovieForm({
                         <div className={styles["form-new-image"]}>
                             <Image
                                 src={newImage.location}
-                                // src={`/local_pics/actors/${newImage}`}
                                 alt={`Picture`}
                                 fill
                                 style={{ objectFit: "cover" }}
                             />
                             <span
                                 className={styles["form-delete-image"]}
-                                onClick={() => deleteImage(newImage)}
+                                onClick={() =>
+                                    dispatch(
+                                        removeImage({
+                                            imgFile: newImage,
+                                        })
+                                    )
+                                }
                             >
                                 X
                             </span>
@@ -72,7 +120,7 @@ export default function MovieForm({
                             />
                             <span
                                 className={styles["form-delete-image"]}
-                                onClick={() => deleteImage("")} // testare 💛
+                                onClick={() => dispatch(removeImage())} // testare 💛
                             >
                                 X
                             </span>
@@ -84,7 +132,13 @@ export default function MovieForm({
                                 type="file"
                                 name="filename"
                                 accept="image/png, image/jpeg, image/webp"
-                                onChange={(e) => addLocalImages(e)}
+                                onChange={(e) =>
+                                    dispatch(
+                                        addNewImage({
+                                            imgFile: [...e.target.files[0]], // use the spread syntax to get it as an array
+                                        })
+                                    )
+                                }
                             />
                         </div>
                     )}
@@ -103,8 +157,24 @@ export default function MovieForm({
                     name="title"
                     id="Title"
                     maxLength="244"
-                    onChange={(e) => updateFormState(e.target.value, "title")}
-                    onBlur={(e) => validateData(e)}
+                    // onChange={handleUpdateFormState}
+                    onChange={(e) =>
+                        dispatch(
+                            updateFormState({
+                                val: e.target.value,
+                                topic: e.target.name,
+                            })
+                        )
+                    }
+                    onBlur={(e) =>
+                        dispatch(
+                            validateForm({
+                                name: e.target.name,
+                                value: e.target.value,
+                                id: e.target.id,
+                            })
+                        )
+                    }
                     value={formState.title}
                     className={errors.title && "input-error"}
                 />
@@ -123,7 +193,15 @@ export default function MovieForm({
                     topic={"urls"}
                     topicID={"Urls"}
                     formState={formState}
-                    setFormState={updateFormState}
+                    onChange={({ val, topic }) =>
+                        dispatch(
+                            updateFormState({
+                                val,
+                                topic,
+                            })
+                        )
+                    }
+                    // onChange={updateFormState} // in questo caso passiamo fn perché diventerá esternal component - ma dovremmo gestirla prima lo stesso -.-
                 />
             </div>
 
@@ -137,7 +215,7 @@ export default function MovieForm({
                     <span>{formState.actors?.length} selected</span>
                     <div
                         onClick={() => {
-                            openSideNav("actors");
+                            dispatch(openSideNav("actors"));
                         }}
                     >
                         Select
@@ -155,7 +233,7 @@ export default function MovieForm({
                     <span>{formState.studios?.length} selected</span>
                     <div
                         onClick={() => {
-                            openSideNav("studios");
+                            dispatch(openSideNav("studios"));
                         }}
                     >
                         Select
@@ -173,7 +251,7 @@ export default function MovieForm({
                     <span>{formState.distributions?.length} selected</span>
                     <div
                         onClick={() => {
-                            openSideNav("distributions");
+                            dispatch(openSideNav("distributions"));
                         }}
                     >
                         Select
@@ -194,12 +272,24 @@ export default function MovieForm({
                     step="0.01"
                     max="5"
                     onChange={(e) =>
-                        updateFormState(
-                            Number(parseFloat(e.target.value).toFixed(2)),
-                            "rating"
+                        dispatch(
+                            updateFormState({
+                                val: Number(
+                                    parseFloat(e.target.value).toFixed(2)
+                                ),
+                                topic: e.target.name,
+                            })
                         )
                     }
-                    onBlur={(e) => validateData(e)}
+                    onBlur={(e) =>
+                        dispatch(
+                            validateForm({
+                                name: e.target.name,
+                                value: e.target.value,
+                                id: e.target.id,
+                            })
+                        )
+                    }
                     value={formState.rating}
                     placeholder="Type your rating (max 5.00)"
                 />
@@ -218,7 +308,7 @@ export default function MovieForm({
                     <span>{formState.categories?.length} selected</span>
                     <div
                         onClick={() => {
-                            openSideNav("categories");
+                            dispatch(openSideNav("categories"));
                         }}
                     >
                         Select
@@ -236,7 +326,7 @@ export default function MovieForm({
                     <span>{formState.tags?.length} selected</span>
                     <div
                         onClick={() => {
-                            openSideNav("tags");
+                            dispatch(openSideNav("tags"));
                         }}
                     >
                         Select
@@ -254,7 +344,14 @@ export default function MovieForm({
                     type="date"
                     name="release"
                     id="Release"
-                    onChange={(e) => updateFormState(e.target.value, "release")}
+                    onChange={(e) =>
+                        dispatch(
+                            updateFormState({
+                                val: e.target.value,
+                                topic: e.target.name,
+                            })
+                        )
+                    }
                     value={formState.release ? formState.release : ""}
                 />
             </div>
@@ -264,7 +361,7 @@ export default function MovieForm({
             >
                 <button
                     type="submit"
-                    disabled={isLoading}
+                    disabled={isLoadingResponse}
                     className="button-standard"
                 >
                     Confirm

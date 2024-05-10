@@ -1,19 +1,19 @@
-import ActorForm from "@/src/domains/_app/components/Form/components/Content/ActorForm";
-import MovieForm from "@/src/domains/_app/components/Form/components/Content/MovieForm";
-import RecordForm from "@/src/domains/_app/components/Form/components/Content/RecordForm";
-import RecordsForm from "@/src/domains/_app/components/Form/components/Content/RecordsForm";
-import StudioForm from "@/src/domains/_app/components/Form/components/Content/StudioForm";
-import CategoryForm from "@/src/domains/_app/components/Form/components/Content/CategoryForm";
+import ActorForm from "@/src/domains/_app/components/Form/components/Content@2.0/ActorForm";
+import MovieForm from "@/src/domains/_app/components/Form/components/Content@2.0/MovieForm";
+import RecordForm from "@/src/domains/_app/components/Form/components/Content@2.0/RecordForm";
+import RecordsForm from "@/src/domains/_app/components/Form/components/Content@2.0/RecordsForm";
+import StudioForm from "@/src/domains/_app/components/Form/components/Content@2.0/StudioForm";
+import CategoryForm from "@/src/domains/_app/components/Form/components/Content@2.0/CategoryForm";
 
 const dataStructureForms = {
     actor: {
         emptyState: {
             name: "",
             genre: "female",
-            birthday: "", // null ?
+            birthday: "",
             nationalities: [],
             tags: [],
-            rating: null,
+            rating: "",
         },
         key: "actor",
         group: "actors",
@@ -30,13 +30,13 @@ const dataStructureForms = {
         emptyState: {
             title: "",
             urls: [],
-            release: null,
+            release: "",
             actors: [],
             studios: [],
             distributions: [],
             categories: [],
             tags: [],
-            rating: null,
+            rating: "",
         },
         key: "movie",
         group: "movies",

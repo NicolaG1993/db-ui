@@ -13,25 +13,25 @@ const fetchDataForSideNav = async (topic, TAGS_OBJ) => {
             });
             if (topic === "tags") {
                 let result = groupJsonByValue(res.data, "type");
-                console.log("😋 fetchDataForSideNav tags: ", {
-                    topic,
-                    itemLabel,
-                    TAGS_OBJ,
-                    result,
-                    res,
-                    response: parseTagsByType(result, TAGS_OBJ),
-                });
+                // console.log("😋 fetchDataForSideNav tags: ", {
+                //     topic,
+                //     itemLabel,
+                //     TAGS_OBJ,
+                //     result,
+                //     res,
+                //     response: parseTagsByType(result, TAGS_OBJ),
+                // });
                 return {
                     parsedData: parseTagsByType(result, TAGS_OBJ),
                     data: res.data,
                 };
             } else {
-                console.log("😋 fetchDataForSideNav: ", {
-                    topic,
-                    itemLabel,
-                    TAGS_OBJ,
-                    response: res.data,
-                });
+                // console.log("😋 fetchDataForSideNav: ", {
+                //     topic,
+                //     itemLabel,
+                //     TAGS_OBJ,
+                //     response: res.data,
+                // });
                 return { data: res.data, parsedData: undefined };
             }
         } catch (error) {

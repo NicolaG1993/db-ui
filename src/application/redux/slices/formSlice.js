@@ -1,7 +1,320 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, current } from "@reduxjs/toolkit";
+// import dataStructureForms from "@/src/application/settings/dataStructureForms";
+import getSavedState from "@/src/domains/_app/components/Form/utils/getSavedState";
+import formHydrate from "@/src/domains/_app/utils/formHydrate";
+import Cookies from "js-cookie";
+import {
+    decimalValidation,
+    textValidation,
+    nicknameValidation,
+} from "@/src/application/utils/validateForms.js";
 
-const initialState = {};
+const initialState = {
+    formLabel: "",
+    form: undefined, // "form" potrebber essere rinominato "formObj" o "formSettings"
+    // FormComponent: undefined, // non posso salvare perche component é non-serializibe data
+    formState: undefined,
+    propsData: undefined,
+    isLoading: true,
+    isLoadingResponse: false,
+    ui: {
+        drawerIsOpen: false,
+        sideNavTopic: false,
+        hintsIsOpen: false,
+    },
+    errors: {},
+    newImage: undefined,
+    sideNavData: {
+        data: undefined,
+        parsedData: undefined,
+    },
+    hints: { missing: [], removed: [] },
+};
 
+const formSlice = createSlice({
+    name: "formStore",
+    initialState,
+    reducers: {
+        loadNewActiveForm: (state, action) => {
+            console.log("👾 loadNewActiveForm invoked: ", {
+                state: current(state),
+                payload: action.payload,
+            });
+            const { formLabel, form, propsData } = action.payload;
+            // const form = dataStructureForms[formLabel]; // questo passaggio viene fatto da component
+
+            state.isLoading = true;
+            state.formLabel = formLabel;
+            state.form = form;
+            // We cannot store form.formComponent and FormComponent here!
+            //  state.FormComponent = form.formComponent;
+
+            let formState;
+            if (propsData) {
+                // hydrate form on "edit" mode;
+                state.propsData = propsData;
+                formState = formHydrate(
+                    form.emptyState,
+                    form.emptyState,
+                    propsData
+                );
+            } else {
+                // set "cookie-form" or empty form on "create new" mode
+                formState = getSavedState(formLabel, form.emptyState);
+            }
+
+            state.formState = formState;
+            state.errors = {};
+            state.isLoading = false;
+
+            console.log("👾 loadNewActiveForm ended: ", {
+                state: current(state),
+                payload: action.payload,
+            });
+
+            // Cookies.set(
+            //     "formState",
+            //     JSON.stringify({
+            //         formLabel: formLabel,
+            //         formState: formState,
+            //     })
+            // ); // usare solo dopo form edit! forse meglio ancora dopo validate
+        },
+        updateFormState: (state, action) => {
+            // const currentState = { ...state };
+            // const currentFormState = { ...state.formState };
+            // const currentPropsData = { ...state.propsData };
+
+            console.log("👾 updateFormState invoked: ", {
+                state: current(state),
+                // currentFormState,
+                payload: action.payload,
+            });
+            /*
+            state.formState = action.payload;
+            */
+
+            const { val, topic } = action.payload;
+            let newFormState;
+
+            newFormState = { ...state.formState, [topic]: val };
+            state.formState = newFormState;
+
+            console.log("👾 updateFormState progress: ", {
+                state: current(state),
+                newFormState,
+                propsData: state.propsData,
+            });
+
+            if (!state.propsData) {
+                //  🧠 forse é meglio ancora dopo validate data success
+                //  🧠 veder come fare per special inputs e auto-hints
+                Cookies.set(
+                    "formState",
+                    JSON.stringify({
+                        formLabel: state.formLabel,
+                        formState: newFormState,
+                    })
+                );
+            }
+
+            /*
+            newFormState = { ...state.formState, [topic]: val };
+            state.formState = newFormState;
+            */
+        },
+
+        startLoading: (state) => {
+            state.isLoading = true;
+        },
+        /*
+        updateFormSettings: (state, action) => {
+            state.formSettings = action.payload.formSettings;
+        },
+        */
+
+        // can i make a single dynamic function for UI reducers? 🧠
+        handleDrawer: (state, action) => {
+            // mi serve veramente handleDrawer? non posso fare tutto gia con le altre? 🧠
+            const { newVal } = action.payload;
+            if (typeof newVal == "boolean" || typeof newVal == "string") {
+                state.ui.sideNavTopic = newVal;
+            } else {
+                state.ui.sideNavTopic = !state.ui.sideNavTopic;
+            }
+        },
+        closeSideNav: (state) => {
+            state.ui.sideNavTopic = false;
+            state.ui.drawerIsOpen = false;
+        },
+        openSideNav: (state, action) => {
+            state.ui.hintsIsOpen = false;
+            if (val) {
+                state.ui.drawerIsOpen = true;
+                state.ui.sideNavTopic = action.payload;
+            }
+        },
+        openHintsNav: (state) => {
+            state.ui.drawerIsOpen = true;
+            state.ui.hintsIsOpen = true;
+        },
+        closeHintsNav: (state) => {
+            state.ui.hintsIsOpen = false;
+            state.ui.drawerIsOpen = false;
+        },
+
+        updateSideNavData: (state, action) => {
+            state.sideNavData = action.payload;
+        },
+
+        handleHints: (state, action) => {
+            const { arrMissing, arrRemoved } = action.payload.hints;
+            if (arrMissing?.length || arrRemoved?.length) {
+                state.hints = action.payload.hints;
+            } else {
+                state.hints = initialState.hints;
+            }
+        },
+        acceptMissingHints: (state, action) => {
+            const { newArr } = action.payload;
+            if (newArr && newArr.length) {
+                state.formState.tags = newArr; // 🔴 "tags" here should be flexible - not hardcoded
+            }
+            state.hints.missing = [];
+        },
+        acceptRemovedHints: (state, action) => {
+            // 🧠 The non selected could stay stored in state (but for now i have no plans to use them)
+            // 🔴 "tags" here should be flexible - not hardcoded
+            const { arr } = action.payload;
+            if (arr && arr.length) {
+                let newTags = state.formState.tags.filter(
+                    (el) => !arr.includes(el)
+                );
+                state.formState.tags = newTags;
+            }
+            state.hints.removed = [];
+        },
+
+        addNewImage: (state, action) => {
+            // version for hosted App // old comment, delete?
+            const { imgFile } = action.payload;
+            const file = {
+                location: createObjectURL(imgFile),
+                key: imgFile.name,
+                file: imgFile,
+            };
+            state.newImage = file;
+        },
+        removeImage: (state, action) => {
+            // version for hosted App // old comment, delete?
+            if (action.payload?.imgFile) {
+                revokeObjectURL(imgFile);
+            }
+
+            state.newImage = undefined;
+            if (state.formState.pic) {
+                state.formState.pic = "";
+                Cookies.set(
+                    "formState",
+                    JSON.stringify({
+                        formLabel: state.formLabel,
+                        formState: state.formState,
+                    })
+                );
+            }
+        },
+
+        // questa é una utils ?
+        validateForm: (state, action) => {
+            const { id, name, value } = action.payload;
+            const { errors } = state;
+
+            let newErrObj = { ...errors };
+
+            //validate values
+            if (id === "Name") {
+                const resp = nicknameValidation(id, value);
+                if (resp) {
+                    state.errors = { ...errors, [name]: resp };
+                } else {
+                    delete newErrObj[name];
+                    state.errors = newErrObj;
+                }
+            }
+            if (id === "Title") {
+                const resp = textValidation(value);
+                if (resp) {
+                    state.errors = { ...errors, [name]: resp };
+                } else {
+                    delete newErrObj[name];
+                    state.errors = newErrObj;
+                }
+            }
+            if (id === "Rating") {
+                const resp = decimalValidation(id, value);
+                if (resp) {
+                    state.errors = { ...errors, [name]: resp };
+                } else {
+                    delete newErrObj[name];
+                    state.errors = newErrObj;
+                }
+            }
+            // forse qualcosa bisogna acora aggiungere da altri forms? 💛
+        },
+
+        /*
+        postForm: (state, action) => {
+            const { formState, newImage, form, propsData } = action.payload;
+            // ??? sarebbe async
+        },
+        */
+        handlePostSuccess: (state, action) => {
+            Cookies.remove("formState");
+            state.isLoading = false;
+        },
+
+        resetFormStore: (state) => {
+            state = initialState;
+        },
+    },
+});
+
+export const {
+    loadNewActiveForm,
+    updateFormState,
+    startLoading,
+    handleDrawer,
+    closeSideNav,
+    openSideNav,
+    openHintsNav,
+    closeHintsNav,
+    updateSideNavData,
+    handleHints,
+    acceptMissingHints,
+    acceptRemovedHints,
+    addNewImage,
+    removeImage,
+    validateForm,
+    handlePostSuccess,
+    resetFormStore,
+} = formSlice.actions;
+
+export const selectFormStore = (state) => state.formStore;
+export const selectFormStoreSettings = (state) => state.formStore.form;
+export const selectFormStoreUI = (state) => state.formStore.ui;
+export const selectFormSideNavTopic = (state) =>
+    state.formStore.ui.sideNavTopic;
+export const selectFormStoreHints = (state) => state.formStore.hints;
+// export const selectFormComponent = (state) => state.formStore.FormComponent; // could i return this? -> dataStructureForms[state.formStore.formLabel].formComponent
+export const selectFormState = (state) => state.formStore.formState;
+export const selectFormPropsData = (state) => state.formStore.propsData;
+export const selectFormStoreNewImage = (state) => state.formStore.newImage;
+export const selectFormStoreErrors = (state) => state.formStore.errors;
+export const selectFormIsLoading = (state) => state.formStore.isLoading;
+export const selectFormIsLoadingResponse = (state) =>
+    state.formStore.isLoadingResponse;
+
+export default formSlice;
 // we want to eventually store the data we fetch while the form is open
 // we dont want to fetch it every time
 // there will be a button to refresh the list, if the user want
