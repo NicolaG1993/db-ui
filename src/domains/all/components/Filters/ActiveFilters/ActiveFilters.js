@@ -26,14 +26,11 @@ export default function ActiveFilters(props) {
     }, [props.arr]);
 
     useEffect(() => {
-        if (
-            props.handleChildState &&
-            typeof props.handleChildState !== "function"
-        ) {
-            setError("Error: handleChildState is not a function");
-        } else if (props.handleChildState) {
+        if (props.onChange && typeof props.onChange !== "function") {
+            setError("Error: onChange is not a function");
+        } else if (props.onChange) {
             // console.log("unpdating parent! 🐠🐟🐟🐠", filters);
-            props.handleChildState(filters, props.topic);
+            props.onChange({ val: filters, topic: props.topic });
         }
     }, [filters]);
 

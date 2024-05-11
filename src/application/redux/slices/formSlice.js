@@ -8,6 +8,7 @@ import {
     textValidation,
     nicknameValidation,
 } from "@/src/application/utils/validateForms.js";
+import { searchData } from "@/src/domains/_app/utils/filterData";
 
 const initialState = {
     formLabel: "",
@@ -27,6 +28,8 @@ const initialState = {
     sideNavData: {
         data: undefined,
         parsedData: undefined,
+        filteredData: undefined,
+        filters: { search: "" },
     },
     hints: { missing: [], removed: [] },
 };
@@ -149,7 +152,7 @@ const formSlice = createSlice({
         },
         openSideNav: (state, action) => {
             state.ui.hintsIsOpen = false;
-            if (val) {
+            if (action.payload) {
                 state.ui.drawerIsOpen = true;
                 state.ui.sideNavTopic = action.payload;
             }
@@ -163,17 +166,29 @@ const formSlice = createSlice({
             state.ui.drawerIsOpen = false;
         },
 
+        initSideNavData: (state, action) => {
+            const newState = { ...initialState.sideNavData, ...action.payload };
+            state.sideNavData = newState;
+        },
         updateSideNavData: (state, action) => {
+            console.log("updateSideNavData: ", { paylod: action.payload });
             state.sideNavData = action.payload;
         },
+        resetSideNavData: (state, action) => {
+            state.sideNavData = initialState.sideNavData;
+        },
 
-        handleHints: (state, action) => {
-            const { arrMissing, arrRemoved } = action.payload.hints;
-            if (arrMissing?.length || arrRemoved?.length) {
-                state.hints = action.payload.hints;
+        updateHints: (state, action) => {
+            state.hints = action.payload;
+            /*
+            const { missing, removed } = action.payload;
+            // do i really need the condition here?
+            if (missing?.length || removed?.length) {
+                state.hints = action.payload;
             } else {
                 state.hints = initialState.hints;
             }
+            */
         },
         acceptMissingHints: (state, action) => {
             const { newArr } = action.payload;
@@ -262,13 +277,27 @@ const formSlice = createSlice({
             // forse qualcosa bisogna acora aggiungere da altri forms? 💛
         },
 
+        searchNavData: (state, action) => {
+            const str = action.payload;
+            const sourceData = state.sideNavData.parsedData
+                ? state.sideNavData.parsedData
+                : state.sideNavData.data;
+
+            if (str) {
+                let arr = searchData(sourceData, str);
+                state.sideNavData.filteredData = arr;
+            } else {
+                state.sideNavData.filteredData = sourceData;
+            }
+        },
+
         /*
         postForm: (state, action) => {
             const { formState, newImage, form, propsData } = action.payload;
             // ??? sarebbe async
         },
         */
-        handlePostSuccess: (state, action) => {
+        handlePostSuccess: (state) => {
             Cookies.remove("formState");
             state.isLoading = false;
         },
@@ -288,8 +317,10 @@ export const {
     openSideNav,
     openHintsNav,
     closeHintsNav,
+    initSideNavData,
     updateSideNavData,
-    handleHints,
+    resetSideNavData,
+    updateHints,
     acceptMissingHints,
     acceptRemovedHints,
     addNewImage,
@@ -297,6 +328,7 @@ export const {
     validateForm,
     handlePostSuccess,
     resetFormStore,
+    searchNavData,
 } = formSlice.actions;
 
 export const selectFormStore = (state) => state.formStore;
@@ -304,6 +336,14 @@ export const selectFormStoreSettings = (state) => state.formStore.form;
 export const selectFormStoreUI = (state) => state.formStore.ui;
 export const selectFormSideNavTopic = (state) =>
     state.formStore.ui.sideNavTopic;
+export const selectFormSideNavData = (state) =>
+    state.formStore.sideNavData.data;
+export const selectFormSideNavSourceData = (state) =>
+    state.formStore.sideNavData.parsedData
+        ? state.formStore.sideNavData.parsedData
+        : state.formStore.sideNavData.data;
+export const selectFormSideNavFilteredData = (state) =>
+    state.formStore.sideNavData.filteredData;
 export const selectFormStoreHints = (state) => state.formStore.hints;
 // export const selectFormComponent = (state) => state.formStore.FormComponent; // could i return this? -> dataStructureForms[state.formStore.formLabel].formComponent
 export const selectFormState = (state) => state.formStore.formState;

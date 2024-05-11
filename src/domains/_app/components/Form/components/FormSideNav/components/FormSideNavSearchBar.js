@@ -1,11 +1,7 @@
 import { useEffect, useState } from "react";
 import SearchBarSmall from "@/src/domains/_app/components/SearchBar/SearchBarSmall.js";
 
-export default function FormSideNavSearchBar({
-    openSection,
-    data,
-    handleSearch,
-}) {
+export default function FormSideNavSearchBar({ openSection, data, onChange }) {
     const [searchBar, setSearchBar] = useState("");
 
     const handleSearchBar = (e) => {
@@ -23,7 +19,7 @@ export default function FormSideNavSearchBar({
 
     useEffect(() => {
         // filter data in parent
-        handleSearch(searchBar);
+        onChange(searchBar);
     }, [searchBar]);
 
     useEffect(() => {

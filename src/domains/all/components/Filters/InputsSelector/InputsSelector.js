@@ -26,13 +26,10 @@ export default function InputsSelector(props) {
     }, []);
 
     useEffect(() => {
-        if (
-            props.handleChildState &&
-            typeof props.handleChildState !== "function"
-        ) {
-            setError("Error: handleChildState is not a function");
-        } else if (props.handleChildState) {
-            props.handleChildState(filters, props.topic);
+        if (props.onChange && typeof props.onChange !== "function") {
+            setError("Error: onChange is not a function");
+        } else if (props.onChange) {
+            props.onChange({ val: filters, topic: props.topic });
         }
     }, [filters]);
 

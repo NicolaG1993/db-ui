@@ -14,8 +14,8 @@ import {
     textValidation,
     nicknameValidation,
 } from "@/src/application/utils/validateForms.js";
-import FormDrawer from "./FormDrawer/FormDrawer";
-import FormDrawerContent from "./FormDrawer/FormDrawerContent";
+import FormDrawer from "./FormDrawer@2.0/FormDrawer";
+import FormDrawerContent from "./FormDrawer@2.0/FormDrawerContent";
 import { selectAppSettings } from "@/src/application/redux/slices/appSettingsSlice";
 import {
     loadNewActiveForm,
@@ -37,8 +37,11 @@ import {
     openHintsNav,
     selectFormIsLoading,
     selectFormStore,
+    resetSideNavData,
+    initSideNavData,
 } from "@/src/application/redux/slices/formSlice";
 import dataStructureForms from "@/src/application/settings/dataStructureForms";
+import { fetchDataForSideNav } from "../../../actions/formFetchers";
 
 export default function Form({
     formLabel,
@@ -60,13 +63,13 @@ export default function Form({
     // 🧠 I need to test this by switching form tabs and loading new form when one is alredy open
 
     // let formStore = useSelector(selectFormStore, shallowEqual);
-    let form = useSelector(selectFormStoreSettings, shallowEqual);
-    let uiState = useSelector(selectFormStoreUI, shallowEqual);
-    let hints = useSelector(selectFormStoreHints, shallowEqual);
-    let formState = useSelector(selectFormState, shallowEqual);
-    let newImage = useSelector(selectFormStoreNewImage, shallowEqual);
-    let formErrors = useSelector(selectFormStoreErrors, shallowEqual);
-    let isLoading = useSelector(selectFormIsLoading, shallowEqual);
+    const form = useSelector(selectFormStoreSettings, shallowEqual);
+    const uiState = useSelector(selectFormStoreUI, shallowEqual);
+    const hints = useSelector(selectFormStoreHints, shallowEqual);
+    const formState = useSelector(selectFormState, shallowEqual);
+    const newImage = useSelector(selectFormStoreNewImage, shallowEqual);
+    const formErrors = useSelector(selectFormStoreErrors, shallowEqual);
+    const isLoading = useSelector(selectFormIsLoading, shallowEqual);
     // let FormComponent = useSelector(selectFormComponent, shallowEqual); // 🧠 components non salvabili in redux
     // const FormComponent = dataStructureForms[formLabel].formComponent; // non ho trovato altra soluzione che rimuovere FormComponent da formSlice
     // const [FormComponent, SetFormComponent] = useState();
@@ -97,20 +100,17 @@ export default function Form({
 
     // FETCH DATA FOR DRAWER
     useEffect(() => {
+        console.log("uiState: ", uiState);
         if (uiState?.sideNavTopic && uiState.sideNavTopic !== "nationalities") {
             fetchDataForSideNav(
                 uiState.sideNavTopic,
                 appSettings.TAGS_OBJ
             ).then((res) => {
-                dispatch(updateSideNavData(res));
+                console.log("fetchDataForSideNav res: ", res);
+                dispatch(initSideNavData(res));
             });
         } else {
-            dispatch(
-                updateSideNavData({
-                    data: undefined,
-                    parsedData: undefined,
-                })
-            );
+            dispatch(resetSideNavData());
         } // TODO: error handling? 🧠
     }, [uiState]);
 
@@ -218,6 +218,13 @@ export default function Form({
                     <p>Loading form...</p>
                 )}
             </div>
+
+            <FormDrawer
+                isOpen={uiState.drawerIsOpen}
+                closeDrawer={() => handleDrawer(false)}
+            >
+                <FormDrawerContent />
+            </FormDrawer>
         </div>
     );
     /* TODO!!!

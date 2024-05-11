@@ -41,15 +41,15 @@ export default function MovieForm({
     // isLoading,
     // setOpenForm,
 }) {
-    let formState = useSelector(selectFormState, shallowEqual);
-    let propsData = useSelector(selectFormPropsData, shallowEqual);
-    let form = useSelector(selectFormStoreSettings, shallowEqual);
-    let uiState = useSelector(selectFormStoreUI, shallowEqual);
-    let hints = useSelector(selectFormStoreHints, shallowEqual);
-    let newImage = useSelector(selectFormStoreNewImage, shallowEqual);
-    let errors = useSelector(selectFormStoreErrors, shallowEqual);
-    let isLoading = useSelector(selectFormIsLoading, shallowEqual);
-    let isLoadingResponse = useSelector(
+    const formState = useSelector(selectFormState, shallowEqual);
+    const propsData = useSelector(selectFormPropsData, shallowEqual);
+    const form = useSelector(selectFormStoreSettings, shallowEqual);
+    const uiState = useSelector(selectFormStoreUI, shallowEqual);
+    const hints = useSelector(selectFormStoreHints, shallowEqual);
+    const newImage = useSelector(selectFormStoreNewImage, shallowEqual);
+    const errors = useSelector(selectFormStoreErrors, shallowEqual);
+    const isLoading = useSelector(selectFormIsLoading, shallowEqual);
+    const isLoadingResponse = useSelector(
         selectFormIsLoadingResponse,
         shallowEqual
     );

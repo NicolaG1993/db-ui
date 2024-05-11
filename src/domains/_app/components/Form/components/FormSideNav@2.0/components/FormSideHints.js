@@ -1,3 +1,6 @@
+import { selectFormStoreUI } from "@/src/application/redux/slices/formSlice";
+import { shallowEqual, useSelector } from "react-redux";
+
 export default function FormSideHints({
     hints,
     acceptMissingHints,
@@ -6,6 +9,8 @@ export default function FormSideHints({
     formState,
     closeHintsNav,
 }) {
+    let uiState = useSelector(selectFormStoreUI, shallowEqual);
+
     console.log("⬜ FormSideHints: ", {
         hints,
         formState,

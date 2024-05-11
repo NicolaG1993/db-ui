@@ -6,87 +6,109 @@ import NationalitiesSelector from "@/src/domains/all/components/Filters/National
 import FormSideNavSearchBar from "@/src/domains/_app/components/Form/components/FormSideNav/components/FormSideNavSearchBar.js";
 import { useEffect, useState } from "react";
 import { searchData } from "@/src/domains/_app/utils/filterData.js";
-import checkMissingTags from "../../actions/checkMissingTags";
+import checkMissingTags from "@/src/domains/_app/components/Form/actions/checkMissingTags";
+import { shallowEqual, useDispatch, useSelector } from "react-redux";
+import {
+    updateHints,
+    searchNavData,
+    selectFormPropsData,
+    selectFormSideNavData,
+    selectFormSideNavFilteredData,
+    selectFormState,
+    selectFormStoreUI,
+    updateFormState,
+    selectFormSideNavSourceData,
+    closeSideNav,
+} from "@/src/application/redux/slices/formSlice";
+import { useAppSelector } from "@/src/application/redux/lib/hooks";
+import { selectAppSettings } from "@/src/application/redux/slices/appSettingsSlice";
 // import FormSideNavHints from "@/src/domains/_app/components/Form/components/FormSideNav/components/FormSideNavHints";
 
-export default function FormSideNav({
-    data,
-    parsedData,
-    formState,
-    originalFormState,
-    updateFormState,
-    topic, // check value after refactor 🧠
-    // handleDrawer, // forse non serve - chiudo gia con closeSideNav
-    handleHints,
-    appSettings,
-    closeSideNav,
-}) {
-    // console.log("🌹 FormSideNav: ", {
-    //     data,
-    //     parsedData,
-    //     formState,
-    //     originalFormState,
-    //     topic,
-    //     appSettings,
-    // });
-    const [sourceData, setSourceData] = useState(parsedData || data);
-    const [filteredData, setFilteredData] = useState(sourceData);
-    const [searchActive, setSearchActive] = useState(false); // ? 🧠 cosa fa ?
+export default function FormSideNav(
+    {
+        //  data,
+        //  parsedData,
+        //  formState,
+        // originalFormState,
+        //  updateFormState,
+        // handleHints,
+        // appSettings,
+        // closeSideNav,
+        // topic, // check value after refactor 🧠
+        // handleDrawer, // forse non serve - chiudo gia con closeSideNav
+    }
+) {
+    const dispatch = useDispatch();
 
-    useEffect(() => {
-        const selected = parsedData ? parsedData : data;
-        setSourceData(selected);
-        setFilteredData(selected);
-        // console.log("sourceData: ", selected);
-        setSearchActive(false);
-    }, [data, parsedData]);
+    const appSettings = useSelector(selectAppSettings);
+    const uiState = useAppSelector(selectFormStoreUI, shallowEqual);
+    const formState = useSelector(selectFormState, shallowEqual);
+    const propsData = useSelector(selectFormPropsData, shallowEqual);
+    const sourceData = useAppSelector(selectFormSideNavSourceData);
+    const sideNavRawData = useAppSelector(selectFormSideNavData);
+    const filteredData = useAppSelector(
+        selectFormSideNavFilteredData,
+        shallowEqual
+    );
 
-    const filterData = (str) => {
-        if (str) {
-            let arr = searchData(sourceData, str);
-            setFilteredData(arr);
-            setSearchActive(true);
-        } else {
-            setFilteredData(sourceData);
-            setSearchActive(false);
-        }
-    };
+    const originalFormState = propsData || formState; // TODO: 🧠🧠🧠 we can handle this in one action: res = propsData || formState // this way we delete all conditions in components
 
     const handleCloseSideNav = async ({
-        topic,
+        appSettings,
         data,
         formState,
         originalFormState,
-        appSettings,
+        topic,
     }) => {
-        // TODO: error handling here 🧠
-        const res = await checkMissingTags({
-            topic,
+        /*
+        🔴🔴🔴 FIX: 
+        1. tag auto-hints not working
+        2. can't delete prevState tags from left list
+        3. can't delete tags from research from left list
+        4. can't close level
+        */
+        console.log("handleCloseSideNav: ", {
+            appSettings,
             data,
             formState,
             originalFormState,
+            topic,
+        });
+        // TODO: error handling here 🧠
+        const res = await checkMissingTags({
             appSettings,
+            data,
+            formState,
+            originalFormState,
+            topic,
         });
         if (res?.missingTags && res?.removedTags) {
-            // we set the hints in the global state (parent state for now)
-            handleHints(res.missingTags, res.removedTags);
+            dispatch(
+                updateHints({
+                    hints: {
+                        missing: res.missingTags,
+                        removed: res.removedTags,
+                    },
+                })
+            );
         }
 
-        // we want to close sidenav and open sidehints
-        // if there are hints
-        // else close drawer
-        closeSideNav();
+        dispatch(closeSideNav());
     };
 
     return (
         <>
             <div className={styles.nav}>
-                <p>{topic && topic.charAt(0).toUpperCase() + topic.slice(1)}</p>
+                <p>
+                    {uiState.sideNavTopic &&
+                        uiState.sideNavTopic.charAt(0).toUpperCase() +
+                            uiState.sideNavTopic.slice(1)}
+                </p>
                 <span
                     onClick={() =>
                         handleCloseSideNav({
-                            topic,
-                            data,
+                            topic: uiState.sideNavTopic,
+                            data: sideNavRawData,
                             formState,
                             originalFormState,
                             appSettings,
@@ -101,9 +123,9 @@ export default function FormSideNav({
                 <div className={styles.sidewrapHeader}>
                     <div className={styles.wrapper}>
                         <FormSideNavSearchBar
-                            topic={topic}
+                            topic={uiState.sideNavTopic}
                             data={sourceData}
-                            handleSearch={filterData}
+                            onChange={(str) => dispatch(searchNavData(str))}
                         />
                     </div>
                 </div>
@@ -114,9 +136,17 @@ export default function FormSideNav({
                             !Array.isArray(filteredData) && (
                                 <DropdownMenusByLevel
                                     menuStructure={filteredData}
-                                    filters={formState[topic]}
-                                    handleChildState={updateFormState}
-                                    topic={topic}
+                                    filters={formState[uiState.sideNavTopic]}
+                                    // handleChildState={updateFormState}
+                                    onChange={({ val, topic }) =>
+                                        dispatch(
+                                            updateFormState({
+                                                val,
+                                                topic,
+                                            })
+                                        )
+                                    }
+                                    topic={uiState.sideNavTopic}
                                 />
                             )}
                         {filteredData && filteredData.length && (
@@ -126,17 +156,33 @@ export default function FormSideNav({
                                         ? { id: el.id, name: el.name }
                                         : el
                                 )}
-                                filters={formState[topic]}
-                                handleChildState={updateFormState}
-                                topic={topic}
+                                filters={formState[uiState.sideNavTopic]}
+                                // handleChildState={updateFormState}
+                                onChange={({ val, topic }) =>
+                                    dispatch(
+                                        updateFormState({
+                                            val,
+                                            topic,
+                                        })
+                                    )
+                                }
+                                topic={uiState.sideNavTopic}
                             />
                         )}
 
-                        {topic === "nationalities" && (
+                        {uiState.sideNavTopic === "nationalities" && (
                             <NationalitiesSelector
-                                filters={formState[topic]}
-                                handleChildState={updateFormState}
-                                topic={topic}
+                                filters={formState[uiState.sideNavTopic]}
+                                // handleChildState={updateFormState}
+                                onChange={({ val, topic }) =>
+                                    dispatch(
+                                        updateFormState({
+                                            val,
+                                            topic,
+                                        })
+                                    )
+                                }
+                                topic={uiState.sideNavTopic}
                             />
                             // <InputSelector
                             //     topic={topic}
@@ -151,10 +197,18 @@ export default function FormSideNav({
 
                     <div className={styles.wrapper}>
                         <ActiveFilters
-                            arr={formState[topic]}
-                            handleChildState={updateFormState}
+                            arr={formState[uiState.sideNavTopic]}
+                            // handleChildState={updateFormState}
+                            onChange={({ val, topic }) =>
+                                dispatch(
+                                    updateFormState({
+                                        val,
+                                        topic,
+                                    })
+                                )
+                            }
                             // styles={styles}
-                            topic={topic}
+                            topic={uiState.sideNavTopic}
                         />
                     </div>
                 </div>
