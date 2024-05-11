@@ -28,6 +28,7 @@ const initialState = {
     errors: {},
     newImage: undefined,
     sideNavData: {
+        // key: ..., // ui.sideNavTopic ✌️
         data: undefined,
         parsedData: undefined,
         filteredData: undefined,
@@ -155,6 +156,11 @@ const formSlice = createSlice({
         closeDrawer: (state) => {
             state.ui = initialState.ui;
         },
+        concludeDrawer: (state) => {
+            console.log("concludeDrawer: ", current(state));
+            // assign sidenav.selected to formState[key]
+            // ...
+        },
 
         closeSideNav: (state) => {
             state.ui.sideNavTopic = false;
@@ -178,13 +184,91 @@ const formSlice = createSlice({
         },
 
         initSideNavData: (state, action) => {
-            let newState = { ...initialState.sideNavData, ...action.payload };
-            const key = state.ui.sideNavTopic;
-            newState.selected = state.formState[key];
+            let newState = {
+                ...initialState.sideNavData,
+                ...action.payload.data,
+            };
+
+            const currentState = { ...state };
+            const key = currentState.ui.sideNavTopic;
+
+            newState.selected = currentState.formState[key]; // UNDEFINED !
+
+            console.log("initSideNavData: ", { currentState, key, newState });
+
             state.sideNavData = newState;
         },
+        updateSideNavSelected: (state, action) => {
+            const { value, userAction } = action.payload;
+            console.log("updateSideNavSelected 0: ", {
+                currentState: current(state),
+                value,
+                userAction,
+            });
+
+            ////
+
+            const currentState = { ...state };
+            const key = currentState.ui.sideNavTopic;
+
+            // only for logging and testing 👇
+            const currentFormStateSpread = { ...currentState.formState };
+            const extractedFormState = [...currentFormStateSpread[key]];
+            console.log("updateSideNavSelected 1: ", {
+                currentState,
+                key,
+                value,
+                userAction,
+                currentFormStateLog: current(currentState.formState),
+                currentFormState: currentState.formState,
+                currentFormStateSpread,
+                extractedFormState,
+                // currentSelection: [...currentState.formState[key]],
+                //"state.formState": current(state.formState),
+                //"state.formState[key]": state.formState[key],
+                // prevSelected: [...state.formState[key]],
+                // currentFormState: [...state.formState[key].selected],
+            });
+
+            // FINISH 👇🔴🔴🔴 BROKEN -- seams ok now 🟢 but check
+            let currentSelection = [...currentState.formState[key]];
+            // const prevSelected = currentSelection;
+
+            console.log("updateSideNavSelected 2: ", {
+                prevSelected: currentSelection,
+            });
+
+            ////
+            let array = updatePrevSelected({
+                value,
+                userAction,
+                // BUG: 🔴👇 should both be an array
+                // prevSelected: state.formState[key], // OG selected 🔴🔴🔴🔴
+                // selected: state.sideNavData.selected, // current selected 🔴🔴🔴🔴
+                // dropdownsState: { ...state.sideNavData.dropdownsState },
+                prevSelected: currentSelection,
+                selected: state.sideNavData.selected,
+            });
+            /*
+            let array = updatePrevFilters(
+                val,
+                action,
+                props, // prevSelected = formState[topic]
+                filters, // selected = state.sideNavData.selected || formState[topic] || []
+                dropdownsState
+            );
+            setFilters(array);
+            */
+
+            console.log("updateSideNavSelected 3: ", {
+                array,
+            });
+
+            state.sideNavData.selected = array;
+        },
         updateSideNavData: (state, action) => {
-            console.log("updateSideNavData: ", { paylod: action.payload });
+            // non in uso?
+            console.log("🔥 updateSideNavData: ", { paylod: action.payload });
             state.sideNavData = action.payload;
         },
         resetSideNavData: (state, action) => {
@@ -199,26 +283,21 @@ const formSlice = createSlice({
         hydrateSideNavDropdowns: (state) => {
             let { res, error } = getDropdownsState({
                 stateObj: {},
-                propsObj: state.formStore.sideNavData.filteredData,
+                propsObj: state.sideNavData.filteredData,
                 dropdownsState: state.sideNavData.dropdownsState,
             });
             if (error) {
                 // 🧠 handle Error correctly - now we are just storing it 🧠
                 state.sideNavData.error = error;
             } else if (res) {
-                setDropdownsState(res);
+                state.sideNavData.dropdownsState = res;
                 state.sideNavData.renderReady = true;
             }
         },
-        updateSideNavSelected: (state, action) => {
-            const { val, userAction } = action.payload;
-            let array = updatePrevSelected({
-                val,
-                userAction,
-                selected: state.sideNavData.selected,
-                dropdownsState: state.sideNavData.dropdownsState,
-            });
-            state.sideNavData.selected = array;
+
+        updateSideNavDropdownsState: (state, action) => {
+            const { newState } = action.payload;
+            state.sideNavData.dropdownsState = newState;
         },
 
         updateHints: (state, action) => {
@@ -354,6 +433,7 @@ export const {
     startLoading,
     handleDrawer,
     closeDrawer,
+    concludeDrawer,
     closeSideNav,
     openSideNav,
     openHintsNav,
@@ -364,6 +444,7 @@ export const {
     handleSideNavError,
     hydrateSideNavDropdowns,
     updateSideNavSelected,
+    updateSideNavDropdownsState,
     updateHints,
     acceptMissingHints,
     acceptRemovedHints,
@@ -379,7 +460,6 @@ export const {
 export const selectFormStore = (state) => state.formStore;
 export const selectFormStoreSettings = (state) => state.formStore.form;
 // export const selectFormComponent = (state) => state.formStore.FormComponent; // could i return this? -> dataStructureForms[state.formStore.formLabel].formComponent
-export const selectFormState = (state) => state.formStore.formState;
 export const selectFormPropsData = (state) => state.formStore.propsData;
 export const selectFormStoreNewImage = (state) => state.formStore.newImage;
 export const selectFormStoreErrors = (state) => state.formStore.errors;
@@ -390,6 +470,10 @@ export const selectFormIsLoadingResponse = (state) =>
 export const selectFormStoreUI = (state) => state.formStore.ui;
 export const selectFormSideNavTopic = (state) =>
     state.formStore.ui.sideNavTopic;
+
+export const selectFormState = (state) => state.formStore.formState;
+// export const selectFormStateSelected = (state) =>
+//     state.formStore.formState.selected || [];
 
 // export const selectFormSideNav = (state) => {
 //     state.formStore.sideNavData;
@@ -408,8 +492,12 @@ export const selectFormSideNavError = (state) =>
     state.formStore.sideNavData.error;
 export const selectFormSideNavRenderReady = (state) =>
     state.formStore.sideNavData.renderReady;
+
 export const selectFormSideNavSelected = (state) =>
-    state.formStore.formState.selected;
+    state.formStore.sideNavData.selected || [];
+export const selectFormSideDropdownsState = (state) =>
+    state.formStore.sideNavData.dropdownsState;
+
 export const selectFormStoreHints = (state) => state.formStore.hints;
 
 export default formSlice;

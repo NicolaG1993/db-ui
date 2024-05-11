@@ -1,5 +1,5 @@
 import styles from "@/src/domains/_app/components/Form/components/Form.module.css";
-import ActiveFilters from "@/src/domains/all/components/Filters/ActiveFilters/ActiveFilters";
+import ActiveElements from "@/src/domains/all/components/Filters/ActiveElements/ActiveElements";
 import DropdownMenusByLevel from "@/src/domains/all/components/Filters/DropdownMenusByLevel/DropdownMenusByLevel";
 import InputsSelector from "@/src/domains/all/components/Filters/InputsSelector/InputsSelector";
 import NationalitiesSelector from "@/src/domains/all/components/Filters/NationalitiesSelector/NationalitiesSelector";
@@ -150,7 +150,7 @@ export default function FormSideNav({
                     </div>
 
                     <div className={styles.wrapper}>
-                        <ActiveFilters
+                        <ActiveElements
                             arr={formState[topic]}
                             handleChildState={updateFormState}
                             // styles={styles}

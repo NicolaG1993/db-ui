@@ -6,7 +6,7 @@ const getSavedState = (topicLabel, emptyState) => {
     if (Cookies.get("formState")) {
         const cookie = JSON.parse(Cookies.get("formState"));
         if (cookie.formLabel === topicLabel) {
-            result = cookie.formState;
+            result = { ...emptyState, ...cookie.formState };
         }
     }
 

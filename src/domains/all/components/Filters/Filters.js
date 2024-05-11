@@ -4,7 +4,7 @@ import styles from "@/src/application/styles/Home.module.css";
 import axios from "axios";
 import InputsSelector from "./InputsSelector/InputsSelector";
 import NationalitiesSelector from "./NationalitiesSelector/NationalitiesSelector";
-import ActiveFilters from "./ActiveFilters/ActiveFilters";
+import ActiveElements from "./ActiveElements/ActiveElements";
 
 //================================================================================
 // Filters Bar
@@ -206,7 +206,7 @@ const FiltersUI = ({
                                 </div>
 
                                 <div className={styles.selectedData}>
-                                    <ActiveFilters
+                                    <ActiveElements
                                         arr={filters[topic]}
                                         handleChildState={updateFilters}
                                         styles={styles}

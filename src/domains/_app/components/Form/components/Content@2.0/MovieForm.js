@@ -27,7 +27,6 @@ import {
     openSideNav,
 } from "@/src/application/redux/slices/formSlice";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
-import { useAppDispatch } from "@/src/application/redux/lib/hooks";
 
 export default function MovieForm({
     // formState,

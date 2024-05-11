@@ -177,7 +177,8 @@
 
 .sidewrapBody {
     display: grid;
-    grid-template-columns: 1fr auto;
+    grid-template-columns: 1fr 1fr;
+    /* grid-template-columns: 1fr auto; */
     height: 100%;
     grid-row-start: 2;
     grid-row-end: 3;

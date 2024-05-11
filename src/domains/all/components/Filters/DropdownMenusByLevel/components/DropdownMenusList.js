@@ -1,32 +1,50 @@
-import { selectFormSideNavSelected } from "@/src/application/redux/slices/formSlice";
+import {
+    selectFormSideDropdownsState,
+    selectFormSideNavSelected,
+    updateSideNavDropdownsState,
+} from "@/src/application/redux/slices/formSlice";
 import renderDropdownElements from "@/src/domains/all/components/Filters/DropdownMenusByLevel/utils/renderDropdownElements";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
+import createNewMenus from "../utils/createNewMenus";
 
-export default function DropdownMenusList({
-    groupKey,
-    values,
-    index,
-    styles,
-    menuStructure,
-    dropdownsState,
-    handleMenus,
-}) {
+export default function DropdownMenusList({ groupKey, values, index, styles }) {
     // FIX - refactor
-    // devo prendere styles anche da file o va bene cosí?
-    // mi serve proprio "menuStructure" fino a qua?
 
     const dispatch = useDispatch();
     const selected = useSelector(selectFormSideNavSelected, shallowEqual);
+    const dropdownsState = useSelector(
+        selectFormSideDropdownsState,
+        shallowEqual
+    );
+
+    // console.log("DropdownMenusList: ", {
+    //     groupKey,
+    //     values,
+    //     index,
+    //     styles,
+    //     dropdownsState,
+    //     selected,
+    // });
+
+    const handleMenus = ({ dropdownsState, index, groupKey }) => {
+        // this process may differ for other components, that's why we handle this part here and not in action
+        // change if we see it doesn't change 🧠👇
+        const newState = createNewMenus({ dropdownsState, index, groupKey });
+        dispatch(
+            updateSideNavDropdownsState({
+                newState,
+            })
+        );
+    };
 
     console.log("DropdownMenusList: ", {
-        groupKey,
-        values,
         index,
-        styles,
-        menuStructure,
+        groupKey,
         dropdownsState,
+        values,
         selected,
     });
+
     return (
         <div
             className={styles.levelWrap}
@@ -34,15 +52,7 @@ export default function DropdownMenusList({
         >
             <div
                 className={styles.level}
-                onClick={() =>
-                    handleMenus({
-                        ...dropdownsState,
-                        [index]: {
-                            ...dropdownsState[index],
-                            [groupKey]: !dropdownsState[index][groupKey],
-                        },
-                    })
-                }
+                onClick={() => handleMenus({ dropdownsState, index, groupKey })}
             >
                 <span>• {groupKey}</span>
                 <span>{values.length}</span>

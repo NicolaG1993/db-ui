@@ -1,15 +1,21 @@
-const updatePrevSelected = (val, action, props, filters) => {
+const updatePrevSelected = ({ value, userAction, prevSelected, selected }) => {
+    console.log("updatePrevSelected: ", {
+        value,
+        userAction,
+        prevSelected,
+        selected,
+    });
     let res = [];
-    if (action === "add") {
+    if (userAction === "add") {
         // update only if value is not present in array already, bug prevention
-        if (props.filters && !props.filters.some((x) => x === val)) {
-            res = [...props.filters, val];
-        } else if (!filters.some((x) => x === val)) {
-            res = [...filters, val];
+        if (prevSelected && !prevSelected.some((x) => x.id === value.id)) {
+            res = [...prevSelected, value];
+        } else if (!selected.some((x) => x.id === value.id)) {
+            res = [...selected, value];
         }
     }
-    if (action === "remove") {
-        res = props.filters.filter((x) => x !== val);
+    if (userAction === "remove") {
+        res = prevSelected.filter((x) => x.id !== value.id);
     }
     return res;
 };

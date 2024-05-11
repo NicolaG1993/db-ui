@@ -8,12 +8,15 @@ import { shallowEqual, useDispatch } from "react-redux";
 import {
     handleSideNavError,
     hydrateSideNavDropdowns,
+    selectFormSideDropdownsState,
     selectFormSideNavError,
     selectFormSideNavFilteredData,
     selectFormSideNavFilters,
     selectFormSideNavRenderReady,
     selectFormSideNavSelected,
     selectFormStoreUI,
+    updateFormState,
+    updateSideNavDropdownsState,
 } from "@/src/application/redux/slices/formSlice";
 // import ErrorUI from "@/src/domains/_app/components/Error/components/ErrorUI/ErrorUI";
 
@@ -29,11 +32,11 @@ TODO:
 ⬜ pulire codice
 */
 
-export default function DropdownMenusByLevel({ onChange, userStyles }) {
+export default function DropdownMenusByLevel({ onChange, userStyles, topic }) {
     //////////////////////////////
     // STATE
     //////////////////////////////
-    console.log("*🌸 Rendering *DropdownMenusByLevel* ", props);
+    // console.log("*🌸 Rendering *DropdownMenusByLevel* ");
 
     // TODO:
     // menuStructure contiene solo names
@@ -46,11 +49,13 @@ export default function DropdownMenusByLevel({ onChange, userStyles }) {
     const dispatch = useDispatch();
 
     const uiState = useAppSelector(selectFormStoreUI, shallowEqual);
-    const topic = uiState.sideNavTopic;
+    // const topic = uiState.sideNavTopic;
     // 🧠 TRY: can i select all SideNavState at once and us it?
     const error = useAppSelector(selectFormSideNavError, shallowEqual);
-    // const [error, setError] = useState();
-    const [dropdownsState, setDropdownsState] = useState({});
+    // const dropdownsState = useAppSelector(
+    //     selectFormSideDropdownsState,
+    //     shallowEqual
+    // );
     const renderReady = useAppSelector(
         selectFormSideNavRenderReady,
         shallowEqual
@@ -85,32 +90,29 @@ export default function DropdownMenusByLevel({ onChange, userStyles }) {
         }
     }, []);
 
+    /*
     useEffect(() => {
+        console.log("selected changed 🔴🔴🔴: ", { selected });
+      
+        // dispatch(
+        //     updateFormState({
+        //         val: selected,
+        //         topic,
+        //         log: "DropdownMenusByLevel - selected",
+        //     })
+        // );
+        
         if (onChange && typeof onChange !== "function") {
             const error = "Error: onChange is not a function";
             dispatch(handleSideNavError({ error }));
         } else if (onChange) {
-            onChange({ val: selected, topic });
+            // do nothing ? we shoudl have updated "selected" already! 🧠
+            // replace state all at once instead of editing? 🧠
+            //  onChange({ val: selected, userAction: "" });
+            // onChange({ val: selected, topic });
         }
-    }, [selected]);
-
-    //////////////////////////////
-    // FUNCTIONS
-    //////////////////////////////
-    const handleMenus = (newState) => {
-        setDropdownsState(newState);
-    };
-
-    const handleFilters = (val, userAction) => {
-        dispatch(
-            updateSideNavSelected({
-                val,
-                userAction,
-                selected,
-                dropdownsState,
-            })
-        );
-    };
+    }, [selected, dispatch, onChange]);
+    */
 
     //////////////////////////////
     // DOM
@@ -122,10 +124,6 @@ export default function DropdownMenusByLevel({ onChange, userStyles }) {
                     nextMenuStructure: menuStructure,
                     index: 1,
                     styles,
-                    dropdownsState,
-                    filters: selected,
-                    handleFilters,
-                    handleMenus,
                 })
             ) : (
                 <p>Loading...</p>

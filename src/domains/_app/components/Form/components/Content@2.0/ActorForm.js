@@ -150,6 +150,7 @@ export default function ActorForm({
                             updateFormState({
                                 val: e.target.value,
                                 topic: e.target.name,
+                                log: "name",
                             })
                         )
                     }
@@ -185,6 +186,7 @@ export default function ActorForm({
                             updateFormState({
                                 val: e.target.value,
                                 topic: e.target.name,
+                                log: "genre",
                             })
                         )
                     }
@@ -211,6 +213,7 @@ export default function ActorForm({
                             updateFormState({
                                 val: e.target.value,
                                 topic: e.target.name,
+                                log: "date",
                             })
                         )
                     }
@@ -258,6 +261,7 @@ export default function ActorForm({
                                     parseFloat(e.target.value).toFixed(2)
                                 ),
                                 topic: e.target.name,
+                                log: "number",
                             })
                         )
                     }
@@ -286,7 +290,7 @@ export default function ActorForm({
 
             <div className={styles["form-col-right"]}>
                 <div className={styles["form-selector-interaction-box"]}>
-                    <span>{formState.tags.length} selected</span>
+                    <span>{formState.tags?.length} selected</span>
                     <div
                         onClick={() => {
                             dispatch(openSideNav("tags"));
@@ -306,7 +310,7 @@ export default function ActorForm({
             <div className={styles["form-col-right"]}>
                 <InputSocials
                     formState={formState}
-                    setFormState={updateFormState} // in questo caso passiamo fn perché diventerá esternal component - ma dovremmo gestirla prima lo stesso -.-
+                    // setFormState={updateFormState} // in questo caso passiamo fn perché diventerá esternal component - ma dovremmo gestirla prima lo stesso -.-
                 />
             </div>
 

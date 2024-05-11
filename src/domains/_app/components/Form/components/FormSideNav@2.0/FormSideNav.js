@@ -1,5 +1,5 @@
 import styles from "@/src/domains/_app/components/Form/components/Form.module.css";
-import ActiveFilters from "@/src/domains/all/components/Filters/ActiveFilters/ActiveFilters";
+import ActiveElements from "@/src/domains/all/components/Filters/ActiveElements/ActiveElements";
 import DropdownMenusByLevel from "@/src/domains/all/components/Filters/DropdownMenusByLevel/DropdownMenusByLevel";
 import InputsSelector from "@/src/domains/all/components/Filters/InputsSelector/InputsSelector";
 import NationalitiesSelector from "@/src/domains/all/components/Filters/NationalitiesSelector/NationalitiesSelector";
@@ -21,6 +21,9 @@ import {
     closeSideNav,
     closeDrawer,
     openHintsNav,
+    selectFormSideNavSelected,
+    updateSideNavSelected,
+    concludeDrawer,
 } from "@/src/application/redux/slices/formSlice";
 import { useAppSelector } from "@/src/application/redux/lib/hooks";
 import { selectAppSettings } from "@/src/application/redux/slices/appSettingsSlice";
@@ -52,6 +55,7 @@ export default function FormSideNav(
         selectFormSideNavFilteredData,
         shallowEqual
     );
+    const selected = useAppSelector(selectFormSideNavSelected);
 
     const originalFormState = propsData || formState; // TODO: 🧠🧠🧠 we can handle this in one action: res = propsData || formState // this way we delete all conditions in components
 
@@ -99,7 +103,18 @@ export default function FormSideNav(
         if (res?.missingTags?.length || res?.removedTags?.length) {
             dispatch(openHintsNav());
         } else {
-            dispatch(closeDrawer());
+            // update formState 🔴
+            // fare anche dentro hints component 🔴
+
+            // dispatch(
+            //     updateFormState({
+            //         val,
+            //         topic,
+            //         log: "handleCloseSideNav",
+            //     })
+            // );
+            // dispatch(closeDrawer());
+            dispatch(concludeDrawer());
         }
     };
 
@@ -145,15 +160,29 @@ export default function FormSideNav(
                                     // menuStructure={filteredData}
                                     // filters={formState[uiState.sideNavTopic]}
                                     // handleChildState={updateFormState}
-                                    onChange={({ val, topic }) =>
+
+                                    /*
+                                    onChange={({ val, userAction }) =>
                                         dispatch(
-                                            updateFormState({
-                                                val,
-                                                topic,
+                                            updateSideNavSelected({
+                                                value: val,
+                                                userAction,
+                                                log: "DropdownMenusByLevel",
                                             })
                                         )
                                     }
-                                    // topic={uiState.sideNavTopic}
+                                    */
+
+                                    // onChange={({ val, topic }) =>
+                                    //     dispatch(
+                                    //         updateFormState({
+                                    //             val,
+                                    //             topic,
+                                    //             log: "DropdownMenusByLevel",
+                                    //         })
+                                    //     )
+                                    // }
+                                    topic={uiState.sideNavTopic}
                                     userStyles={styles}
                                 />
                             )}
@@ -166,11 +195,12 @@ export default function FormSideNav(
                                 )}
                                 filters={formState[uiState.sideNavTopic]}
                                 // handleChildState={updateFormState}
-                                onChange={({ val, topic }) =>
+                                onChange={({ val, userAction }) =>
                                     dispatch(
-                                        updateFormState({
+                                        updateSideNavSelected({
                                             val,
-                                            topic,
+                                            userAction,
+                                            log: "InputsSelector",
                                         })
                                     )
                                 }
@@ -182,11 +212,12 @@ export default function FormSideNav(
                             <NationalitiesSelector
                                 filters={formState[uiState.sideNavTopic]}
                                 // handleChildState={updateFormState}
-                                onChange={({ val, topic }) =>
+                                onChange={({ val, userAction }) =>
                                     dispatch(
-                                        updateFormState({
+                                        updateSideNavSelected({
                                             val,
-                                            topic,
+                                            userAction,
+                                            log: "NationalitiesSelector",
                                         })
                                     )
                                 }
@@ -203,19 +234,37 @@ export default function FormSideNav(
                         )}
                     </div>
 
+                    {/* 🔴🔴🔴🔴 FIX!!! 
+                    🔴 We should update only sideNavData.selected while here
+                    🔴 We will check the auto-tags when closing the whole drawer
+                    🔴 And only after that we can updateFormState()
+                    🔴🔴 Probably we need a new action only for that, check "updateSideNavSelected()" first
+                    🔴 Inside here (and childs) we use formState only as ref 
+                    */}
                     <div className={styles.wrapper}>
-                        <ActiveFilters
-                            arr={formState[uiState.sideNavTopic]}
+                        <ActiveElements
+                            selected={selected}
+                            // arr={formState[uiState.sideNavTopic]}
                             // handleChildState={updateFormState}
-                            onChange={({ val, topic }) =>
+                            onChange={({ val, userAction }) =>
                                 dispatch(
-                                    updateFormState({
-                                        val,
-                                        topic,
+                                    updateSideNavSelected({
+                                        value: val,
+                                        userAction,
+                                        log: "ActiveElements",
                                     })
                                 )
                             }
-                            // styles={styles}
+                            // onConfirm={({ val, topic }) =>
+                            //     dispatch(
+                            //         updateFormState({
+                            //             val,
+                            //             topic,
+                            //             log: "ActiveElements",
+                            //         })
+                            //     )
+                            // }
+                            // userStyles={styles}
                             topic={uiState.sideNavTopic}
                         />
                     </div>

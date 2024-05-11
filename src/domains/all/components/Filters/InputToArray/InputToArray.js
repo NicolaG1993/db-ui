@@ -18,7 +18,7 @@ export default function InputToArray({
     // const [data, setData] = useState(formState[topic]);
 
     // SUBMIT NEW INPUT TO STATE
-    const handleAddInputToArray = () => {
+    const handleAddInputToArray = (newInput, formState, topic) => {
         console.log("💚💚💚 handleAddInputToArray activated: ", newInput);
         // setData([...data, newInput]);
         if (newInput) {
@@ -48,7 +48,9 @@ export default function InputToArray({
                     />
                     <button
                         type="button"
-                        onClick={() => handleAddInputToArray()}
+                        onClick={() =>
+                            handleAddInputToArray(newInput, formState, topic)
+                        }
                         className="button-standard"
                     >
                         Add

@@ -7,6 +7,7 @@ export default function DropdownMenusElement({
     styles,
     isSelected,
 }) {
+    console.log(" ✌️ DropdownMenusElement: ", { it, isSelected });
     const dispatch = useDispatch();
     return (
         <div>

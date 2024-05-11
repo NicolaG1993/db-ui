@@ -3,19 +3,19 @@ import DropdownMenusLevel from "@/src/domains/all/components/Filters/DropdownMen
 import DropdownMenusList from "@/src/domains/all/components/Filters/DropdownMenusByLevel/components/DropdownMenusList";
 
 const renderDropdownLevel = ({
-    nextMenuStructure,
     index,
     styles,
-    dropdownsState,
-    filters,
-    handleMenus, // queste due fn vanno rimosse da props in qualche modo
+    nextMenuStructure,
+    // dropdownsState,
+    // selected,
+    // handleMenus, // queste due fn vanno rimosse da props in qualche modo
     //  handleFilters, // queste due fn vanno rimosse da props in qualche modo
 }) => {
     console.log("🟢 renderDropdownLevel: ", {
         nextMenuStructure,
         index,
         styles,
-        dropdownsState,
+        // dropdownsState,
     });
     return loopObject(nextMenuStructure).map(([key, values], i) => {
         console.log("⭐ loopObject(nextMenuStructure) el: ", {
@@ -32,11 +32,11 @@ const renderDropdownLevel = ({
                         values={values}
                         index={index} // buggy ?
                         styles={styles}
-                        dropdownsState={dropdownsState}
-                        handleMenus={handleMenus}
-                        filters={filters}
+                        // dropdownsState={dropdownsState}
+                        // handleMenus={handleMenus}
+                        // selected={selected}
                         // handleFilters={handleFilters}
-                        menuStructure={nextMenuStructure}
+                        // menuStructure={nextMenuStructure}
                     />
                 );
             } else if (typeof values === "object") {
@@ -45,13 +45,13 @@ const renderDropdownLevel = ({
                         key={key}
                         groupKey={key}
                         values={values}
-                        index={index}
+                        index={index} // buggy ?
                         styles={styles}
-                        dropdownsState={dropdownsState}
-                        filters={filters}
+                        // dropdownsState={dropdownsState}
+                        // selected={selected}
                         //  handleFilters={handleFilters}
-                        handleMenus={handleMenus}
-                        menuStructure={nextMenuStructure}
+                        // handleMenus={handleMenus}
+                        // menuStructure={nextMenuStructure}
                     />
                 );
             }

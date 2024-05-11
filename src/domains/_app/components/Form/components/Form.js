@@ -79,7 +79,7 @@ export default function Form({
     const FormComponent = dataStructureForms[formLabel]?.formComponent;
 
     useEffect(() => {
-        if (formLabel && formObj) {
+        if (formLabel) {
             // console.log("dipatchNewForm: ", { formLabel, formObj, propsData });
             let { formComponent, ...rest } = formObj;
             let payload = {
@@ -110,14 +110,14 @@ export default function Form({
 
     // FETCH DATA FOR DRAWER
     useEffect(() => {
-        console.log("uiState: ", uiState);
+        // console.log("uiState: ", uiState);
         if (uiState?.sideNavTopic && uiState.sideNavTopic !== "nationalities") {
             fetchDataForSideNav(
                 uiState.sideNavTopic,
                 appSettings.TAGS_OBJ
             ).then((res) => {
                 console.log("fetchDataForSideNav res: ", res);
-                dispatch(initSideNavData(res));
+                dispatch(initSideNavData({ data: res }));
             });
         } else {
             dispatch(resetSideNavData());
@@ -216,7 +216,7 @@ export default function Form({
                     <h2>{formLabel}</h2>
                 </div>
 
-                {!isLoading && FormComponent ? (
+                {!isLoading && FormComponent && formLabel === form.key ? (
                     <FormComponent confirmChanges={confirmChanges} />
                 ) : (
                     // 🧠 Fare loader migliore
