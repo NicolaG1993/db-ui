@@ -19,6 +19,8 @@ import {
     updateFormState,
     selectFormSideNavSourceData,
     closeSideNav,
+    closeDrawer,
+    openHintsNav,
 } from "@/src/application/redux/slices/formSlice";
 import { useAppSelector } from "@/src/application/redux/lib/hooks";
 import { selectAppSettings } from "@/src/application/redux/slices/appSettingsSlice";
@@ -82,18 +84,23 @@ export default function FormSideNav(
             originalFormState,
             topic,
         });
-        if (res?.missingTags && res?.removedTags) {
-            dispatch(
-                updateHints({
-                    hints: {
-                        missing: res.missingTags,
-                        removed: res.removedTags,
-                    },
-                })
-            );
-        }
 
-        dispatch(closeSideNav());
+        console.log("🧠 res: ", res);
+        // no condition needed, we want also undefined values
+        dispatch(
+            updateHints({
+                hints: {
+                    missing: res?.missingTags,
+                    removed: res?.removedTags,
+                },
+            })
+        );
+
+        if (res?.missingTags?.length || res?.removedTags?.length) {
+            dispatch(openHintsNav());
+        } else {
+            dispatch(closeDrawer());
+        }
     };
 
     return (
@@ -147,6 +154,7 @@ export default function FormSideNav(
                                         )
                                     }
                                     topic={uiState.sideNavTopic}
+                                    styles={styles}
                                 />
                             )}
                         {filteredData && filteredData.length && (

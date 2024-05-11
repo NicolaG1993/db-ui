@@ -39,6 +39,7 @@ import {
     selectFormStore,
     resetSideNavData,
     initSideNavData,
+    closeHintsNav,
 } from "@/src/application/redux/slices/formSlice";
 import dataStructureForms from "@/src/application/settings/dataStructureForms";
 import { fetchDataForSideNav } from "../../../actions/formFetchers";
@@ -93,9 +94,18 @@ export default function Form({
     /*
     1. 🟢 setup form store - we want all these states to be stored there
     2. 🟢 Create actions to interact with store
-    3a.🟡 Double check store initial values (not breaking app)
-    3b.🟡 Also remember cookie for previous formState
-    4. 🟡 Move as much code as possible outside the components (action, reducers, utils, ...)
+    3a.🟢 Double check store initial values (not breaking app)
+    3b.🟢 Also remember cookie for previous formState
+    4. 🟢 Move as much code as possible outside the components (action, reducers, utils, ...)
+    
+    TODO:
+        1. 🟡 Fix sidenav data bugs
+        2. 🟡 make work correctly DropdownMenusByLevel and move it to redux store
+        3. make work correctly InputsSelector and move it to redux store
+        4. make work correctly NationalitiesSelector and move it to redux store
+        5. QA Form (Create and Edit)
+        6. fix QA bugs
+        7. Deploy
     */
 
     // FETCH DATA FOR DRAWER
@@ -114,10 +124,11 @@ export default function Form({
         } // TODO: error handling? 🧠
     }, [uiState]);
 
+    /* 🧠 MOVE INSIDE ... ? */
     useEffect(() => {
         if (!hints?.missing?.length && !hints?.removed?.length) {
             // handleDrawer(false);
-            closeSideNav();
+            closeHintsNav();
             // 🧠 I think i can refactor this, we should not closing the tab this way
             // just run setSideNavTopic(false) in the right position of the code 🧠 maybe ?
         } else {
@@ -193,12 +204,6 @@ export default function Form({
                 });
         }
     };
-
-    console.log("RENDERING FORM COMPONENT: ", {
-        isLoading,
-        // isLoading: formStore.isLoading,
-        FormComponent,
-    });
 
     ////////////////////////////////
     ////////////////////////////////

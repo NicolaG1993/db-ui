@@ -146,9 +146,12 @@ const formSlice = createSlice({
                 state.ui.sideNavTopic = !state.ui.sideNavTopic;
             }
         },
+        closeDrawer: (state) => {
+            state.ui = initialState.ui;
+        },
+
         closeSideNav: (state) => {
             state.ui.sideNavTopic = false;
-            state.ui.drawerIsOpen = false;
         },
         openSideNav: (state, action) => {
             state.ui.hintsIsOpen = false;
@@ -157,9 +160,11 @@ const formSlice = createSlice({
                 state.ui.sideNavTopic = action.payload;
             }
         },
+
         openHintsNav: (state) => {
-            state.ui.drawerIsOpen = true;
+            state.ui.sideNavTopic = initialState.ui.sideNavTopic;
             state.ui.hintsIsOpen = true;
+            state.ui.drawerIsOpen = true;
         },
         closeHintsNav: (state) => {
             state.ui.hintsIsOpen = false;
@@ -179,28 +184,25 @@ const formSlice = createSlice({
         },
 
         updateHints: (state, action) => {
-            state.hints = action.payload;
-            /*
-            const { missing, removed } = action.payload;
-            // do i really need the condition here?
-            if (missing?.length || removed?.length) {
-                state.hints = action.payload;
-            } else {
-                state.hints = initialState.hints;
-            }
-            */
+            const { hints } = action.payload;
+            state.hints = hints;
+            // if (hints.missing.length || hints.removed.length) {
+            //     state.ui.hintsIsOpen = true;
+            //     state.ui.drawerIsOpen = true;
+            // }
         },
         acceptMissingHints: (state, action) => {
-            const { newArr } = action.payload;
-            if (newArr && newArr.length) {
-                state.formState.tags = newArr; // 🔴 "tags" here should be flexible - not hardcoded
+            const arr = action.payload;
+            console.log("🔴 arr: ", arr);
+            if (arr && arr.length) {
+                state.formState.tags = arr; // 🔴 "tags" here should be flexible - not hardcoded
             }
             state.hints.missing = [];
         },
         acceptRemovedHints: (state, action) => {
             // 🧠 The non selected could stay stored in state (but for now i have no plans to use them)
             // 🔴 "tags" here should be flexible - not hardcoded
-            const { arr } = action.payload;
+            const arr = action.payload;
             if (arr && arr.length) {
                 let newTags = state.formState.tags.filter(
                     (el) => !arr.includes(el)
@@ -313,6 +315,7 @@ export const {
     updateFormState,
     startLoading,
     handleDrawer,
+    closeDrawer,
     closeSideNav,
     openSideNav,
     openHintsNav,

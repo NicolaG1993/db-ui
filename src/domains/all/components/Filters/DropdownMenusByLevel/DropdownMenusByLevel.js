@@ -10,7 +10,7 @@ TODO:
 ✅ controllare cosa fa updatePrevFilters 
 ✅ fix selected tags not detected
 ✅ creare files per ogni component e utils
-⬜ fix tag hints not working
+✅ fix tag hints not working
 ⬜ fix props loops - we have to implement a store for this and refactor some more, not sure
 ⬜ testare con oggetti dummy (ogni oggetto: movie, actor, record, tag, ...)
 ⬜ Fix G.Michaels infos + fix bug if still there (when adding a tag and saving they all got deleted)

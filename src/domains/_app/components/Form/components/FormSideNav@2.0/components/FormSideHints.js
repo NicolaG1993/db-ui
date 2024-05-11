@@ -1,15 +1,20 @@
-import { selectFormStoreUI } from "@/src/application/redux/slices/formSlice";
-import { shallowEqual, useSelector } from "react-redux";
-
-export default function FormSideHints({
-    hints,
+import { useAppSelector } from "@/src/application/redux/lib/hooks";
+import {
     acceptMissingHints,
     acceptRemovedHints,
-    handleHints,
-    formState,
+    selectFormStoreHints,
+    selectFormStoreUI,
     closeHintsNav,
-}) {
-    let uiState = useSelector(selectFormStoreUI, shallowEqual);
+    selectFormState,
+} from "@/src/application/redux/slices/formSlice";
+import { useEffect } from "react";
+import { shallowEqual, useDispatch } from "react-redux";
+
+export default function FormSideHints() {
+    const dispatch = useDispatch();
+    //  let uiState = useAppSelector(selectFormStoreUI, shallowEqual);
+    let hints = useAppSelector(selectFormStoreHints, shallowEqual);
+    const formState = useAppSelector(selectFormState, shallowEqual);
 
     console.log("⬜ FormSideHints: ", {
         hints,
@@ -39,10 +44,10 @@ export default function FormSideHints({
             });
             res.push(JSON.parse(value));
         }
-        acceptMissingHints(res);
+        dispatch(acceptMissingHints(res));
+
         // SPIKE: RESET OR STORE FILTERS LEFT BEHIND? 🧠
         // ...
-        closeHintsNav();
     };
 
     // NOT USED: IMPLEMENT! (BUT ONLY FOR ACTOR TAGS)
@@ -54,8 +59,14 @@ export default function FormSideHints({
         for (const value of formData.values()) {
             res.push(JSON.parse(value));
         }
-        acceptRemovedHints(res);
+        dispatch(acceptRemovedHints(res));
     };
+
+    useEffect(() => {
+        if (!hints.missing.length && !hints.removed.length) {
+            dispatch(closeHintsNav());
+        }
+    }, [hints]);
 
     return (
         <div>
@@ -84,7 +95,14 @@ export default function FormSideHints({
                         <div>
                             <button
                                 title="Skip this step"
-                                onClick={() => handleHints([], hints.removed)}
+                                onClick={() =>
+                                    dispatch(
+                                        updateHints({
+                                            added: [],
+                                            removed: hints.removed,
+                                        })
+                                    )
+                                }
                                 className="button-standard"
                             >
                                 Skip
@@ -127,7 +145,14 @@ export default function FormSideHints({
                         <div>
                             <button
                                 title="Skip this step"
-                                onClick={() => handleHints(hints.missing, [])}
+                                onClick={() =>
+                                    dispatch(
+                                        updateHints({
+                                            added: hints.missing,
+                                            removed: [],
+                                        })
+                                    )
+                                }
                                 className="button-standard"
                             >
                                 Skip
