@@ -19,6 +19,7 @@ export default function DropdownMenusElement({
                         updateSideNavSelected({
                             value: it,
                             userAction: isSelected ? "remove" : "add",
+                            log: "DropdownMenusElement",
                         })
                     )
                 }

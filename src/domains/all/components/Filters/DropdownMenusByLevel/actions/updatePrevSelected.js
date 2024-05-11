@@ -1,9 +1,13 @@
 const updatePrevSelected = ({ value, userAction, prevSelected, selected }) => {
-    console.log("updatePrevSelected: ", {
+    const prevSelectedClone = [...prevSelected];
+    const selectedClone = [...selected];
+    console.log("🌸 updatePrevSelected: ", {
         value,
         userAction,
         prevSelected,
         selected,
+        prevSelectedClone,
+        selectedClone,
     });
     let res = [];
     if (userAction === "add") {
@@ -12,7 +16,7 @@ const updatePrevSelected = ({ value, userAction, prevSelected, selected }) => {
             res = [...prevSelected, value];
         } else if (!selected.some((x) => x.id === value.id)) {
             res = [...selected, value];
-        }
+        } //  🧠 what is the point of this conditions? are they even right? 🧠
     }
     if (userAction === "remove") {
         res = prevSelected.filter((x) => x.id !== value.id);

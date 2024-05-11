@@ -12,6 +12,11 @@ import { searchData } from "@/src/domains/_app/utils/filterData";
 import getDropdownsState from "@/src/domains/all/components/Filters/DropdownMenusByLevel/actions/getDropdownsState";
 import updatePrevSelected from "@/src/domains/all/components/Filters/DropdownMenusByLevel/actions/updatePrevSelected";
 
+// SPIKE: 🧠 I would like to store the different data i retrieve, for the first time
+// then the user will see always those until he restarts the app or click on a "refresh list" button
+// This will help to decrease the call to the db and avoiding multiple connections as much as possible
+// i still dont know where to store this data, probably here somewhere...
+
 const initialState = {
     formLabel: "",
     form: undefined, // "form" potrebber essere rinominato "formObj" o "formSettings"
@@ -41,6 +46,7 @@ const initialState = {
     hints: { missing: [], removed: [] },
 };
 
+// i have some "loading" states around that are quite pointless, check them out 🧠
 const formSlice = createSlice({
     name: "formStore",
     initialState,
@@ -157,12 +163,32 @@ const formSlice = createSlice({
             state.ui = initialState.ui;
         },
         concludeDrawer: (state) => {
-            console.log("concludeDrawer: ", current(state));
             // assign sidenav.selected to formState[key]
-            // ...
+            console.log("concludeDrawer: ", {
+                state: current(state),
+                key: state.ui.sideNavTopic,
+                "state.formState[key]": current(
+                    state.formState[state.ui.sideNavTopic]
+                ),
+            });
+            const newSelection = [...state.sideNavData.selected];
+            const key = state.ui.sideNavTopic;
+            state.formState[key] = newSelection;
+
+            Cookies.set(
+                "formState",
+                JSON.stringify({
+                    formLabel: state.formLabel,
+                    formState: state.formState,
+                })
+            );
+
+            state.ui = initialState.ui;
+            state.sideNavData = initialState.sideNavData;
         },
 
         closeSideNav: (state) => {
+            // not used anymore ?
             state.ui.sideNavTopic = false;
         },
         openSideNav: (state, action) => {
@@ -198,6 +224,7 @@ const formSlice = createSlice({
 
             state.sideNavData = newState;
         },
+
         updateSideNavSelected: (state, action) => {
             const { value, userAction } = action.payload;
             console.log("updateSideNavSelected 0: ", {
@@ -216,6 +243,7 @@ const formSlice = createSlice({
             const extractedFormState = [...currentFormStateSpread[key]];
             console.log("updateSideNavSelected 1: ", {
                 currentState,
+                state: current(state),
                 key,
                 value,
                 userAction,
@@ -231,11 +259,20 @@ const formSlice = createSlice({
             });
 
             // FINISH 👇🔴🔴🔴 BROKEN -- seams ok now 🟢 but check
-            let currentSelection = [...currentState.formState[key]];
+            // we need to look for the current state of sidenav.selected, not formState[key] !!!
+            let currentSelection = currentState.sideNavData.selected;
+            let currentSelectionSpread = [...currentSelection];
+            // let currentSelection = currentState.formState[key];
+            // let currentSelectionSpread = [...currentState.formState[key]];
+            // let currentSelection = [...currentState.formState[key]];
             // const prevSelected = currentSelection;
 
             console.log("updateSideNavSelected 2: ", {
                 prevSelected: currentSelection,
+                prevSelectedSpread: [...currentSelection],
+                currentSelectionSpread,
+                currentSelection,
+                currentSelectionParsed: current(currentState.formState[key]),
             });
 
             ////
