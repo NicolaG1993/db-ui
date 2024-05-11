@@ -142,8 +142,8 @@ export default function FormSideNav(
                             typeof filteredData === "object" &&
                             !Array.isArray(filteredData) && (
                                 <DropdownMenusByLevel
-                                    menuStructure={filteredData}
-                                    filters={formState[uiState.sideNavTopic]}
+                                    // menuStructure={filteredData}
+                                    // filters={formState[uiState.sideNavTopic]}
                                     // handleChildState={updateFormState}
                                     onChange={({ val, topic }) =>
                                         dispatch(
@@ -153,8 +153,8 @@ export default function FormSideNav(
                                             })
                                         )
                                     }
-                                    topic={uiState.sideNavTopic}
-                                    styles={styles}
+                                    // topic={uiState.sideNavTopic}
+                                    userStyles={styles}
                                 />
                             )}
                         {filteredData && filteredData.length && (

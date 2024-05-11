@@ -1,4 +1,6 @@
+import { selectFormSideNavSelected } from "@/src/application/redux/slices/formSlice";
 import renderDropdownElements from "@/src/domains/all/components/Filters/DropdownMenusByLevel/utils/renderDropdownElements";
+import { shallowEqual, useDispatch, useSelector } from "react-redux";
 
 export default function DropdownMenusList({
     groupKey,
@@ -7,13 +9,14 @@ export default function DropdownMenusList({
     styles,
     menuStructure,
     dropdownsState,
-    filters,
     handleMenus,
-    handleFilters,
 }) {
     // FIX - refactor
     // devo prendere styles anche da file o va bene cosí?
     // mi serve proprio "menuStructure" fino a qua?
+
+    const dispatch = useDispatch();
+    const selected = useSelector(selectFormSideNavSelected, shallowEqual);
 
     console.log("DropdownMenusList: ", {
         groupKey,
@@ -22,7 +25,7 @@ export default function DropdownMenusList({
         styles,
         menuStructure,
         dropdownsState,
-        filters,
+        selected,
     });
     return (
         <div
@@ -50,8 +53,7 @@ export default function DropdownMenusList({
                     array: values,
                     groupKey,
                     styles,
-                    filters,
-                    handleFilters,
+                    selected,
                 })}
         </div>
     );

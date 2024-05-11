@@ -9,6 +9,8 @@ import {
     nicknameValidation,
 } from "@/src/application/utils/validateForms.js";
 import { searchData } from "@/src/domains/_app/utils/filterData";
+import getDropdownsState from "@/src/domains/all/components/Filters/DropdownMenusByLevel/actions/getDropdownsState";
+import updatePrevSelected from "@/src/domains/all/components/Filters/DropdownMenusByLevel/actions/updatePrevSelected";
 
 const initialState = {
     formLabel: "",
@@ -30,6 +32,10 @@ const initialState = {
         parsedData: undefined,
         filteredData: undefined,
         filters: { search: "" },
+        error: undefined,
+        renderReady: false,
+        dropdownsState: {},
+        selected: [],
     },
     hints: { missing: [], removed: [] },
 };
@@ -172,7 +178,9 @@ const formSlice = createSlice({
         },
 
         initSideNavData: (state, action) => {
-            const newState = { ...initialState.sideNavData, ...action.payload };
+            let newState = { ...initialState.sideNavData, ...action.payload };
+            const key = state.ui.sideNavTopic;
+            newState.selected = state.formState[key];
             state.sideNavData = newState;
         },
         updateSideNavData: (state, action) => {
@@ -181,6 +189,36 @@ const formSlice = createSlice({
         },
         resetSideNavData: (state, action) => {
             state.sideNavData = initialState.sideNavData;
+        },
+        handleSideNavError: (state, action) => {
+            state.sideNavData.error = action.payload.error;
+        },
+        // handleSideNavRenderReady: (state) => {
+        //     state.sideNavData.renderReady = !state.sideNavData.renderReady;
+        // },
+        hydrateSideNavDropdowns: (state) => {
+            let { res, error } = getDropdownsState({
+                stateObj: {},
+                propsObj: state.formStore.sideNavData.filteredData,
+                dropdownsState: state.sideNavData.dropdownsState,
+            });
+            if (error) {
+                // 🧠 handle Error correctly - now we are just storing it 🧠
+                state.sideNavData.error = error;
+            } else if (res) {
+                setDropdownsState(res);
+                state.sideNavData.renderReady = true;
+            }
+        },
+        updateSideNavSelected: (state, action) => {
+            const { val, userAction } = action.payload;
+            let array = updatePrevSelected({
+                val,
+                userAction,
+                selected: state.sideNavData.selected,
+                dropdownsState: state.sideNavData.dropdownsState,
+            });
+            state.sideNavData.selected = array;
         },
 
         updateHints: (state, action) => {
@@ -323,6 +361,9 @@ export const {
     initSideNavData,
     updateSideNavData,
     resetSideNavData,
+    handleSideNavError,
+    hydrateSideNavDropdowns,
+    updateSideNavSelected,
     updateHints,
     acceptMissingHints,
     acceptRemovedHints,
@@ -334,20 +375,9 @@ export const {
     searchNavData,
 } = formSlice.actions;
 
+// eliminare quelle che non useró 🧠
 export const selectFormStore = (state) => state.formStore;
 export const selectFormStoreSettings = (state) => state.formStore.form;
-export const selectFormStoreUI = (state) => state.formStore.ui;
-export const selectFormSideNavTopic = (state) =>
-    state.formStore.ui.sideNavTopic;
-export const selectFormSideNavData = (state) =>
-    state.formStore.sideNavData.data;
-export const selectFormSideNavSourceData = (state) =>
-    state.formStore.sideNavData.parsedData
-        ? state.formStore.sideNavData.parsedData
-        : state.formStore.sideNavData.data;
-export const selectFormSideNavFilteredData = (state) =>
-    state.formStore.sideNavData.filteredData;
-export const selectFormStoreHints = (state) => state.formStore.hints;
 // export const selectFormComponent = (state) => state.formStore.FormComponent; // could i return this? -> dataStructureForms[state.formStore.formLabel].formComponent
 export const selectFormState = (state) => state.formStore.formState;
 export const selectFormPropsData = (state) => state.formStore.propsData;
@@ -356,6 +386,31 @@ export const selectFormStoreErrors = (state) => state.formStore.errors;
 export const selectFormIsLoading = (state) => state.formStore.isLoading;
 export const selectFormIsLoadingResponse = (state) =>
     state.formStore.isLoadingResponse;
+
+export const selectFormStoreUI = (state) => state.formStore.ui;
+export const selectFormSideNavTopic = (state) =>
+    state.formStore.ui.sideNavTopic;
+
+// export const selectFormSideNav = (state) => {
+//     state.formStore.sideNavData;
+// };
+export const selectFormSideNavData = (state) =>
+    state.formStore.sideNavData.data;
+export const selectFormSideNavSourceData = (state) =>
+    state.formStore.sideNavData.parsedData
+        ? state.formStore.sideNavData.parsedData
+        : state.formStore.sideNavData.data;
+export const selectFormSideNavFilteredData = (state) =>
+    state.formStore.sideNavData.filteredData;
+
+// 🧠👇 una volta reso dropdownmenus funzionante, riportare il piu possibile dentro ai suoi components
+export const selectFormSideNavError = (state) =>
+    state.formStore.sideNavData.error;
+export const selectFormSideNavRenderReady = (state) =>
+    state.formStore.sideNavData.renderReady;
+export const selectFormSideNavSelected = (state) =>
+    state.formStore.formState.selected;
+export const selectFormStoreHints = (state) => state.formStore.hints;
 
 export default formSlice;
 // we want to eventually store the data we fetch while the form is open

@@ -37,7 +37,7 @@ const getDropdownsState = ({ stateObj, propsObj, dropdownsState }) => {
         }
     });
 
-    return { res: stateObj, err: error };
+    return { res: stateObj, error };
 };
 
 export default getDropdownsState;

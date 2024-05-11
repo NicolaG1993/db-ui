@@ -1,48 +1,38 @@
 import DropdownMenusElement from "@/src/domains/all/components/Filters/DropdownMenusByLevel/components/DropdownMenusElement";
 
-const renderDropdownElements = ({
-    array,
-    key,
-    styles,
-    filters,
-    handleFilters,
-}) => {
+const renderDropdownElements = ({ array, key, styles, selected }) => {
     console.log("renderDropdownElements ACTIVATED 🧨", {
         array,
         key,
         styles,
-        filters,
-        handleFilters,
+        selected,
     });
-
     return (
         <div className={styles.levelDropdown}>
             {array.map((it) => {
-                return filters && filters.find((x) => it.id === x.id) ? (
+                return selected && selected.find((x) => it.id === x.id) ? (
                     <DropdownMenusElement
                         key={
-                            "Dropdown element (selected) • value: " +
+                            "Dropdown element (isSelected) • value: " +
                             it.id +
                             " key: " +
                             key
                         }
                         it={it}
-                        handleFilters={handleFilters}
                         styles={styles}
-                        selected={true}
+                        isSelected={true}
                     />
                 ) : (
                     <DropdownMenusElement
                         key={
-                            "Dropdown element (not selected) • value: " +
+                            "Dropdown element (!isSelected) • value: " +
                             it.id +
                             " key: " +
                             key
                         }
                         it={it}
-                        handleFilters={handleFilters}
                         styles={styles}
-                        selected={false}
+                        isSelected={false}
                     />
                 );
             })}

@@ -1,13 +1,25 @@
 import { useEffect, useState } from "react";
 import standardStyles from "@/src/domains/all/components/Filters/DropdownMenusByLevel/DropdownMenusByLevel.module.css";
-import updatePrevFilters from "@/src/domains/all/components/Filters/DropdownMenusByLevel/actions/updatePrevFilters";
+import updatePrevSelected from "@/src/domains/all/components/Filters/DropdownMenusByLevel/actions/updatePrevSelected";
 import getDropdownsState from "@/src/domains/all/components/Filters/DropdownMenusByLevel/actions/getDropdownsState";
 import renderDropdownLevel from "@/src/domains/all/components/Filters/DropdownMenusByLevel/utils/renderDropdownLevel";
+import { useAppSelector } from "@/src/application/redux/lib/hooks";
+import { shallowEqual, useDispatch } from "react-redux";
+import {
+    handleSideNavError,
+    hydrateSideNavDropdowns,
+    selectFormSideNavError,
+    selectFormSideNavFilteredData,
+    selectFormSideNavFilters,
+    selectFormSideNavRenderReady,
+    selectFormSideNavSelected,
+    selectFormStoreUI,
+} from "@/src/application/redux/slices/formSlice";
 // import ErrorUI from "@/src/domains/_app/components/Error/components/ErrorUI/ErrorUI";
 
 /*
 TODO:
-✅ controllare cosa fa updatePrevFilters 
+✅ controllare cosa fa updatePrevSelected 
 ✅ fix selected tags not detected
 ✅ creare files per ogni component e utils
 ✅ fix tag hints not working
@@ -17,77 +29,87 @@ TODO:
 ⬜ pulire codice
 */
 
-export default function DropdownMenusByLevel(props) {
+export default function DropdownMenusByLevel({ onChange, userStyles }) {
     //////////////////////////////
     // STATE
     //////////////////////////////
     console.log("*🌸 Rendering *DropdownMenusByLevel* ", props);
 
     // TODO:
-    // props.menuStructure contiene solo names
+    // menuStructure contiene solo names
     // abbinargli gli ids corrispondenti (da tags che riceviamo da API on render)
     // renderizzarli nel gruppo corretto
     // handle add
     // handle remove
     // handle tags hints
 
-    const [error, setError] = useState();
-    const [dropdownsState, setDropdownsState] = useState({});
-    const [renderReady, setRenderReady] = useState(false);
-    const [filters, setFilters] = useState(props.filters || []);
-    // const [stateObj, setStateObj] = useState({}); // ??? elimina ???
+    const dispatch = useDispatch();
 
-    let styles = props.styles
-        ? { ...standardStyles, ...props.styles }
-        : standardStyles;
+    const uiState = useAppSelector(selectFormStoreUI, shallowEqual);
+    const topic = uiState.sideNavTopic;
+    // 🧠 TRY: can i select all SideNavState at once and us it?
+    const error = useAppSelector(selectFormSideNavError, shallowEqual);
+    // const [error, setError] = useState();
+    const [dropdownsState, setDropdownsState] = useState({});
+    const renderReady = useAppSelector(
+        selectFormSideNavRenderReady,
+        shallowEqual
+    );
+    // const [renderReady, setRenderReady] = useState(false);
+    const selected = useAppSelector(selectFormSideNavSelected, shallowEqual);
+    // const [filters, setFilters] = useState(filters || []);
+    // const [stateObj, setStateObj] = useState({}); // ??? elimina ???
+    const menuStructure = useAppSelector(
+        selectFormSideNavFilteredData,
+        shallowEqual
+    );
+
+    let styles = userStyles
+        ? { ...standardStyles, ...userStyles }
+        : standardStyles; // mi serve veramente? 🧠 lo uso solo per poter applicare stile al di sopra del suo
 
     useEffect(() => {
-        if (!props.menuStructure) {
-            setError("Error: props.menuStructure is missing");
-        } else if (typeof props.menuStructure !== "object") {
-            setError("Error: props.menuStructure is not an object");
-        } else if (props.filters && !Array.isArray(props.filters)) {
-            setError("Error: props.filters is not an array");
+        let error;
+        if (!menuStructure) {
+            error = "Error: menuStructure is missing";
+        } else if (typeof menuStructure !== "object") {
+            error = "Error: menuStructure is not an object";
+        } else if (selected && !Array.isArray(selected)) {
+            error = "Error: selected is not an array";
+        }
+
+        if (error) {
+            dispatch(handleSideNavError({ error }));
         } else {
-            hydrateDropdowns();
+            dispatch(hydrateSideNavDropdowns());
         }
     }, []);
 
     useEffect(() => {
-        if (props.onChange && typeof props.onChange !== "function") {
-            setError("Error: onChange is not a function");
-        } else if (props.onChange) {
-            props.onChange({ val: filters, topic: props.topic });
+        if (onChange && typeof onChange !== "function") {
+            const error = "Error: onChange is not a function";
+            dispatch(handleSideNavError({ error }));
+        } else if (onChange) {
+            onChange({ val: selected, topic });
         }
-    }, [filters]);
+    }, [selected]);
 
     //////////////////////////////
     // FUNCTIONS
     //////////////////////////////
-    const hydrateDropdowns = () => {
-        let { res, err } = getDropdownsState({
-            stateObj: {},
-            propsObj: props.menuStructure,
-            dropdownsState,
-        });
-        err && setError(err); // 🧠 handle Error correctly - now we are just storing it 🧠
-        setDropdownsState(res);
-        setRenderReady(true);
-    };
-
     const handleMenus = (newState) => {
         setDropdownsState(newState);
     };
 
-    const handleFilters = (val, action) => {
-        let array = updatePrevFilters(
-            val,
-            action,
-            props,
-            filters,
-            dropdownsState
+    const handleFilters = (val, userAction) => {
+        dispatch(
+            updateSideNavSelected({
+                val,
+                userAction,
+                selected,
+                dropdownsState,
+            })
         );
-        setFilters(array);
     };
 
     //////////////////////////////
@@ -97,11 +119,11 @@ export default function DropdownMenusByLevel(props) {
         <div id={styles.DropdownMenus}>
             {renderReady ? (
                 renderDropdownLevel({
-                    nextMenuStructure: props.menuStructure,
+                    nextMenuStructure: menuStructure,
                     index: 1,
                     styles,
                     dropdownsState,
-                    filters: props.filters, // or just filters?
+                    filters: selected,
                     handleFilters,
                     handleMenus,
                 })
