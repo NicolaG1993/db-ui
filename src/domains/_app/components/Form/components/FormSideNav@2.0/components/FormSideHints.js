@@ -6,6 +6,11 @@ import {
     selectFormStoreUI,
     closeHintsNav,
     selectFormState,
+    updateHints,
+    concludeDrawer,
+    selectFormSideNavSelected,
+    closeDrawer,
+    concludeDrawerAfterHints,
 } from "@/src/application/redux/slices/formSlice";
 import { useEffect } from "react";
 import { shallowEqual, useDispatch } from "react-redux";
@@ -15,12 +20,16 @@ export default function FormSideHints() {
     //  let uiState = useAppSelector(selectFormStoreUI, shallowEqual);
     let hints = useAppSelector(selectFormStoreHints, shallowEqual);
     const formState = useAppSelector(selectFormState, shallowEqual);
+    const currentTags = useAppSelector(selectFormSideNavSelected);
 
     console.log("⬜ FormSideHints: ", {
         hints,
-        formState,
+        formState: formState.tags, // used as original ref for removed tags
+        currentTags, // used as original ref for missing tags
     });
     // potremmo aggiungere anche un'altra lista: "Suggested tags"
+
+    const closeHintsDrawer = () => {};
 
     const handleSubmitMissingHints = (e) => {
         e.preventDefault();
@@ -36,7 +45,9 @@ export default function FormSideHints() {
         }
         */
 
-        let res = [...formState.tags]; // ! important to use spread here !
+        // let res = [...formState.tags]; // ! important to use spread here !
+        let res = [...currentTags]; // ! important to use spread here !
+
         for (const value of formData.values()) {
             console.log("handleSubmitMissingHints: ", {
                 target: e.target,
@@ -44,7 +55,9 @@ export default function FormSideHints() {
             });
             res.push(JSON.parse(value));
         }
+
         dispatch(acceptMissingHints(res));
+        !hints.removed?.length && dispatch(concludeDrawerAfterHints()); // 🔴 non dovró chiamarla qui quando attivo "handleSubmitRemovedHints()"
 
         // SPIKE: RESET OR STORE FILTERS LEFT BEHIND? 🧠
         // ...
@@ -62,15 +75,54 @@ export default function FormSideHints() {
         dispatch(acceptRemovedHints(res));
     };
 
+    const handleSkipMissingHints = () => {
+        dispatch(
+            updateHints({
+                hints: {
+                    missing: [],
+                    removed: hints.removed,
+                },
+            })
+        );
+    };
+
+    const handleSkipRemovedHints = () => {
+        dispatch(
+            updateHints({
+                hints: {
+                    missing: hints.missing,
+                    removed: [],
+                },
+            })
+        );
+    };
+
+    const handleConcludeHints = () => {
+        dispatch(concludeDrawerAfterHints());
+    };
+
     useEffect(() => {
         if (!hints.missing.length && !hints.removed.length) {
-            dispatch(closeHintsNav());
+            // dispatch(closeHintsNav());
+            dispatch(concludeDrawer());
         }
-    }, [hints]);
+    }, [hints, dispatch]);
+
+    /* 🔴🔴🔴
+    PROBLEMA: 
+    • acceptMissingHints & acceptRemovedHints actions need to work separate
+    • • after that we need to concludeDrawer() -> quindi state.formState.tags
+    • • • acceptMissingHints giá fa update di state.formState.tags
+
+    • bisogna avere un eccenzione o nuova versione di concludeDrawer()
+    • • per quando viene chiamato dopo acceptMissingHints & acceptRemovedHints
+
+    • NB che peró concludeDrawer() funziona giá con skipHints (nn sn sicuro! testare)
+    🔴🔴🔴 */
 
     return (
         <div>
-            {hints.missing?.length > 0 && (
+            {hints?.missing?.length > 0 && (
                 <>
                     <p>
                         We have found some new tags for you, select which one to
@@ -95,14 +147,8 @@ export default function FormSideHints() {
                         <div>
                             <button
                                 title="Skip this step"
-                                onClick={() =>
-                                    dispatch(
-                                        updateHints({
-                                            added: [],
-                                            removed: hints.removed,
-                                        })
-                                    )
-                                }
+                                type="button"
+                                onClick={handleSkipMissingHints}
                                 className="button-standard"
                             >
                                 Skip
@@ -120,7 +166,7 @@ export default function FormSideHints() {
                 </>
             )}
 
-            {hints.removed?.length > 0 && (
+            {hints?.removed?.length > 0 && (
                 <>
                     <p>
                         We have found some tags that could be removed, select
@@ -145,14 +191,8 @@ export default function FormSideHints() {
                         <div>
                             <button
                                 title="Skip this step"
-                                onClick={() =>
-                                    dispatch(
-                                        updateHints({
-                                            added: hints.missing,
-                                            removed: [],
-                                        })
-                                    )
-                                }
+                                type="button"
+                                onClick={handleSkipRemovedHints}
                                 className="button-standard"
                             >
                                 Skip
@@ -168,6 +208,19 @@ export default function FormSideHints() {
                         </div>
                     </form>
                 </>
+            )}
+
+            {!!hints.removed?.length && (
+                <div>
+                    <button
+                        title="Confirm Tags"
+                        type="button"
+                        onClick={handleConcludeHints}
+                        className="button-standard"
+                    >
+                        Confirm Tags
+                    </button>
+                </div>
             )}
         </div>
     );

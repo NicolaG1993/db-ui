@@ -109,9 +109,9 @@ export default function Form({
     4. 🟢 Move as much code as possible outside the components (action, reducers, utils, ...)
     
     TODO:
-        1. 🟡 Fix sidenav data bugs
-        2. 🟡 make work correctly DropdownMenusByLevel and move it to redux store
-        2.1 🔴 Activate auto-hint for tags
+        1. 🟢 Fix sidenav data bugs
+        2. 🟢 make work correctly DropdownMenusByLevel and move it to redux store
+        2.1 🟡 Activate auto-hint for tags
         3. make work correctly InputsSelector and move it to redux store
         4. make work correctly NationalitiesSelector and move it to redux store
         5. QA Form (Create and Edit)
@@ -124,27 +124,30 @@ export default function Form({
     // FETCH DATA FOR DRAWER
     useEffect(() => {
         // console.log("uiState: ", uiState);
-        if (uiState?.sideNavTopic && uiState.sideNavTopic !== "nationalities") {
-            fetchDataForSideNav(
-                uiState.sideNavTopic,
-                appSettings.TAGS_OBJ
-            ).then(({ data, parsedData }) => {
-                console.log("fetchDataForSideNav res: ", { data, parsedData });
-                dispatch(initSideNavData({ data, parsedData }));
-            });
-        } else if (sideNavData) {
-            dispatch(resetSideNavData());
-        } // TODO: error handling? 🧠
+        if (!uiState.hintsIsOpen) {
+            if (
+                uiState?.sideNavTopic &&
+                uiState.sideNavTopic !== "nationalities"
+            ) {
+                fetchDataForSideNav(
+                    uiState.sideNavTopic,
+                    appSettings.TAGS_OBJ
+                ).then(({ data, parsedData }) => {
+                    console.log("fetchDataForSideNav res: ", {
+                        data,
+                        parsedData,
+                    });
+                    dispatch(initSideNavData({ data, parsedData }));
+                });
+            } else if (sideNavData) {
+                dispatch(resetSideNavData());
+            } // TODO: error handling? 🧠
+        }
     }, [uiState]);
 
     /* 🧠 MOVE INSIDE ... ? */
     useEffect(() => {
-        if (!hints?.missing?.length && !hints?.removed?.length) {
-            // handleDrawer(false);
-            closeHintsNav();
-            // 🧠 I think i can refactor this, we should not closing the tab this way
-            // just run setSideNavTopic(false) in the right position of the code 🧠 maybe ?
-        } else {
+        if (hints?.missing?.length || hints?.removed?.length) {
             openHintsNav();
         }
     }, [hints]);

@@ -26,6 +26,7 @@ import {
     updateSideNavSelected,
     concludeDrawer,
     selectFormStoreLabel,
+    selectFormSideNavFilters,
 } from "@/src/application/redux/slices/formSlice";
 import { useAppSelector } from "@/src/application/redux/lib/hooks";
 import { selectAppSettings } from "@/src/application/redux/slices/appSettingsSlice";
@@ -57,8 +58,9 @@ export default function FormSideNav(
         selectFormSideNavFilteredData,
         shallowEqual
     );
-    const selected = useAppSelector(selectFormSideNavSelected);
+    const currentTags = useAppSelector(selectFormSideNavSelected);
     const formLabel = useAppSelector(selectFormStoreLabel);
+    const filters = useAppSelector(selectFormSideNavFilters, shallowEqual);
 
     const originalFormState = propsData || formState; // TODO: 🧠🧠🧠 we can handle this in one action: res = propsData || formState // this way we delete all conditions in components
 
@@ -68,6 +70,7 @@ export default function FormSideNav(
         formState,
         originalFormState,
         topic,
+        currentTags,
     }) => {
         /*
         🔴🔴🔴 FIX: 
@@ -83,6 +86,7 @@ export default function FormSideNav(
             originalFormState,
             topic,
             uiState,
+            currentTags,
         });
         // TODO: error handling here 🧠
         const res = await checkMissingTags({
@@ -91,6 +95,7 @@ export default function FormSideNav(
             formState,
             originalFormState,
             topic,
+            currentTags,
         });
 
         console.log("🧠 res: ", res);
@@ -108,7 +113,7 @@ export default function FormSideNav(
             dispatch(openHintsNav());
         } else {
             // update formState 🟢
-            // fare anche dentro hints component 🔴
+            // fare anche dentro hints component 🟢
             dispatch(concludeDrawer());
         }
     };
@@ -191,11 +196,12 @@ export default function FormSideNav(
                 <span
                     onClick={() =>
                         handleCloseSideNav({
-                            topic: uiState.sideNavTopic,
+                            appSettings,
                             data: sideNavRawData,
                             formState,
                             originalFormState,
-                            appSettings,
+                            topic: uiState.sideNavTopic,
+                            currentTags,
                         })
                     }
                 >
@@ -209,7 +215,7 @@ export default function FormSideNav(
                         <FormSideNavSearchBar
                             topic={uiState.sideNavTopic}
                             data={sourceData}
-                            //  searchBar={searchBar}
+                            value={filters.search}
                             onChange={(str) => handleSearch(str)}
                             //  onClear={handleSearch("")}
                             /* onChange={
@@ -326,7 +332,8 @@ export default function FormSideNav(
                     */}
                     <div className={styles.wrapper}>
                         <ActiveElements
-                            selected={selected}
+                            topic={uiState.sideNavTopic}
+                            selected={currentTags}
                             // arr={formState[uiState.sideNavTopic]}
                             // handleChildState={updateFormState}
                             onChange={({ val, userAction }) =>
@@ -348,7 +355,6 @@ export default function FormSideNav(
                             //     )
                             // }
                             // userStyles={styles}
-                            topic={uiState.sideNavTopic}
                         />
                     </div>
                 </div>

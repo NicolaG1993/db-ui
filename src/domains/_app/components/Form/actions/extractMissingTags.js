@@ -1,7 +1,15 @@
 import extractMissingTagsIDs from "@/src/domains/_app/components/Form/utils/extractMissingTagsIDs";
 
-export default function extractMissingTags(tags, relationsObj, sourceData) {
-    console.log("extractMissingTags 1: ", { tags, relationsObj, sourceData });
+export default function extractMissingTags(
+    currentTags,
+    relationsObj,
+    sourceData
+) {
+    console.log("extractMissingTags 1: ", {
+        currentTags,
+        relationsObj,
+        sourceData,
+    });
 
     /*
         // call API for retrieving ids full objects
@@ -18,7 +26,7 @@ export default function extractMissingTags(tags, relationsObj, sourceData) {
 
     // 🔴🔴🔴 BUG HERE! NOT RETURNIG WHAT WE EXPECT
     // we want an array of tag objects
-    const missingTagsIDs = extractMissingTagsIDs(tags, relationsObj);
+    const missingTagsIDs = extractMissingTagsIDs(currentTags, relationsObj);
     const missingTags = sourceData.filter((t) => missingTagsIDs.includes(t.id));
 
     console.log("extractMissingTags 2: ", {

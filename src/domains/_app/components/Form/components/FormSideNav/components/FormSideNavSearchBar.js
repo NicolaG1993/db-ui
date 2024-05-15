@@ -4,11 +4,11 @@ import SearchBarSmall from "@/src/domains/_app/components/SearchBar/SearchBarSma
 export default function FormSideNavSearchBar({
     topic,
     data,
-    //  searchBar,
+    value,
     onChange,
     onClear,
 }) {
-    const [searchBar, setSearchBar] = useState("");
+    const [searchBar, setSearchBar] = useState(value);
 
     const handleSearchBar = (e) => {
         console.log("👽🔥 handleSearchBar: ", {

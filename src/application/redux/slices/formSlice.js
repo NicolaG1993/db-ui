@@ -48,7 +48,7 @@ const initialState = {
         dropdownsState: {},
         selected: [],
     },
-    hints: { missing: [], removed: [] },
+    hints: { missing: [], removed: [], finalDecision: [] },
 };
 
 // i have some "loading" states around that are quite pointless, check them out 🧠
@@ -164,21 +164,30 @@ const formSlice = createSlice({
                 state.ui.sideNavTopic = !state.ui.sideNavTopic;
             }
         },
-        closeDrawer: (state) => {
-            state.ui = initialState.ui;
-        },
+
+        // 🔴🔴🔴 QUESTA VERSIONE FUNZIONA MA NON DOPO ACEPTING MISSING HINTS
+        // 🧠 PROBABILMENTE NEANCHE DOPO ACEPTING REMOVED HINTS
+        // il problema é che noi abbiamo gia fatto update corretto di "state.formState[key]"
+        // qui andiamo a modificarlo/romperlo inutilmente
+
         concludeDrawer: (state) => {
             // assign sidenav.selected to formState[key]
-            // console.log("concludeDrawer: ", {
-            //     state: current(state),
-            //     key: state.ui.sideNavTopic,
-            //     "state.formState[key]": current(
-            //         state.formState[state.ui.sideNavTopic]
-            //     ),
-            // });
+            console.log("concludeDrawer START: ", {
+                state: current(state),
+            });
+
+            // 🧠 Forse dovrei separare chiusura drawer e update "state.formState[key]"
+
             const newSelection = [...state.sideNavData.selected];
             const key = state.ui.sideNavTopic;
             state.formState[key] = newSelection;
+
+            console.log("concludeDrawer END: ", {
+                state: current(state),
+                key: state.ui.sideNavTopic,
+                newSelection,
+                key,
+            });
 
             Cookies.set(
                 "formState",
@@ -190,6 +199,57 @@ const formSlice = createSlice({
 
             state.ui = initialState.ui;
             state.sideNavData = initialState.sideNavData;
+        },
+
+        updateHints: (state, action) => {
+            const { hints } = action.payload;
+            state.hints = hints;
+            // if (hints.missing.length || hints.removed.length) {
+            //     state.ui.hintsIsOpen = true;
+            //     state.ui.drawerIsOpen = true;
+            // }
+        },
+        acceptMissingHints: (state, action) => {
+            const arr = action.payload; // includes selected and new hints
+            // console.log("🔴 arr: ", arr);
+            if (arr && arr.length) {
+                state.hints.finalDecision = arr;
+                // state.formState.tags = arr; // 🔴 "tags" here should be flexible - not hardcoded
+            }
+            state.hints.missing = [];
+            // IMPLEMENT THAT DRAWER DOESNT CLOSE CUZ OF state.hints
+            // BUT ON COMAND - we want to keep tags not selected
+        },
+
+        // not used for tags sidenav -> only for related (like actors)
+        acceptRemovedHints: (state, action) => {
+            // 🧠 The non selected could stay stored in state (but for now i have no plans to use them)
+            // 🔴 "tags" here should be flexible - not hardcoded
+            const arr = action.payload;
+            if (arr && arr.length) {
+                let newTags = state.formState.tags.filter(
+                    (el) => !arr.includes(el)
+                );
+                // state.formState.tags = newTags;
+                state.hints.finalDecision = newTags;
+            }
+            // state.hints.removed = [];
+        },
+
+        concludeDrawerAfterHints: (state) => {
+            state.formState.tags = [...state.hints.finalDecision];
+            state.hints.removed = [];
+            state.hints.finalDecision = [];
+            state.ui = initialState.ui;
+            state.sideNavData = initialState.sideNavData;
+            // non credo di doverlo resettare completamente 🧠🧠🧠
+            Cookies.set(
+                "formState",
+                JSON.stringify({
+                    formLabel: state.formLabel,
+                    formState: state.formState,
+                })
+            );
         },
 
         closeSideNav: (state) => {
@@ -205,7 +265,7 @@ const formSlice = createSlice({
         },
 
         openHintsNav: (state) => {
-            state.ui.sideNavTopic = initialState.ui.sideNavTopic;
+            // state.ui.sideNavTopic = initialState.ui.sideNavTopic;
             state.ui.hintsIsOpen = true;
             state.ui.drawerIsOpen = true;
         },
@@ -220,12 +280,6 @@ const formSlice = createSlice({
                 data: action.payload.data,
                 parsedData: action.payload.parsedData,
             };
-
-            /*
-            const currentState = { ...state };
-            const key = currentState.ui.sideNavTopic;
-            newState.selected = currentState.formState[key]; // UNDEFINED !
-*/
 
             const key = state.ui.sideNavTopic;
 
@@ -368,37 +422,8 @@ const formSlice = createSlice({
             state.sideNavData.dropdownsState = newState;
         },
 
-        updateHints: (state, action) => {
-            const { hints } = action.payload;
-            state.hints = hints;
-            // if (hints.missing.length || hints.removed.length) {
-            //     state.ui.hintsIsOpen = true;
-            //     state.ui.drawerIsOpen = true;
-            // }
-        },
-        acceptMissingHints: (state, action) => {
-            const arr = action.payload;
-            // console.log("🔴 arr: ", arr);
-            if (arr && arr.length) {
-                state.formState.tags = arr; // 🔴 "tags" here should be flexible - not hardcoded
-            }
-            state.hints.missing = [];
-        },
-        acceptRemovedHints: (state, action) => {
-            // 🧠 The non selected could stay stored in state (but for now i have no plans to use them)
-            // 🔴 "tags" here should be flexible - not hardcoded
-            const arr = action.payload;
-            if (arr && arr.length) {
-                let newTags = state.formState.tags.filter(
-                    (el) => !arr.includes(el)
-                );
-                state.formState.tags = newTags;
-            }
-            state.hints.removed = [];
-        },
-
         addNewImage: (state, action) => {
-            // version for hosted App // old comment, delete?
+            // version for hosted App // <-- old comment, delete?
             const { imgFile } = action.payload;
             const file = {
                 location: createObjectURL(imgFile),
@@ -408,7 +433,7 @@ const formSlice = createSlice({
             state.newImage = file;
         },
         removeImage: (state, action) => {
-            // version for hosted App // old comment, delete?
+            // version for hosted App // <-- old comment, delete?
             if (action.payload?.imgFile) {
                 revokeObjectURL(imgFile);
             }
@@ -546,7 +571,8 @@ const formSlice = createSlice({
             // i believe seriously that before we were switching component completely with <InputsSelector on search
         },
 
-        // PROBABLY USELESS 🧠
+        // NOT IN USE
+        // BUT THE CODE IS NOT WORTLESS 🧠
         searchNavDataOnLevel: (state, action) => {
             // we need this different search for tags
             // we want to always have an object there as filteredData (no changes to array, etc..)
@@ -565,7 +591,7 @@ const formSlice = createSlice({
                 /*
                 TODO:
                 🟡 vedi parser usato per creare "state.sideNavData.parsedData" - potrebbe essere molto utile qui
-                🟡 finire di scrivere "searchDataOnLevel()"
+                ✖️ finire di scrivere "searchDataOnLevel()"
                 ---🧨vedi perché non funziona piú hydrateSideNavDropdowns action 🧨
                 🔴 fix autotags bugs
                 🔴 vedere se funzionano meglio le condizioni per sidenav via label or filteredData type
@@ -602,6 +628,7 @@ export const {
     handleDrawer,
     closeDrawer,
     concludeDrawer,
+    concludeDrawerAfterHints,
     closeSideNav,
     openSideNav,
     openHintsNav,
@@ -656,6 +683,8 @@ export const selectFormSideNavSourceData = (state) =>
         : state.formStore.sideNavData.data;
 export const selectFormSideNavFilteredData = (state) =>
     state.formStore.sideNavData.filteredData;
+export const selectFormSideNavFilters = (state) =>
+    state.formStore.sideNavData.filters;
 
 // 🧠👇 una volta reso dropdownmenus funzionante, riportare il piu possibile dentro ai suoi components
 export const selectFormSideNavError = (state) =>

@@ -43,6 +43,7 @@ const searchData = (data, str) => {
     }
 };
 
+// NOT IN USE 🧠
 const searchDataOnLevel = (data, str, TAGS_OBJ) => {
     console.log("🧨 searchDataOnLevel: ", { data, str, TAGS_OBJ });
     if (str && str.trim().length > 0) {

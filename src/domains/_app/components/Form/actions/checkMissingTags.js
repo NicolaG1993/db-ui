@@ -4,23 +4,25 @@ import extractMissingTags from "@/src/domains/_app/components/Form/actions/extra
 const checkMissingTags = async ({
     topic,
     data,
-    formState, // undefined !
-    originalFormState, // undefined !
-    appSettings, // undefined !
+    formState, // uguale a originalFormState, not actual selection
+    originalFormState,
+    appSettings,
+    currentTags,
 }) => {
-    // console.log("🔴 checkMissingTags: ", {
-    //     topic,
-    //     data,
-    //     formState,
-    //     originalFormState,
-    //     appSettings,
-    // });
+    console.log("🔴 checkMissingTags: ", {
+        topic,
+        data,
+        formState,
+        originalFormState,
+        appSettings,
+        currentTags,
+    });
     let res;
     // check possible tags updates from selected actors
     if (topic === "actors") {
         // 🧠 i refactored extractMissingTags without API calls, maybe i can do it also here?
         res = await getActorsMissingTags(
-            formState[topic],
+            formState[topic], // currentTags ?
             formState.tags,
             originalFormState,
             data
@@ -29,7 +31,8 @@ const checkMissingTags = async ({
         return res;
     } else if (topic === "tags") {
         // check for related tags that could be missing
-        res = extractMissingTags(formState[topic], appSettings.TAGS_REL, data);
+        // res = extractMissingTags(formState[topic], appSettings.TAGS_REL, data);
+        res = extractMissingTags(currentTags, appSettings.TAGS_REL, data);
         // console.log("extractMissingTags: ", res);
         return res;
     }

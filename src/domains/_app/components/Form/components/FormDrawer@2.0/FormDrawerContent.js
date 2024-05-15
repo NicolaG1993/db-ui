@@ -30,7 +30,7 @@ export default function FormDrawerContent(
 
     return (
         <>
-            {sideNavTopic && (
+            {sideNavTopic && !hintsIsOpen && (
                 <FormSideNav
                 // data={data}
                 // parsedData={parsedData}
