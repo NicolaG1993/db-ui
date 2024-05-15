@@ -11,17 +11,16 @@ const renderDropdownLevel = ({
     // handleMenus, // queste due fn vanno rimosse da props in qualche modo
     //  handleFilters, // queste due fn vanno rimosse da props in qualche modo
 }) => {
-    console.log("🟢 renderDropdownLevel: ", {
-        nextMenuStructure,
-        index,
-        styles,
-        // dropdownsState,
-    });
+    // console.log("🏈 renderDropdownLevel rendering: ", {
+    //     nextMenuStructure,
+    //     index,
+    //     styles,
+    // });
     return loopObject(nextMenuStructure).map(([key, values], i) => {
-        console.log("⭐ loopObject(nextMenuStructure) el: ", {
-            key,
-            values,
-        });
+        // console.log("⭐ loopObject(nextMenuStructure) el: ", {
+        //     key,
+        //     values,
+        // });
 
         if (values) {
             if (Array.isArray(values)) {
@@ -30,7 +29,7 @@ const renderDropdownLevel = ({
                         key={key}
                         groupKey={key}
                         values={values}
-                        index={index} // buggy ?
+                        index={index} // buggy 🔴 not anympre?
                         styles={styles}
                         // dropdownsState={dropdownsState}
                         // handleMenus={handleMenus}
@@ -45,7 +44,7 @@ const renderDropdownLevel = ({
                         key={key}
                         groupKey={key}
                         values={values}
-                        index={index} // buggy ?
+                        index={index} // buggy 🔴 not anympre??
                         styles={styles}
                         // dropdownsState={dropdownsState}
                         // selected={selected}

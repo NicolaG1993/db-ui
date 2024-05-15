@@ -52,10 +52,11 @@ export default function DropdownMenusLevel({
     // 🔴🔴🔴 FIX! WIP 🔴🔴🔴
     // 🔴🔴🔴 Unica soluzione iniziare ad usare store e actions 🔴🔴🔴
     let objectEntries = loopObject(values); // buggy
+
     const DropdownMenusLevelChilds = () =>
         renderDropdownLevel({
             nextMenuStructure: menuStructure[groupKey],
-            index: index++,
+            index: index + 1,
             styles,
             // dropdownsState,
             // selected,
@@ -87,6 +88,13 @@ export default function DropdownMenusLevel({
     //     });
     // }, [index]);
 
+    // console.log("⭐ DropdownMenusLevel rendering: ", {
+    //     values,
+    //     index,
+    //     nextMenuStructure: menuStructure[groupKey],
+    //     menuStructure,
+    // });
+
     return (
         <div
             className={styles.levelWrap}
@@ -95,15 +103,15 @@ export default function DropdownMenusLevel({
             <div
                 className={styles.level}
                 onClick={() => {
-                    logger({
-                        groupKey,
-                        values,
-                        index,
-                        styles,
-                        menuStructure,
-                        objectEntries,
-                        dropdownsState,
-                    });
+                    // logger({
+                    //     groupKey,
+                    //     values,
+                    //     index,
+                    //     styles,
+                    //     menuStructure,
+                    //     objectEntries,
+                    //     dropdownsState,
+                    // });
                     handleMenus({ dropdownsState, index, groupKey }); // FIX : error when i click 2 times on a group 🔴🔴🔴
                 }}
             >

@@ -11,6 +11,7 @@ import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import {
     updateHints,
     searchNavData,
+    searchNavDataOnLevel,
     selectFormPropsData,
     selectFormSideNavData,
     selectFormSideNavFilteredData,
@@ -24,6 +25,7 @@ import {
     selectFormSideNavSelected,
     updateSideNavSelected,
     concludeDrawer,
+    selectFormStoreLabel,
 } from "@/src/application/redux/slices/formSlice";
 import { useAppSelector } from "@/src/application/redux/lib/hooks";
 import { selectAppSettings } from "@/src/application/redux/slices/appSettingsSlice";
@@ -56,6 +58,7 @@ export default function FormSideNav(
         shallowEqual
     );
     const selected = useAppSelector(selectFormSideNavSelected);
+    const formLabel = useAppSelector(selectFormStoreLabel);
 
     const originalFormState = propsData || formState; // TODO: 🧠🧠🧠 we can handle this in one action: res = propsData || formState // this way we delete all conditions in components
 
@@ -79,6 +82,7 @@ export default function FormSideNav(
             formState,
             originalFormState,
             topic,
+            uiState,
         });
         // TODO: error handling here 🧠
         const res = await checkMissingTags({
@@ -103,29 +107,87 @@ export default function FormSideNav(
         if (res?.missingTags?.length || res?.removedTags?.length) {
             dispatch(openHintsNav());
         } else {
-            // update formState 🔴
+            // update formState 🟢
             // fare anche dentro hints component 🔴
-
-            // dispatch(
-            //     updateFormState({
-            //         val,
-            //         topic,
-            //         log: "handleCloseSideNav",
-            //     })
-            // );
-            // dispatch(closeDrawer());
             dispatch(concludeDrawer());
         }
     };
 
+    const handleSearch = (str, searchBar) => {
+        console.log("👽🔥 handleSearch: ", {
+            str,
+            sideNavRawData,
+            filteredData,
+        });
+        // str !== searchBar && setSearchBar(str);
+        // we have a field in store for saving this 🧠🧠🧠
+        // sideNavData.filters.search
+
+        /**
+          🧠🧠🧠
+         * we could set filter.search in a dedicated action
+         * * then call the search action from component with useEffect
+         * or we could set filter.search inside searchNavData() action
+         * * and run search only if it's different from prev value
+         * * * in this case i think we can restore FormSideNavSearchBar
+         */
+
+        if (sideNavRawData && filteredData) {
+            dispatch(
+                searchNavData({
+                    str,
+                    TAGS_OBJ: appSettings.TAGS_OBJ,
+                })
+            );
+        }
+    };
+
+    // clean searchBar on openSection change 🧠
+
+    /*
+    useEffect(() => {
+        if (sideNavRawData && filteredData) {
+            dispatch(
+                searchNavData({
+                    searchBar,
+                    TAGS_OBJ: appSettings.TAGS_OBJ,
+                })
+            );
+        }
+    }, [searchBar, sideNavRawData, filteredData]);
+    */
+
+    /*
+                  Drawer
+        ___________________________
+        |   Left    |    Right    |
+
+             1*            2*
+        |___________|_____________|
+
+        1*: formStore.sideNavData.filteredData 
+                :type Object (tags non filtered) | Array (filtered tags and other data)
+        2*: formStore.sideNavData.selected || []
+                :type Array (always)
+
+     */
+
     return (
         <>
             <div className={styles.nav}>
-                <p>
-                    {uiState.sideNavTopic &&
-                        uiState.sideNavTopic.charAt(0).toUpperCase() +
-                            uiState.sideNavTopic.slice(1)}
-                </p>
+                <div className={styles.sideNavHeading}>
+                    <p>
+                        {`${
+                            formLabel.charAt(0).toUpperCase() +
+                            formLabel.slice(1)
+                        } > ${
+                            uiState.sideNavTopic &&
+                            uiState.sideNavTopic.charAt(0).toUpperCase() +
+                                uiState.sideNavTopic.slice(1)
+                        }`}
+                    </p>
+                    <p>Select the {uiState.sideNavTopic} that you need</p>
+                </div>
                 <span
                     onClick={() =>
                         handleCloseSideNav({
@@ -147,46 +209,41 @@ export default function FormSideNav(
                         <FormSideNavSearchBar
                             topic={uiState.sideNavTopic}
                             data={sourceData}
-                            onChange={(str) => dispatch(searchNavData(str))}
+                            //  searchBar={searchBar}
+                            onChange={(str) => handleSearch(str)}
+                            //  onClear={handleSearch("")}
+                            /* onChange={
+                                (str) => 
+                                    sideNavRawData &&
+                                    filteredData &&
+                                    dispatch(
+                                        uiState.sideNavTopic !== "tags"
+                                            ? searchNavData(str)
+                                            : searchNavDataOnLevel({
+                                                  str,
+                                                  TAGS_OBJ:
+                                                      appSettings.TAGS_OBJ,
+                                              })
+                                    ) // 🧠 I should check if filteredData is object or array
+                            } */
                         />
                     </div>
                 </div>
                 <div className={styles.sidewrapBody}>
                     <div className={styles.wrapper}>
-                        {filteredData &&
+                        {/* {filteredData &&
                             typeof filteredData === "object" &&
                             !Array.isArray(filteredData) && (
                                 <DropdownMenusByLevel
-                                    // menuStructure={filteredData}
-                                    // filters={formState[uiState.sideNavTopic]}
-                                    // handleChildState={updateFormState}
-
-                                    /*
-                                    onChange={({ val, userAction }) =>
-                                        dispatch(
-                                            updateSideNavSelected({
-                                                value: val,
-                                                userAction,
-                                                log: "DropdownMenusByLevel",
-                                            })
-                                        )
-                                    }
-                                    */
-
-                                    // onChange={({ val, topic }) =>
-                                    //     dispatch(
-                                    //         updateFormState({
-                                    //             val,
-                                    //             topic,
-                                    //             log: "DropdownMenusByLevel",
-                                    //         })
-                                    //     )
-                                    // }
                                     topic={uiState.sideNavTopic}
                                     userStyles={styles}
                                 />
-                            )}
-                        {filteredData && filteredData.length && (
+                            )} */}
+
+                        {/* 🔴 sistemare condition, questa é in conflitto con la precedente - perché puó trasformare filteredData in array 
+                        magari aggiungere label match
+                        */}
+                        {/* {filteredData && filteredData.length && (
                             <InputsSelector
                                 arr={filteredData.map((el) =>
                                     el.id && el.name
@@ -194,19 +251,45 @@ export default function FormSideNav(
                                         : el
                                 )}
                                 filters={formState[uiState.sideNavTopic]}
-                                // handleChildState={updateFormState}
-                                onChange={({ val, userAction }) =>
-                                    dispatch(
-                                        updateSideNavSelected({
-                                            val,
-                                            userAction,
-                                            log: "InputsSelector",
-                                        })
-                                    )
-                                }
                                 topic={uiState.sideNavTopic}
                             />
+                        )} */}
+
+                        {/* 🧠 TESTARE NUOVE CONDITIONS 🧠 */}
+
+                        {filteredData ? (
+                            <>
+                                {uiState.sideNavTopic === "tags" && (
+                                    <DropdownMenusByLevel
+                                        topic={uiState.sideNavTopic}
+                                        userStyles={styles}
+                                    />
+                                )}
+
+                                {filteredData.length &&
+                                    uiState.sideNavTopic !== "tags" &&
+                                    uiState.sideNavTopic !==
+                                        "nationalities" && (
+                                        <InputsSelector
+                                            arr={filteredData.map((el) =>
+                                                el.id && el.name
+                                                    ? {
+                                                          id: el.id,
+                                                          name: el.name,
+                                                      }
+                                                    : el
+                                            )}
+                                            filters={
+                                                formState[uiState.sideNavTopic]
+                                            }
+                                            topic={uiState.sideNavTopic}
+                                        />
+                                    )}
+                            </>
+                        ) : (
+                            <p>Loading filters data...</p>
                         )}
+                        {/* 🧠 Test if this loader makes any sense here */}
 
                         {uiState.sideNavTopic === "nationalities" && (
                             <NationalitiesSelector

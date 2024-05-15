@@ -40,6 +40,8 @@ import {
     resetSideNavData,
     initSideNavData,
     closeHintsNav,
+    selectFormSideNavData,
+    selectFormStoreLabel,
 } from "@/src/application/redux/slices/formSlice";
 import dataStructureForms from "@/src/application/settings/dataStructureForms";
 import { fetchDataForSideNav } from "../../../actions/formFetchers";
@@ -71,6 +73,8 @@ export default function Form({
     const newImage = useSelector(selectFormStoreNewImage, shallowEqual);
     const formErrors = useSelector(selectFormStoreErrors, shallowEqual);
     const isLoading = useSelector(selectFormIsLoading, shallowEqual);
+    const sideNavData = useSelector(selectFormSideNavData, shallowEqual);
+    const storedFormLabel = useSelector(selectFormStoreLabel, shallowEqual);
     // let FormComponent = useSelector(selectFormComponent, shallowEqual); // 🧠 components non salvabili in redux
     // const FormComponent = dataStructureForms[formLabel].formComponent; // non ho trovato altra soluzione che rimuovere FormComponent da formSlice
     // const [FormComponent, SetFormComponent] = useState();
@@ -79,8 +83,14 @@ export default function Form({
     const FormComponent = dataStructureForms[formLabel]?.formComponent;
 
     useEffect(() => {
-        if (formLabel) {
-            // console.log("dipatchNewForm: ", { formLabel, formObj, propsData });
+        // console.log("storedFormLabel: ", storedFormLabel);
+        if (formLabel && formLabel !== storedFormLabel) {
+            // console.log("dipatchNewForm: ", {
+            //     formLabel,
+            //     storedFormLabel,
+            //     formObj,
+            //     propsData,
+            // });
             let { formComponent, ...rest } = formObj;
             let payload = {
                 formLabel,
@@ -89,7 +99,7 @@ export default function Form({
             };
             dispatch(loadNewActiveForm(payload));
         }
-    }, [formLabel, formObj, propsData, dispatch]);
+    }, [formLabel, storedFormLabel, formObj, propsData, dispatch]);
 
     /*
     1. 🟢 setup form store - we want all these states to be stored there
@@ -101,11 +111,14 @@ export default function Form({
     TODO:
         1. 🟡 Fix sidenav data bugs
         2. 🟡 make work correctly DropdownMenusByLevel and move it to redux store
+        2.1 🔴 Activate auto-hint for tags
         3. make work correctly InputsSelector and move it to redux store
         4. make work correctly NationalitiesSelector and move it to redux store
         5. QA Form (Create and Edit)
         6. fix QA bugs
+        6.1. 🔴 SideNav.selected got deleted after doing a research
         7. Deploy
+        8. Eliminare old Form 1.0 version + components
     */
 
     // FETCH DATA FOR DRAWER
@@ -115,11 +128,11 @@ export default function Form({
             fetchDataForSideNav(
                 uiState.sideNavTopic,
                 appSettings.TAGS_OBJ
-            ).then((res) => {
-                console.log("fetchDataForSideNav res: ", res);
-                dispatch(initSideNavData({ data: res }));
+            ).then(({ data, parsedData }) => {
+                console.log("fetchDataForSideNav res: ", { data, parsedData });
+                dispatch(initSideNavData({ data, parsedData }));
             });
-        } else {
+        } else if (sideNavData) {
             dispatch(resetSideNavData());
         } // TODO: error handling? 🧠
     }, [uiState]);

@@ -21,6 +21,12 @@ const fetchDataForSideNav = async (topic, TAGS_OBJ) => {
                 //     res,
                 //     response: parseTagsByType(result, TAGS_OBJ),
                 // });
+                console.log("fetchDataForSideNav tags 💦💦💦", {
+                    result,
+                    "res.data": res.data,
+                    TAGS_OBJ,
+                    parseTagsByType: parseTagsByType(result, TAGS_OBJ),
+                });
                 return {
                     parsedData: parseTagsByType(result, TAGS_OBJ),
                     data: res.data,

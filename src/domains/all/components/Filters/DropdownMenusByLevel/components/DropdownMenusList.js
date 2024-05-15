@@ -37,7 +37,15 @@ export default function DropdownMenusList({ groupKey, values, index, styles }) {
         );
     };
 
-    console.log("DropdownMenusList: ", {
+    // console.log("DropdownMenusList: ", {
+    //     index,
+    //     groupKey,
+    //     dropdownsState,
+    //     values,
+    //     selected,
+    // });
+
+    console.log("👽 DropdownMenusList rendering: ", {
         index,
         groupKey,
         dropdownsState,

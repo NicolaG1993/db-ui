@@ -13,8 +13,7 @@ import {
 import { onlyUnique } from "@/src/application/utils/parsers";
 
 function parseTagsByType(obj, TAGS_OBJ) {
-    // console.log("parseTagsByType: ", obj);
-    // console.log("TAGS_OBJ: ", TAGS_OBJ);
+    console.log("parseTagsByType: ", { obj, TAGS_OBJ });
 
     // using TAGS_OBJ to create parsedObj
     const parsedObj = {};

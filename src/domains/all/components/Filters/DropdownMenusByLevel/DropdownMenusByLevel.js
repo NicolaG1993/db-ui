@@ -1,22 +1,16 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import standardStyles from "@/src/domains/all/components/Filters/DropdownMenusByLevel/DropdownMenusByLevel.module.css";
-import updatePrevSelected from "@/src/domains/all/components/Filters/DropdownMenusByLevel/actions/updatePrevSelected";
-import getDropdownsState from "@/src/domains/all/components/Filters/DropdownMenusByLevel/actions/getDropdownsState";
 import renderDropdownLevel from "@/src/domains/all/components/Filters/DropdownMenusByLevel/utils/renderDropdownLevel";
 import { useAppSelector } from "@/src/application/redux/lib/hooks";
 import { shallowEqual, useDispatch } from "react-redux";
 import {
     handleSideNavError,
     hydrateSideNavDropdowns,
-    selectFormSideDropdownsState,
     selectFormSideNavError,
     selectFormSideNavFilteredData,
-    selectFormSideNavFilters,
     selectFormSideNavRenderReady,
     selectFormSideNavSelected,
     selectFormStoreUI,
-    updateFormState,
-    updateSideNavDropdownsState,
 } from "@/src/application/redux/slices/formSlice";
 // import ErrorUI from "@/src/domains/_app/components/Error/components/ErrorUI/ErrorUI";
 
@@ -90,7 +84,7 @@ export default function DropdownMenusByLevel({ onChange, userStyles, topic }) {
         }
     }, []);
 
-    /*
+    /* Non serve piu´? 🧠
     useEffect(() => {
         console.log("selected changed 🔴🔴🔴: ", { selected });
       
@@ -113,6 +107,11 @@ export default function DropdownMenusByLevel({ onChange, userStyles, topic }) {
         }
     }, [selected, dispatch, onChange]);
     */
+
+    console.log("🏈 DropdownMenusByLevel rendering: ", {
+        menuStructure,
+        // index,
+    });
 
     //////////////////////////////
     // DOM
