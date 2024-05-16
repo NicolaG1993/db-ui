@@ -8,23 +8,15 @@ import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import createNewMenus from "../utils/createNewMenus";
 
 export default function DropdownMenusList({ groupKey, values, index, styles }) {
-    // FIX - refactor
-
     const dispatch = useDispatch();
-    const selected = useSelector(selectFormSideNavSelected, shallowEqual);
+    const currentSelection = useSelector(
+        selectFormSideNavSelected,
+        shallowEqual
+    );
     const dropdownsState = useSelector(
         selectFormSideDropdownsState,
         shallowEqual
     );
-
-    // console.log("DropdownMenusList: ", {
-    //     groupKey,
-    //     values,
-    //     index,
-    //     styles,
-    //     dropdownsState,
-    //     selected,
-    // });
 
     const handleMenus = ({ dropdownsState, index, groupKey }) => {
         // this process may differ for other components, that's why we handle this part here and not in action
@@ -36,22 +28,6 @@ export default function DropdownMenusList({ groupKey, values, index, styles }) {
             })
         );
     };
-
-    // console.log("DropdownMenusList: ", {
-    //     index,
-    //     groupKey,
-    //     dropdownsState,
-    //     values,
-    //     selected,
-    // });
-
-    console.log("👽 DropdownMenusList rendering: ", {
-        index,
-        groupKey,
-        dropdownsState,
-        values,
-        selected,
-    });
 
     return (
         <div
@@ -68,10 +44,10 @@ export default function DropdownMenusList({ groupKey, values, index, styles }) {
 
             {dropdownsState[index][groupKey] &&
                 renderDropdownElements({
-                    array: values,
+                    data: values,
                     groupKey,
                     styles,
-                    selected,
+                    currentSelection,
                 })}
         </div>
     );

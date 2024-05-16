@@ -111,14 +111,24 @@ export default function Form({
     TODO:
         1. 🟢 Fix sidenav data bugs
         2. 🟢 make work correctly DropdownMenusByLevel and move it to redux store
-        2.1 🟡 Activate auto-hint for tags
-        3. make work correctly InputsSelector and move it to redux store
+        2.1 🟢 Activate auto-hint for tags
+        3. 🟡 make work correctly InputsSelector and move it to redux store
+        3.1 🔴 Activate auto-hint for actors
         4. make work correctly NationalitiesSelector and move it to redux store
-        5. QA Form (Create and Edit)
-        6. fix QA bugs
-        6.1. 🔴 SideNav.selected got deleted after doing a research
+        5. Make it work with propsData (edit mode)
+        6. QA Form (Create and Edit)
+        6.1 fix QA bugs
+        6.1.1 🟢 SideNav.selected got deleted after doing a research
+        6.2 Extract action and selector from input components - pass them as props (forse fare quando creo library - annotare in ticket peró)
         7. Deploy
         8. Eliminare old Form 1.0 version + components
+
+        BONUS:
+        9. On every SideNav fetch: store fetched data in another store by key
+        9.1 Implement refresh data button inside SideNav
+        9.2 Use this data in all API calls (only when it's safe to do so)
+        9.2.1 When it's not safe store data
+        9.3 For sure we gonna need some new conditions around the app to check if we already have stored fetched data
     */
 
     // FETCH DATA FOR DRAWER

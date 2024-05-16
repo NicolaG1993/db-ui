@@ -20,7 +20,7 @@ TODO:
 ✅ fix selected tags not detected
 ✅ creare files per ogni component e utils
 ✅ fix tag hints not working
-⬜ fix props loops - we have to implement a store for this and refactor some more, not sure
+✅ fix props loops - we have to implement a store for this and refactor some more, not sure
 ⬜ testare con oggetti dummy (ogni oggetto: movie, actor, record, tag, ...)
 ⬜ Fix G.Michaels infos + fix bug if still there (when adding a tag and saving they all got deleted)
 ⬜ pulire codice
@@ -28,7 +28,7 @@ TODO:
 
 export default function DropdownMenusByLevel({ onChange, userStyles, topic }) {
     //////////////////////////////
-    // STATE
+    // REDUX STORE -STATE-
     //////////////////////////////
     // console.log("*🌸 Rendering *DropdownMenusByLevel* ");
 
@@ -108,10 +108,10 @@ export default function DropdownMenusByLevel({ onChange, userStyles, topic }) {
     }, [selected, dispatch, onChange]);
     */
 
-    console.log("🏈 DropdownMenusByLevel rendering: ", {
-        menuStructure,
-        // index,
-    });
+    // console.log("🏈 DropdownMenusByLevel rendering: ", {
+    //     menuStructure,
+    //     index,
+    // });
 
     //////////////////////////////
     // DOM
@@ -128,7 +128,7 @@ export default function DropdownMenusByLevel({ onChange, userStyles, topic }) {
                 <p>Loading...</p>
             )}
         </div>
-    );
+    ); // SPIKE: Improve UI after search 🧠
 }
 
 // OLD NOTES: BEFORE REFACTORING

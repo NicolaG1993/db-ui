@@ -261,65 +261,69 @@ export default function FormSideNav(
                             />
                         )} */}
 
-                        {/* 🧠 TESTARE NUOVE CONDITIONS 🧠 */}
+                        {/* 🧠 TESTARE NUOVE CONDITIONS 🧠 
+                        
+                        for loading we could have an overlay, on top of all components - not priority
 
-                        {filteredData ? (
-                            <>
-                                {uiState.sideNavTopic === "tags" && (
-                                    <DropdownMenusByLevel
-                                        topic={uiState.sideNavTopic}
-                                        userStyles={styles}
-                                    />
-                                )}
+                        🧠🧠🧠
+                        I believe this components should not call action by themself,
+                        instead the parent should pass as much props as possible
+                        🧠🧠🧠
+                        */}
 
-                                {filteredData.length &&
-                                    uiState.sideNavTopic !== "tags" &&
-                                    uiState.sideNavTopic !==
-                                        "nationalities" && (
-                                        <InputsSelector
-                                            arr={filteredData.map((el) =>
-                                                el.id && el.name
-                                                    ? {
-                                                          id: el.id,
-                                                          name: el.name,
-                                                      }
-                                                    : el
-                                            )}
-                                            filters={
-                                                formState[uiState.sideNavTopic]
-                                            }
-                                            topic={uiState.sideNavTopic}
-                                        />
-                                    )}
-                            </>
-                        ) : (
+                        {!sideNavRawData ? (
                             <p>Loading filters data...</p>
-                        )}
-                        {/* 🧠 Test if this loader makes any sense here */}
-
-                        {uiState.sideNavTopic === "nationalities" && (
-                            <NationalitiesSelector
-                                filters={formState[uiState.sideNavTopic]}
-                                // handleChildState={updateFormState}
-                                onChange={({ val, userAction }) =>
-                                    dispatch(
-                                        updateSideNavSelected({
-                                            val,
-                                            userAction,
-                                            log: "NationalitiesSelector",
-                                        })
-                                    )
-                                }
-                                topic={uiState.sideNavTopic}
-                            />
-                            // <InputSelector
-                            //     topic={topic}
-                            //     topicID={topic}
-                            //     formState={formState}
-                            //     updateFormState={updateFormState}
-                            //     handleDrawer={handleDrawer}
-                            //     propsData={allNationalities}
-                            // />
+                        ) : filteredData ? (
+                            uiState.sideNavTopic === "tags" ? (
+                                <DropdownMenusByLevel
+                                    topic={uiState.sideNavTopic}
+                                    userStyles={styles}
+                                />
+                            ) : (
+                                filteredData.length &&
+                                uiState.sideNavTopic !== "nationalities" && (
+                                    <InputsSelector
+                                        data={filteredData.map((el) =>
+                                            el.id && el.name
+                                                ? {
+                                                      id: el.id,
+                                                      name: el.name,
+                                                  }
+                                                : el
+                                        )}
+                                        // currentFilters={
+                                        //     formState[uiState.sideNavTopic]
+                                        // }
+                                        topic={uiState.sideNavTopic}
+                                        // userStyles={styles}
+                                    />
+                                )
+                            )
+                        ) : (
+                            uiState.sideNavTopic === "nationalities" && (
+                                <NationalitiesSelector
+                                    filters={formState[uiState.sideNavTopic]}
+                                    // handleChildState={updateFormState}
+                                    onChange={({ val, userAction }) =>
+                                        dispatch(
+                                            updateSideNavSelected({
+                                                val,
+                                                userAction,
+                                                log: "NationalitiesSelector",
+                                            })
+                                        )
+                                    }
+                                    topic={uiState.sideNavTopic}
+                                />
+                                // <InputSelector
+                                //     topic={topic}
+                                //     topicID={topic}
+                                //     formState={formState}
+                                //     updateFormState={updateFormState}
+                                //     handleDrawer={handleDrawer}
+                                //     propsData={allNationalities}
+                                // />
+                            )
                         )}
                     </div>
 

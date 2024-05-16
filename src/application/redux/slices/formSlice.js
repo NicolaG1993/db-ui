@@ -47,6 +47,7 @@ const initialState = {
         renderReady: false,
         dropdownsState: {},
         selected: [],
+        isLoading: false,
     },
     hints: { missing: [], removed: [], finalDecision: [] },
 };
@@ -262,6 +263,7 @@ const formSlice = createSlice({
                 state.ui.drawerIsOpen = true;
                 state.ui.sideNavTopic = action.payload;
             }
+            // state.sideNavData.isLoading = true;
         },
 
         openHintsNav: (state) => {
@@ -297,6 +299,7 @@ const formSlice = createSlice({
             });
 
             state.sideNavData = newState;
+            // state.sideNavData.isLoading = false;
         },
 
         updateSideNavSelected: (state, action) => {
@@ -314,7 +317,7 @@ const formSlice = createSlice({
 
             // only for logging and testing 👇
             const currentFormStateSpread = { ...currentState.formState };
-            const extractedFormState = [...currentFormStateSpread[key]];
+            // const extractedFormState = [...currentFormStateSpread[key]];
             // console.log("updateSideNavSelected 1: ", {
             //     currentState,
             //     state: current(state),
@@ -391,6 +394,10 @@ const formSlice = createSlice({
         // handleSideNavRenderReady: (state) => {
         //     state.sideNavData.renderReady = !state.sideNavData.renderReady;
         // },
+        hydrateSideNavSelector: (state) => {
+            // TODO ....
+            state.sideNavData.renderReady = true;
+        },
         hydrateSideNavDropdowns: (state) => {
             console.log("🧠 hydrateSideNavDropdowns: ", {
                 stateObj: {},
@@ -637,6 +644,7 @@ export const {
     updateSideNavData,
     resetSideNavData,
     handleSideNavError,
+    hydrateSideNavSelector,
     hydrateSideNavDropdowns,
     updateSideNavSelected,
     updateSideNavDropdownsState,
