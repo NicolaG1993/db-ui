@@ -1,11 +1,10 @@
 import { updateSideNavSelected } from "@/src/application/redux/slices/formSlice";
 import Element from "../components/Element";
 
-const renderElements = ({ data, currentFilters, updateFilters, styles }) =>
+const renderElements = ({ data, currentSelection, updateFilters, styles }) =>
     data.map((it) => {
-        // use Element component
-
-        return currentFilters && currentFilters.find((x) => it.id === x.id) ? (
+        return currentSelection &&
+            currentSelection.find((x) => it.id === x.id) ? (
             <Element
                 key={"InputSelector element (isSelected) • value: " + it.id}
                 it={it}
@@ -23,7 +22,7 @@ const renderElements = ({ data, currentFilters, updateFilters, styles }) =>
 
         //////
         /*
-        return currentFilters && currentFilters.find((x) => it.id === x.id) ? (
+        return currentSelection && currentSelection.find((x) => it.id === x.id) ? (
             <div key={"value: " + it.id}>
                 <span
                     className={styles.selectedEl}

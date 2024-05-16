@@ -6,8 +6,9 @@ export default function Element({
     // handleFilters,
     styles,
     isSelected,
+    viewOnly,
 }) {
-    console.log(" ✌️ Element: ", { it, isSelected });
+    // console.log(" ✌️ Element: ", { it, isSelected });
     const dispatch = useDispatch();
     return (
         <div>
@@ -15,6 +16,7 @@ export default function Element({
                 className={isSelected ? styles.selectedEl : styles.unselectedEl}
                 // onClick={() => handleFilters(it, selected ? "remove" : "add")}
                 onClick={() =>
+                    !viewOnly &&
                     dispatch(
                         updateSideNavSelected({
                             value: it,

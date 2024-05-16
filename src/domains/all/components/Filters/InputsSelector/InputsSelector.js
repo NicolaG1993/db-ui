@@ -5,7 +5,7 @@ import { useAppSelector } from "@/src/application/redux/lib/hooks";
 import {
     selectFormSideNavRenderReady,
     selectFormSideNavSelected,
-    hydrateSideNavSelector,
+    handleSideNavRenderReady,
 } from "@/src/application/redux/slices/formSlice";
 import { shallowEqual, useDispatch } from "react-redux";
 import renderElements from "./utils/renderElements";
@@ -17,12 +17,6 @@ export default function InputsSelector({
     userStyles,
     onChange,
 }) {
-    console.log("*InputsSelector* ", {
-        data,
-        // currentFilters,
-        topic,
-        userStyles,
-    });
     //////////////////////////////
     // REDUX STORE
     //////////////////////////////
@@ -35,6 +29,14 @@ export default function InputsSelector({
         selectFormSideNavSelected,
         shallowEqual
     );
+
+    console.log("*InputsSelector* ", {
+        data,
+        // currentFilters,
+        topic,
+        userStyles,
+        currentSelection,
+    });
     //////////////////////////////
     // STATE
     //////////////////////////////
@@ -51,6 +53,8 @@ export default function InputsSelector({
             setError("Error: data is not an array");
         } else if (currentSelection && !Array.isArray(currentSelection)) {
             setError("Error: currentSelection is not an array");
+        } else {
+            setError();
         }
 
         // else {
@@ -62,8 +66,6 @@ export default function InputsSelector({
         // } else {
         //     dispatch(hydrateSideNavDropdowns());
         // }
-
-        dispatch(hydrateSideNavSelector());
     }, []);
 
     // useEffect(() => {
@@ -76,7 +78,9 @@ export default function InputsSelector({
 
     // DELETE
     useEffect(() => {
-        error && console.log("ERROR: ", error);
+        error
+            ? console.log("ERROR: ", error)
+            : dispatch(handleSideNavRenderReady(true));
     }, [error]);
 
     //////////////////////////////

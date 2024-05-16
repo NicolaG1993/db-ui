@@ -6,7 +6,7 @@ import NationalitiesSelector from "@/src/domains/all/components/Filters/National
 import FormSideNavSearchBar from "@/src/domains/_app/components/Form/components/FormSideNav/components/FormSideNavSearchBar.js";
 import { useEffect, useState } from "react";
 import { searchData } from "@/src/domains/_app/utils/filterData.js";
-import checkMissingTags from "../../actions/checkMissingTags";
+import checkMissingTags from "../../actions/checkHints";
 // import FormSideNavHints from "@/src/domains/_app/components/Form/components/FormSideNav/components/FormSideNavHints";
 
 export default function FormSideNav({

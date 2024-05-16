@@ -1,43 +1,45 @@
 import getActorsMissingTags from "@/src/domains/_app/components/Form/actions/getActorsMissingTags.js";
 import extractMissingTags from "@/src/domains/_app/components/Form/actions/extractMissingTags.js";
 
-const checkMissingTags = async ({
+const checkHints = ({
     topic,
-    data,
+    data, // 🟢 FIXED
     formState, // uguale a originalFormState, not actual selection
     originalFormState,
     appSettings,
-    currentTags,
+    currentSelection,
 }) => {
-    console.log("🔴 checkMissingTags: ", {
+    console.log("🔴 checkHints: ", {
         topic,
         data,
         formState,
         originalFormState,
         appSettings,
-        currentTags,
+        currentSelection,
     });
     let res;
     // check possible tags updates from selected actors
     if (topic === "actors") {
+        // 🧠 "actors" dovrebbe essere flexible ?
         // 🧠 i refactored extractMissingTags without API calls, maybe i can do it also here?
-        res = await getActorsMissingTags(
-            formState[topic], // currentTags ?
-            formState.tags,
+        res = getActorsMissingTags({
+            currentSelection, // formState[topic], // currentSelection ?
+            currentTags: formState.tags,
             originalFormState,
-            data
-        );
+            propsData: data,
+        });
         // console.log("getActorsMissingTags: ", res);
         return res;
     } else if (topic === "tags") {
+        // 🧠 "tags" dovrebbe essere flexible ?
         // check for related tags that could be missing
         // res = extractMissingTags(formState[topic], appSettings.TAGS_REL, data);
-        res = extractMissingTags(currentTags, appSettings.TAGS_REL, data);
+        res = extractMissingTags(currentSelection, appSettings.TAGS_REL, data);
         // console.log("extractMissingTags: ", res);
         return res;
     }
 };
 
-export default checkMissingTags;
+export default checkHints;
 
 // FIX: I'm not handling errors here! 🔴

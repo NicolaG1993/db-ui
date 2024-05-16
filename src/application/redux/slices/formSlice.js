@@ -49,7 +49,13 @@ const initialState = {
         selected: [],
         isLoading: false,
     },
-    hints: { missing: [], removed: [], finalDecision: [] },
+    hints: {
+        missing: [],
+        removed: [],
+        finalDecision: [],
+        missingIsFinish: false,
+        removedIsFinish: false,
+    },
 };
 
 // i have some "loading" states around that are quite pointless, check them out 🧠
@@ -202,24 +208,55 @@ const formSlice = createSlice({
             state.sideNavData = initialState.sideNavData;
         },
 
+        concludeDrawerAfterHints: (state) => {
+            const newSelection = [...state.sideNavData.selected];
+            const key = state.ui.sideNavTopic;
+
+            state.formState[key] = newSelection;
+            state.formState.tags = [...state.hints.finalDecision];
+            // state.hints.removed = [];
+            // state.hints.finalDecision = [];
+            state.hints = initialState.hints;
+            state.ui = initialState.ui;
+            state.sideNavData = initialState.sideNavData;
+            // non credo di doverlo resettare completamente 🧠🧠🧠
+            Cookies.set(
+                "formState",
+                JSON.stringify({
+                    formLabel: state.formLabel,
+                    formState: state.formState,
+                })
+            );
+        },
+
         updateHints: (state, action) => {
             const { hints } = action.payload;
-            state.hints = hints;
+            state.hints = { ...state.hints, ...hints };
             // if (hints.missing.length || hints.removed.length) {
             //     state.ui.hintsIsOpen = true;
             //     state.ui.drawerIsOpen = true;
             // }
         },
         acceptMissingHints: (state, action) => {
-            const arr = action.payload; // includes selected and new hints
-            // console.log("🔴 arr: ", arr);
-            if (arr && arr.length) {
-                state.hints.finalDecision = arr;
-                // state.formState.tags = arr; // 🔴 "tags" here should be flexible - not hardcoded
+            // con tags funziona
+            // 🟢 con ex. actor passa actor obj insieme a tags objects
+
+            const { parsedForm } = action.payload;
+            let result = [];
+
+            const keys = ["tags"]; // 🧠 we should make this flexible (import)
+            const key = keys.find((k) => state.ui.sideNavTopic === k);
+
+            result = key
+                ? [...state.sideNavData.selected, ...parsedForm]
+                : [...state.formState.tags, ...parsedForm];
+            // ! important to use spread here !
+
+            if (result && result.length) {
+                state.hints.finalDecision = result;
             }
-            state.hints.missing = [];
-            // IMPLEMENT THAT DRAWER DOESNT CLOSE CUZ OF state.hints
-            // BUT ON COMAND - we want to keep tags not selected
+
+            state.hints.missing = []; // 🧠 SPIKE: we should keep the not selected
         },
 
         // not used for tags sidenav -> only for related (like actors)
@@ -235,22 +272,6 @@ const formSlice = createSlice({
                 state.hints.finalDecision = newTags;
             }
             // state.hints.removed = [];
-        },
-
-        concludeDrawerAfterHints: (state) => {
-            state.formState.tags = [...state.hints.finalDecision];
-            state.hints.removed = [];
-            state.hints.finalDecision = [];
-            state.ui = initialState.ui;
-            state.sideNavData = initialState.sideNavData;
-            // non credo di doverlo resettare completamente 🧠🧠🧠
-            Cookies.set(
-                "formState",
-                JSON.stringify({
-                    formLabel: state.formLabel,
-                    formState: state.formState,
-                })
-            );
         },
 
         closeSideNav: (state) => {
@@ -277,6 +298,8 @@ const formSlice = createSlice({
         },
 
         initSideNavData: (state, action) => {
+            // We want actors DB data with tags 🟢
+
             let newState = {
                 ...initialState.sideNavData,
                 data: action.payload.data,
@@ -391,13 +414,16 @@ const formSlice = createSlice({
         handleSideNavError: (state, action) => {
             state.sideNavData.error = action.payload.error;
         },
-        // handleSideNavRenderReady: (state) => {
-        //     state.sideNavData.renderReady = !state.sideNavData.renderReady;
-        // },
-        hydrateSideNavSelector: (state) => {
-            // TODO ....
-            state.sideNavData.renderReady = true;
+        handleSideNavRenderReady: (state, action) => {
+            const val = action.payload;
+            state.sideNavData.renderReady = val
+                ? val
+                : !state.sideNavData.renderReady;
         },
+        // hydrateSideNavSelector: (state) => {
+        //     // TODO ....
+        //     state.sideNavData.renderReady = true;
+        // },
         hydrateSideNavDropdowns: (state) => {
             console.log("🧠 hydrateSideNavDropdowns: ", {
                 stateObj: {},
@@ -644,7 +670,8 @@ export const {
     updateSideNavData,
     resetSideNavData,
     handleSideNavError,
-    hydrateSideNavSelector,
+    handleSideNavRenderReady,
+    // hydrateSideNavSelector,
     hydrateSideNavDropdowns,
     updateSideNavSelected,
     updateSideNavDropdownsState,

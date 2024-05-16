@@ -6,7 +6,7 @@ import NationalitiesSelector from "@/src/domains/all/components/Filters/National
 import FormSideNavSearchBar from "@/src/domains/_app/components/Form/components/FormSideNav/components/FormSideNavSearchBar.js";
 import { useEffect, useState } from "react";
 import { searchData } from "@/src/domains/_app/utils/filterData.js";
-import checkMissingTags from "@/src/domains/_app/components/Form/actions/checkMissingTags";
+import checkHints from "@/src/domains/_app/components/Form/actions/checkHints";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import {
     updateHints,
@@ -32,20 +32,7 @@ import { useAppSelector } from "@/src/application/redux/lib/hooks";
 import { selectAppSettings } from "@/src/application/redux/slices/appSettingsSlice";
 // import FormSideNavHints from "@/src/domains/_app/components/Form/components/FormSideNav/components/FormSideNavHints";
 
-export default function FormSideNav(
-    {
-        //  data,
-        //  parsedData,
-        //  formState,
-        // originalFormState,
-        //  updateFormState,
-        // handleHints,
-        // appSettings,
-        // closeSideNav,
-        // topic, // check value after refactor 🧠
-        // handleDrawer, // forse non serve - chiudo gia con closeSideNav
-    }
-) {
+export default function FormSideNav() {
     const dispatch = useDispatch();
 
     const appSettings = useSelector(selectAppSettings);
@@ -58,27 +45,20 @@ export default function FormSideNav(
         selectFormSideNavFilteredData,
         shallowEqual
     );
-    const currentTags = useAppSelector(selectFormSideNavSelected);
+    const currentSelection = useAppSelector(selectFormSideNavSelected);
     const formLabel = useAppSelector(selectFormStoreLabel);
     const filters = useAppSelector(selectFormSideNavFilters, shallowEqual);
 
     const originalFormState = propsData || formState; // TODO: 🧠🧠🧠 we can handle this in one action: res = propsData || formState // this way we delete all conditions in components
 
-    const handleCloseSideNav = async ({
+    const handleCloseSideNav = ({
         appSettings,
         data,
         formState,
         originalFormState,
         topic,
-        currentTags,
+        currentSelection,
     }) => {
-        /*
-        🔴🔴🔴 FIX: 
-        1. tag auto-hints not working
-        2. can't delete prevState tags from left list
-        3. can't delete tags from research from left list
-        4. can't close level
-        */
         console.log("handleCloseSideNav: ", {
             appSettings,
             data,
@@ -86,17 +66,22 @@ export default function FormSideNav(
             originalFormState,
             topic,
             uiState,
-            currentTags,
+            currentSelection,
         });
+
+        // ----!IGNORE!---- // currentSelection per tags va bene // 🔴🔴🔴 ma per actor abbiamo array di actors
+
         // TODO: error handling here 🧠
-        const res = await checkMissingTags({
+        const res = checkHints({
             appSettings,
             data,
             formState,
             originalFormState,
             topic,
-            currentTags,
+            currentSelection,
         });
+        // 🟢 checkRemovedTags()
+        // 🧠 fare checkHints() + checkRemovedTags() in una async fn?
 
         console.log("🧠 res: ", res);
         // no condition needed, we want also undefined values
@@ -105,6 +90,8 @@ export default function FormSideNav(
                 hints: {
                     missing: res?.missingTags,
                     removed: res?.removedTags,
+                    // missingIsFinish: !res?.missingTags.length,
+                    // removedIsFinish: !res?.removedTags.length,
                 },
             })
         );
@@ -115,6 +102,9 @@ export default function FormSideNav(
             // update formState 🟢
             // fare anche dentro hints component 🟢
             dispatch(concludeDrawer());
+            // 🟢 con actor: tags replaces formState.tags - quindi perde valori precedenti
+            // // 🟢 noi vogliamo aggiungere i missingTags selezionati
+            // // 🟡 e rimuovere i removedTags selezionati
         }
     };
 
@@ -178,7 +168,7 @@ export default function FormSideNav(
      */
 
     return (
-        <>
+        <div id={styles.FormSideNav} className={styles.sidewrap}>
             <div className={styles.nav}>
                 <div className={styles.sideNavHeading}>
                     <p>
@@ -201,7 +191,7 @@ export default function FormSideNav(
                             formState,
                             originalFormState,
                             topic: uiState.sideNavTopic,
-                            currentTags,
+                            currentSelection,
                         })
                     }
                 >
@@ -283,13 +273,18 @@ export default function FormSideNav(
                                 filteredData.length &&
                                 uiState.sideNavTopic !== "nationalities" && (
                                     <InputsSelector
-                                        data={filteredData.map((el) =>
+                                        data={filteredData.map(
+                                            (el) => el
+                                            /*
+                                            // 🧠 check if this change breaks anything
                                             el.id && el.name
                                                 ? {
                                                       id: el.id,
                                                       name: el.name,
+                                                      tags: el.tags || [],
                                                   }
                                                 : el
+                                                */
                                         )}
                                         // currentFilters={
                                         //     formState[uiState.sideNavTopic]
@@ -337,7 +332,7 @@ export default function FormSideNav(
                     <div className={styles.wrapper}>
                         <ActiveElements
                             topic={uiState.sideNavTopic}
-                            selected={currentTags}
+                            selected={currentSelection}
                             // arr={formState[uiState.sideNavTopic]}
                             // handleChildState={updateFormState}
                             onChange={({ val, userAction }) =>
@@ -363,6 +358,6 @@ export default function FormSideNav(
                     </div>
                 </div>
             </div>
-        </>
+        </div>
     );
 }

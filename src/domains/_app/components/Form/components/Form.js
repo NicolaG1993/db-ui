@@ -134,14 +134,17 @@ export default function Form({
     // FETCH DATA FOR DRAWER
     useEffect(() => {
         // console.log("uiState: ", uiState);
+
+        // 🧠🧠🧠 can i move this into drawer? or FormSideNav 🧠🧠🧠
         if (!uiState.hintsIsOpen) {
             if (
+                // condition not flexible 🧠
                 uiState?.sideNavTopic &&
                 uiState.sideNavTopic !== "nationalities"
             ) {
                 fetchDataForSideNav(
                     uiState.sideNavTopic,
-                    appSettings.TAGS_OBJ
+                    appSettings.TAGS_OBJ // not flexible 🧠
                 ).then(({ data, parsedData }) => {
                     console.log("fetchDataForSideNav res: ", {
                         data,
@@ -155,7 +158,7 @@ export default function Form({
         }
     }, [uiState]);
 
-    /* 🧠 MOVE INSIDE ... ? */
+    /* 🧠 MOVE INSIDE DRAWER ? */
     useEffect(() => {
         if (hints?.missing?.length || hints?.removed?.length) {
             openHintsNav();
@@ -316,3 +319,20 @@ export default function Form({
     );
     */
 }
+
+/*
+TESTING:
+
+• Aggiungi actor che non ha nuovi missing hints
+• Aggiungi un actor con missing hints ma non accettarli
+• Aggiungi un actor con missing hints ma accettali
+• Aggiungi un actor con missing hints ma accettane una parte
+
+🟢 Rimuovi un actor che non ha nuovi removed hints 
+• Rimuovi un actor con removed hints ma non accettarli
+• Rimuovi un actor con removed hints ma accettali
+• Rimuovi un actor con removed hints ma accettane una parte
+
+• Aggiungi e rimuovi actor, non accettare nessun tipo di hint
+• Aggiungi e rimuovi actor,  accetta tutti i tipi di hints
+*/
