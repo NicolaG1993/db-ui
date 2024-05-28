@@ -32,18 +32,19 @@ async function handler(req, res) {
         release,
     });
 
-    /* 
     if (!title) {
         return res.status(422).send({ error: ["Missing one or more fields"] });
     }
     if (release) {
         release = new Date(release);
     }
-    if (categories.length) {
-    }
+    // if (categories.length) {
+    // }
     // if (tags.length) {
     //     tags = extractMissingTagsIDs(tags);
     // }
+
+    /* FACCIAMO GIA IN UI QUESTO
 
     // console.log("actors: ", actors);
     //actor check
@@ -77,7 +78,9 @@ async function handler(req, res) {
         tags.filter((el, i) => tags.indexOf(el) === i); // delete all duplicates
         console.log("tags after getRelationsByArr", tags);
     }
+    */
 
+    // THIS MIGHT NEED SOME B.E. REFACTOR 🧠🧠🧠🧠
     try {
         // CREATE CLIP
         const { rows } = await newMovie(
@@ -137,7 +140,7 @@ async function handler(req, res) {
                 "tagID"
             ));
 
-        // console.log("COMPLETED!!", rows[0]);
+        console.log("COMPLETED!!", rows[0]);
         res.status(200).json(rows[0]);
     } catch (err) {
         console.log("ERROR!!", err);
@@ -146,7 +149,6 @@ async function handler(req, res) {
             error: err,
         });
     }
-    */
 }
 
 export default handler;

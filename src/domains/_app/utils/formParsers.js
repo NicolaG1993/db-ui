@@ -51,15 +51,15 @@ const cleanFalseRelations = (obj) => {
 
 // used to extract new realtions from array of objects
 const newRelationsStandardMethod = (arr, propsData, key) => {
-    return arr
-        .filter(
-            (o) =>
-                !propsData[key]
-                    .filter((el) => el.name) // skip any corrupted element saved before in db
-                    .map((el) => el.name) // modify the rest
-                    .includes(o.name) // check if includes the user selected x
-        )
-        .map((el) => el.id); // get only the ids
+    console.log("newRelationsStandardMethod: ", { arr, propsData, key });
+    return arr.filter(
+        (id) =>
+            !propsData[key]
+                .filter((el) => el.id) // skip any corrupted element saved before in db
+                .map((el) => el.id) // modify the rest
+                .includes(id) // check if includes the user selected x
+    );
+    // .map((el) => el.id); // get only the ids
 };
 
 // used to extract new realtions from array of objects - only for movies
@@ -94,10 +94,12 @@ const parseFormRelationsEdit = (allRelations, propsData) => {
     let addedRelations = {};
     let removedRelations = {};
 
+    console.log("parseFormRelationsEdit: ", { allRelations, propsData });
     if (allRelations) {
         Object.entries(allRelations).map(([key, arr], i) => {
             if (key === "nationalities") {
                 // fare anche caso nationality N/A? serve veramente ? 🧠
+                // Controllare questa parte 🧠 looks ok-ish but needs check
                 addedRelations[key] = newRelationsNationalitiesMethod(
                     arr,
                     propsData,
@@ -123,17 +125,20 @@ const parseFormRelationsEdit = (allRelations, propsData) => {
                     }
                 }
             } else {
+                // 🔴🔴🔴🔴🔴🔴🔴🔴
                 // set the new relations
                 addedRelations[key] = newRelationsStandardMethod(
-                    arr,
-                    propsData,
-                    key
+                    arr, // int[]
+                    propsData, // obj
+                    key // string (es. "actors")
                 );
                 // set the deleted relations
                 removedRelations[key] = propsData[key]
                     .filter((el) => !arr.map((el) => el.id).includes(el.id))
                     .map((el) => el.id);
             }
+            console.log("addedRelations: ", addedRelations);
+            console.log("removedRelations: ", removedRelations);
         });
     }
 
@@ -154,7 +159,7 @@ const parseFormRelations = (formRelations, formState) => {
             allRelations.nationalities = formState.nationalities;
         } else {
             const parsedRelation = formState[topic].map(
-                (el) => ({ name: el.name, id: el.id || el.code }) // nationalities non hanno id
+                (el) => el.id || el.code // nationalities non hanno id
             );
 
             console.log("parsedRelation: ", parsedRelation);

@@ -21,7 +21,7 @@ export default async function createItem({ formState, form, propsData }) {
     }
 
     if (propsData) {
-        // 🟢 MODIFY //
+        // 🔴🔴🔴🔴🔴🔴 MODIFY 🔴🔴🔴🔴🔴🔴 // All relations get deleted on edit
         /* parse relations for db */
         let relationsObj = {};
         relatedData &&
@@ -56,7 +56,6 @@ export default async function createItem({ formState, form, propsData }) {
         //     // }
         // });
 
-        // Mi servono veramente names??? 🟡🟡🟡🟡🟡🟡🟡🟡🟡🟡🟡🟡
         return axios.post(form.APInew, {
             ...formState,
             ...relatedData,

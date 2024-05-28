@@ -215,6 +215,13 @@ export default function Form({
                 propsData,
             })
                 .then(({ data }) => {
+                    console.log("submitForm: ", {
+                        data,
+                        formState,
+                        newImage,
+                        form,
+                        propsData,
+                    });
                     if ((propsData || parentIsWaiting) && handleEditsInParent) {
                         handleEditsInParent(data);
                     }
@@ -224,7 +231,7 @@ export default function Form({
 
                     formLabel !== "record" &&
                         formLabel !== "records" &&
-                        router.push(`/el/${formLabel}/${data.id}`);
+                        router.push(`/el/${formLabel}/${data.data.id}`);
                 })
                 .catch((error) => {
                     console.log(error);
