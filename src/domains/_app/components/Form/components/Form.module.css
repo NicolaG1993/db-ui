@@ -336,6 +336,21 @@
     grid-column-start: 1;
     grid-column-end: 3;
 }
+.hintsListBody {
+    font-size: 12px;
+}
+.hintsListBody p {
+    margin: 0.15rem 0;
+}
+.finalResultElement {
+}
+.missingElement {
+    color: green;
+}
+.removedElement {
+    color: red;
+    text-decoration: line-through;
+}
 
 .sideHintsFooter {
     padding: 0.5rem 0.75rem;

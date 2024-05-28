@@ -2,6 +2,7 @@ import createItem from "@/src/domains/_app/actions/createItem";
 import uploadImage from "@/src/domains/_app/actions/uploadImage";
 
 const submitForm = async ({ formState, newImage, form, propsData }) => {
+    console.log("submitForm: ", { formState, newImage, form, propsData });
     let finalRes;
 
     if (formState.birthday === "") {

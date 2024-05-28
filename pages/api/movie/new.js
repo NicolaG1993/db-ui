@@ -19,6 +19,20 @@ async function handler(req, res) {
         release,
     } = req.body;
 
+    console.log("req.body: ", {
+        title,
+        pic,
+        studios,
+        distributions,
+        rating,
+        categories,
+        tags,
+        urls,
+        actors,
+        release,
+    });
+
+    /* 
     if (!title) {
         return res.status(422).send({ error: ["Missing one or more fields"] });
     }
@@ -132,6 +146,7 @@ async function handler(req, res) {
             error: err,
         });
     }
+    */
 }
 
 export default handler;

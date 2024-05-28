@@ -244,19 +244,24 @@ const formSlice = createSlice({
             const { parsedForm } = action.payload;
             let result = [];
 
-            const keys = ["tags"]; // 🧠 we should make this flexible (import)
+            const keys = ["tags"]; // 🧠 we should import this and make this flexible (import)
             const key = keys.find((k) => state.ui.sideNavTopic === k);
 
-            result = key
-                ? [...state.sideNavData.selected, ...parsedForm]
-                : [...state.formState.tags, ...parsedForm];
+            const source = key
+                ? state.sideNavData.selected
+                : !!state.hints.finalDecision.length &&
+                  state.hints.removedIsFinish
+                ? state.hints.finalDecision
+                : state.formState.tags;
+            result = [...source, ...parsedForm];
             // ! important to use spread here !
 
             if (result && result.length) {
                 state.hints.finalDecision = result;
+                state.hints.missingIsFinish = true;
             }
 
-            state.hints.missing = []; // 🧠 SPIKE: we should keep the not selected
+            //  state.hints.missing = []; // 🧠 SPIKE: we should keep the not selected
         },
 
         // not used for tags sidenav -> only for related (like actors)
@@ -264,12 +269,24 @@ const formSlice = createSlice({
             // 🧠 The non selected could stay stored in state (but for now i have no plans to use them)
             // 🔴 "tags" here should be flexible - not hardcoded
             const arr = action.payload;
+            const arrIDs = arr.map(({ id }) => id);
             if (arr && arr.length) {
-                let newTags = state.formState.tags.filter(
-                    (el) => !arr.includes(el)
-                );
+                const source =
+                    !!state.hints.finalDecision.length &&
+                    state.hints.missingIsFinish
+                        ? state.hints.finalDecision
+                        : state.formState.tags;
+                let newTags = source.filter(({ id }) => !arrIDs.includes(id)); //
+
                 // state.formState.tags = newTags;
                 state.hints.finalDecision = newTags;
+                state.hints.removedIsFinish = true;
+
+                console.log("acceptRemovedHints END: ", {
+                    arr,
+                    newTags,
+                    "state.formState.tags": current(state.formState.tags),
+                });
             }
             // state.hints.removed = [];
         },

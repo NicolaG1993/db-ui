@@ -12,10 +12,19 @@ import {
     closeDrawer,
     concludeDrawerAfterHints,
 } from "@/src/application/redux/slices/formSlice";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { shallowEqual, useDispatch } from "react-redux";
 import styles from "@/src/domains/_app/components/Form/components/Form.module.css";
 import Element from "@/src/domains/all/components/Filters/InputsSelector/components/Element";
+
+// fare util 🧠
+const extractFormData = (formData) => {
+    let parsedForm = [];
+    for (const value of formData.values()) {
+        parsedForm.push(JSON.parse(value));
+    }
+    return parsedForm;
+};
 
 export default function FormSideHints() {
     const dispatch = useDispatch();
@@ -23,6 +32,13 @@ export default function FormSideHints() {
     let hints = useAppSelector(selectFormStoreHints, shallowEqual);
     const formState = useAppSelector(selectFormState, shallowEqual);
     const currentSelection = useAppSelector(selectFormSideNavSelected);
+
+    const [hintsFormsSelected, setHintsFormsSelected] = useState({
+        missing: hints.missing,
+        removed: [],
+    }); // we use this only to display "live!" hints differences selected by user inside div.finalResultWrap
+
+    const removedHintsIDs = hintsFormsSelected.removed.map(({ id }) => id);
 
     console.log("⬜ FormSideHints: ", {
         hints,
@@ -33,7 +49,6 @@ export default function FormSideHints() {
 
     const handleSubmitMissingHints = (e) => {
         e.preventDefault();
-        const formData = new FormData(e.target);
 
         /*
         // se volessimo salvare anche gli hints non selezionati, possiamo farlo qua
@@ -50,24 +65,17 @@ export default function FormSideHints() {
         let parsedForm = [...currentSelection]; // ! important to use spread here !
  */
 
-        // 🟢 non posso passare formData // devo fare un parse apposta prima
-        let parsedForm = [];
-        for (const value of formData.values()) {
-            console.log("handleSubmitMissingHints: ", {
-                target: e.target,
-                formDataValue: JSON.parse(value),
-            });
-            parsedForm.push(JSON.parse(value));
-        }
+        const formData = new FormData(e.target);
+        const parsedForm = extractFormData(formData);
 
         // dispatch(acceptMissingHints(parsedForm));
-        dispatch(acceptMissingHints({ parsedForm }));
+        dispatch(acceptMissingHints({ parsedForm })); // 🟢 non posso passare formData // devo fare un parse apposta prima
 
         // SPIKE: RESET OR STORE FILTERS LEFT BEHIND? 🧠
         // ...
     };
 
-    // NOT USED: IMPLEMENT! (BUT ONLY FOR ACTOR TAGS)
+    // USED ONLY FOR ACTOR TAGS so far
     const handleSubmitRemovedHints = (e) => {
         e.preventDefault();
         const formData = new FormData(e.target);
@@ -107,6 +115,29 @@ export default function FormSideHints() {
         dispatch(concludeDrawerAfterHints());
     };
 
+    const handleSelectHintsChange = (eventTarget, label) => {
+        // e.preventDefault();
+        const value = JSON.parse(eventTarget.value);
+
+        console.log("e.target: ", {
+            eventTarget: eventTarget,
+            "eventTarget.value": value,
+            "eventTarget.checked": eventTarget.checked,
+            hintsFormsSelected,
+        });
+
+        let result = [];
+        if (eventTarget.checked) {
+            result = [...hintsFormsSelected[label], value]; // value = {id, name}
+        } else {
+            result = hintsFormsSelected[label].filter(
+                ({ id }) => id !== value.id
+            );
+        }
+
+        setHintsFormsSelected((prev) => ({ ...prev, [label]: result }));
+    };
+
     // useEffect(() => {
     //     if (
     //         !hints.missing.length &&
@@ -130,6 +161,8 @@ export default function FormSideHints() {
     • NB che peró concludeDrawer() funziona giá con skipHints (nn sn sicuro! testare)
     🔴🔴🔴 */
 
+    console.log("🎸 removedHintsIDs: ", removedHintsIDs);
+
     return (
         <div id={styles.FormSideHints} className={styles.sidewrap}>
             <div className={styles.nav}>
@@ -151,6 +184,12 @@ export default function FormSideHints() {
                                 <form
                                     id="missingHintsForm"
                                     onSubmit={handleSubmitMissingHints}
+                                    onChange={(e) =>
+                                        handleSelectHintsChange(
+                                            e.target,
+                                            "missing"
+                                        )
+                                    }
                                 >
                                     <div className={styles.hintsWrap}>
                                         {hints.missing.map((el) => (
@@ -226,6 +265,12 @@ export default function FormSideHints() {
                                 <form
                                     id="removedHintsForm"
                                     onSubmit={handleSubmitRemovedHints}
+                                    onChange={(e) =>
+                                        handleSelectHintsChange(
+                                            e.target,
+                                            "removed"
+                                        )
+                                    }
                                 >
                                     <div className={styles.hintsWrap}>
                                         {hints.removed.map((el) => (
@@ -277,9 +322,69 @@ export default function FormSideHints() {
                     <p>Final result:</p>
                 </div>
 
-                {/* 🧠 evidenzia le decisioni da added (green) e removed (red) 🧠 */}
-                <div>
-                    {hints?.finalDecision?.map((t) => (
+                {/* 🧠 🧠 🧠
+                
+                • ⚪ bianco: tags selected (??? formState.tags o state.sideNavData.selected ???) // no sideNavData.selected, in questo caso contiene actors, non tags
+                • 🟢 verde: nuovi tags selezionati da hints.missing
+                • 🔴 rosso: tags che saranno eliminati grazie a hints.removed
+    
+                */}
+                <div className={styles.hintsListBody}>
+                    {hintsFormsSelected.missing.map((t) => (
+                        <p
+                            key={
+                                "New State Element (isMissing) • value: " + t.id
+                            }
+                            className={`${styles.finalResultElement} ${styles.missingElement}`}
+                        >
+                            {"+ " + t.name}
+                        </p>
+                    ))}
+
+                    {formState.tags.map((t) => {
+                        if (removedHintsIDs.includes(t.id)) {
+                            return (
+                                <p
+                                    key={
+                                        "New State Element (isRemoved) • value: " +
+                                        t.id
+                                    }
+                                    className={`${styles.finalResultElement} ${styles.removedElement}`}
+                                >
+                                    {"- " + t.name}
+                                </p>
+                            );
+                        } else {
+                            return (
+                                // <Element
+                                //     key={
+                                //         "New State Element (isSelected) • value: " +
+                                //         t.id
+                                //     }
+                                //     it={t}
+                                //     styles={styles}
+                                //     isSelected={false} // usare per verde e bianco
+                                //     viewOnly={true}
+                                //     danger={false} // usare per rosso
+                                // />
+                                <p
+                                    key={
+                                        "New State Element (isSelected) • value: " +
+                                        t.id
+                                    }
+                                    className={styles.finalResultElement}
+                                >
+                                    {"• " + t.name}
+                                </p>
+                            );
+                        }
+                    })}
+
+                    {/* 🧠 Come faccio ad avere valori live di hints forms ??? before confirming or skipping 
+                        💡 Via form onChange() 
+                    */}
+
+                    {/*  {hints?.finalDecision?.map((t) => (
                         <Element
                             key={
                                 "New State Element (isSelected) • value: " +
@@ -291,19 +396,20 @@ export default function FormSideHints() {
                             viewOnly={true}
                         />
 
-                        /*
-                        <div key={`hint removed ` + el.id}>
-                            <input
-                                type="checkbox"
-                                id={el.id}
-                                name={el.name}
-                                value={JSON.stringify(el)}
-                                // defaultChecked
-                            />
-                            <label htmlFor={el.name}>{el.name}</label>
-                        </div>
-                        */
-                    ))}
+                        
+                        // <div key={`hint removed ` + el.id}>
+                        //     <input
+                        //         type="checkbox"
+                        //         id={el.id}
+                        //         name={el.name}
+                        //         value={JSON.stringify(el)}
+                        //         // defaultChecked
+                        //     />
+                        //     <label htmlFor={el.name}>{el.name}</label>
+                        // </div>
+                       
+                    ))} 
+                    */}
                 </div>
             </div>
 

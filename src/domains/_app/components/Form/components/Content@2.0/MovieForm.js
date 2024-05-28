@@ -73,7 +73,7 @@ export default function MovieForm({
                     form,
                     propsData,
                     formLabel: form.key,
-                    setOpenForm,
+                    // setOpenForm,
                 })
             }
             className={styles.form}

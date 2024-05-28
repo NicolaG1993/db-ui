@@ -67,6 +67,17 @@ export default function getActorsMissingTags({
     // .2 🟢 dobbiamo estrarre dai tags gia selezionati quelli che sono inclusi solo in removedActors
     // // .2.1 🟢 focus su tags come body, roles - gli altri, in teoria, non servono - ma, in teoria, non sono nemmeno salvati in actor allora (?) quindi all good?
     // // .2.2 🟡🧠 i tags gia selezionati sono "state.sideNavData.selected" oppure [...state.sideNavData.selected, ] ?
+
+    /*
+    🔴🔴🔴
+NEW ISSUE:
+Con actors:
+cosa fare se abbiamo un tag (ex. caucasian)
+che é sia gia presente in state
+che in new actor added
+che in actor removed ?
+🔴🔴🔴
+*/
     let removedTags = [];
     if (removedActors && removedActors.length) {
         const removedActorsData = removedActors.map(({ id }) =>

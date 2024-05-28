@@ -45,6 +45,7 @@ import {
 } from "@/src/application/redux/slices/formSlice";
 import dataStructureForms from "@/src/application/settings/dataStructureForms";
 import { fetchDataForSideNav } from "../../../actions/formFetchers";
+import submitForm from "../actions/submitForm";
 
 export default function Form({
     formLabel,
@@ -197,7 +198,7 @@ export default function Form({
         form,
         propsData,
         formLabel,
-        setOpenForm,
+        // setOpenForm,
     }) => {
         e.preventDefault();
         // 🧠 Handle API errors properly!
@@ -219,13 +220,14 @@ export default function Form({
                     }
 
                     dispatch(handlePostSuccess());
-                    setOpenForm && setOpenForm(false); // forse non necessario ?
+                    setOpenForm && setOpenForm(false); // forse non necessario ? // trasformare in action? not sure
 
                     formLabel !== "record" &&
                         formLabel !== "records" &&
                         router.push(`/el/${formLabel}/${data.id}`);
                 })
                 .catch((error) => {
+                    console.log(error);
                     showBoundary({
                         code: error.response.status,
                         message: getError(error),
@@ -331,7 +333,7 @@ TESTING:
 🟢 Rimuovi un actor che non ha nuovi removed hints 
 • Rimuovi un actor con removed hints ma non accettarli
 • Rimuovi un actor con removed hints ma accettali
-• Rimuovi un actor con removed hints ma accettane una parte
+🟢 Rimuovi un actor con removed hints ma accettane una parte
 
 • Aggiungi e rimuovi actor, non accettare nessun tipo di hint
 • Aggiungi e rimuovi actor,  accetta tutti i tipi di hints

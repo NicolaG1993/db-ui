@@ -18,7 +18,7 @@ const checkHints = ({
         currentSelection,
     });
     let res;
-    // check possible tags updates from selected actors
+    // should we check possible tags updates from selected actors ?
     if (topic === "actors") {
         // 🧠 "actors" dovrebbe essere flexible ?
         // 🧠 i refactored extractMissingTags without API calls, maybe i can do it also here?
