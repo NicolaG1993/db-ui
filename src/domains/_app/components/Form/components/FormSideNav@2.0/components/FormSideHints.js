@@ -6,13 +6,15 @@ import {
     selectFormStoreUI,
     closeHintsNav,
     selectFormState,
-    updateHints,
+    skipMissingHints,
+    skipRemovedHints,
     concludeDrawer,
     selectFormSideNavSelected,
     closeDrawer,
     concludeDrawerAfterHints,
     selectMissingIsFinish,
     selectRemovedIsFinish,
+    selectFormSideNavTopic,
 } from "@/src/application/redux/slices/formSlice";
 import { useEffect, useState } from "react";
 import { shallowEqual, useDispatch } from "react-redux";
@@ -33,6 +35,11 @@ export default function FormSideHints() {
     //  let uiState = useAppSelector(selectFormStoreUI, shallowEqual);
     let hints = useAppSelector(selectFormStoreHints, shallowEqual);
     const formState = useAppSelector(selectFormState, shallowEqual);
+    const sideNavTopic = useAppSelector(selectFormSideNavTopic, shallowEqual);
+    const sideNavSelected = useAppSelector(
+        selectFormSideNavSelected,
+        shallowEqual
+    );
     const currentSelection = useAppSelector(selectFormSideNavSelected);
     const missingIsFinish = useAppSelector(selectMissingIsFinish);
     const removedIsFinish = useAppSelector(selectRemovedIsFinish);
@@ -41,6 +48,11 @@ export default function FormSideHints() {
         missing: hints.missing,
         removed: [],
     }); // we use this only to display "live!" hints differences selected by user inside div.finalResultWrap
+
+    const savedItems =
+        sideNavTopic === "tags" ? sideNavSelected : formState.tags;
+    // we meed this condition, becasue we use this also for actors
+    // sideNavData.selected va bene per tags hints, ma non x actors hints, in questo caso contiene actors, non tags
 
     const removedHintsIDs = hintsFormsSelected.removed.map(({ id }) => id);
 
@@ -92,27 +104,14 @@ export default function FormSideHints() {
     };
 
     const handleSkipMissingHints = (hints) => {
-        dispatch(
-            updateHints({
-                hints: {
-                    missingIsFinish: true,
-                    // missing: [],
-                    // removed: hints.removed,
-                },
-            })
-        );
+        dispatch(skipMissingHints());
+        setHintsFormsSelected((prev) => ({ ...prev, missing: [] }));
     };
 
     const handleSkipRemovedHints = (hints) => {
-        dispatch(
-            updateHints({
-                hints: {
-                    removedIsFinish: true,
-                    // missing: hints.missing,
-                    // removed: [],
-                },
-            })
-        );
+        dispatch(skipRemovedHints());
+        setHintsFormsSelected((prev) => ({ ...prev, removed: [] }));
+        // qui non devo solo rimuoverli ma anche farli diventare bianchi
     };
 
     const closeHintsDrawer = () => {
@@ -333,7 +332,7 @@ export default function FormSideHints() {
 
                 {/* 🧠 🧠 🧠
                 
-                • ⚪ bianco: tags selected (??? formState.tags o state.sideNavData.selected ???) // no sideNavData.selected, in questo caso contiene actors, non tags
+                • ⚪ bianco: tags selected (??? formState.tags o state.sideNavData.selected ???) //
                 • 🟢 verde: nuovi tags selezionati da hints.missing
                 • 🔴 rosso: tags che saranno eliminati grazie a hints.removed
     
@@ -350,8 +349,11 @@ export default function FormSideHints() {
                         </p>
                     ))}
 
-                    {formState.tags.map((t) => {
-                        if (removedHintsIDs.includes(t.id)) {
+                    {savedItems.map((t) => {
+                        if (
+                            !!hintsFormsSelected.removed.length &&
+                            removedHintsIDs.includes(t.id)
+                        ) {
                             return (
                                 <p
                                     key={
@@ -440,6 +442,7 @@ export default function FormSideHints() {
                         type="button"
                         onClick={skipAllHints}
                         className="button-standard"
+                        disabled={true}
                     >
                         Skip
                     </button>

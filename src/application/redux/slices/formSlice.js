@@ -211,9 +211,12 @@ const formSlice = createSlice({
         // 🔴🔴🔴🔴 ELIMINA TUTTI I TAG INSERITI IN PRECEDENZA 🔴🔴🔴🔴
         concludeDrawerAfterHints: (state, action) => {
             const newSelection = [...state.sideNavData.selected];
-            const key = state.ui.sideNavTopic; // "tags" // forse serve per actors? 🧠
+            const sideNavTopic = state.ui.sideNavTopic; // "tags" // forse serve per actors? 🧠
 
-            console.log("concludeDrawerAfterHints: ", { newSelection, key });
+            console.log("concludeDrawerAfterHints: ", {
+                newSelection,
+                sideNavTopic,
+            });
 
             // 🔴🔴🔴🔴 QUESTA È SEMPRE ARRAY VUOTA 🔴🔴🔴🔴
             // 🔴🔴🔴🔴 !!!!CONFLITTO!!! Stiamo dichiarando 2 volte "state.formState.tags" 🔴🔴🔴🔴
@@ -222,7 +225,7 @@ const formSlice = createSlice({
 
             // if (action.payload === "close nav") {
             //     /* Questa serve per non resettare tags on close nav */
-            //     state.formState[key] = newSelection;
+            //     state.formState[sideNavTopic] = newSelection;
             // } else if (action.payload === "save hints") {
             //     /* Questa serve x salvare hints dentro form */
             //     state.formState.tags = [...state.hints.finalDecision];
@@ -231,6 +234,12 @@ const formSlice = createSlice({
             //....
 
             state.formState.tags = [...state.hints.finalDecision];
+
+            // make "actors" flexible 🧠
+            if (sideNavTopic === "actors") {
+                // 🟡🟡🟡🟡 TESTARE 🟡🟡🟡🟡
+                state.formState[sideNavTopic] = state.sideNavData.selected;
+            }
 
             // state.hints.removed = [];
             // state.hints.finalDecision = [];
@@ -247,7 +256,7 @@ const formSlice = createSlice({
             );
         },
 
-        updateHints: (state, action) => {
+        setupHints: (state, action) => {
             const { hints } = action.payload;
             state.hints = { ...state.hints, ...hints };
             // if (hints.missing.length || hints.removed.length) {
@@ -255,10 +264,30 @@ const formSlice = createSlice({
             //     state.ui.drawerIsOpen = true;
             // }
 
+            console.log("🟡🟡🟡🟡 setupHints: ", {
+                finalDecision: current(state.hints.finalDecision),
+                selected: current(state.sideNavData.selected),
+            });
             // 🟡🟡🟡🟡 TESTARE 🟡🟡🟡🟡
-            state.hints.finalDecision = !!state.hints.finalDecision.length
-                ? state.hints.finalDecision
-                : state.sideNavData.selected;
+            const keys = ["tags"]; // 🧠 we should import this and make this flexible (import) // altrimenti si puo fare condition piu semplice
+            const key = keys.find((k) => state.ui.sideNavTopic === k);
+
+            // state.hints.finalDecision = !!state.hints.finalDecision.length
+            //     ? state.hints.finalDecision
+            //     : state.sideNavData.selected;
+
+            state.hints.finalDecision = key
+                ? state.sideNavData.selected
+                : state.formState.tags;
+
+            /*
+                finalDecision:
+                    con tags:
+                        • se esiste giá (non puó giá esistere in setupHints)
+                        • usare state.sideNavData.selected
+                    con actors:
+                        • state.formState.tags                 
+                */
         },
         acceptMissingHints: (state, action) => {
             // con tags funziona
@@ -267,9 +296,10 @@ const formSlice = createSlice({
             const { parsedForm } = action.payload;
             let result = [];
 
-            const keys = ["tags"]; // 🧠 we should import this and make this flexible (import)
+            const keys = ["tags"]; // 🧠 we should import this and make this flexible (import) // altrimenti si puo fare condition piu semplice
             const key = keys.find((k) => state.ui.sideNavTopic === k);
 
+            /*
             const source = key
                 ? state.sideNavData.selected
                 : !!state.hints.finalDecision.length &&
@@ -285,6 +315,26 @@ const formSlice = createSlice({
             }
 
             //  state.hints.missing = []; // 🧠 SPIKE: we should keep the not selected
+            */
+
+            if (key) {
+                /*
+                con tags:
+                    • unire state.hints.finalDecision con parsedForm
+                */
+            } else {
+                /*
+                con actors:
+                    • unire sempre con finalDecision ??? 🧠 
+                */
+            }
+
+            // 🟡 TESTARE
+            state.hints.finalDecision = [
+                ...state.hints.finalDecision,
+                ...parsedForm,
+            ];
+            state.hints.missingIsFinish = true;
         },
 
         // not used for tags sidenav -> only for related (like actors)
@@ -312,6 +362,35 @@ const formSlice = createSlice({
                 });
             }
             // state.hints.removed = [];
+        },
+
+        skipMissingHints: (state) => {
+            /**
+             dispatch(
+            updateHints({
+                hints: {
+                    missingIsFinish: true,
+                    // missing: [], // do we want to store them?
+                    // removed: hints.removed,
+                },
+            })
+        );
+             */
+            state.hints.missingIsFinish = true;
+        },
+        skipRemovedHints: (state) => {
+            /*
+            dispatch(
+            updateHints({
+                hints: {
+                    removedIsFinish: true,
+                    // missing: hints.missing,
+                    // removed: [],
+                },
+            })
+        );
+            */
+            state.hints.removedIsFinish = true;
         },
 
         closeSideNav: (state) => {
@@ -715,9 +794,11 @@ export const {
     hydrateSideNavDropdowns,
     updateSideNavSelected,
     updateSideNavDropdownsState,
-    updateHints,
+    setupHints,
     acceptMissingHints,
     acceptRemovedHints,
+    skipMissingHints,
+    skipRemovedHints,
     addNewImage,
     removeImage,
     validateForm,

@@ -9,7 +9,7 @@ import { searchData } from "@/src/domains/_app/utils/filterData.js";
 import checkHints from "@/src/domains/_app/components/Form/actions/checkHints";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import {
-    updateHints,
+    setupHints,
     searchNavData,
     searchNavDataOnLevel,
     selectFormPropsData,
@@ -86,7 +86,7 @@ export default function FormSideNav() {
         console.log("🧠 res: ", res);
         // no condition needed, we want also undefined values
         dispatch(
-            updateHints({
+            setupHints({
                 hints: {
                     missing: res?.missingTags,
                     removed: res?.removedTags,
