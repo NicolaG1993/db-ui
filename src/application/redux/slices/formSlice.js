@@ -208,12 +208,30 @@ const formSlice = createSlice({
             state.sideNavData = initialState.sideNavData;
         },
 
-        concludeDrawerAfterHints: (state) => {
+        // 🔴🔴🔴🔴 ELIMINA TUTTI I TAG INSERITI IN PRECEDENZA 🔴🔴🔴🔴
+        concludeDrawerAfterHints: (state, action) => {
             const newSelection = [...state.sideNavData.selected];
-            const key = state.ui.sideNavTopic;
+            const key = state.ui.sideNavTopic; // "tags" // forse serve per actors? 🧠
 
-            state.formState[key] = newSelection;
+            console.log("concludeDrawerAfterHints: ", { newSelection, key });
+
+            // 🔴🔴🔴🔴 QUESTA È SEMPRE ARRAY VUOTA 🔴🔴🔴🔴
+            // 🔴🔴🔴🔴 !!!!CONFLITTO!!! Stiamo dichiarando 2 volte "state.formState.tags" 🔴🔴🔴🔴
+
+            //....
+
+            // if (action.payload === "close nav") {
+            //     /* Questa serve per non resettare tags on close nav */
+            //     state.formState[key] = newSelection;
+            // } else if (action.payload === "save hints") {
+            //     /* Questa serve x salvare hints dentro form */
+            //     state.formState.tags = [...state.hints.finalDecision];
+            // }
+
+            //....
+
             state.formState.tags = [...state.hints.finalDecision];
+
             // state.hints.removed = [];
             // state.hints.finalDecision = [];
             state.hints = initialState.hints;
@@ -236,6 +254,11 @@ const formSlice = createSlice({
             //     state.ui.hintsIsOpen = true;
             //     state.ui.drawerIsOpen = true;
             // }
+
+            // 🟡🟡🟡🟡 TESTARE 🟡🟡🟡🟡
+            state.hints.finalDecision = !!state.hints.finalDecision.length
+                ? state.hints.finalDecision
+                : state.sideNavData.selected;
         },
         acceptMissingHints: (state, action) => {
             // con tags funziona
@@ -750,6 +773,10 @@ export const selectFormSideDropdownsState = (state) =>
     state.formStore.sideNavData.dropdownsState;
 
 export const selectFormStoreHints = (state) => state.formStore.hints;
+export const selectMissingIsFinish = (state) =>
+    state.formStore.hints.missingIsFinish;
+export const selectRemovedIsFinish = (state) =>
+    state.formStore.hints.removedIsFinish;
 
 export default formSlice;
 // we want to eventually store the data we fetch while the form is open

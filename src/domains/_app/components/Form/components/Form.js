@@ -116,7 +116,8 @@ export default function Form({
         3. 🟡 make work correctly InputsSelector and move it to redux store
         3.1 🔴 Activate auto-hint for actors
         4. make work correctly NationalitiesSelector and move it to redux store
-        5. Make it work with propsData (edit mode)
+        5. 🟡 Make it work with propsData (edit mode)
+        5.1 🔴 tags get deleted in edit mode, after interacting with them and refusing new hints
         6. QA Form (Create and Edit)
         6.1 fix QA bugs
         6.1.1 🟢 SideNav.selected got deleted after doing a research

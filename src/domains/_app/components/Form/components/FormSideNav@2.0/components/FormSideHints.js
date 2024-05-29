@@ -11,6 +11,8 @@ import {
     selectFormSideNavSelected,
     closeDrawer,
     concludeDrawerAfterHints,
+    selectMissingIsFinish,
+    selectRemovedIsFinish,
 } from "@/src/application/redux/slices/formSlice";
 import { useEffect, useState } from "react";
 import { shallowEqual, useDispatch } from "react-redux";
@@ -32,6 +34,8 @@ export default function FormSideHints() {
     let hints = useAppSelector(selectFormStoreHints, shallowEqual);
     const formState = useAppSelector(selectFormState, shallowEqual);
     const currentSelection = useAppSelector(selectFormSideNavSelected);
+    const missingIsFinish = useAppSelector(selectMissingIsFinish);
+    const removedIsFinish = useAppSelector(selectRemovedIsFinish);
 
     const [hintsFormsSelected, setHintsFormsSelected] = useState({
         missing: hints.missing,
@@ -103,7 +107,7 @@ export default function FormSideHints() {
         dispatch(
             updateHints({
                 hints: {
-                    missingIsFinish: true,
+                    removedIsFinish: true,
                     // missing: hints.missing,
                     // removed: [],
                 },
@@ -113,6 +117,11 @@ export default function FormSideHints() {
 
     const closeHintsDrawer = () => {
         dispatch(concludeDrawerAfterHints());
+    };
+
+    const skipAllHints = () => {
+        handleSkipMissingHints();
+        handleSkipRemovedHints();
     };
 
     const handleSelectHintsChange = (eventTarget, label) => {
@@ -424,15 +433,27 @@ export default function FormSideHints() {
                         Confirm Tags
                     </button>
                 )} */}
-                <button
-                    title="Confirm Tags"
-                    type="button"
-                    onClick={closeHintsDrawer}
-                    className="button-standard"
-                >
-                    Continue
-                    {/* Confirm Tags */}
-                </button>
+
+                {!missingIsFinish && !removedIsFinish ? (
+                    <button
+                        title="Skip all Tags"
+                        type="button"
+                        onClick={skipAllHints}
+                        className="button-standard"
+                    >
+                        Skip
+                    </button>
+                ) : (
+                    <button
+                        title="Confirm Tags"
+                        type="button"
+                        onClick={closeHintsDrawer}
+                        className="button-standard"
+                    >
+                        Continue
+                        {/* Confirm Tags */}
+                    </button>
+                )}
             </div>
         </div>
     );
