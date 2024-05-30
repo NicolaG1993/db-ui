@@ -13,12 +13,12 @@ import { shallowEqual, useDispatch } from "react-redux";
 export default function ActiveElements({
     selected,
     onChange,
-    // topic,
+    topic,
     userStyles,
 }) {
     console.log("ActiveElements START", {
         selected,
-        // topic,
+        topic,
     });
 
     const dispatch = useDispatch();
@@ -87,30 +87,41 @@ export default function ActiveElements({
             ) : (
                 <div className={styles.categoryDropdown}>
                     {selected &&
-                        selected.map((el, i) => (
-                            <div key={"activeElement " + el.id}>
-                                <span
-                                    className={styles.selectedEl}
-                                    onClick={() => removeActiveElement(el)}
-                                    // onClick={() => {
-                                    //     handleDeselectElement([
-                                    //         ...activeElements.filter(
-                                    //             (x) => x.id !== el.id
-                                    //         ),
-                                    //     ]);
-                                    // }}
-                                    // onClick={() =>
-                                    //     setActiveElements([
-                                    //         ...activeElements.filter(
-                                    //             (x) => x.id !== el.id
-                                    //         ),
-                                    //     ])
-                                    // }
-                                >
-                                    {el.name}
-                                </span>
-                            </div>
-                        ))}
+                        selected.map((el, i) =>
+                            topic === "nationalities" ? (
+                                <div key={"activeElement " + el}>
+                                    <span
+                                        className={styles.selectedEl}
+                                        onClick={() => removeActiveElement(el)}
+                                    >
+                                        {el}
+                                    </span>
+                                </div>
+                            ) : (
+                                <div key={"activeElement " + el.id}>
+                                    <span
+                                        className={styles.selectedEl}
+                                        onClick={() => removeActiveElement(el)}
+                                        // onClick={() => {
+                                        //     handleDeselectElement([
+                                        //         ...activeElements.filter(
+                                        //             (x) => x.id !== el.id
+                                        //         ),
+                                        //     ]);
+                                        // }}
+                                        // onClick={() =>
+                                        //     setActiveElements([
+                                        //         ...activeElements.filter(
+                                        //             (x) => x.id !== el.id
+                                        //         ),
+                                        //     ])
+                                        // }
+                                    >
+                                        {el.name}
+                                    </span>
+                                </div>
+                            )
+                        )}
                 </div>
             )}
         </>

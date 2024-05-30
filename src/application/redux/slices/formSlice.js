@@ -503,7 +503,8 @@ const formSlice = createSlice({
                 // selected: state.sideNavData.selected, // current selected 🔴🔴🔴🔴
                 // dropdownsState: { ...state.sideNavData.dropdownsState },
                 prevSelected: currentSelection,
-                selected: state.sideNavData.selected,
+                selected: state.sideNavData.selected, // non é current selection la stessa cosa?! 🧠
+                topic: state.ui.sideNavTopic,
             });
             /*
             let array = updatePrevFilters(

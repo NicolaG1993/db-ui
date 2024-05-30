@@ -62,7 +62,7 @@ export default function ActorForm({
                     form,
                     propsData,
                     formLabel: form.key,
-                    setOpenForm,
+                    // setOpenForm,
                 })
             }
             className={styles.form}
@@ -229,8 +229,7 @@ export default function ActorForm({
 
             <div className={styles["form-col-right"]}>
                 <div className={styles["form-selector-interaction-box"]}>
-                    {/* FIX: <span>{formState.nationalities.length} selected</span> */}
-                    <span>{0} selected</span>
+                    <span>{formState.nationalities.length} selected</span>
                     <div
                         onClick={() => {
                             dispatch(openSideNav("nationalities"));

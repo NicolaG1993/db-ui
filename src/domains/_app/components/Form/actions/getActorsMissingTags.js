@@ -7,6 +7,7 @@ const deleteDuplicates = (arr) =>
             index === self.findIndex((t) => t.id === value.id)
     ); // make util 🧠
 
+// 🧠🧠🧠 MIGLIORARE REMOVED HINTS (NOT PERFECT RIGHT NOW) 🧠🧠🧠
 export default function getActorsMissingTags({
     currentSelection,
     currentTags,
@@ -42,7 +43,7 @@ export default function getActorsMissingTags({
 
     // 🌟 REMOVED TAGS 🌟
 
-    // .1 🟢 get actors removed from originalFormState
+    // .1 🟢 get actors removed from originalFormState (o meglio da current formState? 🧠)
     // // .1.1 🟢 actors obj con tags, ovviamente
     // // .1.2 🟢 propsData é la fonte di veritá per actors
     // // .1.3 🟢 filtra actors rimossi da originalState

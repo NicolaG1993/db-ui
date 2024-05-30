@@ -2,55 +2,90 @@ import { useEffect, useState } from "react";
 import ErrorUI from "@/src/domains/_app/components/Error/components/ErrorUI/ErrorUI";
 import allNationalities from "@/src/application/settings/allNationalities";
 import standardStyles from "../InputsSelector/InputsSelector.module.css";
+import { shallowEqual, useDispatch } from "react-redux";
+import { useAppSelector } from "@/src/application/redux/lib/hooks";
+import {
+    selectFormSideNavRenderReady,
+    selectFormSideNavSelected,
+    handleSideNavRenderReady,
+    selectFormSideNavFilteredData,
+} from "@/src/application/redux/slices/formSlice";
+import renderNationalities from "./utils/renderNationalities";
 
-export default function NationalitiesSelector(props) {
+export default function NationalitiesSelector({
+    data,
+    filters,
+    topic,
+    userStyles,
+}) {
     //////////////////////////////
     // STATE
     //////////////////////////////
-    // console.log("*Rendering *NationalitiesSelector* ", props);
+    console.log("*🌟🌟🌟Rendering *NationalitiesSelector* ", { filters });
+    const dispatch = useDispatch();
+    const renderReady = useAppSelector(
+        selectFormSideNavRenderReady,
+        shallowEqual
+    );
+    const currentSelection = useAppSelector(
+        selectFormSideNavSelected,
+        shallowEqual
+    );
+    // const filteredData = useAppSelector(
+    //     selectFormSideNavFilteredData,
+    //     shallowEqual
+    // );
+
     const [error, setError] = useState();
-    const [renderReady, setRenderReady] = useState(false);
-    const [filters, setFilters] = useState(props.filters || []);
-    let styles = props.styles || standardStyles;
+    // const [renderReady, setRenderReady] = useState(false);
+
+    let styles = { ...standardStyles, ...userStyles } || standardStyles;
 
     useEffect(() => {
-        setRenderReady(true);
+        dispatch(handleSideNavRenderReady(true));
     }, []);
 
+    // DELETE? 🧠
+    /*
     useEffect(() => {
-        if (props.onChange && typeof props.onChange !== "function") {
+        if (onChange && typeof onChange !== "function") {
             setError("Error: onChange is not a function");
-        } else if (props.onChange) {
-            props.onChange({ val: filters, topic: props.topic });
+        } else if (onChange) {
+            onChange({ val: filters, topic: topic });
         }
     }, [filters]);
+    */
 
     //////////////////////////////
     // UPDATE FILTER STATE
     //////////////////////////////
+
+    // DELETE? 🧠
+    /*
     const updateFilters = (val, action) => {
         if (action === "add") {
             // update only if value is not present in array already, bug prevention
-            if (props.filters && !props.filters.some((x) => x === val)) {
-                setFilters([...props.filters, val]);
+            if (filters && !filters.some((x) => x === val)) {
+                setFilters([...filters, val]);
             } else if (!filters.some((x) => x === val)) {
                 setFilters([...filters, val]);
             }
         }
         if (action === "remove") {
-            setFilters(props.filters.filter((x) => x !== val));
+            setFilters(filters.filter((x) => x !== val));
         }
     };
+    */
 
     //////////////////////////////
     // DATA HANDLERS
     //////////////////////////////
+    /*
     const renderValues = (array) => {
         return (
             <div className={styles.categoryDropdown}>
                 {["N/A", ...array].map((it) => {
-                    return props.filters &&
-                        props.filters.find((x) => it === x) ? (
+                    return filters && filters.find((x) => it === x) ? (
                         <div key={"value: " + it}>
                             <span
                                 className={styles.selectedEl}
@@ -73,19 +108,34 @@ export default function NationalitiesSelector(props) {
             </div>
         );
     };
+    */
 
     //////////////////////////////
     // RENDERING
     //////////////////////////////
     return (
-        <>
-            {error ? (
-                <ErrorUI error={error} styles={null} />
-            ) : renderReady ? (
-                renderValues(allNationalities.map((el) => el.name))
+        // <>
+        //     {error ? (
+        //         <ErrorUI error={error} styles={null} />
+        //     ) : renderReady ? (
+        //         renderValues(filteredData.map((el) => el.name))
+        //     ) : (
+        //         "Loading"
+        //     )}
+        // </>
+        <div className={styles.categoryDropdown}>
+            {renderReady ? (
+                renderNationalities({
+                    data,
+                    currentSelection,
+                    //  updateFilters,
+                    styles,
+                })
             ) : (
-                "Loading"
+                <p>Loading...</p>
             )}
-        </>
+        </div>
     );
 }
+
+// renderValues(filteredData.map((el) => el.name));
