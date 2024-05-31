@@ -22,7 +22,7 @@ export default function InputToArray({
         console.log("💚💚💚 handleAddInputToArray activated: ", newInput);
         // setData([...data, newInput]);
         if (newInput) {
-            onChange({ val: [newInput, ...formState[topic]], topic });
+            onChange([newInput, ...formState[topic]], topic);
             setNewInput("");
         }
     };

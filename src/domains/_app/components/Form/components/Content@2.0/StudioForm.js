@@ -1,22 +1,47 @@
 import Image from "next/image";
 import styles from "@/src/domains/_app/components/Form/components/Form.module.css";
 // import { useEffect, useState } from "react";
+import {
+    addNewImage,
+    selectFormPropsData,
+    selectFormState,
+    selectFormStoreSettings,
+    selectFormStoreNewImage,
+    selectFormStoreErrors,
+    selectFormIsLoading,
+    removeImage,
+    validateForm,
+    updateFormState,
+    openSideNav,
+} from "@/src/application/redux/slices/formSlice";
+import { shallowEqual, useDispatch, useSelector } from "react-redux";
 
 export default function StudioForm({
-    formState,
-    updateFormState,
-    validateData,
     confirmChanges,
+    /*
+    formState,
     newImage,
+    errors,
+    isLoading,
+    validateData,
     addLocalImages,
     deleteImage,
     closeSideNav,
-    openSideNav,
-    errors,
-    isLoading,
     setOpenForm,
+    openSideNav,
+    updateFormState,
+    */
 }) {
-    // console.log("*formState* ", formState);
+    const formState = useSelector(selectFormState, shallowEqual);
+    const propsData = useSelector(selectFormPropsData, shallowEqual);
+    const form = useSelector(selectFormStoreSettings, shallowEqual);
+    const newImage = useSelector(selectFormStoreNewImage, shallowEqual);
+    const errors = useSelector(selectFormStoreErrors, shallowEqual);
+    const isLoading = useSelector(selectFormIsLoading, shallowEqual);
+
+    const dispatch = useDispatch();
+    // console.log("♟️ StudioForm: ", { formState });
+
     //================================================================================
     // Render UI
     //================================================================================
@@ -29,8 +54,8 @@ export default function StudioForm({
                     newImage,
                     form,
                     propsData,
-                    formLabel,
-                    setOpenForm,
+                    formLabel: form.key,
+                    // setOpenForm,
                 })
             }
             className={styles.form}
@@ -55,7 +80,13 @@ export default function StudioForm({
                             />
                             <span
                                 className={styles["form-delete-image"]}
-                                onClick={() => deleteImage(newImage)}
+                                onClick={() =>
+                                    dispatch(
+                                        removeImage({
+                                            imgFile: newImage,
+                                        })
+                                    )
+                                }
                             >
                                 X
                             </span>
@@ -70,7 +101,7 @@ export default function StudioForm({
                             />
                             <span
                                 className={styles["form-delete-image"]}
-                                onClick={() => deleteImage("")} // testare 💛
+                                onClick={() => dispatch(removeImage())} // testare 💛
                             >
                                 X
                             </span>
@@ -82,7 +113,13 @@ export default function StudioForm({
                                 type="file"
                                 name="filename"
                                 accept="image/png, image/jpeg, image/webp"
-                                onChange={(e) => addLocalImages(e)}
+                                onChange={(e) =>
+                                    dispatch(
+                                        addNewImage({
+                                            imgFile: [...e.target.files[0]], // use the spread syntax to get it as an array
+                                        })
+                                    )
+                                }
                             />
                         </div>
                     )}
@@ -101,9 +138,25 @@ export default function StudioForm({
                     name="name"
                     id="Name"
                     maxLength="50"
-                    onChange={(e) => updateFormState(e.target.value, "name")}
-                    onBlur={(e) => validateData(e)}
+                    onChange={(e) =>
+                        dispatch(
+                            updateFormState({
+                                val: e.target.value,
+                                topic: e.target.name,
+                            })
+                        )
+                    }
+                    onBlur={(e) =>
+                        dispatch(
+                            validateForm({
+                                name: e.target.name,
+                                value: e.target.value,
+                                id: e.target.id,
+                            })
+                        )
+                    }
                     value={formState.name}
+                    className={errors.name && "input-error"}
                 />
                 {errors.name && (
                     <div className={"form-error"}>{errors.name}</div>
@@ -122,8 +175,23 @@ export default function StudioForm({
                     name="website"
                     id="Website"
                     maxLength="50"
-                    onChange={(e) => updateFormState(e.target.value, "website")}
-                    onBlur={(e) => validateData(e)}
+                    onChange={(e) =>
+                        dispatch(
+                            updateFormState({
+                                val: e.target.value,
+                                topic: e.target.name,
+                            })
+                        )
+                    }
+                    onBlur={(e) =>
+                        dispatch(
+                            validateForm({
+                                name: e.target.name,
+                                value: e.target.value,
+                                id: e.target.id,
+                            })
+                        )
+                    }
                     value={formState.website}
                 />
                 {errors.website && (
@@ -142,7 +210,7 @@ export default function StudioForm({
                     <span>{formState.nationalities.length} selected</span>
                     <div
                         onClick={() => {
-                            openSideNav("nationalities");
+                            dispatch(openSideNav("nationalities"));
                         }}
                     >
                         Select

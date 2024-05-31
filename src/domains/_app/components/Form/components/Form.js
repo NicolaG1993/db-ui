@@ -47,6 +47,7 @@ import dataStructureForms from "@/src/application/settings/dataStructureForms";
 import { fetchDataForSideNav } from "../../../actions/formFetchers";
 import submitForm from "../actions/submitForm";
 import allNationalities from "@/src/application/settings/allNationalities";
+import { getError } from "@/src/application/utils/error";
 
 export default function Form({
     formLabel,
@@ -245,7 +246,7 @@ export default function Form({
                 .catch((error) => {
                     console.log(error);
                     showBoundary({
-                        code: error.response.status,
+                        code: error.response?.status,
                         message: getError(error),
                     });
                 });

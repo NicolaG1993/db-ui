@@ -309,6 +309,15 @@ export default function ActorForm({
             <div className={styles["form-col-right"]}>
                 <InputSocials
                     formState={formState}
+                    setFormState={(val, topic) =>
+                        dispatch(
+                            updateFormState({
+                                val,
+                                topic,
+                                // dobbiamo ricevere 2 args
+                            })
+                        )
+                    }
                     // setFormState={updateFormState} // in questo caso passiamo fn perché diventerá esternal component - ma dovremmo gestirla prima lo stesso -.-
                 />
             </div>

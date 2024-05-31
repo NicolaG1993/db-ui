@@ -192,7 +192,7 @@ export default function MovieForm({
                     topic={"urls"}
                     topicID={"Urls"}
                     formState={formState}
-                    onChange={({ val, topic }) =>
+                    onChange={(val, topic) =>
                         dispatch(
                             updateFormState({
                                 val,
