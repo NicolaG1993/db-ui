@@ -2,45 +2,49 @@ import Image from "next/image";
 import styles from "@/src/domains/_app/components/Form/components/Form.module.css";
 // import { useEffect, useState } from "react";
 import {
-    addNewImage,
     selectFormPropsData,
     selectFormState,
     selectFormStoreSettings,
-    selectFormStoreNewImage,
     selectFormStoreErrors,
     selectFormIsLoading,
-    removeImage,
     validateForm,
     updateFormState,
     openSideNav,
 } from "@/src/application/redux/slices/formSlice";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
+import { useState } from "react";
 
-export default function StudioForm({
-    confirmChanges,
-    /*
-    formState,
-    newImage,
-    errors,
-    isLoading,
-    validateData,
-    addLocalImages,
-    deleteImage,
-    closeSideNav,
-    setOpenForm,
-    openSideNav,
-    updateFormState,
-    */
-}) {
+export default function StudioForm({ confirmChanges }) {
     const formState = useSelector(selectFormState, shallowEqual);
     const propsData = useSelector(selectFormPropsData, shallowEqual);
     const form = useSelector(selectFormStoreSettings, shallowEqual);
-    const newImage = useSelector(selectFormStoreNewImage, shallowEqual);
     const errors = useSelector(selectFormStoreErrors, shallowEqual);
     const isLoading = useSelector(selectFormIsLoading, shallowEqual);
 
     const dispatch = useDispatch();
-    // console.log("♟️ StudioForm: ", { formState });
+
+    const [newImage, setNewImage] = useState();
+
+    const handleNewImage = (e) => {
+        const imgFile = e.target.files["0"];
+        const file = {
+            location: createObjectURL(imgFile),
+            key: imgFile.name,
+            file: imgFile,
+        };
+        setNewImage(file);
+        dispatch(updateFormState({ val: file.location, topic: "pic" }));
+    };
+
+    const handleRemoveImage = (imgFile) => {
+        if (imgFile) {
+            revokeObjectURL(imgFile);
+            setNewImage();
+        }
+        if (formState.pic) {
+            dispatch(updateFormState({ val: "", topic: "pic" }));
+        }
+    };
 
     //================================================================================
     // Render UI
@@ -55,7 +59,6 @@ export default function StudioForm({
                     form,
                     propsData,
                     formLabel: form.key,
-                    // setOpenForm,
                 })
             }
             className={styles.form}
@@ -70,28 +73,7 @@ export default function StudioForm({
                 className={`${styles["form-col-right"]} ${styles["admin-new-image"]}`}
             >
                 <div>
-                    {newImage ? (
-                        <div className={styles["form-new-image"]}>
-                            <Image
-                                src={newImage.location}
-                                alt={`Picture`}
-                                fill
-                                style={{ objectFit: "cover" }}
-                            />
-                            <span
-                                className={styles["form-delete-image"]}
-                                onClick={() =>
-                                    dispatch(
-                                        removeImage({
-                                            imgFile: newImage,
-                                        })
-                                    )
-                                }
-                            >
-                                X
-                            </span>
-                        </div>
-                    ) : formState.pic ? (
+                    {formState.pic ? (
                         <div className={styles["form-new-image"]}>
                             <Image
                                 src={formState.pic}
@@ -101,7 +83,11 @@ export default function StudioForm({
                             />
                             <span
                                 className={styles["form-delete-image"]}
-                                onClick={() => dispatch(removeImage())} // testare 💛
+                                onClick={() =>
+                                    handleRemoveImage({
+                                        imgFile: newImage,
+                                    })
+                                }
                             >
                                 X
                             </span>
@@ -113,13 +99,7 @@ export default function StudioForm({
                                 type="file"
                                 name="filename"
                                 accept="image/png, image/jpeg, image/webp"
-                                onChange={(e) =>
-                                    dispatch(
-                                        addNewImage({
-                                            imgFile: [...e.target.files[0]], // use the spread syntax to get it as an array
-                                        })
-                                    )
-                                }
+                                onChange={(e) => handleNewImage(e)}
                             />
                         </div>
                     )}

@@ -16,6 +16,7 @@ import getDropdownsState from "@/src/domains/all/components/Filters/DropdownMenu
 import updatePrevSelected from "@/src/domains/all/components/Filters/DropdownMenusByLevel/actions/updatePrevSelected";
 import { groupJsonByValue } from "@/src/application/utils/parsers";
 import { parseTagsByType } from "@/src/domains/_app/utils/parsers";
+import { createObjectURL } from "@/src/domains/_app/actions/useLocalImages";
 
 // SPIKE: 🧠 I would like to store the different data i retrieve, for the first time
 // then the user will see always those until he restarts the app or click on a "refresh list" button
@@ -575,33 +576,35 @@ const formSlice = createSlice({
             state.sideNavData.dropdownsState = newState;
         },
 
+        // maybe delete 🧠 we cannot store file objects
         addNewImage: (state, action) => {
             // version for hosted App // <-- old comment, delete?
-            const { imgFile } = action.payload;
-            const file = {
-                location: createObjectURL(imgFile),
-                key: imgFile.name,
-                file: imgFile,
-            };
+            const { file } = action.payload;
+            // const { imgFile } = action.payload;
+            // const file = {
+            //     location: createObjectURL(imgFile),
+            //     key: imgFile.name,
+            //     file: imgFile,
+            // };
             state.newImage = file;
         },
+        // si potrebbe eliminare 🧠
         removeImage: (state, action) => {
             // version for hosted App // <-- old comment, delete?
-            if (action.payload?.imgFile) {
-                revokeObjectURL(imgFile);
-            }
-
-            state.newImage = undefined;
-            if (state.formState.pic) {
-                state.formState.pic = "";
-                Cookies.set(
-                    "formState",
-                    JSON.stringify({
-                        formLabel: state.formLabel,
-                        formState: state.formState,
-                    })
-                );
-            }
+            // if (action.payload?.imgFile) {
+            //     revokeObjectURL(imgFile);
+            // }
+            // state.newImage = undefined;
+            // if (state.formState.pic) {
+            //     state.formState.pic = "";
+            //     Cookies.set(
+            //         "formState",
+            //         JSON.stringify({
+            //             formLabel: state.formLabel,
+            //             formState: state.formState,
+            //         })
+            //     );
+            // }
         },
 
         // questa é una utils ?

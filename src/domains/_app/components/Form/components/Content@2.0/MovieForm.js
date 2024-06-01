@@ -45,7 +45,7 @@ export default function MovieForm({
     const form = useSelector(selectFormStoreSettings, shallowEqual);
     const uiState = useSelector(selectFormStoreUI, shallowEqual);
     const hints = useSelector(selectFormStoreHints, shallowEqual);
-    const newImage = useSelector(selectFormStoreNewImage, shallowEqual);
+    // const newImage = useSelector(selectFormStoreNewImage, shallowEqual);
     const errors = useSelector(selectFormStoreErrors, shallowEqual);
     const isLoading = useSelector(selectFormIsLoading, shallowEqual);
     const isLoadingResponse = useSelector(
@@ -55,9 +55,32 @@ export default function MovieForm({
 
     const dispatch = useDispatch();
 
+    const [newImage, setNewImage] = useState();
+
     // const handleBlur = ({ id, name, value }) => {
     //     dispatch(validateForm({ id, name, value }));
     // };
+
+    const handleNewImage = (e) => {
+        const imgFile = e.target.files["0"];
+        const file = {
+            location: createObjectURL(imgFile),
+            key: imgFile.name,
+            file: imgFile,
+        };
+        setNewImage(file);
+        dispatch(updateFormState({ val: file.location, topic: "pic" }));
+    };
+
+    const handleRemoveImage = (imgFile) => {
+        if (imgFile) {
+            revokeObjectURL(imgFile);
+            setNewImage();
+        }
+        if (formState.pic) {
+            dispatch(updateFormState({ val: "", topic: "pic" }));
+        }
+    };
     //================================================================================
     // Render UI
     //================================================================================
@@ -88,28 +111,7 @@ export default function MovieForm({
                 className={`${styles["form-col-right"]} ${styles["admin-new-image"]}`}
             >
                 <div>
-                    {newImage ? (
-                        <div className={styles["form-new-image"]}>
-                            <Image
-                                src={newImage.location}
-                                alt={`Picture`}
-                                fill
-                                style={{ objectFit: "cover" }}
-                            />
-                            <span
-                                className={styles["form-delete-image"]}
-                                onClick={() =>
-                                    dispatch(
-                                        removeImage({
-                                            imgFile: newImage,
-                                        })
-                                    )
-                                }
-                            >
-                                X
-                            </span>
-                        </div>
-                    ) : formState.pic ? (
+                    {formState.pic ? (
                         <div className={styles["form-new-image"]}>
                             <Image
                                 src={formState.pic}
@@ -119,7 +121,11 @@ export default function MovieForm({
                             />
                             <span
                                 className={styles["form-delete-image"]}
-                                onClick={() => dispatch(removeImage())} // testare 💛
+                                onClick={() =>
+                                    handleRemoveImage({
+                                        imgFile: newImage,
+                                    })
+                                }
                             >
                                 X
                             </span>
@@ -131,13 +137,7 @@ export default function MovieForm({
                                 type="file"
                                 name="filename"
                                 accept="image/png, image/jpeg, image/webp"
-                                onChange={(e) =>
-                                    dispatch(
-                                        addNewImage({
-                                            imgFile: [...e.target.files[0]], // use the spread syntax to get it as an array
-                                        })
-                                    )
-                                }
+                                onChange={(e) => handleNewImage(e)}
                             />
                         </div>
                     )}

@@ -18,6 +18,11 @@ import {
     openSideNav,
 } from "@/src/application/redux/slices/formSlice";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
+import {
+    createObjectURL,
+    revokeObjectURL,
+} from "@/src/domains/_app/actions/useLocalImages";
+import { useState } from "react";
 
 export default function ActorForm({
     confirmChanges,
@@ -38,7 +43,7 @@ export default function ActorForm({
     let form = useSelector(selectFormStoreSettings, shallowEqual);
     let uiState = useSelector(selectFormStoreUI, shallowEqual);
     let hints = useSelector(selectFormStoreHints, shallowEqual);
-    let newImage = useSelector(selectFormStoreNewImage, shallowEqual);
+    // let newImage = useSelector(selectFormStoreNewImage, shallowEqual);
     let errors = useSelector(selectFormStoreErrors, shallowEqual);
     let isLoading = useSelector(selectFormIsLoading, shallowEqual);
     let isLoadingResponse = useSelector(
@@ -47,6 +52,61 @@ export default function ActorForm({
     );
 
     const dispatch = useDispatch();
+
+    const [newImage, setNewImage] = useState();
+
+    const handleNewImage = (e) => {
+        console.log("💛 image event 💛", e.target.files["0"]);
+
+        const imgFile = e.target.files["0"];
+        const file = {
+            location: createObjectURL(imgFile),
+            key: imgFile.name,
+            file: imgFile, // non-serializable data 🧠
+        };
+
+        /*
+        🧠🧠🧠🧠🧠
+        Potrei salvare le immagini nel component invece di redux store
+        e poi passarle a confirmChanges on submit
+        PS. inoltre va bene se non sono salvate in memorized state, no problem
+        🧠🧠🧠🧠🧠
+        BIG BRAIN
+
+        Dobbiamo vedere in parent come gestire file nuovi o file da props 
+        il primo bisogna fare upload
+        il secondo bisogna saltarlo
+        -- mi sa che il primo é file obj, il secondo é solo str url
+
+        ho aggiornato store, ora salva sempre e solo url di picture, 
+        cosí faccio render sempre di questo valore.
+        Vedere quando il valore viene usato in Form
+        prima poteva esserci un check (da qualche parte, forse) che ora sarebbe inutile, controllare
+       
+        Ultimo bug:
+        • handleRemoveImage -> formState "not working" 🟢
+        */
+
+        setNewImage(file);
+        dispatch(updateFormState({ val: file.location, topic: "pic" }));
+        // dispatch(
+        //     addNewImage({
+        //         file,
+        //     })
+        // );
+    };
+
+    const handleRemoveImage = (imgFile) => {
+        console.log("handleRemoveImage: ", { imgFile });
+        if (imgFile) {
+            revokeObjectURL(imgFile);
+            setNewImage();
+        }
+
+        if (formState.pic) {
+            dispatch(updateFormState({ val: "", topic: "pic" }));
+        }
+    };
     //================================================================================
     // Render UI
     //================================================================================
@@ -76,10 +136,10 @@ export default function ActorForm({
                 className={`${styles["form-col-right"]} ${styles["admin-new-image"]}`}
             >
                 <div>
-                    {newImage ? (
+                    {formState.pic ? (
                         <div className={styles["form-new-image"]}>
                             <Image
-                                src={newImage.location}
+                                src={formState.pic}
                                 // src={`/local_pics/actors/${newImage}`}
                                 alt={`Picture`}
                                 fill
@@ -88,27 +148,10 @@ export default function ActorForm({
                             <span
                                 className={styles["form-delete-image"]}
                                 onClick={() =>
-                                    dispatch(
-                                        removeImage({
-                                            imgFile: newImage,
-                                        })
-                                    )
+                                    handleRemoveImage({
+                                        imgFile: newImage,
+                                    })
                                 }
-                            >
-                                X
-                            </span>
-                        </div>
-                    ) : formState.pic ? (
-                        <div className={styles["form-new-image"]}>
-                            <Image
-                                src={formState.pic}
-                                alt={`Picture`}
-                                fill
-                                style={{ objectFit: "cover" }}
-                            />
-                            <span
-                                className={styles["form-delete-image"]}
-                                onClick={() => dispatch(removeImage())} // testare 💛
                             >
                                 X
                             </span>
@@ -120,13 +163,7 @@ export default function ActorForm({
                                 type="file"
                                 name="filename"
                                 accept="image/png, image/jpeg, image/webp"
-                                onChange={(e) =>
-                                    dispatch(
-                                        addNewImage({
-                                            imgFile: [...e.target.files[0]], // use the spread syntax to get it as an array
-                                        })
-                                    )
-                                }
+                                onChange={(e) => handleNewImage(e)}
                             />
                         </div>
                     )}
