@@ -197,13 +197,15 @@ const formSlice = createSlice({
                 key,
             });
 
-            Cookies.set(
-                "formState",
-                JSON.stringify({
-                    formLabel: state.formLabel,
-                    formState: state.formState,
-                })
-            );
+            if (!state.propsData) {
+                Cookies.set(
+                    "formState",
+                    JSON.stringify({
+                        formLabel: state.formLabel,
+                        formState: state.formState,
+                    })
+                );
+            }
 
             state.ui = initialState.ui;
             state.sideNavData = initialState.sideNavData;
@@ -248,13 +250,15 @@ const formSlice = createSlice({
             state.ui = initialState.ui;
             state.sideNavData = initialState.sideNavData;
             // non credo di doverlo resettare completamente 🧠🧠🧠
-            Cookies.set(
-                "formState",
-                JSON.stringify({
-                    formLabel: state.formLabel,
-                    formState: state.formState,
-                })
-            );
+            if (!state.propsData) {
+                Cookies.set(
+                    "formState",
+                    JSON.stringify({
+                        formLabel: state.formLabel,
+                        formState: state.formState,
+                    })
+                );
+            }
         },
 
         setupHints: (state, action) => {
@@ -772,6 +776,7 @@ const formSlice = createSlice({
         },
 
         resetFormStore: (state) => {
+            Cookies.remove("formState");
             state = initialState;
         },
     },

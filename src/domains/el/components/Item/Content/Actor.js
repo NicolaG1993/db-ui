@@ -8,6 +8,20 @@ import { formatDateEU, getAge } from "@/src/application/utils/convertTimestamp";
 import IG_icon from "/public/IG_icon.svg";
 import X_icon from "/public/X_icon.svg";
 
+/*
+Form "open" and "close" should be handled in redux
+
+on close:
+- we need to clean up the form and cookie - for edit
+- clear the form after saving it in cookies - for new#
+
+on open:
+- load propsData - for edit
+- load cookies state if exist - for new
+
+DEVO FORSE RIVEDERE DIFFERENZE FRA DUE FORMS?
+*/
+
 export default function Actor({
     label,
     group,
@@ -451,6 +465,7 @@ export default function Actor({
                 </div>
             </div>
 
+            {/* Creare wrap component per overlay ? */}
             {openForm && (
                 <div id={"Overlay"}>
                     <div className={"overlayWindow"}>
