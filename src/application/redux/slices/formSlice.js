@@ -18,10 +18,14 @@ import { groupJsonByValue } from "@/src/application/utils/parsers";
 import { parseTagsByType } from "@/src/domains/_app/utils/parsers";
 import { createObjectURL } from "@/src/domains/_app/actions/useLocalImages";
 
-// SPIKE: 🧠 I would like to store the different data i retrieve, for the first time
+// 🧠 SPIKE: I would like to store the different data i retrieve, for the first time
 // then the user will see always those until he restarts the app or click on a "refresh list" button
 // This will help to decrease the call to the db and avoiding multiple connections as much as possible
 // i still dont know where to store this data, probably here somewhere...
+
+// 🧠 SPIKE: invece di usare propsData per determinare se siamo in edit mode o no,
+// potremmo semplicemente avere una flag che viene settata, senza dover resettare stati mille volte
+// inoltre sarebbe meglio avere due formState separati per edit e create, molto piú sicuro
 
 const initialState = {
     formLabel: "",
@@ -89,6 +93,7 @@ const formSlice = createSlice({
                 );
             } else {
                 // set "cookie-form" or empty form on "create new" mode
+                state.propsData = undefined;
                 formState = getSavedState(formLabel, form.emptyState);
             }
 
@@ -775,10 +780,13 @@ const formSlice = createSlice({
             state.isLoading = false;
         },
 
+        resetFormStore: () => initialState,
+        /*
         resetFormStore: (state) => {
-            Cookies.remove("formState");
-            state = initialState;
+            state = { ...initialState, formState: undefined };
+            // Cookies.remove("formState");
         },
+        */
     },
 });
 

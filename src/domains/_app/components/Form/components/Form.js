@@ -85,6 +85,13 @@ export default function Form({
     const formObj = dataStructureForms[formLabel];
     const FormComponent = dataStructureForms[formLabel]?.formComponent;
 
+    console.log("🤑 FORM@2.0 RENDERING: ", {
+        formLabel,
+        storedFormLabel,
+        formObj,
+        propsData,
+    });
+
     useEffect(() => {
         // console.log("storedFormLabel: ", storedFormLabel);
         if (formLabel && formLabel !== storedFormLabel) {

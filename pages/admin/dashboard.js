@@ -3,10 +3,13 @@ import AddNewWrap from "@/src/domains/admin/components/AdminDashboard/AddNewWrap
 import AppSettingsWrap from "@/src/domains/admin/components/AdminDashboard/AppSettingsWrap";
 import styles from "@/src/application/styles/AdminDashboard.module.css";
 import axios from "axios";
+import { useDispatch } from "react-redux";
+import { resetFormStore } from "@/src/application/redux/slices/formSlice";
 
 export default function Dashboard() {
     const [addForm, setAddForm] = useState(false);
     const [appSettings, setAppSettings] = useState(false);
+    const dispatch = useDispatch();
 
     const addTest = async (e) => {
         e.preventDefault();
@@ -31,7 +34,10 @@ export default function Dashboard() {
 
                 <div className={styles.content}>
                     <button
-                        onClick={() => setAddForm(true)}
+                        onClick={() => {
+                            dispatch(resetFormStore()); // cleanup formState
+                            setAddForm(true);
+                        }}
                         className="button-standard"
                     >
                         + Add Data
@@ -48,6 +54,7 @@ export default function Dashboard() {
                     </button>
                 </div>
             </main>
+            {/* TODO: TRANSFORM BOTH WRAPS INTO MODAL COMPONENTS */}
             {addForm && <AddNewWrap setAddForm={setAddForm} />}
             {appSettings && (
                 <AppSettingsWrap toggleAppSettings={setAppSettings} />

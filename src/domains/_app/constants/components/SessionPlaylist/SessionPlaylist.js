@@ -10,6 +10,8 @@ import SessionPlaylistUI from "./SessionPlaylistUI";
 // import styles from "@/src/domains/_app/constants/components/SessionPlaylist/SessionPlaylist.module.css";
 // import MovieForm from "../../../components/Form/components/Content/MovieForm";
 import Form from "@/src/domains/_app/components/Form/components/Form";
+import Modal from "../../../components/Modal/Modal";
+import { resetFormStore } from "@/src/application/redux/slices/formSlice";
 // import dataStructureForms from "@/src/application/settings/dataStructureForms";
 
 export default function SessionPlaylist({ open, closeWidget }) {
@@ -19,6 +21,7 @@ export default function SessionPlaylist({ open, closeWidget }) {
     const dispatch = useDispatch();
 
     const openAddNew = () => {
+        dispatch(resetFormStore());
         setAddNewModal(true);
     };
     const closeAddNew = () => {
@@ -53,7 +56,14 @@ export default function SessionPlaylist({ open, closeWidget }) {
                     close={close}
                 />
 
-                {addNewModal && (
+                <Modal isOpen={addNewModal} onClose={closeAddNew}>
+                    <Form
+                        formLabel={"movie"}
+                        handleEditsInParent={addNewToPlaylist}
+                        parentIsWaiting={true}
+                    />
+                </Modal>
+                {/* {addNewModal && (
                     <div id={"Overlay"}>
                         <div className={"overlayWindow"}>
                             <div className={"topBar"}>
@@ -66,7 +76,7 @@ export default function SessionPlaylist({ open, closeWidget }) {
                             />
                         </div>
                     </div>
-                )}
+                )} */}
             </>
         );
     }

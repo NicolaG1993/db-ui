@@ -3,6 +3,7 @@ import Link from "next/link";
 import Image from "next/image";
 import Form from "@/src/domains/_app/components/Form/components/Form";
 import RelationsList from "../../RelationsList/RelationsList";
+import Modal from "@/src/domains/_app/components/Modal/Modal";
 
 export default function Category({
     label,
@@ -181,22 +182,13 @@ export default function Category({
                 </div>
             </div>
 
-            {openForm && (
-                <div id={"Overlay"}>
-                    <div className={"overlayWindow"}>
-                        <div className={"topBar"}>
-                            <span onClick={() => setOpenForm(false)}>X</span>
-                        </div>
-
-                        <Form
-                            formLabel={label}
-                            propsData={item}
-                            handleEditsInParent={handleEdits}
-                            setOpenForm={setOpenForm}
-                        />
-                    </div>
-                </div>
-            )}
+            <Modal isOpen={openForm} onClose={() => setOpenForm(false)}>
+                <Form
+                    formLabel={label}
+                    propsData={item}
+                    handleEditsInParent={handleEdits}
+                />
+            </Modal>
         </div>
     );
 }

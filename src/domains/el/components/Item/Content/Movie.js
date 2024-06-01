@@ -6,6 +6,7 @@ import { formatDateEU } from "@/src/application/utils/convertTimestamp";
 import RecordsCounter from "../RecordsCounter";
 import RelationsList from "../../RelationsList/RelationsList";
 import SessionPlaylistAddBtn from "../SessionPlaylistAddBtn";
+import Modal from "@/src/domains/_app/components/Modal/Modal";
 
 export default function Movie({
     label,
@@ -263,22 +264,13 @@ export default function Movie({
                 </div>
             </div>
 
-            {openForm && (
-                <div id={"Overlay"}>
-                    <div className={"overlayWindow"}>
-                        <div className={"topBar"}>
-                            <span onClick={() => setOpenForm(false)}>X</span>
-                        </div>
-
-                        <Form
-                            formLabel={label}
-                            propsData={item}
-                            handleEditsInParent={handleEdits}
-                            setOpenForm={setOpenForm}
-                        />
-                    </div>
-                </div>
-            )}
+            <Modal isOpen={openForm} onClose={() => setOpenForm(false)}>
+                <Form
+                    formLabel={label}
+                    propsData={item}
+                    handleEditsInParent={handleEdits}
+                />
+            </Modal>
         </div>
     );
 }

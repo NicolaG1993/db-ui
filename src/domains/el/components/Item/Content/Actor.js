@@ -7,6 +7,7 @@ import { detectImage } from "@/src/domains/_app/utils/parsers";
 import { formatDateEU, getAge } from "@/src/application/utils/convertTimestamp";
 import IG_icon from "/public/IG_icon.svg";
 import X_icon from "/public/X_icon.svg";
+import Modal from "@/src/domains/_app/components/Modal/Modal";
 
 /*
 Form "open" and "close" should be handled in redux
@@ -466,7 +467,16 @@ export default function Actor({
             </div>
 
             {/* Creare wrap component per overlay ? */}
-            {openForm && (
+
+            <Modal isOpen={openForm} onClose={() => setOpenForm(false)}>
+                <Form
+                    formLabel={label}
+                    propsData={item}
+                    handleEditsInParent={handleEdits}
+                />
+            </Modal>
+
+            {/* {openForm && (
                 <div id={"Overlay"}>
                     <div className={"overlayWindow"}>
                         <div className={"topBar"}>
@@ -481,7 +491,7 @@ export default function Actor({
                         />
                     </div>
                 </div>
-            )}
+            )} */}
         </div>
     );
 }
