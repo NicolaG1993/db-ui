@@ -2,15 +2,19 @@ import { useEffect, useState } from "react";
 import SearchBarSmall from "@/src/domains/_app/components/SearchBar/SearchBarSmall.js";
 
 export default function FormSideNavSearchBar({
-    openSection,
+    topic,
     data,
-    handleSearch,
+    value,
+    onChange,
+    onClear,
 }) {
-    const [searchBar, setSearchBar] = useState("");
+    const [searchBar, setSearchBar] = useState(value);
 
     const handleSearchBar = (e) => {
-        setSearchBar(e.target.value);
+        e.preventDefault();
+        e.target.value !== searchBar && setSearchBar(e.target.value);
     };
+
     const clearSearchBar = () => {
         setSearchBar("");
     };
@@ -22,28 +26,22 @@ export default function FormSideNavSearchBar({
     };
 
     useEffect(() => {
-        // filter data in parent
-        handleSearch(searchBar);
-    }, [searchBar]);
+        onChange(searchBar);
+    }, [searchBar, onChange]);
 
     useEffect(() => {
         setSearchBar();
     }, [data]);
 
     useEffect(() => {
-        !openSection && clearSearchBar();
-    }, [openSection]);
+        !topic && clearSearchBar();
+    }, [topic]);
 
     return (
-        <>
-            <SearchBarSmall
-                searchBar={searchBar}
-                setSearchBar={handleSearchBar}
-                handleFocus={handleFocus}
-                handleBlur={handleBlur}
-                clearSearchBar={clearSearchBar}
-            />
-            {/* {openSection === "tags" && <div>Suggestions</div>} */}
-        </>
+        <SearchBarSmall
+            searchBar={searchBar}
+            setSearchBar={handleSearchBar}
+            clearSearchBar={clearSearchBar}
+        />
     );
 }
