@@ -462,6 +462,7 @@ const formSlice = createSlice({
     },
 });
 
+// cercare ed eliminare quelle che non uso 🧠
 export const {
     loadNewActiveForm,
     updateFormState,
@@ -479,7 +480,6 @@ export const {
     resetSideNavData,
     handleSideNavError,
     handleSideNavRenderReady,
-    // hydrateSideNavSelector,
     hydrateSideNavDropdowns,
     updateSideNavSelected,
     updateSideNavDropdownsState,
@@ -488,8 +488,6 @@ export const {
     acceptRemovedHints,
     skipMissingHints,
     skipRemovedHints,
-    addNewImage,
-    removeImage,
     validateForm,
     handlePostSuccess,
     resetFormStore,
@@ -497,11 +495,10 @@ export const {
     searchNavDataOnLevel,
 } = formSlice.actions;
 
-// eliminare quelle che non useró 🧠
+// eliminare quelle che non uso 🧠
 export const selectFormStore = (state) => state.formStore;
 export const selectFormStoreLabel = (state) => state.formStore.formLabel;
 export const selectFormStoreSettings = (state) => state.formStore.form;
-// export const selectFormComponent = (state) => state.formStore.FormComponent; // could i return this? -> dataStructureForms[state.formStore.formLabel].formComponent
 export const selectFormPropsData = (state) => state.formStore.propsData;
 export const selectFormStoreNewImage = (state) => state.formStore.newImage;
 export const selectFormStoreErrors = (state) => state.formStore.errors;
@@ -514,12 +511,6 @@ export const selectFormSideNavTopic = (state) =>
     state.formStore.ui.sideNavTopic;
 
 export const selectFormState = (state) => state.formStore.formState;
-// export const selectFormStateSelected = (state) =>
-//     state.formStore.formState.selected || [];
-
-// export const selectFormSideNav = (state) => {
-//     state.formStore.sideNavData;
-// };
 export const selectFormSideNavData = (state) =>
     state.formStore.sideNavData.data;
 export const selectFormSideNavSourceData = (state) =>
