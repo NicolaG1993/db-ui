@@ -10,6 +10,11 @@ import {
 } from "@/src/application/redux/slices/sessionPlaylistSlice";
 import Link from "next/link";
 import moveArrayItem from "@/src/domains/_app/utils/moveArrayItem";
+import {
+    activateLoadingItem,
+    clearItem,
+} from "@/src/application/redux/slices/itemSlice";
+import { useRouter } from "next/router";
 
 export default function SessionPlaylistUI({
     sessionPlaylist,
@@ -31,6 +36,7 @@ export default function SessionPlaylistUI({
     const [data, setData] = useState();
 
     const dispatch = useDispatch();
+    const router = useRouter();
 
     const removeFromPlaylist = (i) => {
         dispatch(removeFromSessionPlaylist(i));
@@ -46,6 +52,17 @@ export default function SessionPlaylistUI({
 
     const overridePlaylist = (playlist) => {
         dispatch(updateSessionPlaylist(playlist));
+    };
+
+    const clearPreviousItem = (id) => {
+        console.log("clearPreviousItem:", {
+            clickedItemID: id.toString(),
+            pageID: router.query.id,
+        });
+        if (id.toString() !== router.query.id) {
+            dispatch(clearItem());
+            dispatch(activateLoadingItem());
+        }
     };
 
     const createOrderOptions = (data, rawIndex) =>
@@ -130,7 +147,10 @@ export default function SessionPlaylistUI({
                                 >
                                     {createOrderOptions(data, i)}
                                 </select>
-                                <Link href={`/el/movie/${el.id}`}>
+                                <Link
+                                    href={`/el/movie/${el.id}`}
+                                    onClick={() => clearPreviousItem(el.id)}
+                                >
                                     {el.title}
                                 </Link>
                                 <p onClick={() => removeFromPlaylist(i)}>X</p>
