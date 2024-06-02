@@ -10,7 +10,7 @@ import SessionPlaylistUI from "./SessionPlaylistUI";
 // import styles from "@/src/domains/_app/constants/components/SessionPlaylist/SessionPlaylist.module.css";
 // import MovieForm from "../../../components/Form/components/Content/MovieForm";
 import Form from "@/src/domains/_app/components/Form/components/Form";
-import Modal from "../../../components/Modal/Modal";
+import Modal from "@/src/domains/_app/components/Modal/Modal";
 import { resetFormStore } from "@/src/application/redux/slices/formSlice";
 // import dataStructureForms from "@/src/application/settings/dataStructureForms";
 

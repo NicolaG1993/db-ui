@@ -468,8 +468,6 @@ export default function Actor({
                 </div>
             </div>
 
-            {/* Creare wrap component per overlay ? */}
-
             <Modal isOpen={openForm} onClose={() => setOpenForm(false)}>
                 <Form
                     formLabel={label}
