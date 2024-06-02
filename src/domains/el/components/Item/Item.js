@@ -77,6 +77,7 @@ export default function Item({ label }) {
     const handleEdits = async () => {
         const fetchedItem = await fetchData(id, label, structure);
         dispatch(selectItem(fetchedItem));
+        setOpenForm(false);
     };
 
     const handleEditForm = (bool) => {

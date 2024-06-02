@@ -125,7 +125,7 @@ const parseFormRelationsEdit = (allRelations, propsData) => {
                     }
                 }
             } else {
-                // 🔴🔴🔴🔴🔴🔴🔴🔴
+                // 🟡🟡🟡 TEST: SEAMS OK
                 // set the new relations
                 addedRelations[key] = newRelationsStandardMethod(
                     arr, // int[]
@@ -134,7 +134,7 @@ const parseFormRelationsEdit = (allRelations, propsData) => {
                 );
                 // set the deleted relations
                 removedRelations[key] = propsData[key]
-                    .filter((el) => !arr.map((el) => el.id).includes(el.id))
+                    .filter(({ id }) => !arr.includes(id))
                     .map((el) => el.id);
             }
             console.log("addedRelations: ", addedRelations);
@@ -158,11 +158,7 @@ const parseFormRelations = (formRelations, formState) => {
         if (label === "nationality") {
             allRelations.nationalities = formState.nationalities;
         } else {
-            const parsedRelation = formState[topic].map(
-                (el) => el.id || el.code // nationalities non hanno id
-            );
-
-            console.log("parsedRelation: ", parsedRelation);
+            const parsedRelation = formState[topic].map((el) => el.id);
             allRelations[topic] = parsedRelation;
         }
     });

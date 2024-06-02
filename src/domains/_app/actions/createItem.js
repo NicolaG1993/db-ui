@@ -12,7 +12,7 @@ export default async function createItem({ formState, form, propsData }) {
     if (form.relations) {
         // 🟢 invece di chiamare API per avere relations potrei passare direttamente id da component - invece di name
         // é inutile API qui perché id di relations sono unici e non modificabili
-        relatedData = parseFormRelations(form.relations, formState);
+        relatedData = parseFormRelations(form.relations, formState); // reduce all form selected relations to arrays of ids
         // relatedData = await parseFormRelationsPromise(
         //     form.relations,
         //     formState
@@ -21,11 +21,12 @@ export default async function createItem({ formState, form, propsData }) {
     }
 
     if (propsData) {
-        // 🔴🔴🔴🔴🔴🔴 MODIFY 🔴🔴🔴🔴🔴🔴 // All relations get deleted on edit
+        // 🟡🟡🟡 MODIFY 🟡🟡🟡 // All relations get deleted on edit
         /* parse relations for db */
         let relationsObj = {};
         relatedData &&
             (relationsObj = parseFormRelationsEdit(relatedData, propsData)); // 🟡 ! TESTARE !
+        console.log("🧠 relationsObj: ", relationsObj);
 
         return axios.put(form.APImodify, {
             ...formState,

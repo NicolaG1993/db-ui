@@ -127,11 +127,13 @@ export default function Form({
         4. 🟢 make work correctly NationalitiesSelector and move it to redux store
         5. 🟢 Make it work with propsData (edit mode)
         5.1 🟢 tags get deleted in edit mode, after interacting with them and refusing new hints
-        6. 🟡 QA Form (Create and Edit)
-        6.1 🟡 fix QA bugs
+        6. 🟢 QA Form (Create and Edit)
+        6.1 🟢 fix QA bugs
         6.1.1 🟢 SideNav.selected got deleted after doing a research
-         7. Deploy
+        7. 🟢 Deploy
+        7.1 PROD Testing
         8. Eliminare old Form 1.0 version + components
+        8.1 Cleanup comments
 
         BONUS:
         6.2 Extract action and selector from input components - pass them as props (forse fare quando creo library - annotare in ticket peró)
@@ -232,7 +234,7 @@ export default function Form({
                 propsData,
             })
                 .then(({ data }) => {
-                    console.log("submitForm: ", {
+                    console.log("submitForm success: ", {
                         data,
                         formState,
                         newImage,

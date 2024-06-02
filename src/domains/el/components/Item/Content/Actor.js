@@ -21,6 +21,8 @@ on open:
 - load cookies state if exist - for new
 
 DEVO FORSE RIVEDERE DIFFERENZE FRA DUE FORMS?
+
+NB. che setOpenForm ha due logiche abbastanza diverse fra new e edit. Si puó migliorare secondo me.
 */
 
 export default function Actor({
