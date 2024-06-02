@@ -44,8 +44,8 @@ import {
     selectFormStoreLabel,
 } from "@/src/application/redux/slices/formSlice";
 import dataStructureForms from "@/src/application/settings/dataStructureForms";
-import { fetchDataForSideNav } from "../../../actions/formFetchers";
-import submitForm from "../actions/submitForm";
+import { fetchDataForSideNav } from "@/src/domains/_app/actions/formFetchers";
+import submitForm from "@/src/domains/_app/components/Form/actions/submitForm";
 import allNationalities from "@/src/application/settings/allNationalities";
 import { getError } from "@/src/application/utils/error";
 

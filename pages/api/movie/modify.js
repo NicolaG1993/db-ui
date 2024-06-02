@@ -31,6 +31,8 @@ async function handler(req, res) {
 
     if (release) {
         release = new Date(release);
+    } else {
+        release = null;
     }
 
     //
