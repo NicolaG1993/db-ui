@@ -3,6 +3,7 @@ import Link from "next/link";
 import Image from "next/image";
 import Form from "@/src/domains/_app/components/Form/components/Form";
 import RelationsList from "../../RelationsList/RelationsList";
+import Modal from "@/src/domains/_app/components/Modal/Modal";
 
 export default function Category({
     label,
@@ -99,65 +100,6 @@ export default function Category({
                 ) : (
                     <p>N/A</p>
                 )}
-                {/* <div className={styles.moviesWrap}>
-                    {movies ? (
-                        <div className={styles.grid}>
-                            {movies.map((el) => (
-                                <Link
-                                    key={"movie" + el.id}
-                                    href={`/movie/${el.id}`}
-                                >
-                                    <div id={styles.Clip}>
-                                        <div
-                                            style={{
-                                                position: "relative",
-                                            }}
-                                        >
-                                            <Image
-                                                src={
-                                                    el.pic
-                                                        ? el.pic
-                                                        : "/no-image.png"
-                                                }
-                                                alt={el.title}
-                                                layout="fill"
-                                                objectFit="cover"
-                                            />
-                                        </div>
-                                        <div>
-                                            <div>
-                                                <h5>{el.title}</h5>
-                                                <p className={styles.subtitle}>
-                                                    {el.cast &&
-                                                        el.cast.map(
-                                                            (actor, i) => (
-                                                                <span
-                                                                    key={
-                                                                        actor.actorid
-                                                                    }
-                                                                >
-                                                                    {i > 0 &&
-                                                                        ", "}
-                                                                    {actor.name}
-                                                                </span>
-                                                            )
-                                                        )}
-                                                </p>
-                                            </div>
-                                            <p className={styles.rating}>
-                                                {el.rating
-                                                    ? el.rating
-                                                    : "unrated"}
-                                            </p>
-                                        </div>
-                                    </div>
-                                </Link>
-                            ))}
-                        </div>
-                    ) : (
-                        <p>N/A</p>
-                    )}
-                </div> */}
             </div>
 
             <div className={styles.infoWrap}>
@@ -181,22 +123,13 @@ export default function Category({
                 </div>
             </div>
 
-            {openForm && (
-                <div id={"Overlay"}>
-                    <div className={"overlayWindow"}>
-                        <div className={"topBar"}>
-                            <span onClick={() => setOpenForm(false)}>X</span>
-                        </div>
-
-                        <Form
-                            topicLabel={label}
-                            propsData={item}
-                            handleEditsInParent={handleEdits}
-                            setOpenForm={setOpenForm}
-                        />
-                    </div>
-                </div>
-            )}
+            <Modal isOpen={openForm} onClose={() => setOpenForm(false)}>
+                <Form
+                    formLabel={label}
+                    propsData={item}
+                    handleEditsInParent={handleEdits}
+                />
+            </Modal>
         </div>
     );
 }

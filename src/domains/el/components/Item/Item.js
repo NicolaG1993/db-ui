@@ -20,6 +20,7 @@ import ItemSkeleton from "@/src/domains/el/components/Item/ItemSkeleton";
 // import ErrorUI from "@/src/domains/_app/components/Error/ErrorUI";
 import { getError } from "@/src/application/utils/error";
 import { useErrorBoundary } from "react-error-boundary";
+import { resetFormStore } from "@/src/application/redux/slices/formSlice";
 
 export default function Item({ label }) {
     //================================================================================
@@ -76,6 +77,18 @@ export default function Item({ label }) {
     const handleEdits = async () => {
         const fetchedItem = await fetchData(id, label, structure);
         dispatch(selectItem(fetchedItem));
+        setOpenForm(false);
+    };
+
+    const handleEditForm = (bool) => {
+        if (bool) {
+            // dispatch(loadNewActiveForm(arg)); // dispatch new form con props data here!
+            dispatch(resetFormStore()); // or just reset it! EZ
+            setOpenForm(true);
+        } else {
+            //  dispatch(resetFormStore()); // we should do this on opening new forms
+            setOpenForm(false);
+        }
     };
 
     //================================================================================
@@ -172,7 +185,7 @@ export default function Item({ label }) {
                             handleDelete={handleDelete}
                             handleEdits={handleEdits}
                             openForm={openForm}
-                            setOpenForm={setOpenForm}
+                            setOpenForm={handleEditForm}
                         />
                     )}
                 </>

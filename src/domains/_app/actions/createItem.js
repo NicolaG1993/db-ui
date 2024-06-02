@@ -1,53 +1,68 @@
 import axios from "axios";
 import {
+    parseFormRelations,
     parseFormRelationsEdit,
     parseFormRelationsPromise,
 } from "@/src/domains/_app/utils/formParsers.js";
 
 // BETA 💛
-export default async function createItem(obj, form, formState, propsData) {
-    // console.log("createItem invoked 💚: ", { obj, form, formState, propsData });
+export default async function createItem({ formState, form, propsData }) {
+    console.log("createItem invoked 🧠: ", { formState, form, propsData });
     let relatedData;
     if (form.relations) {
-        relatedData = await parseFormRelationsPromise(
-            form.relations,
-            formState
-        ); // posso usare direttamente obj ogni volta invece di formState ? 🧠 se sí eliminare 3 prop
+        // 🟢 invece di chiamare API per avere relations potrei passare direttamente id da component - invece di name
+        // é inutile API qui perché id di relations sono unici e non modificabili
+        relatedData = parseFormRelations(form.relations, formState); // reduce all form selected relations to arrays of ids
+        // relatedData = await parseFormRelationsPromise(
+        //     form.relations,
+        //     formState
+        // );
+        console.log("🧠 relatedData: ", relatedData); // {name: string, id: string}[]
     }
 
     if (propsData) {
-        // MODIFY //
+        // 🟡🟡🟡 MODIFY 🟡🟡🟡 // All relations get deleted on edit
         /* parse relations for db */
         let relationsObj = {};
         relatedData &&
-            (relationsObj = parseFormRelationsEdit(relatedData, propsData));
+            (relationsObj = parseFormRelationsEdit(relatedData, propsData)); // 🟡 ! TESTARE !
+        console.log("🧠 relationsObj: ", relationsObj);
 
         return axios.put(form.APImodify, {
-            ...obj,
+            ...formState,
             ...relationsObj,
         });
         // return axios.put(`/api/${topicLabel}/modify`, {
-        //     ...obj,
+        //     ...formState,
         //     ...relationsObj,
         // });
     } else {
-        // NEW //
+        // 🟢 NEW //
         /* parse data for db */
-        Object.entries(relatedData).map(([key, arr], i) => {
-            if (key === "nationalities") {
-                relatedData[key] = formState.nationalities;
-            } else {
-                let parsedArr = relatedData[key].map((el) => el.id);
-                relatedData[key] = parsedArr;
-            }
-        });
+
+        // QUESTO NON FA LO STESSO DI parseFormRelations() ????
+
+        // Object.entries(relatedData).map(([key, arr], i) => {
+        //     // if (key === "nationalities") {
+        //     //     relatedData[key] = formState.nationalities;
+        //     // } else {
+
+        //     if (key !== "nationalities") {
+        //         let parsedArr = relatedData[key].map((el) => ({
+        //             name: el.name,
+        //             id: el.id,
+        //         }));
+        //         relatedData[key] = parsedArr;
+        //     }
+        //     // }
+        // });
 
         return axios.post(form.APInew, {
-            ...obj,
+            ...formState,
             ...relatedData,
         });
         // return axios.post(`/api/${topicLabel}/new`, {
-        //     ...obj,
+        //     ...formState,
         //     ...relatedData,
         // });
     }

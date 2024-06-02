@@ -7,6 +7,23 @@ import { detectImage } from "@/src/domains/_app/utils/parsers";
 import { formatDateEU, getAge } from "@/src/application/utils/convertTimestamp";
 import IG_icon from "/public/IG_icon.svg";
 import X_icon from "/public/X_icon.svg";
+import Modal from "@/src/domains/_app/components/Modal/Modal";
+
+/*
+Form "open" and "close" should be handled in redux
+
+on close:
+- we need to clean up the form and cookie - for edit
+- clear the form after saving it in cookies - for new#
+
+on open:
+- load propsData - for edit
+- load cookies state if exist - for new
+
+DEVO FORSE RIVEDERE DIFFERENZE FRA DUE FORMS?
+
+NB. che setOpenForm ha due logiche abbastanza diverse fra new e edit. Si puó migliorare secondo me.
+*/
 
 export default function Actor({
     label,
@@ -83,31 +100,6 @@ export default function Actor({
                         )}
                     </div>
                 </div>
-
-                {/* <div className={styles.elRow}>
-                    <span>Height: </span>
-                    <p>{"?"} cm</p>
-                </div>
-
-                <div className={styles.elRow}>
-                    <span>Weight: </span>
-                    <p>{"?"} cm</p>
-                </div>
-
-                <div className={styles.elRow}>
-                    <span>Breast size: </span>
-                    <p>{"?"} cm</p>
-                </div>
-
-                <div className={styles.elRow}>
-                    <span>Reach size: </span>
-                    <p>{"?"} cm</p>
-                </div>
-
-                <div className={styles.elRow}>
-                    <span>Shoe size: </span>
-                    <p>{"?"}</p>
-                </div> */}
 
                 <div className={styles.elRow}>
                     <span>Hair: </span>
@@ -256,22 +248,6 @@ export default function Actor({
 
                 <div className={styles.elRowToScroll}>
                     <span>Categories: </span>
-                    {/* <div className={styles.tagsWrap}>
-                                {item.categories && item.categories.length ? (
-                                    item.categories.map((el) => (
-                                        <div
-                                            key={"category" + el.id}
-                                            className={styles.tagEl}
-                                        >
-                                            <Link href={`/category/${el.id}`}>
-                                                {el.name}
-                                            </Link>
-                                        </div>
-                                    ))
-                                ) : (
-                                    <p>N/A</p>
-                                )}
-                            </div> */}
 
                     <div className={styles.tagLabelsWrap}>
                         {parsedObj.categories ? (
@@ -366,68 +342,6 @@ export default function Actor({
                 ) : (
                     <p>N/A</p>
                 )}
-
-                {/* <div className={styles.moviesWrap}>
-                    {item.movies ? (
-                        <div className={styles.grid}>
-                            {item.movies.map((el) => (
-                                <Link
-                                    key={"movie" + el.id}
-                                    href={`/el/movie/${el.id}`}
-                                >
-                                    <div id={styles.Clip}>
-                                        <div
-                                            style={{
-                                                position: "relative",
-                                            }}
-                                        >
-                                            <Image
-                                                src={
-                                                    el.pic
-                                                        ? el.pic
-                                                        : "/no-image.png"
-                                                }
-                                                alt={el.title}
-                                                fill
-                                                style={{
-                                                    objectFit: "cover",
-                                                }}
-                                            />
-                                        </div>
-                                        <div>
-                                            <div>
-                                                <h5>{el.title}</h5>
-                                                <p className={styles.subtitle}>
-                                                    {el.cast &&
-                                                        el.cast.map(
-                                                            (item, i) => (
-                                                                <span
-                                                                    key={
-                                                                        item.movieid
-                                                                    }
-                                                                >
-                                                                    {i > 0 &&
-                                                                        ", "}
-                                                                    {item.name}
-                                                                </span>
-                                                            )
-                                                        )}
-                                                </p>
-                                            </div>
-                                            <p className={styles.rating}>
-                                                {el.rating
-                                                    ? el.rating
-                                                    : "unrated"}
-                                            </p>
-                                        </div>
-                                    </div>
-                                </Link>
-                            ))}
-                        </div>
-                    ) : (
-                        <p>N/A</p>
-                    )}
-                </div> */}
             </div>
 
             <div className={styles.infoWrap}>
@@ -451,27 +365,18 @@ export default function Actor({
                 </div>
             </div>
 
-            {openForm && (
-                <div id={"Overlay"}>
-                    <div className={"overlayWindow"}>
-                        <div className={"topBar"}>
-                            <span onClick={() => setOpenForm(false)}>X</span>
-                        </div>
-
-                        <Form
-                            topicLabel={label}
-                            propsData={item}
-                            handleEditsInParent={handleEdits}
-                            setOpenForm={setOpenForm}
-                        />
-                    </div>
-                </div>
-            )}
+            <Modal isOpen={openForm} onClose={() => setOpenForm(false)}>
+                <Form
+                    formLabel={label}
+                    propsData={item}
+                    handleEditsInParent={handleEdits}
+                />
+            </Modal>
         </div>
     );
 }
 
-/**
+/*
  * Bisogna fare in modo che UI sia dinamica (es. attore != movie != studio)
  * si puo fare come per in Form
  * si puo fare come esistono 3 presets (1x attore, 1x movie, 1x altro) e vengono scelti in base a label

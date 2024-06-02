@@ -6,6 +6,7 @@ import { formatDateEU } from "@/src/application/utils/convertTimestamp";
 import RecordsCounter from "../RecordsCounter";
 import RelationsList from "../../RelationsList/RelationsList";
 import SessionPlaylistAddBtn from "../SessionPlaylistAddBtn";
+import Modal from "@/src/domains/_app/components/Modal/Modal";
 
 export default function Movie({
     label,
@@ -123,22 +124,6 @@ export default function Movie({
 
                 <div className={styles.elRowToScroll}>
                     <span>Categories: </span>
-                    {/* <div className={styles.tagsWrap}>
-                                {item.categories && item.categories.length ? (
-                                    item.categories.map((el) => (
-                                        <div
-                                            key={"category" + el.id}
-                                            className={styles.tagEl}
-                                        >
-                                            <Link href={`/category/${el.id}`}>
-                                                {el.name}
-                                            </Link>
-                                        </div>
-                                    ))
-                                ) : (
-                                    <p>N/A</p>
-                                )}
-                            </div> */}
 
                     <div className={styles.tagLabelsWrap}>
                         {parsedObj.categories ? (
@@ -263,22 +248,13 @@ export default function Movie({
                 </div>
             </div>
 
-            {openForm && (
-                <div id={"Overlay"}>
-                    <div className={"overlayWindow"}>
-                        <div className={"topBar"}>
-                            <span onClick={() => setOpenForm(false)}>X</span>
-                        </div>
-
-                        <Form
-                            topicLabel={label}
-                            propsData={item}
-                            handleEditsInParent={handleEdits}
-                            setOpenForm={setOpenForm}
-                        />
-                    </div>
-                </div>
-            )}
+            <Modal isOpen={openForm} onClose={() => setOpenForm(false)}>
+                <Form
+                    formLabel={label}
+                    propsData={item}
+                    handleEditsInParent={handleEdits}
+                />
+            </Modal>
         </div>
     );
 }

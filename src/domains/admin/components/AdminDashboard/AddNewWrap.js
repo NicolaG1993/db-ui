@@ -1,9 +1,15 @@
 import { useState } from "react";
 import styles from "@/src/application/styles/AdminDashboard.module.css";
 import Form from "@/src/domains/_app/components/Form/components/Form";
+import Cookies from "js-cookie";
 
 export default function AddNewWrap({ setAddForm }) {
-    const [UI, setUI] = useState("actor");
+    const [UI, setUI] = useState(
+        Cookies.get("formState")
+            ? JSON.parse(Cookies.get("formState"))?.formLabel
+            : "actor"
+    );
+
     return (
         <div id={"Overlay"}>
             <div className={"overlayWindow"}>
@@ -55,7 +61,7 @@ export default function AddNewWrap({ setAddForm }) {
                         </li>
                     </ul>
                 </div>
-                <Form topicLabel={UI} />
+                <Form formLabel={UI} />
             </div>
         </div>
     );

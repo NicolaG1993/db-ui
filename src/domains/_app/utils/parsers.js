@@ -13,8 +13,7 @@ import {
 import { onlyUnique } from "@/src/application/utils/parsers";
 
 function parseTagsByType(obj, TAGS_OBJ) {
-    // console.log("parseTagsByType: ", obj);
-    // console.log("TAGS_OBJ: ", TAGS_OBJ);
+    console.log("parseTagsByType: ", { obj, TAGS_OBJ });
 
     // using TAGS_OBJ to create parsedObj
     const parsedObj = {};
@@ -33,7 +32,7 @@ function parseTagsByType(obj, TAGS_OBJ) {
         noTypeData = [...noTypeData, ...obj[""]];
     }
     parsedObj.Unknown["No Type"] = noTypeData;
-    console.log("parsedObj: ", parsedObj);
+    // console.log("parsedObj: ", parsedObj);
     return parsedObj;
 }
 
@@ -219,14 +218,10 @@ const parseOrderOptions = (arr) => {
     );
 };
 
-const extractIDs = (data) => {
-    // receive arr of objects // return arr of ids
-    return data.map(({ id }) => id);
-};
-const extractNames = (data) => {
-    // receive arr of objects // return arr of ids
-    return data.map(({ name }) => name);
-};
+// receive arr of objects // return arr of ids
+const extractIDs = (data) => data.map(({ id }) => id);
+// receive arr of objects // return arr of ids
+const extractNames = (data) => data.map(({ name }) => name);
 
 //  arr é l'array da filtrare, values sono i valori da cercare
 // se uno dei valori é presente in arr torna true
@@ -234,17 +229,6 @@ const anyExist = (arr, values) =>
     values.some((value) => {
         return arr.includes(Number(value));
     });
-
-const tagsCheck = (tags, TAGS_REL) => {
-    let parsedTags = [];
-    Object.entries(TAGS_REL).map(([key, obj]) => {
-        if (anyExist(tags, obj.related) && !anyExist(tags, [obj.id])) {
-            //se tags contiene uno di questi valori e non contiene gia se stesso aggiungi obj.id a parsedTags
-            parsedTags.push(Number(obj.id));
-        }
-    });
-    return parsedTags;
-};
 
 const detectImage = (obj) => {
     if (obj && obj.movies && obj.movies.length) {
@@ -264,8 +248,8 @@ export {
     parseTagsForUiList,
     orderData,
     parseOrderOptions,
-    tagsCheck,
     detectImage,
     extractIDs,
     extractNames,
+    anyExist,
 };

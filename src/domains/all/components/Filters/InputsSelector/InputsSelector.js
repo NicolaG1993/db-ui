@@ -1,100 +1,136 @@
 import { useEffect, useState } from "react";
 import ErrorUI from "@/src/domains/_app/components/Error/components/ErrorUI/ErrorUI";
 import standardStyles from "./InputsSelector.module.css";
+import { useAppSelector } from "@/src/application/redux/lib/hooks";
+import {
+    selectFormSideNavRenderReady,
+    selectFormSideNavSelected,
+    handleSideNavRenderReady,
+} from "@/src/application/redux/slices/formSlice";
+import { shallowEqual, useDispatch } from "react-redux";
+import renderElements from "./utils/renderElements";
 
-export default function InputsSelector(props) {
+export default function InputsSelector({
+    data,
+    // currentFilters,
+    topic,
+    userStyles,
+    onChange,
+}) {
+    //////////////////////////////
+    // REDUX STORE
+    //////////////////////////////
+    const dispatch = useDispatch();
+    const renderReady = useAppSelector(
+        selectFormSideNavRenderReady,
+        shallowEqual
+    );
+    const currentSelection = useAppSelector(
+        selectFormSideNavSelected,
+        shallowEqual
+    );
+
+    console.log("*InputsSelector* ", {
+        data,
+        // currentFilters,
+        topic,
+        userStyles,
+        currentSelection,
+    });
     //////////////////////////////
     // STATE
     //////////////////////////////
     const [error, setError] = useState();
-    const [renderReady, setRenderReady] = useState(false);
-    const [filters, setFilters] = useState(props.filters || []);
-    let styles = props.styles || standardStyles;
+    // const [renderReady, setRenderReady] = useState(false);
+    // const [filters, setFilters] = useState(currentSelection || []);
+    let styles = { ...standardStyles, ...userStyles } || standardStyles;
 
     useEffect(() => {
-        if (!props.arr) {
-            setError("Error: props.arr is missing");
-        } else if (!Array.isArray(props.arr)) {
-            setError("Error: props.arr is not an array");
-        } else if (props.filters && !Array.isArray(props.filters)) {
-            setError("Error: props.filters is not an array");
+        // 🔴 Non faccio refactor di "error" perché so gia che dovró rifarlo con "props.onError() alla fine"
+        if (!data) {
+            setError("Error: data is missing");
+        } else if (!Array.isArray(data)) {
+            setError("Error: data is not an array");
+        } else if (currentSelection && !Array.isArray(currentSelection)) {
+            setError("Error: currentSelection is not an array");
         } else {
-            setRenderReady(true);
+            setError();
         }
+
+        // else {
+        //     setRenderReady(true);
+        // }
+
+        // if (error) {
+        //     dispatch(handleSideNavError({ error }));
+        // } else {
+        //     dispatch(hydrateSideNavDropdowns());
+        // }
     }, []);
 
+    // useEffect(() => {
+    //     if (onChange && typeof onChange !== "function") {
+    //         setError("Error: onChange is not a function");
+    //     } else if (onChange) {
+    //         onChange({ val: currentSelection, topic });
+    //     }
+    // }, [currentSelection, topic]);
+
+    // DELETE
     useEffect(() => {
-        if (
-            props.handleChildState &&
-            typeof props.handleChildState !== "function"
-        ) {
-            setError("Error: handleChildState is not a function");
-        } else if (props.handleChildState) {
-            props.handleChildState(filters, props.topic);
-        }
-    }, [filters]);
+        error
+            ? console.log("ERROR: ", error)
+            : dispatch(handleSideNavRenderReady(true));
+    }, [error]);
 
     //////////////////////////////
     // UPDATE FILTER STATE
     //////////////////////////////
+    // 🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴 FIX (REFACTOR) 🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴
+    /*
     const updateFilters = (val, action) => {
         if (action === "add") {
             // update only if value is not present in array already, bug prevention
-            if (props.filters && !props.filters.some((x) => x === val)) {
-                setFilters([...props.filters, val]);
+            if (currentFilters && !currentFilters.some((x) => x === val)) {
+                setFilters([...currentFilters, val]);
             } else if (!filters.some((x) => x === val)) {
                 setFilters([...filters, val]);
             }
         }
         if (action === "remove") {
-            setFilters(props.filters.filter((x) => x !== val));
+            setFilters(currentFilters.filter((x) => x !== val));
         }
     };
-
-    //////////////////////////////
-    // DATA HANDLERS
-    //////////////////////////////
-    const renderValues = (array) => {
-        return (
-            <div className={styles.categoryDropdown}>
-                {array.map((it) => {
-                    return props.filters &&
-                        props.filters.find((x) => it === x) ? (
-                        <div key={"value: " + it}>
-                            <span
-                                className={styles.selectedEl}
-                                onClick={() => updateFilters(it, "remove")}
-                            >
-                                {it}
-                            </span>
-                        </div>
-                    ) : (
-                        <div key={"value: " + it}>
-                            <span
-                                className={styles.unselectedEl}
-                                onClick={() => updateFilters(it, "add")}
-                            >
-                                {it}
-                            </span>
-                        </div>
-                    );
-                })}
-            </div>
-        );
-    };
+    */
 
     //////////////////////////////
     // RENDERING
     //////////////////////////////
+    /*
     return (
         <>
             {error ? (
                 <ErrorUI error={error} styles={null} />
             ) : renderReady ? (
-                renderValues(props.arr)
+                renderElements(data)
             ) : (
                 "Loading"
             )}
         </>
+    );
+    */
+    return (
+        <div className={styles.categoryDropdown}>
+            {renderReady ? (
+                renderElements({
+                    data,
+                    currentSelection,
+                    //  updateFilters,
+                    styles,
+                })
+            ) : (
+                <p>Loading...</p>
+            )}
+        </div>
     );
 }

@@ -25,6 +25,8 @@ async function handler(req, res) {
     }
     if (birthday) {
         birthday = new Date(birthday);
+    } else {
+        birthday = null;
     }
 
     try {

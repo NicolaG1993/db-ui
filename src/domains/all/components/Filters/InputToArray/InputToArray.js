@@ -1,3 +1,6 @@
+// ESTERNAL COMPONENT!
+// All required data should be passed as argument!
+
 import { useState } from "react";
 import styles from "@/src/application/styles/AdminDashboard.module.css";
 
@@ -8,25 +11,25 @@ export default function InputToArray({
     topic,
     topicID,
     formState,
-    setFormState,
+    onChange,
     propData,
 }) {
     const [newInput, setNewInput] = useState();
     // const [data, setData] = useState(formState[topic]);
 
     // SUBMIT NEW INPUT TO STATE
-    const handleAddInputToArray = () => {
+    const handleAddInputToArray = (newInput, formState, topic) => {
         console.log("💚💚💚 handleAddInputToArray activated: ", newInput);
         // setData([...data, newInput]);
         if (newInput) {
-            setFormState([...formState[topic], newInput], topic);
+            onChange([newInput, ...formState[topic]], topic);
             setNewInput("");
         }
     };
 
     // REMOVE INPUT FROM STATE
     const handleRemoveSelectedInput = (i) => {
-        setFormState(
+        onChange(
             formState[topic].filter((el, index) => index !== i),
             topic
         );
@@ -45,7 +48,9 @@ export default function InputToArray({
                     />
                     <button
                         type="button"
-                        onClick={() => handleAddInputToArray()}
+                        onClick={() =>
+                            handleAddInputToArray(newInput, formState, topic)
+                        }
                         className="button-standard"
                     >
                         Add

@@ -1,297 +1,220 @@
-import styles from "@/src/application/styles/AdminDashboard.module.css";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useRouter } from "next/router";
-
-import {
-    createObjectURL,
-    revokeObjectURL,
-} from "@/src/domains/_app/actions/useLocalImages";
-import {
-    decimalValidation,
-    textValidation,
-    nicknameValidation,
-} from "@/src/application/utils/validateForms.js";
-import dataStructureForms from "@/src/application/settings/dataStructureForms";
-import FormSideNav from "@/src/domains/_app/components/Form/components/FormSideNav/FormSideNav.js";
-import formHydrate from "@/src/domains/_app/utils/formHydrate";
-import { fetchDataForSideNav } from "@/src/domains/_app/actions/formFetchers";
-import uploadImage from "@/src/domains/_app/actions/uploadImage";
-import createItem from "@/src/domains/_app/actions/createItem";
-import { shallowEqual, useSelector } from "react-redux";
+import { shallowEqual, useDispatch, useSelector } from "react-redux";
+import { useErrorBoundary } from "react-error-boundary";
+import styles from "@/src/domains/_app/components/Form/components/Form.module.css";
+import FormDrawer from "./FormDrawer@2.0/FormDrawer";
+import FormDrawerContent from "./FormDrawer@2.0/FormDrawerContent";
 import { selectAppSettings } from "@/src/application/redux/slices/appSettingsSlice";
+import {
+    loadNewActiveForm,
+    selectFormState,
+    selectFormStoreErrors,
+    selectFormStoreHints,
+    selectFormStoreNewImage,
+    selectFormStoreSettings,
+    selectFormStoreUI,
+    startLoading,
+    handlePostSuccess,
+    openHintsNav,
+    selectFormIsLoading,
+    resetSideNavData,
+    initSideNavData,
+    selectFormSideNavData,
+    selectFormStoreLabel,
+} from "@/src/application/redux/slices/formSlice";
+import dataStructureForms from "@/src/application/settings/dataStructureForms";
+import { fetchDataForSideNav } from "@/src/domains/_app/actions/formFetchers";
+import submitForm from "@/src/domains/_app/components/Form/actions/submitForm";
+import allNationalities from "@/src/application/settings/allNationalities";
+import { getError } from "@/src/application/utils/error";
 
 export default function Form({
-    topicLabel,
+    formLabel,
     propsData,
     setOpenForm,
     handleEditsInParent,
     parentIsWaiting,
 }) {
-    //================================================================================
-    // Component State
-    //================================================================================
+    const dispatch = useDispatch();
     const router = useRouter();
     const appSettings = useSelector(selectAppSettings);
+    const { showBoundary } = useErrorBoundary(); // not found ?!?! // solved ?
 
-    const [form, setForm] = useState(dataStructureForms[topicLabel]);
-    const FormComponent = form.formComponent;
-    const [formState, setFormState] = useState(form.emptyState);
-    const [activeForm, setActiveForm] = useState(topicLabel); // delete?
-    const [newImage, setNewImage] = useState();
-    const [errors, setErrors] = useState({});
-    const [openSection, setOpenSection] = useState(false);
-    const [sideNavData, setSideNavData] = useState(undefined);
+    // We get the settings trough the component + props
+    // The rest will be setup and stored in store // also we cannot store formComponent in store
+    // 🧠 I need to test this by switching form tabs and loading new form when one is alredy open
 
-    const emptyHints = { missing: [], removed: [] };
-    const [hints, setHints] = useState(emptyHints);
+    const form = useSelector(selectFormStoreSettings, shallowEqual);
+    const uiState = useSelector(selectFormStoreUI, shallowEqual);
+    const hints = useSelector(selectFormStoreHints, shallowEqual);
+    const formState = useSelector(selectFormState, shallowEqual);
+    const newImage = useSelector(selectFormStoreNewImage, shallowEqual);
+    const formErrors = useSelector(selectFormStoreErrors, shallowEqual);
+    const isLoading = useSelector(selectFormIsLoading, shallowEqual);
+    const sideNavData = useSelector(selectFormSideNavData, shallowEqual);
+    const storedFormLabel = useSelector(selectFormStoreLabel, shallowEqual);
 
-    //================================================================================
-    // UseEffects
-    //================================================================================
-    // SET NEW ACTIVE FORM
+    const formObj = dataStructureForms[formLabel];
+    const FormComponent = dataStructureForms[formLabel]?.formComponent;
+
     useEffect(() => {
-        setActiveForm(topicLabel); // senza questo il form cambia prima che nuovo emptyState venga selezionato
-        setForm(dataStructureForms[topicLabel]);
-        setFormState(dataStructureForms[topicLabel].emptyState);
-        setErrors({});
-    }, [topicLabel]);
-
-    // RESET STATE ON FORM CHANGE
-    useEffect(() => {
-        setFormState(form.emptyState);
-    }, [form]);
-
-    //PARSE PROPSDATA
-    useEffect(() => {
-        if (propsData) {
-            let newState = formHydrate(formState, form.emptyState, propsData); // hydrate form on modify
-            setFormState(newState);
-        } else {
-            setFormState(form.emptyState); // set empty form on add new
+        if (formLabel && formLabel !== storedFormLabel) {
+            let { formComponent, ...rest } = formObj;
+            let payload = {
+                formLabel,
+                form: rest,
+                propsData,
+            };
+            dispatch(loadNewActiveForm(payload));
         }
-    }, [propsData]);
+    }, [formLabel, storedFormLabel, formObj, propsData, dispatch]);
 
-    // FETCH DATA FOR SIDENAV
+    // FETCH DATA FOR DRAWER
     useEffect(() => {
-        if (openSection && openSection !== "nationalities") {
-            fetchDataForSideNav(openSection, appSettings.TAGS_OBJ).then((res) =>
-                setSideNavData(res)
-            );
-        } else {
-            setSideNavData();
+        // 🧠🧠🧠 can i move this into drawer? or FormSideNav 🧠🧠🧠
+        if (!uiState.hintsIsOpen) {
+            if (uiState?.sideNavTopic) {
+                if (uiState.sideNavTopic === "nationalities") {
+                    dispatch(initSideNavData({ data: allNationalities }));
+                    /*
+                🧠🧠🧠
+                  fare sideNavData setup in store
+                  dobbiamo gestire i filtri per forza in store,
+                   quindi dobbiamo passargli tutte le nationalities
+                🧠🧠🧠
+                    */
+                } else {
+                    fetchDataForSideNav(
+                        uiState.sideNavTopic,
+                        appSettings.TAGS_OBJ
+                    ).then(({ data, parsedData }) => {
+                        console.log("fetchDataForSideNav res: ", {
+                            data,
+                            parsedData,
+                        });
+                        dispatch(initSideNavData({ data, parsedData }));
+                    });
+                }
+            } else if (sideNavData) {
+                dispatch(resetSideNavData());
+            } // TODO: error handling? 🧠
         }
-    }, [openSection]);
+    }, [uiState]);
 
+    /* 🧠 MOVE INSIDE DRAWER ? */
     useEffect(() => {
-        if (!hints?.missing?.length && !hints?.removed?.length) {
-            setOpenSection(false);
+        if (hints?.missing?.length || hints?.removed?.length) {
+            openHintsNav();
         }
     }, [hints]);
 
-    //================================================================================
-    // Handle Form Data
-    //================================================================================
-    const addLocalImages = (e) => {
-        /* version for hosted App */
-        const file = {
-            location: createObjectURL([...e.target.files][0]),
-            key: [...e.target.files][0].name,
-            file: [...e.target.files][0],
-        }; // use the spread syntax to get it as an array
-        setNewImage(file);
-    };
-
-    const deleteImage = (img) => {
-        /* version for hosted App */
-        revokeObjectURL(img.file);
-        setNewImage();
-        if (formState.pic) {
-            setFormState((prev) => ({
-                ...prev,
-                pic: "",
-            }));
-        }
-    };
-
-    const updateFormState = (val, topic) => {
-        setFormState((prev) => ({
-            ...prev,
-            [topic]: val,
-        }));
-    };
-
-    const validateData = async (e) => {
-        const { id, name, value } = e.target;
-        let newErrObj = { ...errors };
-
-        //validate values
-        if (id === "Name") {
-            const resp = nicknameValidation(id, value);
-            if (resp) {
-                setErrors({ ...errors, [name]: resp });
-            } else {
-                delete newErrObj[name];
-                setErrors(newErrObj);
-            }
-        }
-        if (id === "Title") {
-            const resp = textValidation(value);
-            if (resp) {
-                setErrors({ ...errors, [name]: resp });
-            } else {
-                delete newErrObj[name];
-                setErrors(newErrObj);
-            }
-        }
-        if (id === "Rating") {
-            const resp = decimalValidation(id, value);
-            if (resp) {
-                setErrors({ ...errors, [name]: resp });
-            } else {
-                delete newErrObj[name];
-                setErrors(newErrObj);
-            }
-        }
-    }; // forse qualcosa bisogna acora aggiungere da altri forms? 💛
-
-    const confirmChanges = async (e) => {
+    // 🧠 There must be a way to transform this into a store action
+    const confirmChanges = async ({
+        e,
+        formState,
+        newImage,
+        form,
+        propsData,
+        formLabel,
+    }) => {
         e.preventDefault();
+        // 🧠 Handle API errors properly!
+        // API Errors to handle: image upload (TODO) + item edit (TODO) + form validation (DONE)
 
-        if (formState.birthday === "") {
-            formState.birthday = null;
-        }
+        if (Object.keys(formErrors).length === 0) {
+            dispatch(startLoading());
 
-        if (Object.keys(errors).length === 0) {
-            //questa parte é cosí perché utilizzo archivio locale su pc per questo progetto
-            //qui se no dovrei fare upload img su db e salvare quel link
-            if (newImage) {
-                // user added a new image
-                uploadImage(newImage.file, form.group)
-                    .then((imgRes) => {
-                        let finalState = {
-                            ...formState,
-                            pic: imgRes.data[0].Location,
-                        };
-                        createItem(finalState, form, formState, propsData).then(
-                            ({ data }) => {
-                                if (
-                                    (propsData || parentIsWaiting) &&
-                                    handleEditsInParent
-                                ) {
-                                    handleEditsInParent(data);
-                                }
-                                setOpenForm && setOpenForm(false);
-                                router.push(`/el/${topicLabel}/${data.id}`);
-                            }
-                        );
-                    })
-                    .catch((err) => console.log("🧡🧡🧡 ERR: ", err));
-            } else {
-                // user doesnt want to use any image or nothing changed
-                createItem(formState, form, formState, propsData)
-                    .then(({ data }) => {
-                        if (
-                            (propsData || parentIsWaiting) &&
-                            handleEditsInParent
-                        ) {
-                            handleEditsInParent(data);
-                        }
-                        setOpenForm && setOpenForm(false);
-                        topicLabel !== "record" &&
-                            topicLabel !== "records" &&
-                            router.push(`/el/${topicLabel}/${data.id}`); // forse fare Form Component separato per "record" page, in caso si volessero fare cose diverse al suo interno
-                    })
-                    .catch((err) => console.log("ERROR: ", err));
-            }
-        } else {
-            console.log("INVALID INPUTS", errors);
-            // Object.values(errors).map((err) =>
-            //     enqueueSnackbar(err, {
-            //         variant: "error",
-            //     })
-            // );
-            return;
+            submitForm({
+                formState,
+                newImage,
+                form,
+                propsData,
+            })
+                .then(({ data }) => {
+                    console.log("submitForm success: ", {
+                        data,
+                        formState,
+                        newImage,
+                        form,
+                        propsData,
+                    });
+                    if ((propsData || parentIsWaiting) && handleEditsInParent) {
+                        handleEditsInParent(data);
+                    }
+
+                    dispatch(handlePostSuccess());
+                    setOpenForm && setOpenForm(false); // forse non necessario ? // trasformare in action? not sure
+
+                    formLabel !== "record" &&
+                        formLabel !== "records" &&
+                        router.push(`/el/${formLabel}/${data.data.id}`);
+                })
+                .catch((error) => {
+                    console.log(error);
+                    showBoundary({
+                        code: error.response?.status,
+                        message: getError(error),
+                    });
+                });
         }
     };
 
-    const handleHintsModal = (arrMissing, arrRemoved) => {
-        if (arrMissing?.length || arrRemoved?.length) {
-            setHints({ missing: arrMissing, removed: arrRemoved });
-        } else {
-            setHints(emptyHints);
-            setOpenSection(false);
-        }
-    };
-
-    const acceptMissingHints = (arr) => {
-        if (arr && arr.length) {
-            setFormState((prev) => ({
-                ...prev,
-                tags: arr,
-            }));
-        }
-        setHints((prev) => ({ ...prev, missing: [] }));
-    };
-
-    const acceptRemovedHints = (arr) => {
-        if (arr && arr.length) {
-            let newTags = formState.tags.filter((el) => !arr.includes(el));
-            setFormState((prev) => ({
-                ...prev,
-                tags: newTags,
-            }));
-        }
-        setHints((prev) => ({ ...prev, removed: [] }));
-    };
-
-    //================================================================================
-    // Render UI
-    //================================================================================
     return (
         <div className={styles.formWrapContainer}>
             <div className={styles.formWrap}>
+                {/* 🧠 Header dovrebbe essere uno :slot stile svelte 🧠 */}
                 <div>
-                    <h2>{topicLabel}</h2>
+                    <h2>{formLabel}</h2>
                 </div>
 
-                {FormComponent && topicLabel === form.key ? (
-                    <FormComponent
-                        formState={formState}
-                        propsData={propsData}
-                        updateFormState={updateFormState}
-                        validateData={validateData}
-                        confirmChanges={confirmChanges}
-                        newImage={newImage}
-                        addLocalImages={addLocalImages}
-                        deleteImage={deleteImage}
-                        setOpenSection={setOpenSection}
-                        errors={errors}
-                    />
+                {!isLoading && FormComponent && formLabel === form.key ? (
+                    <FormComponent confirmChanges={confirmChanges} />
                 ) : (
-                    <p>Loading...</p>
+                    // 🧠 Fare loader migliore
+                    <p>Loading form...</p>
                 )}
             </div>
 
-            {FormComponent && topicLabel === form.key ? (
-                <FormSideNav
-                    data={sideNavData}
-                    formState={formState}
-                    originalFormState={propsData || formState}
-                    updateFormState={updateFormState}
-                    openSection={openSection}
-                    setOpenSection={setOpenSection}
-                    handleHintsModal={handleHintsModal}
-                    hints={hints}
-                    acceptMissingHints={acceptMissingHints}
-                    acceptRemovedHints={acceptRemovedHints}
-                    appSettings={appSettings}
-                />
-            ) : (
-                <></>
-            )}
+            <FormDrawer
+                isOpen={uiState.drawerIsOpen}
+                closeDrawer={() => handleDrawer(false)}
+            >
+                <FormDrawerContent />
+            </FormDrawer>
         </div>
     );
 }
 
-// 🧠 SPIKE: I should have all these props in a dedicated store 🧠
-// formState, propsData, etc...
+/*
+    1. 🟢 setup form store - we want all these states to be stored there
+    2. 🟢 Create actions to interact with store
+    3a.🟢 Double check store initial values (not breaking app)
+    3b.🟢 Also remember cookie for previous formState
+    4. 🟢 Move as much code as possible outside the components (action, reducers, utils, ...)
+    
+    TODO:
+        1. 🟢 Fix sidenav data bugs
+        2. 🟢 make work correctly DropdownMenusByLevel and move it to redux store
+        2.1 🟢 Activate auto-hint for tags
+        3. 🟢 make work correctly InputsSelector and move it to redux store
+        3.1 🟢 Activate auto-hint for actors
+        4. 🟢 make work correctly NationalitiesSelector and move it to redux store
+        5. 🟢 Make it work with propsData (edit mode)
+        5.1 🟢 tags get deleted in edit mode, after interacting with them and refusing new hints
+        6. 🟢 QA Form (Create and Edit)
+        6.1 🟢 fix QA bugs
+        6.1.1 🟢 SideNav.selected got deleted after doing a research
+        7. 🟢 Deploy
+        7.1 🟢 PROD Testing
+        8. 🟢 Eliminare old Form 1.0 version + components
+        8.1 🟡 Cleanup comments and console.logs
+
+        BONUS:
+        6.2 Extract action and selector from input components - pass them as props (forse fare quando creo library - annotare in ticket peró)
+        9. On every SideNav fetch: store fetched data in another store by key
+        9.1 Implement refresh data button inside SideNav
+        9.2 Use this data in all API calls (only when it's safe to do so)
+        9.2.1 When it's not safe store data
+        9.3 For sure we gonna need some new conditions around the app to check if we already have stored fetched data
+    */

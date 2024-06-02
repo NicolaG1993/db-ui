@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-import DropdownMenusByCategory from "./DropdownMenusByCategory/DropdownMenusByCategory";
+import DropdownMenusByLevel from "./DropdownMenusByLevel/DropdownMenusByLevel";
 import styles from "@/src/application/styles/Home.module.css";
 import axios from "axios";
 import InputsSelector from "./InputsSelector/InputsSelector";
 import NationalitiesSelector from "./NationalitiesSelector/NationalitiesSelector";
-import ActiveFilters from "./ActiveFilters/ActiveFilters";
+import ActiveElements from "./ActiveElements/ActiveElements";
 
 //================================================================================
 // Filters Bar
@@ -161,7 +161,7 @@ const FiltersUI = ({
                                     <div className={styles.content}>
                                         {typeof data === "object" &&
                                             !Array.isArray(data) && (
-                                                <DropdownMenusByCategory
+                                                <DropdownMenusByLevel
                                                     obj={data}
                                                     filters={filters[topic]}
                                                     handleChildState={
@@ -194,7 +194,7 @@ const FiltersUI = ({
                                             />
                                         )}
                                         {/* {topic === "type" && (
-                                        <DropdownMenusByCategory
+                                        <DropdownMenusByLevel
                                             filters={filters[topic]}
                                             handleChildState={updateFilters}
                                             obj={obj}
@@ -206,7 +206,7 @@ const FiltersUI = ({
                                 </div>
 
                                 <div className={styles.selectedData}>
-                                    <ActiveFilters
+                                    <ActiveElements
                                         arr={filters[topic]}
                                         handleChildState={updateFilters}
                                         styles={styles}

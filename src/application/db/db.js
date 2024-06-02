@@ -328,6 +328,34 @@ module.exports.getTableWithTypes = (str) => {
     const myQuery = `SELECT id, name, type FROM ${str} ORDER BY name`;
     return db.query(myQuery);
 };
+module.exports.getTableWithTags = (str) => {
+    const myQuery = `
+    SELECT 
+        ${str}.*,
+        tags_JSON.tags
+
+    FROM
+        actor
+
+    LEFT JOIN
+        (SELECT
+            tagRelation.actorID,
+            JSON_AGG(
+                JSON_BUILD_OBJECT(
+                    'id', tag.id,
+                    'name', tag.name
+                )
+            ) AS tags
+            FROM tagRelation 
+            JOIN tag
+            ON tag.id = tagRelation.tagID
+            GROUP BY tagRelation.actorID  
+        ) AS tags_JSON
+    ON actor.id = tags_JSON.actorID
+            
+    ORDER BY name`;
+    return db.query(myQuery);
+};
 module.exports.getAllTable = (str) => {
     const myQuery = `SELECT * FROM ${str} ORDER BY name`;
     return db.query(myQuery);

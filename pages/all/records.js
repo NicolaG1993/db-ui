@@ -8,6 +8,7 @@ import styles from "@/src/application/styles/Records.module.css";
 import { formatDateEU } from "@/src/application/utils/convertTimestamp";
 import Form from "@/src/domains/_app/components/Form/components/Form";
 import ToggleSwitch from "@/src/domains/_app/components/ToggleSwitch/ToggleSwitch";
+import Modal from "@/src/domains/_app/components/Modal/Modal";
 
 const fetchData = async () => {
     try {
@@ -361,28 +362,37 @@ export default function Records() {
                 <div>Loading...</div>
             )}
 
-            {openForm && (
+            {/* 🔴 NOT WORKING: FIX 🔴 */}
+            <Modal isOpen={openForm} onClose={() => setOpenForm(false)}>
+                <Form
+                    formLabel={!multipleSelection ? "record" : "records"}
+                    propsData={!multipleSelection ? rec : recs}
+                    handleEditsInParent={handleEdits}
+                    setOpenForm={setOpenForm}
+                />
+            </Modal>
+
+            {/* {openForm && (
                 <div className={styles.overlay}>
                     <div className={styles.formWrapContainer}>
                         {!multipleSelection ? (
                             <Form
-                                topicLabel={"record"}
+                                formLabel={"record"}
                                 propsData={rec}
                                 handleEditsInParent={handleEdits}
                                 setOpenForm={setOpenForm}
                             />
                         ) : (
                             <Form
-                                topicLabel={"records"}
+                                formLabel={"records"}
                                 propsData={recs}
                                 handleEditsInParent={handleEdits}
                                 setOpenForm={setOpenForm}
                             />
                         )}
-                        {/* <RecordForm propsData={rec} setOpenForm={setOpenForm} /> */}
                     </div>
                 </div>
-            )}
+            )} */}
         </main>
     );
 }

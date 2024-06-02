@@ -11,9 +11,9 @@ const parseFormProps = (key, value) => {
         key === "categories" ||
         key === "tags"
     ) {
-        return value.map((el) => el.name);
+        return value.map((el) => el);
     } else if (key === "movies") {
-        return value.map((el) => el.title);
+        return value.map((el) => el);
     } else {
         return value;
     }
@@ -51,15 +51,15 @@ const cleanFalseRelations = (obj) => {
 
 // used to extract new realtions from array of objects
 const newRelationsStandardMethod = (arr, propsData, key) => {
-    return arr
-        .filter(
-            (o) =>
-                !propsData[key]
-                    .filter((el) => el.name) // skip any corrupted element saved before in db
-                    .map((el) => el.name) // modify the rest
-                    .includes(o.name) // check if includes the user selected x
-        )
-        .map((el) => el.id); // get only the ids
+    console.log("newRelationsStandardMethod: ", { arr, propsData, key });
+    return arr.filter(
+        (id) =>
+            !propsData[key]
+                .filter((el) => el.id) // skip any corrupted element saved before in db
+                .map((el) => el.id) // modify the rest
+                .includes(id) // check if includes the user selected x
+    );
+    // .map((el) => el.id); // get only the ids
 };
 
 // used to extract new realtions from array of objects - only for movies
@@ -89,15 +89,17 @@ const newRelationsNationalitiesMethod = (arr, propsData, key) => {
 };
 
 // Used to identify in form which relations are new or removed in the edit
-const parseFormRelationsEdit = (relatedData, propsData) => {
+const parseFormRelationsEdit = (allRelations, propsData) => {
     // !important that we need ids and not names for db update
     let addedRelations = {};
     let removedRelations = {};
 
-    if (relatedData) {
-        Object.entries(relatedData).map(([key, arr], i) => {
+    console.log("parseFormRelationsEdit: ", { allRelations, propsData });
+    if (allRelations) {
+        Object.entries(allRelations).map(([key, arr], i) => {
             if (key === "nationalities") {
                 // fare anche caso nationality N/A? serve veramente ? 🧠
+                // Controllare questa parte 🧠 looks ok-ish but needs check
                 addedRelations[key] = newRelationsNationalitiesMethod(
                     arr,
                     propsData,
@@ -123,17 +125,20 @@ const parseFormRelationsEdit = (relatedData, propsData) => {
                     }
                 }
             } else {
+                // 🟡🟡🟡 TEST: SEAMS OK
                 // set the new relations
                 addedRelations[key] = newRelationsStandardMethod(
-                    arr,
-                    propsData,
-                    key
+                    arr, // int[]
+                    propsData, // obj
+                    key // string (es. "actors")
                 );
                 // set the deleted relations
                 removedRelations[key] = propsData[key]
-                    .filter((el) => !arr.map((el) => el.id).includes(el.id))
+                    .filter(({ id }) => !arr.includes(id))
                     .map((el) => el.id);
             }
+            console.log("addedRelations: ", addedRelations);
+            console.log("removedRelations: ", removedRelations);
         });
     }
 
@@ -146,18 +151,34 @@ const parseFormRelationsEdit = (relatedData, propsData) => {
 };
 
 /* USED IN FORM TO PARSE ALL RELATIONS ON CREATION/EDIT */
-const parseFormRelationsPromise = async (arr, formState) => {
-    // console.log("ARR: ", arr); // [{topic: 'actors', label: 'actor'}, ...]
-    let relatedData = {};
+const parseFormRelations = (formRelations, formState) => {
+    let allRelations = {};
+
+    formRelations.map(({ topic, label }) => {
+        if (label === "nationality") {
+            allRelations.nationalities = formState.nationalities;
+        } else {
+            const parsedRelation = formState[topic].map((el) => el.id);
+            allRelations[topic] = parsedRelation;
+        }
+    });
+
+    return allRelations;
+};
+
+// 🧠 the plan is not to use this async anymore - we pass the form relations as prop already
+const parseFormRelationsPromise = async (formRelations, formState) => {
+    // console.log("ARR: ", formRelations); // [{topic: 'actors', label: 'actor'}, ...]
+    let allRelations = {};
     // We need Promise.all because we can't await axios with map() 👍
-    const allPromises = arr.map(({ topic, label }) => {
+    const allPromises = formRelations.map(({ topic, label }) => {
         if (label !== "nationality") {
             return axios
                 .get(`/api/list/all`, {
                     params: { table: label },
                 })
                 .then(({ data }) => {
-                    relatedData[topic] = data
+                    allRelations[topic] = data
                         .filter((el) => formState[topic].includes(el.name))
                         .map((el) => {
                             return { name: el.name, id: el.id || el.code }; // nationalities non hanno id
@@ -165,17 +186,17 @@ const parseFormRelationsPromise = async (arr, formState) => {
                 })
                 .catch((err) => console.error(err));
         } else {
-            relatedData.nationalities = formState.nationalities;
+            allRelations.nationalities = formState.nationalities;
         }
     });
-    return Promise.all(allPromises).then(() => relatedData); // relatedData posso averlo solo dopo aver risolto 🧠
+    return Promise.all(allPromises).then(() => allRelations); // allRelations posso averlo solo dopo aver risolto 🧠
 }; // ridurre ad una singola API call - non usarla dentro a map 🧨🧨🧨
-const parseFormRelationsPromiseMovie = async (arr, formState) => {
-    let relatedData = {};
+const parseFormRelationsPromiseMovie = async (formRelations, formState) => {
+    let allRelations = {};
     const allData = await axios.get(`/api/all/relations`);
-    arr.map(({ topic, label }) => {
+    formRelations.map(({ topic, label }) => {
         if (label !== "nationality") {
-            relatedData[topic] = data[label]
+            allRelations[topic] = data[label]
                 .filter((el) => formState[topic].includes(el.name))
                 .map((el) => {
                     return { name: el.name, id: el.id || el.code }; // nationalities non hanno id
@@ -183,7 +204,7 @@ const parseFormRelationsPromiseMovie = async (arr, formState) => {
         }
     });
 
-    return relatedData;
+    return allRelations;
 };
 
 /*
@@ -203,6 +224,7 @@ function parseDataForForm(obj) {
 export {
     parseFormProps,
     parseFormRelationsEdit,
+    parseFormRelations,
     parseFormRelationsPromise,
     newRelationsMoviesMethod,
 };

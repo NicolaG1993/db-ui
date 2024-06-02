@@ -5,7 +5,7 @@ import {
     getRelationsByArr,
     getIDsByNames,
 } from "@/src/application/db/db.js";
-// import { tagsCheck } from "@/src/domains/_app/utils/parsers";
+// import { extractMissingTagsIDs } from "@/src/domains/_app/utils/parsers";
 
 async function handler(req, res) {
     let {
@@ -31,11 +31,13 @@ async function handler(req, res) {
 
     if (release) {
         release = new Date(release);
+    } else {
+        release = null;
     }
 
     //
     // if (addedRelations.tags.length) {
-    //     addedRelations.tags = tagsCheck(addedRelations.tags);
+    //     addedRelations.tags = extractMissingTagsIDs(addedRelations.tags);
     // }
 
     // console.log("addedRelations.tags: ", addedRelations.tags);

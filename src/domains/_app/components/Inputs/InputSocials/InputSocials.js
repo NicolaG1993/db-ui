@@ -16,15 +16,15 @@ export default function InputSocials({
     formState,
     setFormState,
 }) {
-    console.log("InputSocials props: ", {
-        // topic,
-        // topicID,
-        // formState,
-        // setFormState,
-        // errors,
-        formState,
-        setFormState,
-    });
+    // console.log("InputSocials props: ", {
+    //     // topic,
+    //     // topicID,
+    //     // formState,
+    //     // setFormState,
+    //     // errors,
+    //     formState,
+    //     setFormState,
+    // });
 
     const [newSocialInput, setNewSocialInput] = useState(false);
     const [newSocialUrl, setNewSocialUrl] = useState("");

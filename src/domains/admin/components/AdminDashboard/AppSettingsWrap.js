@@ -9,6 +9,7 @@ export default function AppSettingsWrap({ toggleAppSettings }) {
      * L'App o applica quelli dello user - se cookie esiste - altrimenti quelli di base
      */
 
+    // 🧠 I should store this rgb's in a global css variable, always available
     let allThemes = [
         {
             name: "Dark",
