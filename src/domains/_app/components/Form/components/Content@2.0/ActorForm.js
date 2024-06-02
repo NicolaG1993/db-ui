@@ -2,17 +2,11 @@ import Image from "next/image";
 import styles from "@/src/domains/_app/components/Form/components/Form.module.css";
 import InputSocials from "@/src/domains/_app/components/Inputs/InputSocials/InputSocials";
 import {
-    addNewImage,
-    selectFormIsLoadingResponse,
     selectFormPropsData,
     selectFormState,
     selectFormStoreSettings,
-    selectFormStoreUI,
-    selectFormStoreHints,
-    selectFormStoreNewImage,
     selectFormStoreErrors,
     selectFormIsLoading,
-    removeImage,
     validateForm,
     updateFormState,
     openSideNav,
@@ -24,40 +18,18 @@ import {
 } from "@/src/domains/_app/actions/useLocalImages";
 import { useState } from "react";
 
-export default function ActorForm({
-    confirmChanges,
-    // formState,
-    // updateFormState,
-    // validateData,
-    // newImage,
-    // addLocalImages,
-    // deleteImage,
-    // closeSideNav,
-    // openSideNav,
-    // errors,
-    // isLoading,
-    // setOpenForm,
-}) {
+export default function ActorForm({ confirmChanges }) {
     let formState = useSelector(selectFormState, shallowEqual);
     let propsData = useSelector(selectFormPropsData, shallowEqual);
     let form = useSelector(selectFormStoreSettings, shallowEqual);
-    let uiState = useSelector(selectFormStoreUI, shallowEqual);
-    let hints = useSelector(selectFormStoreHints, shallowEqual);
-    // let newImage = useSelector(selectFormStoreNewImage, shallowEqual);
     let errors = useSelector(selectFormStoreErrors, shallowEqual);
     let isLoading = useSelector(selectFormIsLoading, shallowEqual);
-    let isLoadingResponse = useSelector(
-        selectFormIsLoadingResponse,
-        shallowEqual
-    );
 
     const dispatch = useDispatch();
 
     const [newImage, setNewImage] = useState();
 
     const handleNewImage = (e) => {
-        console.log("💛 image event 💛", e.target.files["0"]);
-
         const imgFile = e.target.files["0"];
         const file = {
             location: createObjectURL(imgFile),
@@ -89,11 +61,6 @@ export default function ActorForm({
 
         setNewImage(file);
         dispatch(updateFormState({ val: file.location, topic: "pic" }));
-        // dispatch(
-        //     addNewImage({
-        //         file,
-        //     })
-        // );
     };
 
     const handleRemoveImage = (imgFile) => {
@@ -122,7 +89,6 @@ export default function ActorForm({
                     form,
                     propsData,
                     formLabel: form.key,
-                    // setOpenForm,
                 })
             }
             className={styles.form}
@@ -140,7 +106,6 @@ export default function ActorForm({
                         <div className={styles["form-new-image"]}>
                             <Image
                                 src={formState.pic}
-                                // src={`/local_pics/actors/${newImage}`}
                                 alt={`Picture`}
                                 fill
                                 style={{ objectFit: "cover" }}
@@ -351,7 +316,6 @@ export default function ActorForm({
                             updateFormState({
                                 val,
                                 topic,
-                                // dobbiamo ricevere 2 args
                             })
                         )
                     }

@@ -124,22 +124,6 @@ export default function Movie({
 
                 <div className={styles.elRowToScroll}>
                     <span>Categories: </span>
-                    {/* <div className={styles.tagsWrap}>
-                                {item.categories && item.categories.length ? (
-                                    item.categories.map((el) => (
-                                        <div
-                                            key={"category" + el.id}
-                                            className={styles.tagEl}
-                                        >
-                                            <Link href={`/category/${el.id}`}>
-                                                {el.name}
-                                            </Link>
-                                        </div>
-                                    ))
-                                ) : (
-                                    <p>N/A</p>
-                                )}
-                            </div> */}
 
                     <div className={styles.tagLabelsWrap}>
                         {parsedObj.categories ? (

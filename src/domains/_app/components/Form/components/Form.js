@@ -1,45 +1,25 @@
-// DELETE THIS FILE (OR THE OTHER) WHEN DONE TESTING STUFF 🧠
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useRouter } from "next/router";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import { useErrorBoundary } from "react-error-boundary";
-import Cookies from "js-cookie";
 import styles from "@/src/domains/_app/components/Form/components/Form.module.css";
-import {
-    createObjectURL,
-    revokeObjectURL,
-} from "@/src/domains/_app/actions/useLocalImages";
-import {
-    decimalValidation,
-    textValidation,
-    nicknameValidation,
-} from "@/src/application/utils/validateForms.js";
 import FormDrawer from "./FormDrawer@2.0/FormDrawer";
 import FormDrawerContent from "./FormDrawer@2.0/FormDrawerContent";
 import { selectAppSettings } from "@/src/application/redux/slices/appSettingsSlice";
 import {
     loadNewActiveForm,
-    selectFormComponent,
     selectFormState,
     selectFormStoreErrors,
     selectFormStoreHints,
     selectFormStoreNewImage,
     selectFormStoreSettings,
     selectFormStoreUI,
-    selectFormSideNavTopic,
-    updateSideNavData,
-    addNewImage,
-    removeImage,
-    validateForm,
     startLoading,
     handlePostSuccess,
-    closeSideNav,
     openHintsNav,
     selectFormIsLoading,
-    selectFormStore,
     resetSideNavData,
     initSideNavData,
-    closeHintsNav,
     selectFormSideNavData,
     selectFormStoreLabel,
 } from "@/src/application/redux/slices/formSlice";
@@ -56,9 +36,6 @@ export default function Form({
     handleEditsInParent,
     parentIsWaiting,
 }) {
-    ////////////////////////////////
-    ////////// TESTING /////////////
-    ////////////////////////////////
     const dispatch = useDispatch();
     const router = useRouter();
     const appSettings = useSelector(selectAppSettings);
@@ -68,7 +45,6 @@ export default function Form({
     // The rest will be setup and stored in store // also we cannot store formComponent in store
     // 🧠 I need to test this by switching form tabs and loading new form when one is alredy open
 
-    // let formStore = useSelector(selectFormStore, shallowEqual);
     const form = useSelector(selectFormStoreSettings, shallowEqual);
     const uiState = useSelector(selectFormStoreUI, shallowEqual);
     const hints = useSelector(selectFormStoreHints, shallowEqual);
@@ -78,29 +54,12 @@ export default function Form({
     const isLoading = useSelector(selectFormIsLoading, shallowEqual);
     const sideNavData = useSelector(selectFormSideNavData, shallowEqual);
     const storedFormLabel = useSelector(selectFormStoreLabel, shallowEqual);
-    // let FormComponent = useSelector(selectFormComponent, shallowEqual); // 🧠 components non salvabili in redux
-    // const FormComponent = dataStructureForms[formLabel].formComponent; // non ho trovato altra soluzione che rimuovere FormComponent da formSlice
-    // const [FormComponent, SetFormComponent] = useState();
 
     const formObj = dataStructureForms[formLabel];
     const FormComponent = dataStructureForms[formLabel]?.formComponent;
 
-    console.log("🤑 FORM@2.0 RENDERING: ", {
-        formLabel,
-        storedFormLabel,
-        formObj,
-        propsData,
-    });
-
     useEffect(() => {
-        // console.log("storedFormLabel: ", storedFormLabel);
         if (formLabel && formLabel !== storedFormLabel) {
-            // console.log("dipatchNewForm: ", {
-            //     formLabel,
-            //     storedFormLabel,
-            //     formObj,
-            //     propsData,
-            // });
             let { formComponent, ...rest } = formObj;
             let payload = {
                 formLabel,
@@ -111,43 +70,8 @@ export default function Form({
         }
     }, [formLabel, storedFormLabel, formObj, propsData, dispatch]);
 
-    /*
-    1. 🟢 setup form store - we want all these states to be stored there
-    2. 🟢 Create actions to interact with store
-    3a.🟢 Double check store initial values (not breaking app)
-    3b.🟢 Also remember cookie for previous formState
-    4. 🟢 Move as much code as possible outside the components (action, reducers, utils, ...)
-    
-    TODO:
-        1. 🟢 Fix sidenav data bugs
-        2. 🟢 make work correctly DropdownMenusByLevel and move it to redux store
-        2.1 🟢 Activate auto-hint for tags
-        3. 🟢 make work correctly InputsSelector and move it to redux store
-        3.1 🟢 Activate auto-hint for actors
-        4. 🟢 make work correctly NationalitiesSelector and move it to redux store
-        5. 🟢 Make it work with propsData (edit mode)
-        5.1 🟢 tags get deleted in edit mode, after interacting with them and refusing new hints
-        6. 🟢 QA Form (Create and Edit)
-        6.1 🟢 fix QA bugs
-        6.1.1 🟢 SideNav.selected got deleted after doing a research
-        7. 🟢 Deploy
-        7.1 PROD Testing
-        8. Eliminare old Form 1.0 version + components
-        8.1 Cleanup comments
-
-        BONUS:
-        6.2 Extract action and selector from input components - pass them as props (forse fare quando creo library - annotare in ticket peró)
-        9. On every SideNav fetch: store fetched data in another store by key
-        9.1 Implement refresh data button inside SideNav
-        9.2 Use this data in all API calls (only when it's safe to do so)
-        9.2.1 When it's not safe store data
-        9.3 For sure we gonna need some new conditions around the app to check if we already have stored fetched data
-    */
-
     // FETCH DATA FOR DRAWER
     useEffect(() => {
-        // console.log("uiState: ", uiState);
-
         // 🧠🧠🧠 can i move this into drawer? or FormSideNav 🧠🧠🧠
         if (!uiState.hintsIsOpen) {
             if (uiState?.sideNavTopic) {
@@ -185,30 +109,6 @@ export default function Form({
         }
     }, [hints]);
 
-    /* NO NEEDED
-    const addLocalImages = (e) => {
-        // version for hosted App
-        const file = {
-            location: createObjectURL([...e.target.files][0]),
-            key: [...e.target.files][0].name,
-            file: [...e.target.files][0],
-        }; // use the spread syntax to get it as an array
-        dispatch(addNewImage(file));
-    };
-
-    const deleteImage = (img) => {
-        // version for hosted App 
-        revokeObjectURL(img.file);
-        dispatch(removeImage(file));
-    };
-
-
-    const validateData = async (e) => {
-        const { id, name, value } = e.target;
-        dispatch(validateForm({ id, name, value }));
-    };
-    */
-
     // 🧠 There must be a way to transform this into a store action
     const confirmChanges = async ({
         e,
@@ -217,7 +117,6 @@ export default function Form({
         form,
         propsData,
         formLabel,
-        // setOpenForm,
     }) => {
         e.preventDefault();
         // 🧠 Handle API errors properly!
@@ -225,7 +124,6 @@ export default function Form({
 
         if (Object.keys(formErrors).length === 0) {
             dispatch(startLoading());
-            // dispatch(postForm({ formState, newImage, form, propsData }));
 
             submitForm({
                 formState,
@@ -262,9 +160,6 @@ export default function Form({
         }
     };
 
-    ////////////////////////////////
-    ////////////////////////////////
-    ////////////////////////////////
     return (
         <div className={styles.formWrapContainer}>
             <div className={styles.formWrap}>
@@ -289,78 +184,37 @@ export default function Form({
             </FormDrawer>
         </div>
     );
-    /* TODO!!!
-    return (
-        <div className={styles.formWrapContainer}>
-            <div className={styles.formWrap}>
-                <div>
-                    <h2>{formLabel}</h2>
-                </div>
-
-                {FormComponent && formLabel === form.key ? (
-                    <FormComponent
-                        propsData={propsData}
-                        formState={formState}
-                        newImage={newImage}
-                        errors={errors}
-                        isLoading={isLoading}
-                        updateFormState={updateFormState}
-                        confirmChanges={confirmChanges}
-                        validateData={validateData}
-                        closeSideNav={closeSideNav}
-                        openSideNav={openSideNav}
-                        addLocalImages={addLocalImages}
-                        deleteImage={deleteImage}
-                        setOpenForm={setOpenForm}
-                    />
-                ) : (
-                    <p>Loading...</p>
-                )}
-            </div>
-
-            <FormDrawer
-                isOpen={drawerIsOpen}
-                closeDrawer={() => handleDrawer(false)}
-            >
-                <FormDrawerContent
-                    drawerIsOpen={drawerIsOpen}
-                    sideNavIsOpen={sideNavTopic}
-                    hintsIsOpen={hintsIsOpen}
-                    topic={sideNavTopic}
-                    data={sideNavData.data}
-                    parsedData={sideNavData.parsedData}
-                    propsData={propsData}
-                    formState={formState}
-                    hints={hints}
-                    appSettings={appSettings}
-                    updateFormState={updateFormState}
-                    handleDrawer={handleDrawer}
-                    closeSideNav={closeSideNav}
-                    openSideNav={openSideNav}
-                    handleHints={handleHints} // DO I NEED THIS? i think is deletable somehow - maybe not 🧠
-                    closeHintsNav={closeHintsNav}
-                    acceptMissingHints={acceptMissingHints}
-                    acceptRemovedHints={acceptRemovedHints}
-                />
-            </FormDrawer>
-        </div>
-    );
-    */
 }
 
 /*
-TESTING:
+    1. 🟢 setup form store - we want all these states to be stored there
+    2. 🟢 Create actions to interact with store
+    3a.🟢 Double check store initial values (not breaking app)
+    3b.🟢 Also remember cookie for previous formState
+    4. 🟢 Move as much code as possible outside the components (action, reducers, utils, ...)
+    
+    TODO:
+        1. 🟢 Fix sidenav data bugs
+        2. 🟢 make work correctly DropdownMenusByLevel and move it to redux store
+        2.1 🟢 Activate auto-hint for tags
+        3. 🟢 make work correctly InputsSelector and move it to redux store
+        3.1 🟢 Activate auto-hint for actors
+        4. 🟢 make work correctly NationalitiesSelector and move it to redux store
+        5. 🟢 Make it work with propsData (edit mode)
+        5.1 🟢 tags get deleted in edit mode, after interacting with them and refusing new hints
+        6. 🟢 QA Form (Create and Edit)
+        6.1 🟢 fix QA bugs
+        6.1.1 🟢 SideNav.selected got deleted after doing a research
+        7. 🟢 Deploy
+        7.1 🟢 PROD Testing
+        8. 🟢 Eliminare old Form 1.0 version + components
+        8.1 🟡 Cleanup comments and console.logs
 
-• Aggiungi actor che non ha nuovi missing hints
-• Aggiungi un actor con missing hints ma non accettarli
-• Aggiungi un actor con missing hints ma accettali
-• Aggiungi un actor con missing hints ma accettane una parte
-
-🟢 Rimuovi un actor che non ha nuovi removed hints 
-• Rimuovi un actor con removed hints ma non accettarli
-• Rimuovi un actor con removed hints ma accettali
-🟢 Rimuovi un actor con removed hints ma accettane una parte
-
-• Aggiungi e rimuovi actor, non accettare nessun tipo di hint
-• Aggiungi e rimuovi actor,  accetta tutti i tipi di hints
-*/
+        BONUS:
+        6.2 Extract action and selector from input components - pass them as props (forse fare quando creo library - annotare in ticket peró)
+        9. On every SideNav fetch: store fetched data in another store by key
+        9.1 Implement refresh data button inside SideNav
+        9.2 Use this data in all API calls (only when it's safe to do so)
+        9.2.1 When it's not safe store data
+        9.3 For sure we gonna need some new conditions around the app to check if we already have stored fetched data
+    */

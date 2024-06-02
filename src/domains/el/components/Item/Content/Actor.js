@@ -101,31 +101,6 @@ export default function Actor({
                     </div>
                 </div>
 
-                {/* <div className={styles.elRow}>
-                    <span>Height: </span>
-                    <p>{"?"} cm</p>
-                </div>
-
-                <div className={styles.elRow}>
-                    <span>Weight: </span>
-                    <p>{"?"} cm</p>
-                </div>
-
-                <div className={styles.elRow}>
-                    <span>Breast size: </span>
-                    <p>{"?"} cm</p>
-                </div>
-
-                <div className={styles.elRow}>
-                    <span>Reach size: </span>
-                    <p>{"?"} cm</p>
-                </div>
-
-                <div className={styles.elRow}>
-                    <span>Shoe size: </span>
-                    <p>{"?"}</p>
-                </div> */}
-
                 <div className={styles.elRow}>
                     <span>Hair: </span>
                     <div className={styles.tagsWrap}>
@@ -273,22 +248,6 @@ export default function Actor({
 
                 <div className={styles.elRowToScroll}>
                     <span>Categories: </span>
-                    {/* <div className={styles.tagsWrap}>
-                                {item.categories && item.categories.length ? (
-                                    item.categories.map((el) => (
-                                        <div
-                                            key={"category" + el.id}
-                                            className={styles.tagEl}
-                                        >
-                                            <Link href={`/category/${el.id}`}>
-                                                {el.name}
-                                            </Link>
-                                        </div>
-                                    ))
-                                ) : (
-                                    <p>N/A</p>
-                                )}
-                            </div> */}
 
                     <div className={styles.tagLabelsWrap}>
                         {parsedObj.categories ? (
@@ -383,68 +342,6 @@ export default function Actor({
                 ) : (
                     <p>N/A</p>
                 )}
-
-                {/* <div className={styles.moviesWrap}>
-                    {item.movies ? (
-                        <div className={styles.grid}>
-                            {item.movies.map((el) => (
-                                <Link
-                                    key={"movie" + el.id}
-                                    href={`/el/movie/${el.id}`}
-                                >
-                                    <div id={styles.Clip}>
-                                        <div
-                                            style={{
-                                                position: "relative",
-                                            }}
-                                        >
-                                            <Image
-                                                src={
-                                                    el.pic
-                                                        ? el.pic
-                                                        : "/no-image.png"
-                                                }
-                                                alt={el.title}
-                                                fill
-                                                style={{
-                                                    objectFit: "cover",
-                                                }}
-                                            />
-                                        </div>
-                                        <div>
-                                            <div>
-                                                <h5>{el.title}</h5>
-                                                <p className={styles.subtitle}>
-                                                    {el.cast &&
-                                                        el.cast.map(
-                                                            (item, i) => (
-                                                                <span
-                                                                    key={
-                                                                        item.movieid
-                                                                    }
-                                                                >
-                                                                    {i > 0 &&
-                                                                        ", "}
-                                                                    {item.name}
-                                                                </span>
-                                                            )
-                                                        )}
-                                                </p>
-                                            </div>
-                                            <p className={styles.rating}>
-                                                {el.rating
-                                                    ? el.rating
-                                                    : "unrated"}
-                                            </p>
-                                        </div>
-                                    </div>
-                                </Link>
-                            ))}
-                        </div>
-                    ) : (
-                        <p>N/A</p>
-                    )}
-                </div> */}
             </div>
 
             <div className={styles.infoWrap}>
@@ -475,23 +372,6 @@ export default function Actor({
                     handleEditsInParent={handleEdits}
                 />
             </Modal>
-
-            {/* {openForm && (
-                <div id={"Overlay"}>
-                    <div className={"overlayWindow"}>
-                        <div className={"topBar"}>
-                            <span onClick={() => setOpenForm(false)}>X</span>
-                        </div>
-
-                        <Form
-                            formLabel={label}
-                            propsData={item}
-                            handleEditsInParent={handleEdits}
-                            setOpenForm={setOpenForm}
-                        />
-                    </div>
-                </div>
-            )} */}
         </div>
     );
 }

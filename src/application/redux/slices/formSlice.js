@@ -1,5 +1,4 @@
 import { createSlice, current } from "@reduxjs/toolkit";
-// import dataStructureForms from "@/src/application/settings/dataStructureForms";
 import getSavedState from "@/src/domains/_app/components/Form/utils/getSavedState";
 import formHydrate from "@/src/domains/_app/utils/formHydrate";
 import Cookies from "js-cookie";
@@ -16,7 +15,6 @@ import getDropdownsState from "@/src/domains/all/components/Filters/DropdownMenu
 import updatePrevSelected from "@/src/domains/all/components/Filters/DropdownMenusByLevel/actions/updatePrevSelected";
 import { groupJsonByValue } from "@/src/application/utils/parsers";
 import { parseTagsByType } from "@/src/domains/_app/utils/parsers";
-import { createObjectURL } from "@/src/domains/_app/actions/useLocalImages";
 
 // 🧠 SPIKE: I would like to store the different data i retrieve, for the first time
 // then the user will see always those until he restarts the app or click on a "refresh list" button
@@ -69,18 +67,12 @@ const formSlice = createSlice({
     initialState,
     reducers: {
         loadNewActiveForm: (state, action) => {
-            // console.log("👾 loadNewActiveForm invoked: ", {
-            //     state: current(state),
-            //     payload: action.payload,
-            // });
             const { formLabel, form, propsData } = action.payload;
-            // const form = dataStructureForms[formLabel]; // questo passaggio viene fatto da component
 
             state.isLoading = true;
             state.formLabel = formLabel;
             state.form = form;
             // We cannot store form.formComponent and FormComponent here!
-            //  state.FormComponent = form.formComponent;
 
             let formState;
             if (propsData) {
@@ -100,45 +92,13 @@ const formSlice = createSlice({
             state.formState = formState;
             state.errors = {};
             state.isLoading = false;
-
-            // console.log("👾 loadNewActiveForm ended: ", {
-            //     state: current(state),
-            //     payload: action.payload,
-            // });
-
-            // Cookies.set(
-            //     "formState",
-            //     JSON.stringify({
-            //         formLabel: formLabel,
-            //         formState: formState,
-            //     })
-            // ); // usare solo dopo form edit! forse meglio ancora dopo validate
         },
         updateFormState: (state, action) => {
-            // const currentState = { ...state };
-            // const currentFormState = { ...state.formState };
-            // const currentPropsData = { ...state.propsData };
-
-            // console.log("👾 updateFormState invoked: ", {
-            //     state: current(state),
-            //     // currentFormState,
-            //     payload: action.payload,
-            // });
-            /*
-            state.formState = action.payload;
-            */
-
             const { val, topic } = action.payload;
             let newFormState;
 
             newFormState = { ...state.formState, [topic]: val };
             state.formState = newFormState;
-
-            // console.log("👾 updateFormState progress: ", {
-            //     state: current(state),
-            //     newFormState,
-            //     propsData: state.propsData,
-            // });
 
             if (!state.propsData) {
                 //  🧠 forse é meglio ancora dopo validate data success
@@ -151,21 +111,11 @@ const formSlice = createSlice({
                     })
                 );
             }
-
-            /*
-            newFormState = { ...state.formState, [topic]: val };
-            state.formState = newFormState;
-            */
         },
 
         startLoading: (state) => {
             state.isLoading = true;
         },
-        /*
-        updateFormSettings: (state, action) => {
-            state.formSettings = action.payload.formSettings;
-        },
-        */
 
         // can i make a single dynamic function for UI reducers? 🧠
         handleDrawer: (state, action) => {
@@ -182,25 +132,14 @@ const formSlice = createSlice({
         // 🧠 PROBABILMENTE NEANCHE DOPO ACEPTING REMOVED HINTS
         // il problema é che noi abbiamo gia fatto update corretto di "state.formState[key]"
         // qui andiamo a modificarlo/romperlo inutilmente
+        // -- HO GIÀ SISTEMATO QUESTO? ☝️🧠
 
         concludeDrawer: (state) => {
-            // assign sidenav.selected to formState[key]
-            console.log("concludeDrawer START: ", {
-                state: current(state),
-            });
-
             // 🧠 Forse dovrei separare chiusura drawer e update "state.formState[key]"
 
             const newSelection = [...state.sideNavData.selected];
             const key = state.ui.sideNavTopic;
             state.formState[key] = newSelection;
-
-            console.log("concludeDrawer END: ", {
-                state: current(state),
-                key: state.ui.sideNavTopic,
-                newSelection,
-                key,
-            });
 
             if (!state.propsData) {
                 Cookies.set(
@@ -216,45 +155,20 @@ const formSlice = createSlice({
             state.sideNavData = initialState.sideNavData;
         },
 
-        // 🔴🔴🔴🔴 ELIMINA TUTTI I TAG INSERITI IN PRECEDENZA 🔴🔴🔴🔴
-        concludeDrawerAfterHints: (state, action) => {
-            const newSelection = [...state.sideNavData.selected];
-            const sideNavTopic = state.ui.sideNavTopic; // "tags" // forse serve per actors? 🧠
-
-            console.log("concludeDrawerAfterHints: ", {
-                newSelection,
-                sideNavTopic,
-            });
-
-            // 🔴🔴🔴🔴 QUESTA È SEMPRE ARRAY VUOTA 🔴🔴🔴🔴
-            // 🔴🔴🔴🔴 !!!!CONFLITTO!!! Stiamo dichiarando 2 volte "state.formState.tags" 🔴🔴🔴🔴
-
-            //....
-
-            // if (action.payload === "close nav") {
-            //     /* Questa serve per non resettare tags on close nav */
-            //     state.formState[sideNavTopic] = newSelection;
-            // } else if (action.payload === "save hints") {
-            //     /* Questa serve x salvare hints dentro form */
-            //     state.formState.tags = [...state.hints.finalDecision];
-            // }
-
-            //....
+        concludeDrawerAfterHints: (state) => {
+            const sideNavTopic = state.ui.sideNavTopic;
 
             state.formState.tags = [...state.hints.finalDecision];
 
             // make "actors" flexible 🧠
             if (sideNavTopic === "actors") {
-                // 🟡🟡🟡🟡 TESTARE 🟡🟡🟡🟡
                 state.formState[sideNavTopic] = state.sideNavData.selected;
             }
 
-            // state.hints.removed = [];
-            // state.hints.finalDecision = [];
             state.hints = initialState.hints;
             state.ui = initialState.ui;
             state.sideNavData = initialState.sideNavData;
-            // non credo di doverlo resettare completamente 🧠🧠🧠
+
             if (!state.propsData) {
                 Cookies.set(
                     "formState",
@@ -269,77 +183,23 @@ const formSlice = createSlice({
         setupHints: (state, action) => {
             const { hints } = action.payload;
             state.hints = { ...state.hints, ...hints };
-            // if (hints.missing.length || hints.removed.length) {
-            //     state.ui.hintsIsOpen = true;
-            //     state.ui.drawerIsOpen = true;
-            // }
 
-            console.log("🟡🟡🟡🟡 setupHints: ", {
-                finalDecision: current(state.hints.finalDecision),
-                selected: current(state.sideNavData.selected),
-            });
-            // 🟡🟡🟡🟡 TESTARE 🟡🟡🟡🟡
             const keys = ["tags"]; // 🧠 we should import this and make this flexible (import) // altrimenti si puo fare condition piu semplice
             const key = keys.find((k) => state.ui.sideNavTopic === k);
-
-            // state.hints.finalDecision = !!state.hints.finalDecision.length
-            //     ? state.hints.finalDecision
-            //     : state.sideNavData.selected;
 
             state.hints.finalDecision = key
                 ? state.sideNavData.selected
                 : state.formState.tags;
-
-            /*
-                finalDecision:
-                    con tags:
-                        • se esiste giá (non puó giá esistere in setupHints)
-                        • usare state.sideNavData.selected
-                    con actors:
-                        • state.formState.tags                 
-                */
         },
         acceptMissingHints: (state, action) => {
-            // con tags funziona
-            // 🟢 con ex. actor passa actor obj insieme a tags objects
-
             const { parsedForm } = action.payload;
             let result = [];
 
             const keys = ["tags"]; // 🧠 we should import this and make this flexible (import) // altrimenti si puo fare condition piu semplice
             const key = keys.find((k) => state.ui.sideNavTopic === k);
 
-            /*
-            const source = key
-                ? state.sideNavData.selected
-                : !!state.hints.finalDecision.length &&
-                  state.hints.removedIsFinish
-                ? state.hints.finalDecision
-                : state.formState.tags;
-            result = [...source, ...parsedForm];
-            // ! important to use spread here !
+            //  state.hints.missing = []; // 🧠 SPIKE: we should store the not selected
 
-            if (result && result.length) {
-                state.hints.finalDecision = result;
-                state.hints.missingIsFinish = true;
-            }
-
-            //  state.hints.missing = []; // 🧠 SPIKE: we should keep the not selected
-            */
-
-            if (key) {
-                /*
-                con tags:
-                    • unire state.hints.finalDecision con parsedForm
-                */
-            } else {
-                /*
-                con actors:
-                    • unire sempre con finalDecision ??? 🧠 
-                */
-            }
-
-            // 🟡 TESTARE
             state.hints.finalDecision = [
                 ...state.hints.finalDecision,
                 ...parsedForm,
@@ -361,45 +221,15 @@ const formSlice = createSlice({
                         : state.formState.tags;
                 let newTags = source.filter(({ id }) => !arrIDs.includes(id)); //
 
-                // state.formState.tags = newTags;
                 state.hints.finalDecision = newTags;
                 state.hints.removedIsFinish = true;
-
-                console.log("acceptRemovedHints END: ", {
-                    arr,
-                    newTags,
-                    "state.formState.tags": current(state.formState.tags),
-                });
             }
-            // state.hints.removed = [];
         },
 
         skipMissingHints: (state) => {
-            /**
-             dispatch(
-            updateHints({
-                hints: {
-                    missingIsFinish: true,
-                    // missing: [], // do we want to store them?
-                    // removed: hints.removed,
-                },
-            })
-        );
-             */
             state.hints.missingIsFinish = true;
         },
         skipRemovedHints: (state) => {
-            /*
-            dispatch(
-            updateHints({
-                hints: {
-                    removedIsFinish: true,
-                    // missing: hints.missing,
-                    // removed: [],
-                },
-            })
-        );
-            */
             state.hints.removedIsFinish = true;
         },
 
@@ -413,11 +243,9 @@ const formSlice = createSlice({
                 state.ui.drawerIsOpen = true;
                 state.ui.sideNavTopic = action.payload;
             }
-            // state.sideNavData.isLoading = true;
         },
 
         openHintsNav: (state) => {
-            // state.ui.sideNavTopic = initialState.ui.sideNavTopic;
             state.ui.hintsIsOpen = true;
             state.ui.drawerIsOpen = true;
         },
@@ -427,8 +255,6 @@ const formSlice = createSlice({
         },
 
         initSideNavData: (state, action) => {
-            // We want actors DB data with tags 🟢
-
             let newState = {
                 ...initialState.sideNavData,
                 data: action.payload.data,
@@ -444,101 +270,34 @@ const formSlice = createSlice({
                 ? newState.parsedData
                 : newState.data;
 
-            console.log("initSideNavData: ", {
-                currentState: state,
-                key,
-                newState,
-            });
-
             state.sideNavData = newState;
-            // state.sideNavData.isLoading = false;
         },
 
         updateSideNavSelected: (state, action) => {
             const { value, userAction } = action.payload;
-            // console.log("updateSideNavSelected 0: ", {
-            //     currentState: current(state),
-            //     value,
-            //     userAction,
-            // });
-
-            ////
 
             const currentState = { ...state };
             const key = currentState.ui.sideNavTopic;
 
-            // only for logging and testing 👇
-            const currentFormStateSpread = { ...currentState.formState };
-            // const extractedFormState = [...currentFormStateSpread[key]];
-            // console.log("updateSideNavSelected 1: ", {
-            //     currentState,
-            //     state: current(state),
-            //     key,
-            //     value,
-            //     userAction,
-            //     currentFormStateLog: current(currentState.formState),
-            //     currentFormState: currentState.formState,
-            //     currentFormStateSpread,
-            //     extractedFormState,
-            //     // currentSelection: [...currentState.formState[key]],
-            //     //"state.formState": current(state.formState),
-            //     //"state.formState[key]": state.formState[key],
-            //     // prevSelected: [...state.formState[key]],
-            //     // currentFormState: [...state.formState[key].selected],
-            // });
-
-            // FINISH 👇🔴🔴🔴 BROKEN -- seams ok now 🟢 but check
             // we need to look for the current state of sidenav.selected, not formState[key] !!!
             let currentSelection = currentState.sideNavData.selected;
-            let currentSelectionSpread = [...currentSelection];
-            // let currentSelection = currentState.formState[key];
-            // let currentSelectionSpread = [...currentState.formState[key]];
-            // let currentSelection = [...currentState.formState[key]];
-            // const prevSelected = currentSelection;
 
-            console.log("updateSideNavSelected 2: ", {
-                prevSelected: currentSelection,
-                prevSelectedSpread: [...currentSelection],
-                currentSelectionSpread,
-                currentSelection,
-                currentSelectionParsed: current(currentState.formState[key]),
-            });
-
-            ////
             let array = updatePrevSelected({
                 value,
                 userAction,
                 // BUG: 🔴👇 should both be an array
                 // prevSelected: state.formState[key], // OG selected 🔴🔴🔴🔴
                 // selected: state.sideNavData.selected, // current selected 🔴🔴🔴🔴
-                // dropdownsState: { ...state.sideNavData.dropdownsState },
+                // -- MAYBE ALREADY FIXED? ☝️🧠
                 prevSelected: currentSelection,
                 selected: state.sideNavData.selected, // non é current selection la stessa cosa?! 🧠
                 topic: state.ui.sideNavTopic,
             });
-            /*
-            let array = updatePrevFilters(
-                val,
-                action,
-                props, // prevSelected = formState[topic]
-                filters, // selected = state.sideNavData.selected || formState[topic] || []
-                dropdownsState
-            );
-            setFilters(array);
-            */
-
-            // console.log("updateSideNavSelected 3: ", {
-            //     array,
-            // });
 
             state.sideNavData.selected = array;
         },
-        updateSideNavData: (state, action) => {
-            // non in uso
-            // console.log("🔥 updateSideNavData: ", { paylod: action.payload });
-            state.sideNavData = action.payload;
-        },
-        resetSideNavData: (state, action) => {
+
+        resetSideNavData: (state) => {
             state.sideNavData = initialState.sideNavData;
         },
         handleSideNavError: (state, action) => {
@@ -550,28 +309,17 @@ const formSlice = createSlice({
                 ? val
                 : !state.sideNavData.renderReady;
         },
-        // hydrateSideNavSelector: (state) => {
-        //     // TODO ....
-        //     state.sideNavData.renderReady = true;
-        // },
-        hydrateSideNavDropdowns: (state) => {
-            console.log("🧠 hydrateSideNavDropdowns: ", {
-                stateObj: {},
-                filteredData: current(state.sideNavData.filteredData),
-                dropdownsState: current(state.sideNavData.dropdownsState),
-                data: current(state.sideNavData.data),
-                parsedData: current(state.sideNavData.parsedData),
-            });
 
+        hydrateSideNavDropdowns: (state) => {
             // 🧨🧨🧨 AFTER REFACTOR: Dobbiamo essere sicuri di passare filteredData peró parsed! -> propsObj
             // non sono sicuro che lo stiamo facendo ora, forse passiamo data parsed, non filterdData
+            // -- MAYBE ALREADY FIXED? ☝️🧠
             let { res, error } = getDropdownsState({
                 stateObj: {}, // i dont need to pass this if i use it only here
                 propsObj: state.sideNavData.parsedData,
                 dropdownsState: state.sideNavData.dropdownsState,
             });
             if (error) {
-                console.log("ERROR - hydrateSideNavDropdowns");
                 // 🧠 handle Error correctly - now we are just storing it 🧠
                 state.sideNavData.error = error;
             } else if (res) {
@@ -583,37 +331,6 @@ const formSlice = createSlice({
         updateSideNavDropdownsState: (state, action) => {
             const { newState } = action.payload;
             state.sideNavData.dropdownsState = newState;
-        },
-
-        // maybe delete 🧠 we cannot store file objects
-        addNewImage: (state, action) => {
-            // version for hosted App // <-- old comment, delete?
-            const { file } = action.payload;
-            // const { imgFile } = action.payload;
-            // const file = {
-            //     location: createObjectURL(imgFile),
-            //     key: imgFile.name,
-            //     file: imgFile,
-            // };
-            state.newImage = file;
-        },
-        // si potrebbe eliminare 🧠
-        removeImage: (state, action) => {
-            // version for hosted App // <-- old comment, delete?
-            // if (action.payload?.imgFile) {
-            //     revokeObjectURL(imgFile);
-            // }
-            // state.newImage = undefined;
-            // if (state.formState.pic) {
-            //     state.formState.pic = "";
-            //     Cookies.set(
-            //         "formState",
-            //         JSON.stringify({
-            //             formLabel: state.formLabel,
-            //             formState: state.formState,
-            //         })
-            //     );
-            // }
         },
 
         // questa é una utils ?
@@ -657,20 +374,11 @@ const formSlice = createSlice({
         searchNavData: (state, action) => {
             const { str, TAGS_OBJ } = action.payload;
 
-            console.log("👽🔥 searchNavData: ", {
-                str,
-                TAGS_OBJ,
-                searchbar: state.sideNavData.filters.search,
-            });
-
             if (str) {
                 if (str !== state.sideNavData.filters.search) {
                     state.sideNavData.filters.search = str;
                     // search from data (not parsed)
                     let result = searchData(state.sideNavData.data, str);
-                    console.log("👽🔥 searchNavData MID: ", {
-                        searchData: result,
-                    });
 
                     // parse search result (if necessary: ex. tags) // if tags use parseTagsByType(result)
                     if (state.ui.sideNavTopic === "tags") {
@@ -695,10 +403,6 @@ const formSlice = createSlice({
                         // TODO... 🧠
                     }
 
-                    console.log("👽🔥 searchNavData END: ", {
-                        filteredData: result,
-                    });
-
                     state.sideNavData.filteredData = result;
                 }
 
@@ -710,25 +414,6 @@ const formSlice = createSlice({
                     : state.sideNavData.data;
             }
 
-            //////////
-            /*
-            // console.log("searchNavData: ", {
-            //     sideNavData: current(state.sideNavData),
-            //     payload: action.payload,
-            // });
-            // const sourceData = state.sideNavData.parsedData
-            //     ? state.sideNavData.parsedData
-            //     : state.sideNavData.data;
-            const sourceData = state.sideNavData.data;
-            if (str) {
-                let arr = searchData(sourceData, str);
-                state.sideNavData.filteredData = arr;
-                // if tags use parseTagsByType(arr)
-                // filteredData has to be already parsed
-            } else {
-                state.sideNavData.filteredData = sourceData;
-            }
- */
             ////////
             // We are displaying data from "menuStructure" in the left side
             // menuStructure: <=  state.formStore.sideNavData.filteredData
@@ -769,24 +454,11 @@ const formSlice = createSlice({
             }
         },
 
-        /*
-        postForm: (state, action) => {
-            const { formState, newImage, form, propsData } = action.payload;
-            // ??? sarebbe async
-        },
-        */
         handlePostSuccess: (state) => {
             Cookies.remove("formState");
             state.isLoading = false;
         },
-
         resetFormStore: () => initialState,
-        /*
-        resetFormStore: (state) => {
-            state = { ...initialState, formState: undefined };
-            // Cookies.remove("formState");
-        },
-        */
     },
 });
 

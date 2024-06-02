@@ -1,27 +1,13 @@
 import Image from "next/image";
 import styles from "@/src/domains/_app/components/Form/components/Form.module.css";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import InputToArray from "@/src/domains/all/components/Filters/InputToArray/InputToArray";
 import {
-    loadNewActiveForm,
-    selectFormComponent,
     selectFormState,
     selectFormStoreErrors,
-    selectFormStoreHints,
-    selectFormStoreNewImage,
     selectFormStoreSettings,
-    selectFormStoreUI,
     selectFormPropsData,
-    selectFormSideNavTopic,
-    updateSideNavData,
-    addNewImage,
-    removeImage,
     validateForm,
-    startLoading,
-    handlePostSuccess,
-    closeSideNav,
-    openHintsNav,
-    selectFormIsLoading,
     selectFormIsLoadingResponse,
     updateFormState,
     openSideNav,
@@ -32,26 +18,11 @@ import {
     revokeObjectURL,
 } from "@/src/domains/_app/actions/useLocalImages";
 
-export default function MovieForm({
-    // formState,
-    confirmChanges, // turn into action ? 🧠
-    // newImage,
-    // addLocalImages,
-    // deleteImage,
-    // closeSideNav,
-    // openSideNav,
-    // errors,
-    // isLoading,
-    // setOpenForm,
-}) {
+export default function MovieForm({ confirmChanges }) {
     const formState = useSelector(selectFormState, shallowEqual);
     const propsData = useSelector(selectFormPropsData, shallowEqual);
     const form = useSelector(selectFormStoreSettings, shallowEqual);
-    const uiState = useSelector(selectFormStoreUI, shallowEqual);
-    const hints = useSelector(selectFormStoreHints, shallowEqual);
-    // const newImage = useSelector(selectFormStoreNewImage, shallowEqual);
     const errors = useSelector(selectFormStoreErrors, shallowEqual);
-    const isLoading = useSelector(selectFormIsLoading, shallowEqual);
     const isLoadingResponse = useSelector(
         selectFormIsLoadingResponse,
         shallowEqual
@@ -60,10 +31,6 @@ export default function MovieForm({
     const dispatch = useDispatch();
 
     const [newImage, setNewImage] = useState();
-
-    // const handleBlur = ({ id, name, value }) => {
-    //     dispatch(validateForm({ id, name, value }));
-    // };
 
     const handleNewImage = (e) => {
         const imgFile = e.target.files["0"];
@@ -85,11 +52,10 @@ export default function MovieForm({
             dispatch(updateFormState({ val: "", topic: "pic" }));
         }
     };
+
     //================================================================================
     // Render UI
     //================================================================================
-    console.log("♟️ MovieForm: ", { formState });
-
     return (
         <form
             onSubmit={(e) =>
@@ -100,7 +66,6 @@ export default function MovieForm({
                     form,
                     propsData,
                     formLabel: form.key,
-                    // setOpenForm,
                 })
             }
             className={styles.form}
@@ -160,7 +125,6 @@ export default function MovieForm({
                     name="title"
                     id="Title"
                     maxLength="244"
-                    // onChange={handleUpdateFormState}
                     onChange={(e) =>
                         dispatch(
                             updateFormState({

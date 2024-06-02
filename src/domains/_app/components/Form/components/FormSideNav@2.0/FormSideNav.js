@@ -3,24 +3,17 @@ import ActiveElements from "@/src/domains/all/components/Filters/ActiveElements/
 import DropdownMenusByLevel from "@/src/domains/all/components/Filters/DropdownMenusByLevel/DropdownMenusByLevel";
 import InputsSelector from "@/src/domains/all/components/Filters/InputsSelector/InputsSelector";
 import NationalitiesSelector from "@/src/domains/all/components/Filters/NationalitiesSelector/NationalitiesSelector";
-import FormSideNavSearchBar from "@/src/domains/_app/components/Form/components/FormSideNav/components/FormSideNavSearchBar.js";
-import { useEffect, useState } from "react";
-import { searchData } from "@/src/domains/_app/utils/filterData.js";
 import checkHints from "@/src/domains/_app/components/Form/actions/checkHints";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import {
     setupHints,
     searchNavData,
-    searchNavDataOnLevel,
     selectFormPropsData,
     selectFormSideNavData,
     selectFormSideNavFilteredData,
     selectFormState,
     selectFormStoreUI,
-    updateFormState,
     selectFormSideNavSourceData,
-    closeSideNav,
-    closeDrawer,
     openHintsNav,
     selectFormSideNavSelected,
     updateSideNavSelected,
@@ -30,7 +23,7 @@ import {
 } from "@/src/application/redux/slices/formSlice";
 import { useAppSelector } from "@/src/application/redux/lib/hooks";
 import { selectAppSettings } from "@/src/application/redux/slices/appSettingsSlice";
-// import FormSideNavHints from "@/src/domains/_app/components/Form/components/FormSideNav/components/FormSideNavHints";
+import FormSideNavSearchBar from "@/src/domains/_app/components/Form/components/FormSideNav@2.0/components/FormSideNavSearchBar";
 
 export default function FormSideNav() {
     const dispatch = useDispatch();
@@ -90,8 +83,6 @@ export default function FormSideNav() {
                 hints: {
                     missing: res?.missingTags,
                     removed: res?.removedTags,
-                    // missingIsFinish: !res?.missingTags.length,
-                    // removedIsFinish: !res?.removedTags.length,
                 },
             })
         );
@@ -99,21 +90,11 @@ export default function FormSideNav() {
         if (res?.missingTags?.length || res?.removedTags?.length) {
             dispatch(openHintsNav());
         } else {
-            // update formState 🟢
-            // fare anche dentro hints component 🟢
             dispatch(concludeDrawer());
-            // 🟢 con actor: tags replaces formState.tags - quindi perde valori precedenti
-            // // 🟢 noi vogliamo aggiungere i missingTags selezionati
-            // // 🟡 e rimuovere i removedTags selezionati
         }
     };
 
     const handleSearch = (str, searchBar) => {
-        console.log("👽🔥 handleSearch: ", {
-            str,
-            sideNavRawData,
-            filteredData,
-        });
         // str !== searchBar && setSearchBar(str);
         // we have a field in store for saving this 🧠🧠🧠
         // sideNavData.filters.search
@@ -138,19 +119,6 @@ export default function FormSideNav() {
     };
 
     // clean searchBar on openSection change 🧠
-
-    /*
-    useEffect(() => {
-        if (sideNavRawData && filteredData) {
-            dispatch(
-                searchNavData({
-                    searchBar,
-                    TAGS_OBJ: appSettings.TAGS_OBJ,
-                })
-            );
-        }
-    }, [searchBar, sideNavRawData, filteredData]);
-    */
 
     /*
                   Drawer
@@ -207,35 +175,11 @@ export default function FormSideNav() {
                             data={sourceData}
                             value={filters.search}
                             onChange={(str) => handleSearch(str)}
-                            //  onClear={handleSearch("")}
-                            /* onChange={
-                                (str) => 
-                                    sideNavRawData &&
-                                    filteredData &&
-                                    dispatch(
-                                        uiState.sideNavTopic !== "tags"
-                                            ? searchNavData(str)
-                                            : searchNavDataOnLevel({
-                                                  str,
-                                                  TAGS_OBJ:
-                                                      appSettings.TAGS_OBJ,
-                                              })
-                                    ) // 🧠 I should check if filteredData is object or array
-                            } */
                         />
                     </div>
                 </div>
                 <div className={styles.sidewrapBody}>
                     <div className={styles.wrapper}>
-                        {/* {filteredData &&
-                            typeof filteredData === "object" &&
-                            !Array.isArray(filteredData) && (
-                                <DropdownMenusByLevel
-                                    topic={uiState.sideNavTopic}
-                                    userStyles={styles}
-                                />
-                            )} */}
-
                         {/* 🔴 sistemare condition, questa é in conflitto con la precedente - perché puó trasformare filteredData in array 
                         magari aggiungere label match
                         */}
@@ -273,24 +217,8 @@ export default function FormSideNav() {
                             ) : filteredData.length &&
                               uiState.sideNavTopic !== "nationalities" ? (
                                 <InputsSelector
-                                    data={filteredData.map(
-                                        (el) => el
-                                        /*
-                                            // 🧠 check if this change breaks anything
-                                            el.id && el.name
-                                                ? {
-                                                      id: el.id,
-                                                      name: el.name,
-                                                      tags: el.tags || [],
-                                                  }
-                                                : el
-                                                */
-                                    )}
-                                    // currentFilters={
-                                    //     formState[uiState.sideNavTopic]
-                                    // }
+                                    data={filteredData.map((el) => el)}
                                     topic={uiState.sideNavTopic}
-                                    // userStyles={styles}
                                 />
                             ) : (
                                 uiState.sideNavTopic === "nationalities" && (
@@ -302,25 +230,7 @@ export default function FormSideNav() {
                                             formState[uiState.sideNavTopic]
                                         }
                                         topic={uiState.sideNavTopic}
-                                        // handleChildState={updateFormState}
-                                        // onChange={({ val, userAction }) =>
-                                        //     dispatch(
-                                        //         updateSideNavSelected({
-                                        //             val,
-                                        //             userAction,
-                                        //             log: "NationalitiesSelector",
-                                        //         })
-                                        //     )
-                                        // }
                                     />
-                                    // <InputSelector
-                                    //     topic={topic}
-                                    //     topicID={topic}
-                                    //     formState={formState}
-                                    //     updateFormState={updateFormState}
-                                    //     handleDrawer={handleDrawer}
-                                    //     propsData={allNationalities}
-                                    // />
                                 )
                             ))
                         )}
@@ -337,8 +247,6 @@ export default function FormSideNav() {
                         <ActiveElements
                             topic={uiState.sideNavTopic}
                             selected={currentSelection}
-                            // arr={formState[uiState.sideNavTopic]}
-                            // handleChildState={updateFormState}
                             onChange={({ val, userAction }) =>
                                 dispatch(
                                     updateSideNavSelected({
@@ -348,16 +256,6 @@ export default function FormSideNav() {
                                     })
                                 )
                             }
-                            // onConfirm={({ val, topic }) =>
-                            //     dispatch(
-                            //         updateFormState({
-                            //             val,
-                            //             topic,
-                            //             log: "ActiveElements",
-                            //         })
-                            //     )
-                            // }
-                            // userStyles={styles}
                         />
                     </div>
                 </div>

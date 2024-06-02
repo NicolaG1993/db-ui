@@ -1,37 +1,18 @@
 import Image from "next/image";
 import styles from "@/src/domains/_app/components/Form/components/Form.module.css";
 import {
-    addNewImage,
     selectFormPropsData,
     selectFormState,
     selectFormStoreSettings,
-    selectFormStoreNewImage,
     selectFormStoreErrors,
     selectFormIsLoading,
-    removeImage,
     validateForm,
     updateFormState,
-    // openSideNav,
 } from "@/src/application/redux/slices/formSlice";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
 
-export default function CategoryForm({
-    confirmChanges,
-    /*
-    formState,
-    newImage,
-    errors,
-    isLoading,
-    validateData,
-    addLocalImages,
-    deleteImage,
-    closeSideNav,
-    openSideNav,
-    setOpenForm,
-    updateFormState,
-    */
-}) {
+export default function CategoryForm({ confirmChanges }) {
     const formState = useSelector(selectFormState, shallowEqual);
     const propsData = useSelector(selectFormPropsData, shallowEqual);
     const form = useSelector(selectFormStoreSettings, shallowEqual);
@@ -76,7 +57,6 @@ export default function CategoryForm({
                     form,
                     propsData,
                     formLabel: form.key,
-                    // setOpenForm,
                 })
             }
             className={styles.form}
