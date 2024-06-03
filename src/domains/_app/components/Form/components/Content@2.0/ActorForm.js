@@ -64,12 +64,10 @@ export default function ActorForm({ confirmChanges }) {
     };
 
     const handleRemoveImage = (imgFile) => {
-        console.log("handleRemoveImage: ", { imgFile });
         if (imgFile) {
             revokeObjectURL(imgFile);
             setNewImage();
         }
-
         if (formState.pic) {
             dispatch(updateFormState({ val: "", topic: "pic" }));
         }
@@ -77,7 +75,6 @@ export default function ActorForm({ confirmChanges }) {
     //================================================================================
     // Render UI
     //================================================================================
-    console.log("♟️ ActorForm: ", { formState });
 
     return (
         <form
@@ -122,7 +119,7 @@ export default function ActorForm({ confirmChanges }) {
                             </span>
                         </div>
                     ) : (
-                        <div className={styles["form-col-right"]}>
+                        <div className={styles["user-image-input"]}>
                             <input
                                 id="FileID"
                                 type="file"

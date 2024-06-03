@@ -100,7 +100,7 @@ export default function MovieForm({ confirmChanges }) {
                             </span>
                         </div>
                     ) : (
-                        <div className={styles["form-col-right"]}>
+                        <div className={styles["user-image-input"]}>
                             <input
                                 id="FileID"
                                 type="file"
@@ -108,6 +108,7 @@ export default function MovieForm({ confirmChanges }) {
                                 accept="image/png, image/jpeg, image/webp"
                                 onChange={(e) => handleNewImage(e)}
                             />
+                            <label for="FileID">Choose a file 📂</label>
                         </div>
                     )}
                 </div>
