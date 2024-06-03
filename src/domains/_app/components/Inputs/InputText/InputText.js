@@ -1,4 +1,7 @@
-import styles from "@/src/domains/_app/components/Inputs/InputText/InputText.module.css";
+import componentStyles from "@/src/domains/_app/components/Inputs/InputText/InputText.module.css";
+import inputsStyles from "@/src/domains/_app/components/Inputs/Inputs.module.css";
+import ErrorMessage from "../ErrorMessage/ErrorMessage";
+let styles = { ...inputsStyles, ...componentStyles };
 
 export default function InputText({
     name,
@@ -9,6 +12,7 @@ export default function InputText({
     onFocus,
     error,
     isMandatory,
+    placeholder,
 }) {
     return (
         <>
@@ -25,6 +29,7 @@ export default function InputText({
                     onChange={(e) => onChange(e)}
                     onBlur={(e) => onBlur(e)}
                     value={value}
+                    placeholder={placeholder}
                     // className={errors.title && "input-error"}
                 ></input>
                 <label>
@@ -33,10 +38,7 @@ export default function InputText({
                 </label>
             </div>
 
-            {/* CREA COMPONENT X ERROR 🧠👇 */}
-            {error && (
-                <div className={styles["form-error"]}>{"• " + error}</div>
-            )}
+            {error && <ErrorMessage error={error} />}
         </>
     );
 }

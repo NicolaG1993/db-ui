@@ -64,7 +64,6 @@
 .selectedEl {
     padding: 0px 10px;
     border-radius: 25px;
-    color: var(--text);
     width: 150px;
     font-size: 12px;
     display: flex;
@@ -75,16 +74,30 @@
 }
 .unselectedEl {
     background-color: var(--bg500);
+    color: var(--text);
+}
+.selectedEl {
+    /* background-color: var(--bg500);
+    color: var(--text-secondary); */
+    background-color: var(--color000);
+    color: var(--bg100);
 }
 .selectedList > div,
 .selectedEl {
-    background-color: var(--color100);
+    /* background-color: var(--color100); */
 }
 .unselectedEl:hover {
-    background-color: var(--bg700);
-    color: var(--text);
+    /* background-color: var(--bg700);
+    color: var(--text); */
+    background-color: var(--text-secondary);
+    /* background-color: var(--text); */
+    color: var(--bg000);
 }
 .selectedEl:hover {
-    background-color: var(--color200);
-    color: var(--text);
+    background-color: var(--bg400);
+    /* background-color: var(--text-secondary); */
+    /* color: var(--text); */
+    color: var(--text-secondary);
+    outline: 1px solid var(--text-secondary);
+    /* outline: 1px solid var(--color000); */
 }

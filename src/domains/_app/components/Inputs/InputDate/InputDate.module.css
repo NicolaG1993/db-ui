@@ -1,17 +1,3 @@
-/* DYNAMIC ROOT STATES */
-.input-ready {
-    outline: 1px solid var(--bg600);
-    background: var(--bg300);
-}
-.input-ready:hover {
-    outline: 1px solid var(--bg700);
-}
-.input-error {
-    outline: 1px solid var(--dangerBg000);
-    /* color: var(--dangerBg100); */
-    background: var(--dangerBg300);
-}
-
 /* DOM STYLING */
 .input-wrap {
     height: 64px;
@@ -27,19 +13,12 @@
     border-radius: 12px;
     /* color: var(--bg800); */
 }
+.input-wrap > input::placeholder {
+    font-style: italic;
+    color: var(--bg500);
+}
 .input-wrap > input:focus-visible {
     outline: none;
-}
-.input-ready > input {
-    color: var(--bg700);
-}
-.input-ready:hover > input {
-    color: var(--bg800);
-    outline: none;
-}
-.input-ready > input:focus {
-    color: var(--text);
-    outline: 1px solid var(--bg600);
 }
 
 .input-wrap > label {
@@ -49,17 +28,4 @@
     top: 7px;
     left: 12px;
     color: var(--bg900);
-}
-
-/* FORM ERROR */
-.form-error {
-    background: var(--bg300);
-    color: var(--dangerBg100);
-    outline: 1px solid var(--dangerBg100);
-    padding: 0.2rem 0.75rem 0.4rem 0.75rem;
-    font-size: 13px;
-    /* letter-spacing: 0.01rem; */
-    margin-top: 0.75rem;
-    margin-bottom: 1rem;
-    border-radius: 12px;
 }

@@ -1,5 +1,7 @@
 import Image from "next/image";
-import styles from "@/src/domains/_app/components/Inputs/InputImage/InputImage.module.css";
+import componentStyles from "@/src/domains/_app/components/Inputs/InputImage/InputImage.module.css";
+import inputsStyles from "@/src/domains/_app/components/Inputs/Inputs.module.css";
+let styles = { ...inputsStyles, ...componentStyles };
 
 export default function InputImage({ file, onAddFile, onDeleteFile, error }) {
     return file ? (

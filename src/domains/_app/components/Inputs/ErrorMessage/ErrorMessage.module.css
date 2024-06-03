@@ -1,0 +1,11 @@
+.error-message {
+    background: var(--bg300);
+    color: var(--dangerBg100);
+    outline: 1px solid var(--dangerBg100);
+    padding: 0.2rem 0.75rem 0.4rem 0.75rem;
+    font-size: 13px;
+    /* letter-spacing: 0.01rem; */
+    margin-top: 0.75rem;
+    margin-bottom: 1rem;
+    border-radius: 12px;
+}

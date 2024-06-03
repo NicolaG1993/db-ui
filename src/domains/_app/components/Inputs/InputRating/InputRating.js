@@ -1,4 +1,7 @@
-import styles from "@/src/domains/_app/components/Inputs/InputRating/InputRating.module.css";
+import inputsStyles from "@/src/domains/_app/components/Inputs/Inputs.module.css";
+import componentStyles from "@/src/domains/_app/components/Inputs/InputRating/InputRating.module.css";
+import ErrorMessage from "../ErrorMessage/ErrorMessage";
+let styles = { ...inputsStyles, ...componentStyles };
 
 export default function InputRating({
     name,
@@ -37,10 +40,7 @@ export default function InputRating({
                 </label>
             </div>
 
-            {/* CREA COMPONENT X ERROR 🧠👇 */}
-            {error && (
-                <div className={styles["form-error"]}>{"• " + error}</div>
-            )}
+            {error && <ErrorMessage error={error} />}
         </>
     );
 }

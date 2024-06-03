@@ -1,9 +1,11 @@
 // ESTERNAL COMPONENT!
 // All required data should be passed as argument!
 
-import styles from "@/src/domains/_app/components/Inputs/InputTextToArray/InputTextToArray.module.css";
-
 import { useState } from "react";
+import inputsStyles from "@/src/domains/_app/components/Inputs/Inputs.module.css";
+import componentStyles from "@/src/domains/_app/components/Inputs/InputTextToArray/InputTextToArray.module.css";
+import ErrorMessage from "../ErrorMessage/ErrorMessage";
+let styles = { ...inputsStyles, ...componentStyles };
 // import styles from "@/src/application/styles/AdminDashboard.module.css";
 
 // FIX: Questo component é salvato nel domain "all" ma viene usato anche in forms to create and edit
@@ -16,6 +18,7 @@ export default function InputTextToArray({
     onChange,
     // propData,
     error,
+    placeholder,
 }) {
     const [newInput, setNewInput] = useState();
     // const [data, setData] = useState(formState[name]);
@@ -48,6 +51,7 @@ export default function InputTextToArray({
                     <input
                         type="text"
                         name={name}
+                        placeholder={placeholder}
                         id={`${id}New`}
                         value={newInput ? newInput : ""}
                         onChange={(e) => setNewInput(e.target.value)}
@@ -65,6 +69,8 @@ export default function InputTextToArray({
                     Add
                 </button>
             </div>
+
+            {error && <ErrorMessage error={error} />}
 
             {/* 
             <div className={styles["form-col-right"]}>

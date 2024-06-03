@@ -1,24 +1,24 @@
 /* THEMES */
-.theme-hi-contrast {
-    --bg000: rgb(10, 10, 10);
+.theme-black {
+    --bg000: rgb(10, 10, 10); /*1*/
     --bg100: rgb(17, 17, 17);
     --bg200: rgb(28, 28, 28);
     --bg300: rgb(32, 32, 32);
-    --bg400: rgb(42, 42, 42);
+    --bg400: rgb(42, 42, 42); /*2*/
     --bg500: rgb(60, 60, 60);
     --bg600: rgb(77, 77, 77);
-    --bg700: rgb(90, 90, 90);
+    --bg700: rgb(90, 90, 90); /*3*/
     --bg800: rgb(118, 118, 118);
     --bg900: rgb(190, 190, 190);
 
-    --color000: purple;
-    --color100: yellow;
-    --color200: rgb(41, 237, 41);
+    --color000: rgb(255, 157, 157);
+    --color100: rgb(110, 17, 17);
+    --color200: rgb(170, 0, 0);
 
     --overlay: rgba(0, 0, 0, 0.3);
     --overlayB: rgba(28, 28, 28, 0.85);
 
-    --text: white;
+    --text: white; /*4*/
     --text-secondary: rgb(210, 210, 210);
 
     --gradient000: 30, 30, 30;
@@ -88,6 +88,31 @@
     --gradient000: 126, 126, 126;
 }
 
+.theme-hi-contrast {
+    --bg000: rgb(10, 10, 10);
+    --bg100: rgb(17, 17, 17);
+    --bg200: rgb(28, 28, 28);
+    --bg300: rgb(32, 32, 32);
+    --bg400: rgb(42, 42, 42);
+    --bg500: rgb(60, 60, 60);
+    --bg600: rgb(77, 77, 77);
+    --bg700: rgb(90, 90, 90);
+    --bg800: rgb(118, 118, 118);
+    --bg900: rgb(190, 190, 190);
+
+    --color000: rgb(41, 237, 41);
+    --color100: rgb(208, 13, 208);
+    --color200: rgb(41, 237, 41);
+
+    --overlay: rgba(0, 0, 0, 0.3);
+    --overlayB: rgba(28, 28, 28, 0.85);
+
+    --text: rgb(72, 255, 231);
+    --text-secondary: rgb(210, 210, 210);
+
+    --gradient000: 30, 30, 30;
+}
+
 .theme-night {
     --bg000: rgb(2, 2, 22);
     --bg100: rgb(13, 13, 19);
@@ -106,6 +131,33 @@
     --overlayB: rgba(14, 14, 32, 0.9);
     --text: white;
     --gradient000: 2, 2, 22;
+}
+
+.theme-jungle {
+    --bg000: rgb(10, 10, 10);
+    --bg100: rgb(17, 17, 17);
+    --bg200: rgb(28, 28, 28);
+    --bg300: rgb(32, 32, 32);
+    --bg400: rgb(42, 42, 42);
+    --bg500: rgb(60, 60, 60);
+    --bg600: rgb(77, 77, 77);
+    --bg700: rgb(90, 90, 90);
+    --bg800: rgb(118, 118, 118);
+    --bg900: rgb(190, 190, 190);
+
+    --color000: rgb(77, 162, 67);
+    --color100: rgb(57, 7, 101);
+    --color200: rgb(76, 10, 156);
+    /* --color100: rgb(197, 208, 46); */
+    /* --color200: rgb(216, 165, 69); */
+
+    --overlay: rgba(0, 0, 0, 0.3);
+    --overlayB: rgba(28, 28, 28, 0.85);
+
+    --text: rgb(110, 156, 126);
+    --text-secondary: rgb(210, 210, 210);
+
+    --gradient000: 30, 30, 30;
 }
 
 .theme-sunset {
@@ -343,7 +395,6 @@ select:hover {
 .selectedEl {
     padding: 0px 10px;
     border-radius: 25px;
-    color: var(--text);
     width: 150px;
     font-size: 12px;
     display: flex;
@@ -354,6 +405,11 @@ select:hover {
 }
 .unselectedEl {
     background-color: var(--bg500);
+    color: var(--text);
+}
+.selectedEl {
+    background-color: var(--bg500);
+    color: var(--text-secondary);
 }
 .selectedList > div,
 .selectedEl {
@@ -410,16 +466,17 @@ select:hover {
 
 /* ELIMINARE DOPO INPUTS REFACTOR? 🧠 */
 /* FORMS GLOBAL ELEMENTS */
+/* 
 .form-error {
     background: var(--dangerBg100);
     color: white;
     border: 1px solid var(--text);
     padding: 0.15rem 0.25rem;
     font-size: 13px;
-    /* letter-spacing: 0.01rem; */
     margin-top: 0.5rem;
     border-radius: 3px;
-}
+} 
 .input-error {
     border: 1px solid var(--dangerBg100);
 }
+*/
