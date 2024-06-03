@@ -168,12 +168,14 @@ export default function Form({
                     <h2>{formLabel}</h2>
                 </div>
 
-                {!isLoading && FormComponent && formLabel === form.key ? (
-                    <FormComponent confirmChanges={confirmChanges} />
-                ) : (
-                    // 🧠 Fare loader migliore
-                    <p>Loading form...</p>
-                )}
+                <div className={styles.formBox}>
+                    {!isLoading && FormComponent && formLabel === form.key ? (
+                        <FormComponent confirmChanges={confirmChanges} />
+                    ) : (
+                        // 🧠 Fare loader migliore
+                        <p>Loading form...</p>
+                    )}
+                </div>
             </div>
 
             <FormDrawer

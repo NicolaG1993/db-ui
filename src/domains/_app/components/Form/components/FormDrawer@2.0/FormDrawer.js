@@ -8,7 +8,7 @@ export default function FormDrawer({ children, isOpen, closeDrawer }) {
         <div
             className={styles.sidewrap}
             style={{
-                transform: isOpen ? "translateX(0)" : "translateX(498px)",
+                transform: isOpen ? "translateX(0)" : "translateX(66vw)",
             }}
         >
             {children}

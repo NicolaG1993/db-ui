@@ -1,0 +1,74 @@
+/* DYNAMIC ROOT STATES */
+.input-ready {
+    outline: 1px solid var(--bg600);
+    background: var(--bg300);
+}
+.input-ready:hover {
+    outline: 1px solid var(--bg700);
+}
+.input-error {
+    outline: 1px solid var(--dangerBg000);
+    /* color: var(--dangerBg100); */
+    background: var(--dangerBg300);
+}
+
+/* DOM STYLING */
+.extendend-input-layout {
+    display: grid;
+    grid-template-columns: 1fr 64px;
+}
+
+.input-wrap {
+    height: 64px;
+    border-radius: 12px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    margin-right: 15px;
+}
+.input-wrap > p {
+    background: none;
+    border: none;
+    /* height: 100%; */
+    width: 100%;
+    padding: 22px 3px 0px 12px;
+    font-size: 17px;
+    border-radius: 12px;
+    margin: 0;
+    line-height: 100%;
+    display: table-cell;
+    vertical-align: middle;
+}
+.input-ready > p {
+    color: var(--bg700);
+}
+.input-ready:hover > p {
+    color: var(--bg800);
+    outline: none;
+}
+
+.input-wrap > label {
+    font-size: 13px;
+    font-weight: normal;
+    position: absolute;
+    top: 7px;
+    left: 12px;
+    color: var(--bg900);
+}
+
+.extendend-input-layout > button {
+    height: 100%;
+    padding: 15px 19px;
+    border-radius: 12px;
+    background: var(--bg400);
+    color: var(--bg900);
+    border: none;
+    font-weight: bold;
+    width: 64px;
+    outline: 1px solid var(--bg600);
+}
+.extendend-input-layout > button:hover {
+    background: var(--bg300);
+    outline: 1px solid var(--bg700);
+    border: none;
+}

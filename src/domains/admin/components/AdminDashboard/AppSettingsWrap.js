@@ -12,6 +12,12 @@ export default function AppSettingsWrap({ toggleAppSettings }) {
     // 🧠 I should store this rgb's in a global css variable, always available
     let allThemes = [
         {
+            name: "Hi-Contrast",
+            rgb1: "rgb(10, 10, 10)",
+            rgb2: "rgb(214, 214, 214)",
+            tag: "theme-hi-contrast",
+        },
+        {
             name: "Dark",
             rgb1: "rgb(50, 50, 50)",
             rgb2: "rgb(93, 93, 93)",

@@ -1,0 +1,35 @@
+import Image from "next/image";
+import styles from "@/src/domains/_app/components/Inputs/InputImage/InputImage.module.css";
+
+export default function InputImage({ file, onAddFile, onDeleteFile, error }) {
+    return file ? (
+        <div className={styles["form-new-image"]}>
+            <Image
+                src={file}
+                alt={`Picture`}
+                fill
+                style={{ objectFit: "cover" }}
+            />
+            <span
+                className={styles["form-delete-image"]}
+                onClick={() => onDeleteFile()}
+            >
+                X
+            </span>
+        </div>
+    ) : (
+        <div className={styles["user-image-input"]}>
+            <input
+                id="FileID"
+                type="file"
+                name="filename"
+                accept="image/png, image/jpeg, image/webp"
+                onChange={(e) => onAddFile(e)}
+            />
+            <label for="FileID">
+                <span>Picture</span>
+                <span>Choose a file 📂</span>
+            </label>
+        </div>
+    );
+}

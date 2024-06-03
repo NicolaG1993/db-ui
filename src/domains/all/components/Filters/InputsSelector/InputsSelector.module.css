@@ -57,7 +57,7 @@
 
 .categoryDropdown {
     /* transition: height 0.5s ease; */
-    padding: 0.2rem 0.6rem;
+    padding: 0.4rem 0.6rem 2rem 0.6rem;
 }
 /* SELECTED ELEMENT  */
 .unselectedEl,

@@ -1,4 +1,29 @@
 /* THEMES */
+.theme-hi-contrast {
+    --bg000: rgb(10, 10, 10);
+    --bg100: rgb(17, 17, 17);
+    --bg200: rgb(28, 28, 28);
+    --bg300: rgb(32, 32, 32);
+    --bg400: rgb(42, 42, 42);
+    --bg500: rgb(60, 60, 60);
+    --bg600: rgb(77, 77, 77);
+    --bg700: rgb(90, 90, 90);
+    --bg800: rgb(118, 118, 118);
+    --bg900: rgb(190, 190, 190);
+
+    --color000: purple;
+    --color100: yellow;
+    --color200: rgb(41, 237, 41);
+
+    --overlay: rgba(0, 0, 0, 0.3);
+    --overlayB: rgba(28, 28, 28, 0.85);
+
+    --text: white;
+    --text-secondary: rgb(210, 210, 210);
+
+    --gradient000: 30, 30, 30;
+}
+
 .theme-dark {
     --bg000: rgb(30, 30, 30);
     --bg100: rgb(33, 33, 33); /* 👍 */
@@ -138,6 +163,7 @@ html {
     --dangerBg000: rgb(186, 0, 0);
     --dangerBg100: red;
     --dangerBg200: rgb(215, 61, 61);
+    --dangerBg300: rgba(255, 0, 0, 0.139);
     --shadow000: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
 body {
@@ -151,7 +177,7 @@ main {
     display: flex;
     flex-direction: column;
     align-items: center;
-    background-color: var(--200);
+    background-color: var(--bg200);
     /* background-color: rgb(33, 33, 33); */
     min-height: 100vh;
 }
@@ -286,7 +312,9 @@ select:hover {
     border: 1px var(--bg600) solid;
     background: var(--bg200);
     border-radius: 25px;
-    width: 500px;
+    width: 66vw;
+    max-width: 1000px;
+    /* width: 500px; */
     /* padding: 1em 0; */
     margin-top: 2em;
     margin-bottom: 8em;
@@ -380,6 +408,7 @@ select:hover {
     font-weight: bold;
 }
 
+/* ELIMINARE DOPO INPUTS REFACTOR? 🧠 */
 /* FORMS GLOBAL ELEMENTS */
 .form-error {
     background: var(--dangerBg100);

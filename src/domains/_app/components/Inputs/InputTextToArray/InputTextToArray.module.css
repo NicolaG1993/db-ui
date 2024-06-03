@@ -1,0 +1,131 @@
+/* DYNAMIC ROOT STATES */
+.input-ready {
+    outline: 1px solid var(--bg600);
+    background: var(--bg300);
+}
+.input-ready:hover {
+    outline: 1px solid var(--bg700);
+}
+.input-error {
+    outline: 1px solid var(--dangerBg000);
+    /* color: var(--dangerBg100); */
+    background: var(--dangerBg300);
+}
+
+/* DOM STYLING */
+.extendend-input-layout {
+    display: grid;
+    grid-template-columns: 1fr 64px;
+}
+
+.input-wrap {
+    height: 64px;
+    border-radius: 12px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    margin-right: 15px;
+}
+.input-wrap > input {
+    background: none;
+    border: none;
+    height: 100%;
+    padding: 22px 3px 0px 12px;
+    font-size: 17px;
+    border-radius: 12px;
+    /* color: var(--bg800); */
+}
+.input-wrap > input:focus-visible {
+    outline: none;
+}
+.input-ready > input {
+    color: var(--bg700);
+}
+.input-ready:hover > input {
+    color: var(--bg800);
+    outline: none;
+}
+.input-ready > input:focus {
+    color: var(--text);
+    outline: 1px solid var(--bg600);
+}
+
+.input-wrap > label {
+    font-size: 13px;
+    font-weight: normal;
+    position: absolute;
+    top: 7px;
+    left: 12px;
+    color: var(--bg900);
+}
+
+.extendend-input-layout > button {
+    height: 100%;
+    padding: 15px 19px;
+    border-radius: 12px;
+    /* border-radius: 0 12px 12px 0; */
+    background: var(--bg400);
+    color: var(--bg900);
+    border: none;
+    font-weight: bold;
+    width: 64px;
+    outline: 1px solid var(--bg600);
+}
+.extendend-input-layout > button:hover {
+    background: var(--bg300);
+    outline: 1px solid var(--bg700);
+    border: none;
+}
+
+/* SUB WRAP - unique for this component */
+.input-sub-wrap {
+    margin: 15px calc(15px + 64px) 0 15px;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    /* padding: 6px 12px; */
+    background: var(--bg300);
+    /* align-items: center; */
+    outline: 1px solid var(--bg600);
+    padding: 6px 0;
+}
+.input-sub-wrap-row {
+    display: flex;
+    align-items: center;
+    margin: 6px 12px;
+}
+.input-sub-wrap-row > input {
+    margin-right: 10px;
+    padding: 10px 12px 10px 12px;
+    border-radius: 9px;
+    background: var(--bg200);
+    color: var(--bg700);
+}
+.input-sub-wrap-row > input:hover {
+    background: var(--bg300);
+    color: var(--bg800);
+}
+.input-sub-wrap-row > button {
+    height: 37px;
+    padding: 5px 12px;
+    background: var(--bg300);
+    color: var(--bg900);
+}
+.input-sub-wrap-row > button:hover {
+    background: var(--bg400);
+    outline: 1px solid var(--bg700);
+    /* border: none; */
+}
+
+/* FORM ERROR */
+.form-error {
+    background: var(--bg300);
+    color: var(--dangerBg100);
+    outline: 1px solid var(--dangerBg100);
+    padding: 0.2rem 0.75rem 0.4rem 0.75rem;
+    font-size: 13px;
+    /* letter-spacing: 0.01rem; */
+    margin-top: 0.75rem;
+    margin-bottom: 1rem;
+    border-radius: 12px;
+}
