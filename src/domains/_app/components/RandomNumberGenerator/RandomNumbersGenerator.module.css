@@ -113,11 +113,11 @@
     margin-bottom: 0.25rem;
 }
 
+/* 🔴🔴🔴 TURN INTO GRID SYSTEM */
 .form-results {
     /* width: 450px; */
-    display: flex;
-    align-items: center;
     width: 100%;
+    /* max-height: 350px; */
     margin-right: 2rem;
     margin-left: 0.5rem;
     padding: 0.5rem 1rem;
@@ -126,18 +126,50 @@
     border-left: 2px solid var(--text);
     background: var(--bg600);
 }
-.form-results > div:nth-child(1) {
+.form-results-wrap {
     display: flex;
-    flex-direction: column;
+    align-items: center;
     width: 100%;
-}
-.form-results > button:nth-child(2) {
-    width: 180px;
 }
 .results-box {
     margin-bottom: 0.5rem;
     min-height: 50px;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+.form-results-wrap > button:nth-child(2) {
+    width: 180px;
 }
 .form-results p {
     margin-bottom: 5px;
+}
+.results-box > p:hover {
+    /* font-weight: bold; */
+    text-decoration: underline;
+}
+
+.form-last-results {
+    border-top: 1px solid var(--bg200);
+    height: 100%;
+    /* max-height: 100px; */
+}
+.form-last-results > p:first-child {
+    font-weight: bold;
+}
+.last-results {
+    overflow-y: auto;
+    height: 100%;
+    max-height: 140px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+}
+.last-results > p {
+    margin: 5px 0;
+}
+.last-results > p:hover {
+    /* font-weight: bold; */
+    text-decoration: underline;
 }

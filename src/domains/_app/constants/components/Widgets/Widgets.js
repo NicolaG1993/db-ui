@@ -15,6 +15,10 @@ export default function Widget() {
         setWidget(str);
     };
 
+    /*
+    🧠🧠🧠 TODO: Try to implement a Wrap component to manage the dynamic height for the animations
+    -- we could make them comunicate with the components content (es. if last results height +200px)
+    */
     return (
         <>
             <div className={styles["widgets-btns"]}>
@@ -50,7 +54,9 @@ export default function Widget() {
                     className={styles["widget-box"]}
                     style={{
                         height:
-                            widget === "RandomNumberGenerator" ? "400px" : "0",
+                            widget === "RandomNumberGenerator" ? "100%" : "0",
+                        minHeight:
+                            widget === "RandomNumberGenerator" ? "570px" : "0",
                     }}
                 >
                     <div className={styles["nav-content"]}>

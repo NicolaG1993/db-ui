@@ -9,9 +9,11 @@ export default function RandomNumberGenerator({ open, closeWidget }) {
         setting: "unique",
     });
     const [result, setResult] = useState([]);
+    const [lastResults, setLastResults] = useState([]);
 
     const clearResults = () => {
         setResult([]);
+        setLastResults([]);
     };
 
     const handleChange = (e) => {
@@ -33,6 +35,7 @@ export default function RandomNumberGenerator({ open, closeWidget }) {
     };
 
     const handleSubmit = (e) => {
+        console.log("handleSubmit: ");
         e.preventDefault();
         let arr = [];
         if (form.setting === "not unique") {
@@ -50,9 +53,15 @@ export default function RandomNumberGenerator({ open, closeWidget }) {
                 if (arr.indexOf(randomNumber) === -1) arr.push(randomNumber);
             }
         }
+
+        if (result && !!result.length) {
+            setLastResults((prev) => [result, ...prev].slice(0, 5));
+        }
+
         setResult(arr);
     };
 
+    console.log("lastResults: ", lastResults);
     return (
         <div
             id={styles["RandomNumberGenerator"]}
@@ -136,8 +145,8 @@ export default function RandomNumberGenerator({ open, closeWidget }) {
             </form>
 
             {result.length > 0 && (
-                <>
-                    <div className={styles["form-results"]}>
+                <div className={styles["form-results"]}>
+                    <div className={styles["form-results-wrap"]}>
                         <div className={styles["results-box"]}>
                             <h3>Your random numbers</h3>
                             <p>{result.map((el) => `${el} `)}</p>
@@ -151,7 +160,20 @@ export default function RandomNumberGenerator({ open, closeWidget }) {
                             Clear Result
                         </button>
                     </div>
-                </>
+
+                    {lastResults.length >= 1 && (
+                        <div className={styles["form-last-results"]}>
+                            <p>Last results:</p>
+                            <div className={styles["last-results"]}>
+                                {lastResults.map((el, i) => (
+                                    <p key={"last result: " + el + " " + i}>
+                                        {el.map((n) => `${n} `)}
+                                    </p>
+                                ))}
+                            </div>
+                        </div>
+                    )}
+                </div>
             )}
         </div>
     );
