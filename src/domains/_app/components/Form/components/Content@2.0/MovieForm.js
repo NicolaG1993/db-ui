@@ -90,6 +90,8 @@ export default function MovieForm({ confirmChanges }) {
                                 imgFile: newImage,
                             })
                         }
+                        height={200}
+                        width={250}
                     />
                 </div>
 

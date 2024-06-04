@@ -20,14 +20,6 @@
 .input-wrap > select:focus-visible {
     outline: none;
 }
-.input-wrap > label {
-    font-size: 13px;
-    font-weight: normal;
-    position: absolute;
-    top: 7px;
-    left: 12px;
-    color: var(--bg900);
-}
 
 /* CUSTOM */
 .input-wrap > select > option {

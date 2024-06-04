@@ -17,11 +17,3 @@
     display: table-cell;
     vertical-align: middle; */
 }
-.input-wrap > label {
-    font-size: 13px;
-    font-weight: normal;
-    position: absolute;
-    top: 7px;
-    left: 12px;
-    color: var(--bg900);
-}

@@ -57,10 +57,20 @@
     outline: none;
 }
 
+/* common styles: to avoid have them each time for every component */
 .wrap-common-styles {
     height: 54px;
     border-radius: 12px;
     position: relative;
+}
+.wrap-common-styles > label {
+    font-size: 12px;
+    font-weight: normal;
+    position: absolute;
+    top: 6px;
+    left: 12px;
+    color: var(--bg900);
+    letter-spacing: 0.5px;
 }
 
 /* LAYOUT */

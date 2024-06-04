@@ -3,10 +3,13 @@
     height: 200px;
     position: relative;
 }
+.form-new-image > img {
+    border-radius: 12px;
+}
 
 .form-delete-image {
     background-color: var(--text);
-    color: black;
+    color: var(--bg200);
     position: absolute;
     right: 8px;
     top: 8px;
@@ -19,6 +22,12 @@
     align-items: center;
     justify-content: center;
     font-weight: bold;
+    /* transition: 0.125s ease; */
+    outline: 1px solid;
+}
+.form-delete-image:hover {
+    background-color: var(--bg400);
+    color: var(--text);
 }
 
 /* IMAGE INPUT */
@@ -77,12 +86,13 @@
     /* background-color: var(--bg200); */
 }
 .user-image-input > label > span:first-child {
-    font-size: 13px;
+    font-size: 12px;
     font-weight: normal;
     position: absolute;
     top: 7px;
     left: 12px;
     color: var(--bg900);
+    letter-spacing: 0.5px;
 }
 .user-image-input > label > span:nth-child(2) {
 }

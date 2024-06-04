@@ -8,10 +8,10 @@ import FormDrawerContent from "./FormDrawer@2.0/FormDrawerContent";
 import { selectAppSettings } from "@/src/application/redux/slices/appSettingsSlice";
 import {
     loadNewActiveForm,
-    selectFormState,
+    // selectFormState,
     selectFormStoreErrors,
     selectFormStoreHints,
-    selectFormStoreNewImage,
+    // selectFormStoreNewImage,
     selectFormStoreSettings,
     selectFormStoreUI,
     startLoading,
@@ -49,8 +49,8 @@ export default function Form({
     const form = useSelector(selectFormStoreSettings, shallowEqual);
     const uiState = useSelector(selectFormStoreUI, shallowEqual);
     const hints = useSelector(selectFormStoreHints, shallowEqual);
-    const formState = useSelector(selectFormState, shallowEqual);
-    const newImage = useSelector(selectFormStoreNewImage, shallowEqual);
+    // const formState = useSelector(selectFormState, shallowEqual);
+    // const newImage = useSelector(selectFormStoreNewImage, shallowEqual);
     const formErrors = useSelector(selectFormStoreErrors, shallowEqual);
     const isLoading = useSelector(selectFormIsLoading, shallowEqual);
     const sideNavData = useSelector(selectFormSideNavData, shallowEqual);
@@ -90,10 +90,6 @@ export default function Form({
                         uiState.sideNavTopic,
                         appSettings.TAGS_OBJ
                     ).then(({ data, parsedData }) => {
-                        console.log("fetchDataForSideNav res: ", {
-                            data,
-                            parsedData,
-                        });
                         dispatch(initSideNavData({ data, parsedData }));
                     });
                 }

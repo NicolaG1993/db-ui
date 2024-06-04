@@ -15,6 +15,10 @@ import { useState } from "react";
 import InputImage from "@/src/domains/_app/components/Inputs/InputImage/InputImage";
 import InputText from "@/src/domains/_app/components/Inputs/InputText/InputText";
 import InputFake from "@/src/domains/_app/components/Inputs/InputFake/InputFake";
+import {
+    createObjectURL,
+    revokeObjectURL,
+} from "@/src/domains/_app/actions/useLocalImages";
 
 export default function StudioForm({ confirmChanges }) {
     const formState = useSelector(selectFormState, shallowEqual);
