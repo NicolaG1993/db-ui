@@ -43,6 +43,7 @@ export default async function handler(req, res) {
             }
             let { actors, categories, tags, studios, distribution } = filters;
 
+            // 🧠 🧠 🧠 questa fn nemmeno esiste?!?!?
             const { rows } = await filterAllActorsWithInfos(
                 str,
                 Number(step),

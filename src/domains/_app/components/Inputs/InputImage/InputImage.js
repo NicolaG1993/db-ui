@@ -3,14 +3,23 @@ import componentStyles from "@/src/domains/_app/components/Inputs/InputImage/Inp
 import inputsStyles from "@/src/domains/_app/components/Inputs/Inputs.module.css";
 let styles = { ...inputsStyles, ...componentStyles };
 
-export default function InputImage({ file, onAddFile, onDeleteFile, error }) {
+export default function InputImage({
+    file,
+    onAddFile,
+    onDeleteFile,
+    height,
+    width,
+    error,
+}) {
     return file ? (
         <div className={styles["form-new-image"]}>
             <Image
                 src={file}
                 alt={`Picture`}
-                fill
+                fill={!height && !width}
                 style={{ objectFit: "cover" }}
+                height={height}
+                width={width}
             />
             <span
                 className={styles["form-delete-image"]}

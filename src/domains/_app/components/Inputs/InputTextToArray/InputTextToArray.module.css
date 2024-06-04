@@ -20,14 +20,6 @@
 .input-wrap > input:focus-visible {
     outline: none;
 }
-.input-wrap > label {
-    font-size: 13px;
-    font-weight: normal;
-    position: absolute;
-    top: 7px;
-    left: 12px;
-    color: var(--bg900);
-}
 
 /* SUB WRAP - unique for this component */
 /* not anymore! cloned for InputSocials */

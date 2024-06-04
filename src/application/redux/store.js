@@ -4,6 +4,7 @@ import sessionPlaylistSlice from "./slices/sessionPlaylistSlice";
 import userSlice from "./slices/userSlice";
 import itemSlice from "./slices/itemSlice";
 import formSlice from "./slices/formSlice";
+import tournamentSlice from "./slices/tournamentSlice";
 
 // config the store
 const store = configureStore({
@@ -13,6 +14,7 @@ const store = configureStore({
         user: userSlice.reducer,
         itemStore: itemSlice.reducer,
         formStore: formSlice.reducer,
+        tournamentStore: tournamentSlice.reducer,
     },
     devTools: true,
 });
