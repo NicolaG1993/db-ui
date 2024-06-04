@@ -4,6 +4,8 @@ import RandomNumberButton from "./RandomNumberButton";
 import SessionPlaylistButton from "./SessionPlaylistButton";
 import styles from "./Widgets.module.css";
 import RandomNumberGenerator from "../../../components/RandomNumberGenerator/RandomNumberGenerator";
+import UserNotesButton from "./UserNotesButton";
+import UserNotes from "../../../components/UserNotes/UserNotes";
 
 export default function Widget() {
     const [widget, setWidget] = useState(false);
@@ -29,6 +31,11 @@ export default function Widget() {
                 />
                 <RandomNumberButton
                     open={widget === "RandomNumberGenerator"}
+                    closeWidget={closeWidget}
+                    openWidget={openWidget}
+                />
+                <UserNotesButton
+                    open={widget === "UserNotes"}
                     closeWidget={closeWidget}
                     openWidget={openWidget}
                 />
@@ -62,6 +69,21 @@ export default function Widget() {
                     <div className={styles["nav-content"]}>
                         <RandomNumberGenerator
                             open={widget === "RandomNumberGenerator"}
+                            closeWidget={closeWidget}
+                        />
+                    </div>
+                </div>
+
+                <div
+                    className={styles["widget-box"]}
+                    style={{
+                        height: widget === "UserNotes" ? "100%" : "0",
+                        minHeight: widget === "UserNotes" ? "570px" : "0",
+                    }}
+                >
+                    <div className={styles["nav-content"]}>
+                        <UserNotes
+                            open={widget === "UserNotes"}
                             closeWidget={closeWidget}
                         />
                     </div>
