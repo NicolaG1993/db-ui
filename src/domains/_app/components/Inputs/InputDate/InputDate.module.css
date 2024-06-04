@@ -1,8 +1,5 @@
 /* DOM STYLING */
 .input-wrap {
-    height: 64px;
-    border-radius: 12px;
-    position: relative;
 }
 .input-wrap > input {
     background: none;

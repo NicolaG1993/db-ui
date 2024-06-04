@@ -1,9 +1,6 @@
 /* DOM STYLING */
 .input-wrap {
-    height: 64px;
-    border-radius: 12px;
-    position: relative;
-    width: 100%;
+    /* width: 100%; */
 }
 .input-wrap > input {
     background: none;
@@ -20,8 +17,8 @@
 }
 .input-wrap > input:focus-visible {
     outline: none;
-    /* border: none;
-    outline: 1px solid var(--color000); */
+    border: none;
+    /*   outline: 1px solid var(--color000); */
 }
 
 .input-wrap > label {

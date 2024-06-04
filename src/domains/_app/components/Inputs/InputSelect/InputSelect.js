@@ -20,7 +20,7 @@ export default function InputSelect({
             <div
                 className={`${
                     error ? styles["input-error"] : styles["input-ready"]
-                } ${styles["input-wrap"]}`}
+                } ${styles["input-wrap"]} ${styles["wrap-common-styles"]}`}
             >
                 <select
                     name={name}

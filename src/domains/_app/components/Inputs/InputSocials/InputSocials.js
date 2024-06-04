@@ -98,7 +98,7 @@ export default function InputSocials({
                 <div
                     className={`${
                         error ? styles["input-error"] : styles["input-ready"]
-                    } ${styles["input-wrap"]}`}
+                    } ${styles["input-wrap"]} ${styles["wrap-common-styles"]}`}
                 >
                     {newSocialInput ? (
                         <InputField

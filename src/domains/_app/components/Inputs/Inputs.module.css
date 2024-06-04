@@ -45,7 +45,7 @@
 .input-ready > input:active,
 .input-ready > input:focus {
     color: var(--text);
-    outline: 2.5px solid var(--bg800);
+    /* outline: 2.5px solid var(--bg800); */
     border: none;
 }
 
@@ -55,6 +55,12 @@
 .input-ready:hover > p {
     color: var(--bg800);
     outline: none;
+}
+
+.wrap-common-styles {
+    height: 54px;
+    border-radius: 12px;
+    position: relative;
 }
 
 /* LAYOUT */

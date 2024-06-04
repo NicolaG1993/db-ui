@@ -16,7 +16,7 @@ export default function InputDate({
             <div
                 className={`${
                     error ? styles["input-error"] : styles["input-ready"]
-                } ${styles["input-wrap"]}`}
+                } ${styles["input-wrap"]} ${styles["wrap-common-styles"]}`}
             >
                 <input
                     type="date"
