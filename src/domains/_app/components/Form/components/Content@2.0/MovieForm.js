@@ -93,7 +93,7 @@ export default function MovieForm({ confirmChanges }) {
                     />
                 </div>
 
-                <div className={styles["form-row"]}>
+                <div className={styles["form-row-full"]}>
                     <InputText
                         name="title"
                         id="Title"
@@ -121,7 +121,7 @@ export default function MovieForm({ confirmChanges }) {
                     />
                 </div>
 
-                <div className={styles["form-row"]}>
+                <div className={styles["form-row-full"]}>
                     <InputTextToArray
                         name={"urls"}
                         id={"Urls"}
@@ -138,7 +138,7 @@ export default function MovieForm({ confirmChanges }) {
                     />
                 </div>
 
-                <div className={styles["form-row"]}>
+                <div className={styles["form-row-half"]}>
                     <InputRating
                         name={"rating"}
                         id={"Rating"}
@@ -170,7 +170,7 @@ export default function MovieForm({ confirmChanges }) {
                     />
                 </div>
 
-                <div className={styles["form-row"]}>
+                <div className={styles["form-row-half"]}>
                     <InputDate
                         name={"release"}
                         id={"Release"}
@@ -190,7 +190,7 @@ export default function MovieForm({ confirmChanges }) {
                     <h5>• Relations</h5>
                 </div>
 
-                <div className={styles["form-row"]}>
+                <div className={styles["form-row-full"]}>
                     <InputFake
                         name={"cast"}
                         id={"Cast"}
@@ -201,7 +201,7 @@ export default function MovieForm({ confirmChanges }) {
                     />
                 </div>
 
-                <div className={styles["form-row"]}>
+                <div className={styles["form-row-full"]}>
                     <InputFake
                         name={"categories"}
                         id={"Categories"}
@@ -212,7 +212,7 @@ export default function MovieForm({ confirmChanges }) {
                     />
                 </div>
 
-                <div className={styles["form-row"]}>
+                <div className={styles["form-row-full"]}>
                     <InputFake
                         name={"tags"}
                         id={"Tags"}
@@ -223,7 +223,7 @@ export default function MovieForm({ confirmChanges }) {
                     />
                 </div>
 
-                <div className={styles["form-row"]}>
+                <div className={styles["form-row-full"]}>
                     <InputFake
                         name={"production"}
                         id={"Production"}
@@ -234,7 +234,7 @@ export default function MovieForm({ confirmChanges }) {
                     />
                 </div>
 
-                <div className={styles["form-row"]}>
+                <div className={styles["form-row-full"]}>
                     <InputFake
                         name={"distribution"}
                         id={"Distribution"}

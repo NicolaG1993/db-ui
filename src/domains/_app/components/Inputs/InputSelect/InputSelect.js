@@ -30,10 +30,10 @@ export default function InputSelect({
                 >
                     {options.map((opt) => (
                         <option
-                            key={options.value + " " + options.name}
+                            key={opt.value + " " + opt.name}
                             value={opt.value}
                         >
-                            {options.name}
+                            {opt.name}
                         </option>
                     ))}
                 </select>

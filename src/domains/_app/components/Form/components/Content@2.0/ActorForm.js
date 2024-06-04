@@ -117,7 +117,7 @@ export default function ActorForm({ confirmChanges }) {
                     />
                 </div>
 
-                <div className={styles["form-row"]}>
+                <div className={styles["form-row-full"]}>
                     <InputText
                         name="name"
                         id="Name"
@@ -145,7 +145,7 @@ export default function ActorForm({ confirmChanges }) {
                     />
                 </div>
 
-                <div className={styles["form-row"]}>
+                <div className={styles["form-row-fourth"]}>
                     <InputSelect
                         name={"genre"}
                         id={"Genre"}
@@ -172,7 +172,7 @@ export default function ActorForm({ confirmChanges }) {
                     />
                 </div>
 
-                <div className={styles["form-row"]}>
+                <div className={styles["form-row-half"]}>
                     <InputDate
                         name={"birthday"}
                         id={"Birthday"}
@@ -188,7 +188,7 @@ export default function ActorForm({ confirmChanges }) {
                     />
                 </div>
 
-                <div className={styles["form-row"]}>
+                <div className={styles["form-row-half"]}>
                     <InputRating
                         name={"rating"}
                         id={"Rating"}
@@ -220,7 +220,7 @@ export default function ActorForm({ confirmChanges }) {
                     />
                 </div>
 
-                <div className={styles["form-row"]}>
+                <div className={styles["form-row-full"]}>
                     <InputSocials
                         name={"socials"}
                         id={"Socials"}
@@ -251,7 +251,7 @@ export default function ActorForm({ confirmChanges }) {
                     <h5>• Relations</h5>
                 </div>
 
-                <div className={styles["form-row"]}>
+                <div className={styles["form-row-full"]}>
                     <InputFake
                         name={"tags"}
                         id={"Tags"}
@@ -262,7 +262,7 @@ export default function ActorForm({ confirmChanges }) {
                     />
                 </div>
 
-                <div className={styles["form-row"]}>
+                <div className={styles["form-row-full"]}>
                     <InputFake
                         name={"nationalities"}
                         id={"Nationalities"}

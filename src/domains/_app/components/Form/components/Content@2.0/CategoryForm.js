@@ -81,7 +81,7 @@ export default function CategoryForm({ confirmChanges }) {
                     />
                 </div>
 
-                <div className={styles["form-row"]}>
+                <div className={styles["form-row-full"]}>
                     <InputText
                         name="title"
                         id="Title"
@@ -109,7 +109,7 @@ export default function CategoryForm({ confirmChanges }) {
                     />
                 </div>
 
-                <div className={styles["form-row"]}>
+                <div className={styles["form-row-full"]}>
                     <InputText
                         name="type"
                         id="Type"

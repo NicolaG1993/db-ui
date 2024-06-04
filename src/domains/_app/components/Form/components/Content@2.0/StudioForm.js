@@ -82,7 +82,7 @@ export default function StudioForm({ confirmChanges }) {
                     />
                 </div>
 
-                <div className={styles["form-row"]}>
+                <div className={styles["form-row-full"]}>
                     <InputText
                         name="name"
                         id="Name"
@@ -110,7 +110,7 @@ export default function StudioForm({ confirmChanges }) {
                     />
                 </div>
 
-                <div className={styles["form-row"]}>
+                <div className={styles["form-row-full"]}>
                     <InputText
                         name="website"
                         id="Website"
@@ -138,7 +138,7 @@ export default function StudioForm({ confirmChanges }) {
                     />
                 </div>
 
-                <div className={styles["form-row"]}>
+                <div className={styles["form-row-full"]}>
                     <InputFake
                         name={"nationalities"}
                         id={"Nationalities"}

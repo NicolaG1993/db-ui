@@ -71,7 +71,10 @@
     background: var(--bg300);
     color: var(--bg900);
 }
-.input-sub-wrap-row > button:hover,
+.input-sub-wrap-row > button:hover {
+    background: var(--bg400);
+}
+
 .input-sub-wrap-row > button:focus {
     background: var(--bg400);
     /* outline: 1px solid var(--bg700); */

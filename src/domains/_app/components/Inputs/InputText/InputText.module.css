@@ -3,6 +3,7 @@
     height: 64px;
     border-radius: 12px;
     position: relative;
+    width: 100%;
 }
 .input-wrap > input {
     background: none;
