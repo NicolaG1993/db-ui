@@ -1,0 +1,105 @@
+/* SHARED STYLES BETWEEN INPUTS */
+/* Not unique per component and reusable */
+
+/* DYNAMIC ROOT STATES */
+.input-ready {
+    outline: 1px solid var(--bg600);
+    background: var(--bg300);
+}
+.input-ready:hover {
+    outline: 1px solid var(--bg700);
+}
+.input-error {
+    outline: 1px solid var(--dangerBg000);
+    /* color: var(--dangerBg100); */
+    background: var(--dangerBg300);
+}
+.input-ready > input {
+    color: var(--bg700);
+}
+.input-ready:hover > input {
+    color: var(--bg800);
+    outline: none;
+}
+
+.input-ready > input:focus {
+    color: var(--text);
+    outline: 1px solid var(--bg600);
+}
+.input-ready:has(input:focus) {
+    box-shadow: 0px 0px 5px 0.5px var(--text);
+}
+
+.input-ready > select:focus {
+    color: var(--text);
+    outline: 1px solid var(--bg600);
+}
+.input-ready:has(select:focus) {
+    box-shadow: 0px 0px 5px 0.5px var(--text);
+}
+
+/* .input-ready > input:focus {
+    color: var(--text);
+    outline: 1px solid var(--bg600);
+} */
+.input-ready > input:active,
+.input-ready > input:focus {
+    color: var(--text);
+    /* outline: 2.5px solid var(--bg800); */
+    border: none;
+}
+
+.input-ready > p {
+    color: var(--bg700);
+}
+.input-ready:hover > p {
+    color: var(--bg800);
+    outline: none;
+}
+
+.wrap-common-styles {
+    height: 54px;
+    border-radius: 12px;
+    position: relative;
+}
+
+/* LAYOUT */
+/* elements */
+.layout-button {
+    height: 100%;
+    padding: 15px 19px;
+    border-radius: 12px;
+    /* border-radius: 0 12px 12px 0; */
+    background: var(--bg400);
+    color: var(--bg900);
+    border: none;
+    font-weight: bold;
+    width: 64px;
+    outline: 1px solid var(--bg600);
+}
+.layout-button:hover {
+    background: var(--bg300);
+    outline: 1px solid var(--bg700);
+    border: none;
+}
+.layout-button:active,
+.layout-button:focus {
+    background: var(--bg400);
+    /* outline: 1px solid var(--bg700); */
+    /* outline: 2.5px solid var(--bg800); */
+    border: none;
+    box-shadow: 0px 0px 5px 0.5px var(--text);
+}
+
+/* extended */
+.extendend-input-layout {
+    display: grid;
+    grid-template-columns: 1fr 64px;
+}
+
+/* complex */
+.complex-input-layout {
+    display: grid;
+    /* grid-template-columns: 1fr 150px; */
+    grid-template-columns: 1fr auto;
+}

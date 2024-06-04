@@ -1,0 +1,28 @@
+/* DOM STYLING */
+.input-wrap {
+}
+.input-wrap > input {
+    background: none;
+    border: none;
+    height: 100%;
+    padding: 22px 3px 0px 12px;
+    font-size: 17px;
+    border-radius: 12px;
+    /* color: var(--bg800); */
+}
+.input-wrap > input::placeholder {
+    font-style: italic;
+    color: var(--bg500);
+}
+.input-wrap > input:focus-visible {
+    outline: none;
+}
+
+.input-wrap > label {
+    font-size: 13px;
+    font-weight: normal;
+    position: absolute;
+    top: 7px;
+    left: 12px;
+    color: var(--bg900);
+}

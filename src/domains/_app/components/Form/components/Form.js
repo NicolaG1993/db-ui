@@ -28,6 +28,7 @@ import { fetchDataForSideNav } from "@/src/domains/_app/actions/formFetchers";
 import submitForm from "@/src/domains/_app/components/Form/actions/submitForm";
 import allNationalities from "@/src/application/settings/allNationalities";
 import { getError } from "@/src/application/utils/error";
+import FormHeader from "./FormHeader@2.0/FormHeader";
 
 export default function Form({
     formLabel,
@@ -132,13 +133,6 @@ export default function Form({
                 propsData,
             })
                 .then(({ data }) => {
-                    console.log("submitForm success: ", {
-                        data,
-                        formState,
-                        newImage,
-                        form,
-                        propsData,
-                    });
                     if ((propsData || parentIsWaiting) && handleEditsInParent) {
                         handleEditsInParent(data);
                     }
@@ -151,7 +145,6 @@ export default function Form({
                         router.push(`/el/${formLabel}/${data.data.id}`);
                 })
                 .catch((error) => {
-                    console.log(error);
                     showBoundary({
                         code: error.response?.status,
                         message: getError(error),
@@ -163,17 +156,17 @@ export default function Form({
     return (
         <div className={styles.formWrapContainer}>
             <div className={styles.formWrap}>
-                {/* 🧠 Header dovrebbe essere uno :slot stile svelte 🧠 */}
-                <div>
-                    <h2>{formLabel}</h2>
-                </div>
+                {/* 🧠 Header potrebbe essere uno :slot stile svelte - vedere se é possibile in next 🧠 */}
+                <FormHeader formLabel={formLabel} propsData={propsData} />
 
-                {!isLoading && FormComponent && formLabel === form.key ? (
-                    <FormComponent confirmChanges={confirmChanges} />
-                ) : (
-                    // 🧠 Fare loader migliore
-                    <p>Loading form...</p>
-                )}
+                <div className={styles.formBox}>
+                    {!isLoading && FormComponent && formLabel === form.key ? (
+                        <FormComponent confirmChanges={confirmChanges} />
+                    ) : (
+                        // 🧠 Fare loader migliore
+                        <p>Loading form...</p>
+                    )}
+                </div>
             </div>
 
             <FormDrawer

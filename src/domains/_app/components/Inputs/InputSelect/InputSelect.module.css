@@ -1,0 +1,40 @@
+/* DOM STYLING */
+.input-wrap {
+    display: flex;
+    align-items: center;
+}
+.input-wrap > select {
+    background: none;
+    border: none;
+    height: 100%;
+    width: 100%;
+    padding: 22px 12px 0px 12px;
+    font-size: 17px;
+    border-radius: 12px;
+    margin-right: 12px;
+}
+.input-wrap > select::placeholder {
+    font-style: italic;
+    color: var(--bg500);
+}
+.input-wrap > select:focus-visible {
+    outline: none;
+}
+.input-wrap > label {
+    font-size: 13px;
+    font-weight: normal;
+    position: absolute;
+    top: 7px;
+    left: 12px;
+    color: var(--bg900);
+}
+
+/* CUSTOM */
+.input-wrap > select > option {
+    color: var(--text-secondary);
+    background: var(--bg200);
+}
+/* .input-wrap > select > option:hover {
+    color: var(--bg000);
+    background: var(--bg700);
+} */

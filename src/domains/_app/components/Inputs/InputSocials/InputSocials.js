@@ -1,34 +1,45 @@
-import { useState } from "react";
-import styles from "@/src/domains/_app/components/Inputs/InputSocials/InputSocials.module.css";
+import { useEffect, useState } from "react";
+import componentStyles from "@/src/domains/_app/components/Inputs/InputSocials/InputSocials.module.css";
+import inputsStyles from "@/src/domains/_app/components/Inputs/Inputs.module.css";
+let styles = { ...inputsStyles, ...componentStyles };
+import ErrorMessage from "../ErrorMessage/ErrorMessage";
+import SocialElement from "./SocialElement";
+import InputField from "./InputField";
 
-const socialOptions = [
-    { name: "-", value: null },
-    { name: "Instagram", value: "instagram" },
-    { name: "X", value: "twitter" },
-];
+const countLinks = (formState) => {
+    console.log("🔥 countLinks invoked! ", { formState });
+    let count = 0;
+
+    if (formState.instagram) {
+        count = count + 1;
+    }
+    if (formState.twitter) {
+        count = count + 1;
+    }
+    if (formState.moreUrls?.length) {
+        count = count + formState.moreUrls.length;
+    }
+    console.log("🔥 countLinks finsh! ", {
+        count,
+        formState,
+    });
+    return count;
+}; // fai util 🧠
 
 export default function InputSocials({
-    // topic,
-    // topicID,
-    // formState,
-    // setFormState,
-    // errors,
+    name,
+    id,
     formState,
-    setFormState,
+    onChange,
+    options,
+    error,
+    placeholder,
+    isMandatory,
 }) {
-    // console.log("InputSocials props: ", {
-    //     // topic,
-    //     // topicID,
-    //     // formState,
-    //     // setFormState,
-    //     // errors,
-    //     formState,
-    //     setFormState,
-    // });
-
-    const [newSocialInput, setNewSocialInput] = useState(false);
     const [newSocialUrl, setNewSocialUrl] = useState("");
     const [newSocialType, setNewSocialType] = useState();
+    const [newSocialInput, setNewSocialInput] = useState(false);
+    const [totSelected, setTotSelected] = useState(0); // 🧠 implementare useEffect x aggiornare? 🧠
 
     const toggleNewSocialInput = () => {
         setNewSocialInput((prev) => !prev);
@@ -42,15 +53,12 @@ export default function InputSocials({
     const handleSubmitNewSocial = (newSocialUrl, newSocialType) => {
         if (newSocialType) {
             // update actor field
-            setFormState(newSocialUrl, newSocialType);
+            onChange(newSocialUrl, newSocialType);
         } else {
             // add to array of other urls
             formState.moreUrls
-                ? setFormState(
-                      [...formState.moreUrls, newSocialUrl],
-                      "moreUrls"
-                  )
-                : setFormState([newSocialUrl], "moreUrls");
+                ? onChange([...formState.moreUrls, newSocialUrl], "moreUrls")
+                : onChange([newSocialUrl], "moreUrls");
         }
 
         setNewSocialInput(false);
@@ -58,104 +66,145 @@ export default function InputSocials({
         setNewSocialType();
     };
 
+    useEffect(() => {
+        console.log("🔥 formState changes! ", formState);
+        setTotSelected(countLinks(formState));
+    }, [formState]);
+
     const handleDeleteSocial = (type, i, urlsArray) => {
         if (urlsArray) {
             // here we delete from url array
             const newArray = urlsArray.filter((el, index) => index !== i);
-            setFormState(newArray, type);
+            onChange(newArray, type);
         } else {
             // here we delete the others
-            setFormState(null, type);
+            onChange(null, type);
+        }
+    };
+
+    const handleChanges = (val, label) => {
+        if (label === "url") {
+            setNewSocialUrl(val);
+        }
+
+        if (label === "type") {
+            setNewSocialType(val);
         }
     };
 
     return (
         <>
-            {newSocialInput ? (
-                <>
-                    <div>
-                        <div className={styles.inputWrap}>
-                            <input
-                                type="text"
-                                name="newSocialUrl"
-                                id="NewSocialUrl"
-                                maxLength="50"
-                                // onChange={(e) =>
-                                //     updateFormState(
-                                //         e.target.value,
-                                //         e.target.name
-                                //     )
-                                // }
-                                // onBlur={(e) => validateData(e)}
-                                // value={formState.newSocialUrl}
-                                value={newSocialUrl ? newSocialUrl : ""}
-                                onChange={(e) =>
-                                    setNewSocialUrl(e.target.value)
+            <div className={styles["complex-input-layout"]}>
+                <div
+                    className={`${
+                        error ? styles["input-error"] : styles["input-ready"]
+                    } ${styles["input-wrap"]} ${styles["wrap-common-styles"]}`}
+                >
+                    {newSocialInput ? (
+                        <InputField
+                            onChange={(val, label) => handleChanges(val, label)}
+                            filteredOptions={filteredOptions(
+                                options,
+                                formState
+                            )}
+                            newSocialType={newSocialType}
+                            newSocialUrl={newSocialUrl}
+                            styles={styles}
+                            placeholder={placeholder}
+                        />
+                    ) : (
+                        <p>{totSelected} selected</p>
+                    )}
+
+                    {/* 🧠 <p>{selected} selected</p> // bisogmna fare il conto di social links in actor form (IG, X, more_links) , si puo fare un component InputCover.js */}
+                    <label>
+                        {name.charAt(0).toUpperCase() + name.slice(1)}
+                        {!!isMandatory && "*"}
+                    </label>
+                </div>
+
+                {newSocialInput ? (
+                    <div className={styles["double-button-wrap"]}>
+                        <button
+                            type="button"
+                            onClick={() =>
+                                handleSubmitNewSocial(
+                                    newSocialUrl,
+                                    newSocialType
+                                )
+                            }
+                            className={`button-standard ${styles["layout-button"]}`}
+                        >
+                            Add
+                        </button>
+                        <button
+                            type="button"
+                            onClick={() => toggleNewSocialInput()}
+                            className={`button-standard ${styles["layout-button"]}`}
+                        >
+                            Exit
+                        </button>
+                    </div>
+                ) : (
+                    <button
+                        type="button"
+                        onClick={() => toggleNewSocialInput()}
+                        className={`button-standard ${styles["layout-button"]}`}
+                        // className={`button-standard ${styles.openInputBtn}`}
+                    >
+                        New
+                    </button>
+                )}
+            </div>
+
+            {error && <ErrorMessage error={error} />}
+
+            {totSelected > 0 && (
+                <div className={styles["input-sub-wrap"]}>
+                    {formState.twitter && (
+                        <div className={styles["input-sub-wrap-row"]}>
+                            <SocialElement
+                                name={"X"}
+                                deleteElement={() =>
+                                    handleDeleteSocial("twitter")
                                 }
                             />
-                            <select
-                                name="newSocialType"
-                                id="NewSocialType"
-                                // onChange={(e) =>
-                                //     updateFormState(
-                                //         e.target.value,
-                                //         e.target.name
-                                //     )
-                                // }
-                                value={newSocialType}
-                                onChange={(e) =>
-                                    setNewSocialType(e.target.value)
-                                }
-                            >
-                                {filteredOptions(socialOptions, formState).map(
-                                    (el) => (
-                                        <option
-                                            value={el.value}
-                                            key={"option: " + el.value}
-                                        >
-                                            {el.name}
-                                        </option>
-                                    )
-                                )}
-                            </select>
                         </div>
+                    )}
 
-                        <div className={styles.buttonsWrap}>
-                            <button
-                                type="button"
-                                onClick={() => toggleNewSocialInput()}
-                                className="button-standard"
-                            >
-                                Cancel
-                            </button>
-                            <button
-                                type="button"
-                                onClick={() =>
-                                    handleSubmitNewSocial(
-                                        newSocialUrl,
-                                        newSocialType
-                                    )
+                    {formState.instagram && (
+                        <div className={styles["input-sub-wrap-row"]}>
+                            <SocialElement
+                                name={"Instagram"}
+                                deleteElement={() =>
+                                    handleDeleteSocial("instagram")
                                 }
-                                className="button-standard"
-                            >
-                                Add social
-                            </button>
+                            />
                         </div>
-                    </div>
-                    {/* {errors?.social && (
-                        <div className={"form-error"}>{errors.social}</div>
-                    )} */}
-                </>
-            ) : (
-                <button
-                    className={`button-standard ${styles.openInputBtn}`}
-                    type="button"
-                    onClick={() => toggleNewSocialInput()}
-                >
-                    +
-                </button>
+                    )}
+                    {formState.moreUrls &&
+                        formState.moreUrls.map((url, i) => (
+                            <div
+                                className={styles["input-sub-wrap-row"]}
+                                key={url + " " + i}
+                            >
+                                <SocialElement
+                                    name={url}
+                                    deleteElement={() =>
+                                        handleDeleteSocial(
+                                            "moreUrls",
+                                            i,
+                                            formState.moreUrls
+                                        )
+                                    }
+                                    key={url + i}
+                                />
+                            </div>
+                        ))}
+                </div>
             )}
 
+            {/* 
             <div className={styles.urlsWrap}>
                 {formState.twitter && (
                     <SocialElement
@@ -183,14 +232,7 @@ export default function InputSocials({
                             key={url + i}
                         />
                     ))}
-            </div>
+            </div> */}
         </>
     );
 }
-
-const SocialElement = ({ name, deleteElement }) => (
-    <div className={styles.socialElement}>
-        <p>{name}</p>
-        <p onClick={() => deleteElement()}>X</p>
-    </div>
-);

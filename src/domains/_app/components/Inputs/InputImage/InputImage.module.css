@@ -1,0 +1,88 @@
+.form-new-image {
+    width: 250px;
+    height: 200px;
+    position: relative;
+}
+
+.form-delete-image {
+    background-color: var(--text);
+    color: black;
+    position: absolute;
+    right: 8px;
+    top: 8px;
+    z-index: 5;
+    cursor: pointer;
+    width: 26px;
+    height: 26px;
+    border-radius: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+}
+
+/* IMAGE INPUT */
+.user-image-input {
+    border-radius: 12px;
+    width: 250px;
+    height: 200px;
+    position: relative;
+    outline: 1.5px dashed var(--bg600);
+    color: var(--bg700);
+    background-color: var(--bg300);
+    /* cursor: pointer; */
+}
+.user-image-input > input {
+    width: 0.1px;
+    height: 0.1px;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    z-index: -1;
+    border: none;
+}
+.user-image-input > label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 1.25em;
+    font-weight: bold;
+    /* color: var(--bg700);
+    background-color: var(--bg300); */
+    /* display: inline-block; */
+    transition: 0.15s ease-out;
+    height: 100%;
+    width: 100%;
+    border-radius: 12px;
+}
+.user-image-input:hover {
+    outline: 1.5px dashed var(--bg700);
+    color: var(--bg800);
+    /* background-color: var(--bg200); */
+}
+
+/* TESTING 👇 */
+
+.user-image-input > input:focus + label {
+    /* background: var(--bg400); */
+    border: none;
+    outline: none;
+    box-shadow: 0px 0px 5px 0.5px var(--text);
+}
+/* TESTING ☝️ */
+
+.user-image-input > label:hover {
+    /* color: var(--bg800); */
+    /* background-color: var(--bg200); */
+}
+.user-image-input > label > span:first-child {
+    font-size: 13px;
+    font-weight: normal;
+    position: absolute;
+    top: 7px;
+    left: 12px;
+    color: var(--bg900);
+}
+.user-image-input > label > span:nth-child(2) {
+}

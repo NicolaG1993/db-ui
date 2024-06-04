@@ -1,4 +1,3 @@
-import Image from "next/image";
 import styles from "@/src/domains/_app/components/Form/components/Form.module.css";
 import InputSocials from "@/src/domains/_app/components/Inputs/InputSocials/InputSocials";
 import {
@@ -10,6 +9,7 @@ import {
     validateForm,
     updateFormState,
     openSideNav,
+    selectFormIsLoadingResponse,
 } from "@/src/application/redux/slices/formSlice";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import {
@@ -17,6 +17,12 @@ import {
     revokeObjectURL,
 } from "@/src/domains/_app/actions/useLocalImages";
 import { useState } from "react";
+import InputImage from "@/src/domains/_app/components/Inputs/InputImage/InputImage";
+import InputText from "@/src/domains/_app/components/Inputs/InputText/InputText";
+import InputFake from "@/src/domains/_app/components/Inputs/InputFake/InputFake";
+import InputRating from "@/src/domains/_app/components/Inputs/InputRating/InputRating";
+import InputDate from "@/src/domains/_app/components/Inputs/InputDate/InputDate";
+import InputSelect from "@/src/domains/_app/components/Inputs/InputSelect/InputSelect";
 
 export default function ActorForm({ confirmChanges }) {
     let formState = useSelector(selectFormState, shallowEqual);
@@ -24,6 +30,10 @@ export default function ActorForm({ confirmChanges }) {
     let form = useSelector(selectFormStoreSettings, shallowEqual);
     let errors = useSelector(selectFormStoreErrors, shallowEqual);
     let isLoading = useSelector(selectFormIsLoading, shallowEqual);
+    const isLoadingResponse = useSelector(
+        selectFormIsLoadingResponse,
+        shallowEqual
+    );
 
     const dispatch = useDispatch();
 
@@ -90,246 +100,190 @@ export default function ActorForm({ confirmChanges }) {
             }
             className={styles.form}
         >
-            <div className={styles["form-col-left"]}>
-                <label>
-                    <h4>Pic</h4>
-                </label>
-            </div>
-            <div
-                className={`${styles["form-col-right"]} ${styles["admin-new-image"]}`}
-            >
-                <div>
-                    {formState.pic ? (
-                        <div className={styles["form-new-image"]}>
-                            <Image
-                                src={formState.pic}
-                                alt={`Picture`}
-                                fill
-                                style={{ objectFit: "cover" }}
-                            />
-                            <span
-                                className={styles["form-delete-image"]}
-                                onClick={() =>
-                                    handleRemoveImage({
-                                        imgFile: newImage,
-                                    })
-                                }
-                            >
-                                X
-                            </span>
-                        </div>
-                    ) : (
-                        <div className={styles["user-image-input"]}>
-                            <input
-                                id="FileID"
-                                type="file"
-                                name="filename"
-                                accept="image/png, image/jpeg, image/webp"
-                                onChange={(e) => handleNewImage(e)}
-                            />
-                        </div>
-                    )}
+            <div className={styles.body}>
+                <div className={styles["form-subheading"]}>
+                    <h5>• Info</h5>
                 </div>
-            </div>
 
-            <div className={styles["form-col-left"]}>
-                <label>
-                    <h4>Name</h4>
-                </label>
-            </div>
-
-            <div className={styles["form-col-right"]}>
-                <input
-                    type="text"
-                    name="name"
-                    id="Name"
-                    maxLength="50"
-                    onChange={(e) =>
-                        dispatch(
-                            updateFormState({
-                                val: e.target.value,
-                                topic: e.target.name,
-                                log: "name",
+                <div className={styles["form-row"]}>
+                    <InputImage
+                        file={formState.pic}
+                        onAddFile={(e) => handleNewImage(e)}
+                        onDeleteFile={() =>
+                            handleRemoveImage({
+                                imgFile: newImage,
                             })
-                        )
-                    }
-                    onBlur={(e) =>
-                        dispatch(
-                            validateForm({
-                                name: e.target.name,
-                                value: e.target.value,
-                                id: e.target.id,
-                            })
-                        )
-                    }
-                    value={formState.name}
-                />
-                {errors.name && (
-                    <div className={"form-error"}>{errors.name}</div>
-                )}
-            </div>
-
-            <div className={styles["form-col-left"]}>
-                <label>
-                    <h4>Genre</h4>
-                </label>
-            </div>
-
-            <div className={styles["form-col-right"]}>
-                <select
-                    name="genre"
-                    id="Genre"
-                    value={formState.genre}
-                    onChange={(e) =>
-                        dispatch(
-                            updateFormState({
-                                val: e.target.value,
-                                topic: e.target.name,
-                                log: "genre",
-                            })
-                        )
-                    }
-                >
-                    <option value="female">F</option>
-                    <option value="male">M</option>
-                    <option value="trans">T</option>
-                </select>
-            </div>
-
-            <div className={styles["form-col-left"]}>
-                <label>
-                    <h4>Birthday</h4>
-                </label>
-            </div>
-
-            <div className={styles["form-col-right"]}>
-                <input
-                    type="date"
-                    name="birthday"
-                    id="Birthday"
-                    onChange={(e) =>
-                        dispatch(
-                            updateFormState({
-                                val: e.target.value,
-                                topic: e.target.name,
-                                log: "date",
-                            })
-                        )
-                    }
-                    value={formState.birthday}
-                />
-            </div>
-
-            <div className={styles["form-col-left"]}>
-                <label>
-                    <h4>Nationality</h4>
-                </label>
-            </div>
-
-            <div className={styles["form-col-right"]}>
-                <div className={styles["form-selector-interaction-box"]}>
-                    <span>{formState.nationalities.length} selected</span>
-                    <div
-                        onClick={() => {
-                            dispatch(openSideNav("nationalities"));
-                        }}
-                    >
-                        Select
-                    </div>
+                        }
+                    />
                 </div>
-            </div>
 
-            <div className={styles["form-col-left"]}>
-                <label>
-                    <h4>Rating</h4>
-                </label>
-            </div>
+                <div className={styles["form-row-full"]}>
+                    <InputText
+                        name="name"
+                        id="Name"
+                        isMandatory={true}
+                        value={formState.name}
+                        onChange={(e) =>
+                            dispatch(
+                                updateFormState({
+                                    val: e.target.value,
+                                    topic: e.target.name,
+                                })
+                            )
+                        }
+                        onBlur={(e) =>
+                            dispatch(
+                                validateForm({
+                                    name: e.target.name,
+                                    value: e.target.value,
+                                    id: e.target.id,
+                                })
+                            )
+                        }
+                        placeholder="Type the name here..."
+                        error={errors.name}
+                    />
+                </div>
 
-            <div className={styles["form-col-right"]}>
-                <input
-                    type="number"
-                    name="rating"
-                    id="Rating"
-                    step="0.01"
-                    max="5"
-                    onChange={(e) =>
-                        dispatch(
-                            updateFormState({
-                                val: Number(
-                                    parseFloat(e.target.value).toFixed(2)
-                                ),
-                                topic: e.target.name,
-                                log: "number",
-                            })
-                        )
-                    }
-                    onBlur={(e) =>
-                        dispatch(
-                            validateForm({
-                                name: e.target.name,
-                                value: e.target.value,
-                                id: e.target.id,
-                            })
-                        )
-                    }
-                    value={formState.rating}
-                    placeholder="Type your rating (max 5.00)"
-                />
-                {errors.rating && (
-                    <div className={"form-error"}>{errors.rating}</div>
-                )}
-            </div>
+                <div className={styles["form-row-fourth"]}>
+                    <InputSelect
+                        name={"genre"}
+                        id={"Genre"}
+                        options={[
+                            { value: "female", name: "F" },
+                            { value: "male", name: "M" },
+                            { value: "trans", name: "T" },
+                        ]}
+                        value={formState.genre}
+                        onChange={(e) =>
+                            dispatch(
+                                updateFormState({
+                                    val: e.target.value,
+                                    topic: e.target.name,
+                                    log: "genre",
+                                })
+                            )
+                        }
+                        multipleSelection={false}
+                        includeParents={false}
+                        placeholder={""}
+                        isMandatory={true}
+                        error={errors.genre}
+                    />
+                </div>
 
-            <div className={styles["form-col-left"]}>
-                <label>
-                    <h4>Tags</h4>
-                </label>
-            </div>
+                <div className={styles["form-row-half"]}>
+                    <InputDate
+                        name={"birthday"}
+                        id={"Birthday"}
+                        onChange={(e) =>
+                            dispatch(
+                                updateFormState({
+                                    val: e.target.value,
+                                    topic: e.target.name,
+                                })
+                            )
+                        }
+                        value={formState.birthday}
+                    />
+                </div>
 
-            <div className={styles["form-col-right"]}>
-                <div className={styles["form-selector-interaction-box"]}>
-                    <span>{formState.tags?.length} selected</span>
-                    <div
+                <div className={styles["form-row-half"]}>
+                    <InputRating
+                        name={"rating"}
+                        id={"Rating"}
+                        step="0.01"
+                        max="5"
+                        onChange={(e) =>
+                            dispatch(
+                                updateFormState({
+                                    val: Number(
+                                        parseFloat(e.target.value).toFixed(2)
+                                    ),
+                                    topic: e.target.name,
+                                })
+                            )
+                        }
+                        onBlur={(e) =>
+                            dispatch(
+                                validateForm({
+                                    name: e.target.name,
+                                    value: e.target.value,
+                                    id: e.target.id,
+                                })
+                            )
+                        }
+                        value={formState.rating}
+                        placeholder="Type your rating (max 5.00)"
+                        isMandatory={true}
+                        error={errors.rating}
+                    />
+                </div>
+
+                <div className={styles["form-row-full"]}>
+                    <InputSocials
+                        name={"socials"}
+                        id={"Socials"}
+                        options={[
+                            { name: "-", value: null },
+                            { name: "Instagram", value: "instagram" },
+                            { name: "X", value: "twitter" },
+                        ]}
+                        // selected={} // TODO: passare valore di selezionato?
+                        formState={formState} // 🧠 sostituire con values={} - non passare tutto il form se vogliamo usare il component x library
+                        // values={{ formState }} // 🧠🧠🧠🧠
+                        onChange={(val, topic) =>
+                            dispatch(
+                                updateFormState({
+                                    val,
+                                    topic,
+                                })
+                            )
+                        }
+                        error={errors.socials}
+                        placeholder={"Insert social link here..."}
+                        // 🧠 anche per error dobbiamo creare un oggetto a parte, oppure avere errors.socials
+                        // 🧠 FIX: NON ABBIAMO errors.socials 🧠
+                    />
+                </div>
+
+                <div className={styles["form-subheading"]}>
+                    <h5>• Relations</h5>
+                </div>
+
+                <div className={styles["form-row-full"]}>
+                    <InputFake
+                        name={"tags"}
+                        id={"Tags"}
+                        selected={formState.tags?.length || 0}
                         onClick={() => {
                             dispatch(openSideNav("tags"));
                         }}
-                    >
-                        Select
-                    </div>
+                    />
+                </div>
+
+                <div className={styles["form-row-full"]}>
+                    <InputFake
+                        name={"nationalities"}
+                        id={"Nationalities"}
+                        selected={formState.nationalities?.length || 0}
+                        onClick={() => {
+                            dispatch(openSideNav("nationalities"));
+                        }}
+                    />
                 </div>
             </div>
 
-            <div className={styles["form-col-left"]}>
-                <label>
-                    <h4>Socials</h4>
-                </label>
-            </div>
-
-            <div className={styles["form-col-right"]}>
-                <InputSocials
-                    formState={formState}
-                    setFormState={(val, topic) =>
-                        dispatch(
-                            updateFormState({
-                                val,
-                                topic,
-                            })
-                        )
-                    }
-                    // setFormState={updateFormState} // in questo caso passiamo fn perché diventerá esternal component - ma dovremmo gestirla prima lo stesso -.-
-                />
-            </div>
-
-            <div
-                className={`${styles["form-col-left"]} ${styles["buttons-box"]}`}
-            >
-                <button
-                    type="submit"
-                    disabled={isLoading}
-                    className="button-standard"
-                >
-                    Confirm
-                </button>
+            <div className={styles.footer}>
+                <div className={styles["buttons-box"]}>
+                    <button
+                        type="submit"
+                        disabled={isLoading} // isLoadingResponse ?
+                        className="button-standard"
+                    >
+                        Confirm
+                    </button>
+                </div>
             </div>
         </form>
     );
