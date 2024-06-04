@@ -253,7 +253,7 @@ export default function MovieForm({ confirmChanges }) {
                 <div className={styles["buttons-box"]}>
                     <button
                         type="submit"
-                        disabled={isLoading} //  🧠 isLoadingResponse meglio?
+                        disabled={isLoadingResponse} //  🧠 isLoading o isLoadingResponse meglio?
                         className="button-standard"
                     >
                         Confirm
