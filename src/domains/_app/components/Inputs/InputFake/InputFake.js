@@ -17,7 +17,7 @@ export default function InputFake({ name, id, selected, onClick, error }) {
             <button
                 type="button"
                 onClick={() => onClick()}
-                className="button-standard"
+                className={`button-standard ${styles["layout-button"]}`}
             >
                 Edit
             </button>

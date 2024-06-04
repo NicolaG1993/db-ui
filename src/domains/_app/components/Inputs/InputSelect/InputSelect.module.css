@@ -16,9 +16,9 @@
     font-size: 17px;
     border-radius: 12px;
     margin: 0;
-    /* line-height: 100%;
+    line-height: 100%;
     display: table-cell;
-    vertical-align: middle; */
+    vertical-align: middle;
 }
 .input-wrap > label {
     font-size: 13px;

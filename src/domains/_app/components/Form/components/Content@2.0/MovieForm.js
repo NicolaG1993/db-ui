@@ -10,6 +10,7 @@ import {
     selectFormIsLoadingResponse,
     updateFormState,
     openSideNav,
+    selectFormIsLoading,
 } from "@/src/application/redux/slices/formSlice";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import {
@@ -27,6 +28,7 @@ export default function MovieForm({ confirmChanges }) {
     const propsData = useSelector(selectFormPropsData, shallowEqual);
     const form = useSelector(selectFormStoreSettings, shallowEqual);
     const errors = useSelector(selectFormStoreErrors, shallowEqual);
+    let isLoading = useSelector(selectFormIsLoading, shallowEqual);
     const isLoadingResponse = useSelector(
         selectFormIsLoadingResponse,
         shallowEqual
@@ -75,6 +77,10 @@ export default function MovieForm({ confirmChanges }) {
             className={styles.form}
         >
             <div className={styles.body}>
+                <div className={styles["form-subheading"]}>
+                    <h5>• Info</h5>
+                </div>
+
                 <div className={styles["form-row"]}>
                     <InputImage
                         file={formState.pic}
@@ -180,6 +186,10 @@ export default function MovieForm({ confirmChanges }) {
                     />
                 </div>
 
+                <div className={styles["form-subheading"]}>
+                    <h5>• Relations</h5>
+                </div>
+
                 <div className={styles["form-row"]}>
                     <InputFake
                         name={"cast"}
@@ -236,11 +246,12 @@ export default function MovieForm({ confirmChanges }) {
                 </div>
             </div>
 
+            {/* Si puo fare component di footer, é sempre uguale */}
             <div className={styles.footer}>
                 <div className={styles["buttons-box"]}>
                     <button
                         type="submit"
-                        disabled={isLoadingResponse}
+                        disabled={isLoading} //  🧠 isLoadingResponse meglio?
                         className="button-standard"
                     >
                         Confirm

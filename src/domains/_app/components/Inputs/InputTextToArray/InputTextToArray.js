@@ -19,6 +19,7 @@ export default function InputTextToArray({
     // propData,
     error,
     placeholder,
+    isMandatory,
 }) {
     const [newInput, setNewInput] = useState();
     // const [data, setData] = useState(formState[name]);
@@ -57,42 +58,23 @@ export default function InputTextToArray({
                         onChange={(e) => setNewInput(e.target.value)}
                         // className={errors.title && "input-error"}
                     ></input>
-                    <label>Url</label>
+                    <label>
+                        {name.charAt(0).toUpperCase() + name.slice(1)}
+                        {!!isMandatory && "*"}
+                    </label>
                 </div>
                 <button
                     type="button"
                     onClick={() =>
                         handleAddInputToArray(newInput, formState, name)
                     }
-                    className="button-standard"
+                    className={`button-standard ${styles["layout-button"]}`}
                 >
                     Add
                 </button>
             </div>
 
             {error && <ErrorMessage error={error} />}
-
-            {/* 
-            <div className={styles["form-col-right"]}>
-                <div className={styles["input-and-btn-wrap"]}>
-                    <input
-                        type="text"
-                        name={name}
-                        id={`${id}New`}
-                        value={newInput ? newInput : ""}
-                        onChange={(e) => setNewInput(e.target.value)}
-                    />
-                    <button
-                        type="button"
-                        onClick={() =>
-                            handleAddInputToArray(newInput, formState, name)
-                        }
-                        className="button-standard"
-                    >
-                        Add
-                    </button>
-                </div>
-            </div> */}
 
             {formState[name] && !!formState[name]?.length && (
                 <div className={styles["input-sub-wrap"]}>

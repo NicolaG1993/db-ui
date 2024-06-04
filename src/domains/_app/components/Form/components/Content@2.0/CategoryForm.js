@@ -142,7 +142,7 @@ export default function CategoryForm({ confirmChanges }) {
                 <div className={styles["buttons-box"]}>
                     <button
                         type="submit"
-                        disabled={isLoading} // isLoadingResponse ?? quale usare?? 🧠
+                        disabled={isLoading} // 🧠 isLoadingResponse ?? quale usare?? 🧠
                         className="button-standard"
                     >
                         Confirm

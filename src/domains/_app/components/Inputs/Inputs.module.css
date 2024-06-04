@@ -50,11 +50,8 @@
 }
 
 /* LAYOUT */
-.extendend-input-layout {
-    display: grid;
-    grid-template-columns: 1fr 64px;
-}
-.extendend-input-layout > button {
+/* elements */
+.layout-button {
     height: 100%;
     padding: 15px 19px;
     border-radius: 12px;
@@ -66,16 +63,29 @@
     width: 64px;
     outline: 1px solid var(--bg600);
 }
-.extendend-input-layout > button:hover {
+.layout-button:hover {
     background: var(--bg300);
     outline: 1px solid var(--bg700);
     border: none;
 }
-.extendend-input-layout > button:active,
-.extendend-input-layout > button:focus {
+.layout-button:active,
+.layout-button:focus {
     background: var(--bg400);
     /* outline: 1px solid var(--bg700); */
-    outline: 2.5px solid var(--bg800);
+    /* outline: 2.5px solid var(--bg800); */
     border: none;
     box-shadow: 0px 0px 5px 0.5px var(--text);
+}
+
+/* extended */
+.extendend-input-layout {
+    display: grid;
+    grid-template-columns: 1fr 64px;
+}
+
+/* complex */
+.complex-input-layout {
+    display: grid;
+    /* grid-template-columns: 1fr 150px; */
+    grid-template-columns: 1fr auto;
 }

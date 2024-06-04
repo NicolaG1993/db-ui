@@ -1,6 +1,4 @@
-import Image from "next/image";
 import styles from "@/src/domains/_app/components/Form/components/Form.module.css";
-// import { useEffect, useState } from "react";
 import {
     selectFormPropsData,
     selectFormState,
@@ -10,9 +8,13 @@ import {
     validateForm,
     updateFormState,
     openSideNav,
+    selectFormIsLoadingResponse,
 } from "@/src/application/redux/slices/formSlice";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
+import InputImage from "@/src/domains/_app/components/Inputs/InputImage/InputImage";
+import InputText from "@/src/domains/_app/components/Inputs/InputText/InputText";
+import InputFake from "@/src/domains/_app/components/Inputs/InputFake/InputFake";
 
 export default function StudioForm({ confirmChanges }) {
     const formState = useSelector(selectFormState, shallowEqual);
@@ -20,6 +22,10 @@ export default function StudioForm({ confirmChanges }) {
     const form = useSelector(selectFormStoreSettings, shallowEqual);
     const errors = useSelector(selectFormStoreErrors, shallowEqual);
     const isLoading = useSelector(selectFormIsLoading, shallowEqual);
+    const isLoadingResponse = useSelector(
+        selectFormIsLoadingResponse,
+        shallowEqual
+    );
 
     const dispatch = useDispatch();
 
@@ -63,151 +69,97 @@ export default function StudioForm({ confirmChanges }) {
             }
             className={styles.form}
         >
-            <div className={styles["form-col-left"]}>
-                <label>
-                    <h4>Pic</h4>
-                </label>
-            </div>
-
-            <div
-                className={`${styles["form-col-right"]} ${styles["admin-new-image"]}`}
-            >
-                <div>
-                    {formState.pic ? (
-                        <div className={styles["form-new-image"]}>
-                            <Image
-                                src={formState.pic}
-                                alt={`Picture`}
-                                fill
-                                style={{ objectFit: "cover" }}
-                            />
-                            <span
-                                className={styles["form-delete-image"]}
-                                onClick={() =>
-                                    handleRemoveImage({
-                                        imgFile: newImage,
-                                    })
-                                }
-                            >
-                                X
-                            </span>
-                        </div>
-                    ) : (
-                        <div className={styles["form-col-right"]}>
-                            <input
-                                id="FileID"
-                                type="file"
-                                name="filename"
-                                accept="image/png, image/jpeg, image/webp"
-                                onChange={(e) => handleNewImage(e)}
-                            />
-                        </div>
-                    )}
+            <div className={styles.body}>
+                <div className={styles["form-row"]}>
+                    <InputImage
+                        file={formState.pic}
+                        onAddFile={(e) => handleNewImage(e)}
+                        onDeleteFile={() =>
+                            handleRemoveImage({
+                                imgFile: newImage,
+                            })
+                        }
+                    />
                 </div>
-            </div>
 
-            <div className={styles["form-col-left"]}>
-                <label>
-                    <h4>Name</h4>
-                </label>
-            </div>
+                <div className={styles["form-row"]}>
+                    <InputText
+                        name="name"
+                        id="Name"
+                        isMandatory={true}
+                        value={formState.name}
+                        onChange={(e) =>
+                            dispatch(
+                                updateFormState({
+                                    val: e.target.value,
+                                    topic: e.target.name,
+                                })
+                            )
+                        }
+                        onBlur={(e) =>
+                            dispatch(
+                                validateForm({
+                                    name: e.target.name,
+                                    value: e.target.value,
+                                    id: e.target.id,
+                                })
+                            )
+                        }
+                        placeholder="Type the name here..."
+                        error={errors.name}
+                    />
+                </div>
 
-            <div className={styles["form-col-right"]}>
-                <input
-                    type="text"
-                    name="name"
-                    id="Name"
-                    maxLength="50"
-                    onChange={(e) =>
-                        dispatch(
-                            updateFormState({
-                                val: e.target.value,
-                                topic: e.target.name,
-                            })
-                        )
-                    }
-                    onBlur={(e) =>
-                        dispatch(
-                            validateForm({
-                                name: e.target.name,
-                                value: e.target.value,
-                                id: e.target.id,
-                            })
-                        )
-                    }
-                    value={formState.name}
-                    className={errors.name && "input-error"}
-                />
-                {errors.name && (
-                    <div className={"form-error"}>{errors.name}</div>
-                )}
-            </div>
+                <div className={styles["form-row"]}>
+                    <InputText
+                        name="website"
+                        id="Website"
+                        isMandatory={false}
+                        value={formState.website}
+                        onChange={(e) =>
+                            dispatch(
+                                updateFormState({
+                                    val: e.target.value,
+                                    topic: e.target.name,
+                                })
+                            )
+                        }
+                        onBlur={(e) =>
+                            dispatch(
+                                validateForm({
+                                    name: e.target.name,
+                                    value: e.target.value,
+                                    id: e.target.id,
+                                })
+                            )
+                        }
+                        placeholder="Type the website here..."
+                        error={errors.website}
+                    />
+                </div>
 
-            <div className={styles["form-col-left"]}>
-                <label>
-                    <h4>Website</h4>
-                </label>
-            </div>
-
-            <div className={styles["form-col-right"]}>
-                <input
-                    type="text"
-                    name="website"
-                    id="Website"
-                    maxLength="50"
-                    onChange={(e) =>
-                        dispatch(
-                            updateFormState({
-                                val: e.target.value,
-                                topic: e.target.name,
-                            })
-                        )
-                    }
-                    onBlur={(e) =>
-                        dispatch(
-                            validateForm({
-                                name: e.target.name,
-                                value: e.target.value,
-                                id: e.target.id,
-                            })
-                        )
-                    }
-                    value={formState.website}
-                />
-                {errors.website && (
-                    <div className={"form-error"}>{errors.website}</div>
-                )}
-            </div>
-
-            <div className={styles["form-col-left"]}>
-                <label>
-                    <h4>Nationality</h4>
-                </label>
-            </div>
-
-            <div className={styles["form-col-right"]}>
-                <div className={styles["form-selector-interaction-box"]}>
-                    <span>{formState.nationalities.length} selected</span>
-                    <div
+                <div className={styles["form-row"]}>
+                    <InputFake
+                        name={"nationalities"}
+                        id={"Nationalities"}
+                        selected={formState.nationalities?.length || 0}
                         onClick={() => {
                             dispatch(openSideNav("nationalities"));
                         }}
-                    >
-                        Select
-                    </div>
+                    />
                 </div>
             </div>
 
-            <div
-                className={`${styles["form-col-left"]} ${styles["buttons-box"]}`}
-            >
-                <button
-                    type="submit"
-                    disabled={isLoading}
-                    className="button-standard"
-                >
-                    Confirm
-                </button>
+            <div className={styles.footer}>
+                <div className={styles["buttons-box"]}>
+                    <button
+                        type="submit"
+                        disabled={isLoading} // 🧠 isLoadingResponse ?? quale usare?? 🧠
+                        className="button-standard"
+                    >
+                        Confirm
+                    </button>
+                </div>
             </div>
         </form>
     );

@@ -109,11 +109,15 @@
     background: var(--bg900);
     color: var(--bg200);
 }
-.buttons-box button:hover {
+.buttons-box button:hover,
+.buttons-box button:focus {
     /* background: var(--text-secondary);
     color: var(--bg000); */
     color: var(--text-secondary);
     background: var(--bg400);
+    box-shadow: 0px 0px 5px 0.5px var(--text);
+    border: none;
+    outline: none;
 }
 
 /* SIDE WRAP */
@@ -375,4 +379,17 @@
     padding: 18px 3px;
     grid-column-start: 1;
     grid-column-end: 3;
+}
+.form-subheading {
+    width: 100%;
+    padding: 1rem;
+    border-bottom: 1px solid var(--text);
+
+    margin: 1.5rem 0 1rem 0;
+}
+.form-subheading > h5 {
+    margin: 0;
+}
+.form > .body > .form-subheading:nth-child(1) {
+    margin-top: 0;
 }

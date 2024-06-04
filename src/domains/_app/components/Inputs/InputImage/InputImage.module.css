@@ -61,6 +61,17 @@
     color: var(--bg800);
     /* background-color: var(--bg200); */
 }
+
+/* TESTING 👇 */
+
+.user-image-input > input:focus + label {
+    /* background: var(--bg400); */
+    border: none;
+    outline: none;
+    box-shadow: 0px 0px 5px 0.5px var(--text);
+}
+/* TESTING ☝️ */
+
 .user-image-input > label:hover {
     /* color: var(--bg800); */
     /* background-color: var(--bg200); */
