@@ -225,7 +225,7 @@
     flex-direction: column; */
     display: grid;
     grid-template-columns: 1fr 1fr;
-    grid-template-rows: repeat(7, 1fr) 0.5fr;
+    grid-template-rows: repeat(7, 1fr) 30px;
 }
 #FormSideHints > .nav {
     /* height: 100%; */
@@ -358,7 +358,7 @@
 }
 
 .sideHintsFooter {
-    padding: 0.5rem 0.75rem;
+    /* padding: 0.5rem; */
     border-radius: 0 0 25px 25px;
     border: 1px solid var(--bg800);
     background: var(--bg200);
@@ -366,6 +366,7 @@
     height: 100%;
     display: flex;
     flex-direction: column;
+    padding: 0;
     /* justify-self: flex-end; */
     grid-row-start: 8;
     grid-row-end: 9;
@@ -374,6 +375,8 @@
 }
 .sideHintsFooter > button {
     font-weight: bold;
+    height: 100%;
+    border-radius: 0 0 25px 25px;
 }
 
 /* 🧠🧠🧠 MAKE GRID INSTEAD OF FLEX  🧠🧠🧠 */

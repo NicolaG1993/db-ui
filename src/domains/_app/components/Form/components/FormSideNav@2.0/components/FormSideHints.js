@@ -441,7 +441,7 @@ export default function FormSideHints() {
                         title="Skip all Tags"
                         type="button"
                         onClick={skipAllHints}
-                        className="button-standard"
+                        className="button-alternative"
                         disabled={true}
                     >
                         Skip
@@ -451,7 +451,7 @@ export default function FormSideHints() {
                         title="Confirm Tags"
                         type="button"
                         onClick={closeHintsDrawer}
-                        className="button-standard"
+                        className="button-alternative"
                     >
                         Continue
                         {/* Confirm Tags */}

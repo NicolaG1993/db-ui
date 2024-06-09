@@ -7,6 +7,13 @@ const initialState = {
         ? JSON.parse(Cookies.get("tournamentData"))
         : [],
     isLoaded: false,
+    tournamentTable: {
+        setup: {
+            totMatches: undefined,
+            contendersPerMatch: undefined,
+        }, // honestly after setting tournamentTable becomes useless - we could not store this, if not as pure infos
+        matches: undefined,
+    }, // probably need cookies only here
 };
 
 const tournamentSlice = createSlice({
@@ -29,6 +36,42 @@ const tournamentSlice = createSlice({
             Cookies.remove("tournamentData");
             return initialState;
         },
+        setupTournament: (state, action) => {
+            // group contenders for first phase (create matches)
+            // calculate total phases
+            // store groups and use the to render the table
+            /* {
+                sedicesimi: [[1, 2], [3, 4], ...],
+                ottavi: undefined,
+                quarti: undefined,
+                semifinale: undefined,
+                finale: undefined,
+            }  
+            */
+            const { contendersPerMatch, order } = action.payload;
+
+            const totMatches = Math.ceil(state.tournamentData.length);
+
+            let matches = [];
+
+            let matchAccumulator = [];
+            state.tournamentData.map((it, i, arr) => {
+                matchAccumulator.push(it);
+                if (
+                    // (i + 1) % contendersPerMatch === 0 ||
+                    (i + 1) / contendersPerMatch === 1 ||
+                    arr.length - 1 === i
+                ) {
+                    matches.push(matchAccumulator);
+                    matchAccumulator = [];
+                }
+            });
+
+            state.tournamentTable = {
+                setup: { contendersPerMatch, totMatches },
+                matches,
+            };
+        },
     },
 });
 
@@ -36,6 +79,7 @@ export const {
     updateTournamentData,
     shuffleTournamentData,
     resetTournamentStore,
+    setupTournament,
 } = tournamentSlice.actions;
 
 export const selectTournamentData = (state) =>

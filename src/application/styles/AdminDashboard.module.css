@@ -20,27 +20,61 @@
 }
 
 /* FORMS */
+/* DOVREI POTER SPOSTARE TUTTO IN UN'ALTRO FILES... check 👇*/
+/* @1.0
 .selector {
     border-bottom: 1px var(--text) solid;
     padding-bottom: 1em;
     margin-top: 3.25rem;
-    /* margin-top: 3em; */
     padding: 0 1em;
 }
 .selector > ul {
     display: flex;
     justify-content: space-between;
 }
-
 .selector > ul > li {
     cursor: pointer;
     margin-bottom: 0.8em;
 }
-
 .selected {
     text-decoration: underline;
     font-weight: bold;
 }
+*/
+
+/*@2.0*/
+.selector {
+    /* border-bottom: 1px var(--text) solid;
+    padding-bottom: 1em;
+    margin-top: 3.25rem;
+    padding: 0 1em; */
+    position: absolute;
+    left: -87px;
+    top: 27px;
+    font-size: 12px;
+    letter-spacing: 0.5px;
+    text-align: right;
+}
+.selector > ul {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.selector > ul > li {
+    cursor: pointer;
+    margin-bottom: 0.8em;
+    color: var(--text);
+}
+.selector > ul > li:hover {
+    color: var(--text-secondary);
+    background: var(--bg400);
+}
+.selected {
+    /* text-decoration: underline;
+    font-weight: bold; */
+}
+/* FIN */
 
 .formWrapContainer {
     position: relative;

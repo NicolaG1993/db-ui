@@ -27,6 +27,7 @@ export default function Dashboard() {
         }
     };
 
+    // 🧠 Modal andrebbe messo qua in veritá? -ed andrebbe usato sia per Form che per Settings - check this pls 🧠
     return (
         <>
             <main id={"ElMain"} className={styles.main}>

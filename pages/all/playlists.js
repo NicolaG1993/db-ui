@@ -53,8 +53,14 @@ export default function Playlists() {
         <main>
             <div className={"heading"}>
                 <h1>YOUR PLAYLISTS</h1>
-                <Link href={`/el/playlist/editor`} title={"Playlist editor"}>
+                <Link href={`/el/playlist/editor`} title={"Playlist Editor"}>
                     Session playlist editor →
+                </Link>
+                <Link
+                    href={`/el/playlist/tournament`}
+                    title={"Tournament Session"}
+                >
+                    Tournament Session →
                 </Link>
             </div>
 

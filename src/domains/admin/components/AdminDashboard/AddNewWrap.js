@@ -17,25 +17,26 @@ export default function AddNewWrap({ setAddForm }) {
                     <span onClick={() => setAddForm(false)}>X</span>
                 </div>
 
+                {/* 👇 CHANGE DOWN HERE 👇 */}
                 <div className={styles.selector}>
                     <ul>
                         <li
                             onClick={() => setUI("actor")}
                             className={UI === "actor" ? styles.selected : null}
                         >
-                            Actor
+                            Actor •
                         </li>
                         <li
                             onClick={() => setUI("movie")}
                             className={UI === "movie" ? styles.selected : null}
                         >
-                            Movie
+                            Movie •
                         </li>
                         <li
                             onClick={() => setUI("studio")}
                             className={UI === "studio" ? styles.selected : null}
                         >
-                            Studio
+                            Studio •
                         </li>
                         <li
                             onClick={() => setUI("distribution")}
@@ -43,7 +44,7 @@ export default function AddNewWrap({ setAddForm }) {
                                 UI === "distribution" ? styles.selected : null
                             }
                         >
-                            Distribution
+                            Distribution •
                         </li>
                         <li
                             onClick={() => setUI("category")}
@@ -51,13 +52,13 @@ export default function AddNewWrap({ setAddForm }) {
                                 UI === "category" ? styles.selected : null
                             }
                         >
-                            Category
+                            Category •
                         </li>
                         <li
                             onClick={() => setUI("tag")}
                             className={UI === "tag" ? styles.selected : null}
                         >
-                            Tag
+                            Tag •
                         </li>
                     </ul>
                 </div>

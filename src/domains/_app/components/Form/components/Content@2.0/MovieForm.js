@@ -11,6 +11,7 @@ import {
     updateFormState,
     openSideNav,
     selectFormIsLoading,
+    selectFormIsFinish,
 } from "@/src/application/redux/slices/formSlice";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import {
@@ -33,6 +34,7 @@ export default function MovieForm({ confirmChanges }) {
         selectFormIsLoadingResponse,
         shallowEqual
     );
+    const isFinish = useSelector(selectFormIsFinish, shallowEqual);
 
     const dispatch = useDispatch();
 
@@ -253,7 +255,7 @@ export default function MovieForm({ confirmChanges }) {
                 <div className={styles["buttons-box"]}>
                     <button
                         type="submit"
-                        disabled={isLoadingResponse} //  🧠 isLoading o isLoadingResponse meglio?
+                        disabled={isLoading || isFinish} //  🧠 isLoading o isLoadingResponse meglio?
                         className="button-standard"
                     >
                         Confirm

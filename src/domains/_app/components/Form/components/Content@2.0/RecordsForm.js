@@ -1,4 +1,6 @@
+import { selectFormIsFinish } from "@/src/application/redux/slices/formSlice";
 import styles from "@/src/domains/_app/components/Form/components/Form.module.css";
+import { shallowEqual, useSelector } from "react-redux";
 
 export default function RecordsForm({
     formState,
@@ -12,6 +14,8 @@ export default function RecordsForm({
     //================================================================================
     // Render UI
     //================================================================================
+    const isFinish = useSelector(selectFormIsFinish, shallowEqual);
+
     return (
         <form
             onSubmit={(e) =>
@@ -51,7 +55,7 @@ export default function RecordsForm({
             >
                 <button
                     type="submit"
-                    disabled={isLoading}
+                    disabled={isLoading || isFinish}
                     className="button-standard"
                 >
                     Confirm

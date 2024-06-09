@@ -12,8 +12,14 @@
     --bg900: rgb(190, 190, 190);
 
     --color000: rgb(255, 157, 157);
+    --color100: rgb(234, 126, 37);
+    --color200: rgb(39, 74, 107);
+
+    /* 
+    --color000: rgb(255, 157, 157);
     --color100: rgb(110, 17, 17);
-    --color200: rgb(170, 0, 0);
+    --color200: rgb(170, 0, 0); 
+    */
 
     --overlay: rgba(0, 0, 0, 0.3);
     --overlayB: rgba(28, 28, 28, 0.85);
@@ -145,7 +151,11 @@
     --bg800: rgb(118, 118, 118);
     --bg900: rgb(190, 190, 190);
 
-    --color000: rgb(77, 162, 67);
+    /* --color000: rgb(81, 131, 76); */
+    /* --color000: rgb(96, 120, 68); */
+    /* --color000: rgb(158, 182, 164); */
+    /* --color000: rgb(156, 161, 156); */
+    --color000: rgb(138, 145, 138);
     --color100: rgb(57, 7, 101);
     --color200: rgb(76, 10, 156);
     /* --color100: rgb(197, 208, 46); */
@@ -279,6 +289,12 @@ button:disabled {
     border: 1px solid var(--bg500);
     cursor: no-drop;
 }
+button:disabled:hover {
+    color: var(--bg700);
+    background-color: var(--bg200);
+    border: 1px solid var(--bg500);
+    cursor: no-drop;
+}
 
 .button-standard {
     background-color: var(--bg600);
@@ -288,6 +304,17 @@ button:disabled {
 .button-standard:hover {
     background-color: var(--bg800);
     border: 1px solid var(--bg800);
+}
+
+.button-alternative {
+    background-color: var(--bg300);
+    border: 1px solid var(--text);
+    color: var(--text);
+}
+.button-alternative:hover {
+    background-color: var(--text);
+    border: 1px solid var(--bg400);
+    color: var(--bg400);
 }
 
 .button-danger {

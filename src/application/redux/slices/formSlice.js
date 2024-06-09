@@ -33,6 +33,7 @@ const initialState = {
     propsData: undefined,
     isLoading: true,
     isLoadingResponse: false,
+    isFinish: false,
     ui: {
         drawerIsOpen: false,
         sideNavTopic: false,
@@ -456,6 +457,7 @@ const formSlice = createSlice({
 
         handlePostSuccess: (state) => {
             Cookies.remove("formState");
+            state.isFinish = true;
             state.isLoading = false;
         },
         resetFormStore: () => initialState,
@@ -505,6 +507,7 @@ export const selectFormStoreErrors = (state) => state.formStore.errors;
 export const selectFormIsLoading = (state) => state.formStore.isLoading;
 export const selectFormIsLoadingResponse = (state) =>
     state.formStore.isLoadingResponse;
+export const selectFormIsFinish = (state) => state.formStore.isFinish;
 
 export const selectFormStoreUI = (state) => state.formStore.ui;
 export const selectFormSideNavTopic = (state) =>
