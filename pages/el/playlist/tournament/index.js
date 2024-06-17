@@ -126,14 +126,15 @@ export default function TournamentSession() {
         router.push("/el/playlist/tournament/table");
     };
 
-    console.log("TournamentSession: ", {
-        sessionPlaylist,
-        tournamentData,
-        //  gameOptions,
-    });
+    // console.log("TournamentSession: ", {
+    //     sessionPlaylist,
+    //     tournamentData,
+    //     //  gameOptions,
+    // });
 
+    // Create components and save in domain
     return (
-        <main id={"ElMain"} className={styles.main}>
+        <main id={"TournamentMain"} className={styles.main}>
             <Head>
                 <title>{"Tournament"}</title>
                 <meta property="og:type" content="website" />
@@ -372,7 +373,7 @@ export default function TournamentSession() {
 
                     <div className={styles.footerWrap}>
                         <button
-                            onClick={handleStart}
+                            onClick={() => handleStart(settingsForm)}
                             className={`button-standard ${styles.continueBtn}`}
                         >
                             Get Started!

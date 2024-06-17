@@ -35,7 +35,6 @@ export default function RandomNumberGenerator({ open, closeWidget }) {
     };
 
     const handleSubmit = (e) => {
-        console.log("handleSubmit: ");
         e.preventDefault();
         let arr = [];
         if (form.setting === "not unique") {
@@ -61,7 +60,6 @@ export default function RandomNumberGenerator({ open, closeWidget }) {
         setResult(arr);
     };
 
-    console.log("lastResults: ", lastResults);
     return (
         <div
             id={styles["RandomNumberGenerator"]}

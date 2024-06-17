@@ -152,3 +152,24 @@
     font-size: 22px;
     box-shadow: var(--shadow000);
 }
+
+/* TOURNAMENT TABLE */
+.tournamentTable {
+    display: grid;
+    grid-template-columns: 120px 1fr 120px;
+    width: 100%;
+}
+.match {
+    display: flex;
+    flex-direction: column;
+    padding: 0.5rem;
+    border: 2px solid var(--bg900);
+    margin: 0.5rem 0;
+}
+.contenderCard {
+    display: flex;
+    flex-direction: column;
+    padding: 0.5rem;
+    margin: 0.25rem 0;
+    border: 2px solid var(--bg700);
+}

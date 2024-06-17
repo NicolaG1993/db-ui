@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import Cookies from "js-cookie";
 import { shuffle } from "@/src/application/utils/orderData";
+import calcTournamentStructure from "@/src/domains/tournament/utils/calcTournamentStructure";
 
 const initialState = {
     tournamentData: Cookies.get("tournamentData")
@@ -49,17 +50,27 @@ const tournamentSlice = createSlice({
             }  
             */
             const { contendersPerMatch, order } = action.payload;
+            ////new Version
+            const result = calcTournamentStructure({
+                allContenders: state.tournamentData,
+                contendersPerMatch,
+            });
+            console.log("💫 result 💫: ", result);
 
-            const totMatches = Math.ceil(state.tournamentData.length);
+            /* 
+            const totMatches = Math.ceil(
+                state.tournamentData.length / contendersPerMatch
+            );
 
+            // group first matches
             let matches = [];
 
             let matchAccumulator = [];
             state.tournamentData.map((it, i, arr) => {
                 matchAccumulator.push(it);
                 if (
-                    // (i + 1) % contendersPerMatch === 0 ||
-                    (i + 1) / contendersPerMatch === 1 ||
+                    (i + 1) % contendersPerMatch === 0 ||
+                    // (i + 1) / contendersPerMatch === 1 ||
                     arr.length - 1 === i
                 ) {
                     matches.push(matchAccumulator);
@@ -67,10 +78,16 @@ const tournamentSlice = createSlice({
                 }
             });
 
+            // calculate table route
+            // ...totMatches....
+            const totBlocks = Math.ceil(totMatches / 4);
+
+            // set state
             state.tournamentTable = {
-                setup: { contendersPerMatch, totMatches },
+                setup: { contendersPerMatch, totMatches, totBlocks },
                 matches,
             };
+            */
         },
     },
 });
@@ -86,5 +103,7 @@ export const selectTournamentData = (state) =>
     state.tournamentStore.tournamentData;
 export const selectTournamentIsLoaded = (state) =>
     state.tournamentStore.isLoaded;
+export const selectTournamentMatches = (state) =>
+    state.tournamentStore.tournamentTable.matches;
 
 export default tournamentSlice;
