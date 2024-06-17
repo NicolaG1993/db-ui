@@ -13,7 +13,7 @@ const initialState = {
             totMatches: undefined,
             contendersPerMatch: undefined,
         }, // honestly after setting tournamentTable becomes useless - we could not store this, if not as pure infos
-        matches: undefined,
+        tournamentStructure: undefined,
     }, // probably need cookies only here
 };
 
@@ -88,6 +88,17 @@ const tournamentSlice = createSlice({
                 matches,
             };
             */
+            state.tournamentTable = {
+                setup: {
+                    contendersPerMatch,
+                    totStages: result.totStages + 1,
+                    tableRows: result.tableRows,
+                    tableColumns: (result.totStages - 1) * 2 + 2,
+                    totMatches: result.totMatches,
+                    totContenders: result.totMatches * contendersPerMatch,
+                },
+                tournamentStructure: result.tournamentStructure,
+            };
         },
     },
 });
@@ -103,7 +114,9 @@ export const selectTournamentData = (state) =>
     state.tournamentStore.tournamentData;
 export const selectTournamentIsLoaded = (state) =>
     state.tournamentStore.isLoaded;
-export const selectTournamentMatches = (state) =>
-    state.tournamentStore.tournamentTable.matches;
+export const selectTournamentStructure = (state) =>
+    state.tournamentStore.tournamentTable.tournamentStructure;
+export const selectTournamentSetup = (state) =>
+    state.tournamentStore.tournamentTable.setup;
 
 export default tournamentSlice;

@@ -49,6 +49,7 @@ const createFirstStage = ({
     return firstStage;
 };
 
+// TODO: cleanup extra args 👇
 const createEmptyStageMatches = ({
     index,
     perSide, // matchs x side
@@ -57,14 +58,14 @@ const createEmptyStageMatches = ({
     idsAccumulator,
     totStages,
 }) => {
-    console.log("🦉🤖🦉🤖 invoked createEmptyStageMatches: ", {
-        index,
-        perSide,
-        contendersPerMatch,
-        stageName,
-        idsAccumulator,
-        totStages,
-    });
+    // console.log("🦉🤖🦉🤖 invoked createEmptyStageMatches: ", {
+    //     index,
+    //     perSide,
+    //     contendersPerMatch,
+    //     stageName,
+    //     idsAccumulator,
+    //     totStages,
+    // });
     // create obj for contenders (empty)
     let emptyContendersObj = [];
     for (let i = 0; i < contendersPerMatch; i++) {
@@ -84,12 +85,12 @@ const createEmptyStageMatches = ({
         };
     }
     //return stage
-    console.log("🦉🤖🦉🤖 createEmptyStageMatches RES: ", {
-        stageMatches,
-        totMatches: stageTotMatches,
-        emptyContendersObj,
-        stageTotMatches,
-    });
+    // console.log("🦉🤖🦉🤖 createEmptyStageMatches RES: ", {
+    //     stageMatches,
+    //     totMatches: stageTotMatches,
+    //     emptyContendersObj,
+    //     stageTotMatches,
+    // });
     return { stageMatches, totMatches: stageTotMatches };
 };
 
@@ -122,15 +123,6 @@ const calcTournamentStructure = ({ allContenders, contendersPerMatch }) => {
     });
 
     const assignStages = ({ totStages, firstStage }) => {
-        /*
-        ✅ "firstStage.length" somma dei matchs in firstStage
-        ✅ "firstStage.length" diventa valore iniziale di "accumulator"
-        ✅ creiamo in maniera dinamica prossimo stage (es. "secondStage") con tutti i dati necessari
-        ✅ inseriamo lo stage in result
-        ✅ creaiamo il prossimo stage fino a che arriaviamo a final
-           🧠 se esiste semifinals dobbiamo creare prima match III vs. IV
-        
-        */
         let result = {
             1: {
                 stageMatches: firstStage,
@@ -141,13 +133,12 @@ const calcTournamentStructure = ({ allContenders, contendersPerMatch }) => {
         };
         let idsAccumulator = result["1"].totMatches;
         const stageNames = ["Final", "Semifinals", "Quarterfinals"];
-        ///// 👇 FIX
+
         for (let i = 2; i <= totStages + 1; i++) {
             const stageName =
                 totStages + 2 - i > stageNames.length
                     ? `${geometricValue(totStages + 1 - i)}th-finals`
                     : stageNames[totStages + 1 - i];
-            // const stageMatches = i + 1 <= totStages ? undefined : firstStage;
             const newEmptyStage = createEmptyStageMatches({
                 index: i,
                 perSide: geometricValue(totStages - i),
@@ -156,13 +147,6 @@ const calcTournamentStructure = ({ allContenders, contendersPerMatch }) => {
                 idsAccumulator,
                 totStages,
             });
-            // const newEmptyStage = createEmptyStageMatches({
-            //     index: i,
-            //     perSide: geometricValue(i - 1),
-            //     contendersPerMatch,
-            //     stageName,
-            //     idsAccumulator,
-            // });
 
             if (stageName === "Final" && totStages > 1) {
                 result[i] = {
@@ -195,27 +179,20 @@ const calcTournamentStructure = ({ allContenders, contendersPerMatch }) => {
                 idsAccumulator = newEmptyStage.totMatches + idsAccumulator;
             }
         }
-        return result;
+        return { tournamentStructure: result, totMatches: idsAccumulator };
     };
 
-    let tournamentStructure = assignStages({ totStages, firstStage });
+    let { tournamentStructure, totMatches } = assignStages({
+        totStages,
+        firstStage,
+    });
 
     console.log("🧠🧠🧠calcTournamentStructure🧠🧠🧠", {
-        // allContenders,
-        // contendersPerMatch,
         tableRows: realFirstStageTotMatchesPerSide,
         totStages,
         tournamentStructure,
         //
         firstStage,
-        // firstStageTotBranchesPerSide,
-        // totPhases,
-        // totStages,
-        // realFirstStageTotMatchesPerSide,
-        // firstStageTotMatchesPerSide,
-        // firstStageTotMatches,
-        // firstStageTotBranches,
-        // totContenders,
         realFirstStageTotMatches,
     });
 
@@ -224,6 +201,7 @@ const calcTournamentStructure = ({ allContenders, contendersPerMatch }) => {
         tableRows: realFirstStageTotMatchesPerSide,
         totStages,
         firstStage,
+        totMatches,
     };
 };
 

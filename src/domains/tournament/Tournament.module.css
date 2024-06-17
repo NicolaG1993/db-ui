@@ -159,12 +159,23 @@
     grid-template-columns: 120px 1fr 120px;
     width: 100%;
 }
+.stage {
+    display: grid;
+    grid-template-columns: auto;
+    background: var(--bg600);
+    margin: 0.25rem;
+    font-size: 11px; /* delete */
+    opacity: 0.33; /* delete */
+}
 .match {
     display: flex;
     flex-direction: column;
     padding: 0.5rem;
     border: 2px solid var(--bg900);
     margin: 0.5rem 0;
+}
+.match > span:nth-child(1) {
+    font-weight: 700;
 }
 .contenderCard {
     display: flex;

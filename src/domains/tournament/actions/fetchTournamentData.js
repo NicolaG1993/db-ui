@@ -16,7 +16,3 @@ export default async function fetchTournamentData(ids) {
         return [];
     }
 }
-
-////////////// BOZZA (elimina)
-
-// const createEmptyStageMatches = ({}) => {};
