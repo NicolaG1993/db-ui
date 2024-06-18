@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import Cookies from "js-cookie";
 import { shuffle } from "@/src/application/utils/orderData";
 import calcTournamentStructure from "@/src/domains/tournament/utils/calcTournamentStructure";
+import generateTableSequences from "@/src/domains/tournament/utils/generateTableSequences";
 
 const initialState = {
     tournamentData: Cookies.get("tournamentData")
@@ -92,10 +93,13 @@ const tournamentSlice = createSlice({
                 setup: {
                     contendersPerMatch,
                     totStages: result.totStages + 1,
-                    tableRows: result.tableRows,
+                    tableRows: result.tableRows * 2,
                     tableColumns: (result.totStages - 1) * 2 + 2,
                     totMatches: result.totMatches,
                     totContenders: result.totMatches * contendersPerMatch,
+                    tableRowsSequences: generateTableSequences(
+                        result.tableRows * 2
+                    ),
                 },
                 tournamentStructure: result.tournamentStructure,
             };
