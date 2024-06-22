@@ -1,6 +1,10 @@
 import styles from "@/src/domains/tournament/Tournament.module.css";
 import MatchContender from "./MatchContender";
 import generateTableSequences from "../utils/generateTableSequences";
+import { useEffect, useRef, useState } from "react";
+import { selectTournamentSetup } from "@/src/application/redux/slices/tournamentSlice";
+import { shallowEqual, useSelector } from "react-redux";
+import ContenderSelect from "./ContenderSelect";
 
 export default function TournamentMatch({
     match,
@@ -9,6 +13,9 @@ export default function TournamentMatch({
     index,
     matchesLength,
     rowSequence,
+    isFirstStage,
+    isStarted,
+    stageMatches,
 }) {
     // generateTableSequences(tableRows);
     // 🔴🧠🔴🧠 Usare e abbinare a stages - ma non so dove
@@ -40,8 +47,39 @@ export default function TournamentMatch({
     crea fn
     */
 
+    const [isSelectNavOpen, setIsSelectNavOpen] = useState(false);
+    const dropdownRef = useRef(null);
+    const [selectedContender, setSelectedContender] = useState(false);
+
+    const openSelectNav = ({ contender }) => {
+        setIsSelectNavOpen(true);
+        contender && setSelectedContender(contender);
+    };
+    const closeSelectNav = () => {
+        setIsSelectNavOpen(false);
+        setSelectedContender();
+    };
+
+    useEffect(() => {
+        // only add the event listener when the dropdown is opened
+        if (!isSelectNavOpen) return;
+        function handleClick(event) {
+            // console.log("handleClick: ", { dropdownRef, event });
+            if (
+                dropdownRef.current &&
+                !dropdownRef.current.contains(event.target)
+            ) {
+                // console.log("handleClick condition PASSED!");
+                closeSelectNav();
+            }
+        }
+        window.addEventListener("click", handleClick);
+        // clean up
+        return () => window.removeEventListener("click", handleClick);
+    }, [isSelectNavOpen]);
+
     return (
-        <div className={styles.match} style={stageArea}>
+        <div className={styles.match} style={stageArea} ref={dropdownRef}>
             <span>Match: {match.matchId}</span>
             {match.contenders.map((contender, i) => (
                 <MatchContender
@@ -51,9 +89,21 @@ export default function TournamentMatch({
                         " " +
                         (contender?.id || "undefined " + (i + 1))
                     }
-                    contender={contender}
+                    contender={{ ...contender, index: i }}
+                    isStarted={isStarted}
+                    isFirstStage={isFirstStage}
+                    openSelectNav={openSelectNav}
+                    closeSelectNav={closeSelectNav}
+                    // onClick={handleClickContender}
                 />
             ))}
+            {isSelectNavOpen && (
+                <ContenderSelect
+                    currentContender={selectedContender}
+                    match={match}
+                    stageMatches={stageMatches}
+                />
+            )}
         </div>
     );
 }

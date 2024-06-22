@@ -279,6 +279,7 @@ button {
     border-radius: 10px;
     cursor: pointer;
     transition: 0.08s ease-out;
+    font-size: 0.8rem;
 }
 button:hover {
     box-shadow: var(--shadow000);

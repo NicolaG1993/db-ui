@@ -154,35 +154,186 @@
 }
 
 /* TOURNAMENT TABLE */
+.tournamentHeading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    margin: 0 0 1.5rem 0;
+}
+.tournamentHeading h1 {
+    margin: 0;
+}
+.tournamentHeading button {
+    margin-top: 1rem;
+}
 .tournamentTable {
     display: grid;
     grid-template-columns: 120px 1fr 120px;
     width: 100%;
+    background: var(--bg000);
+    padding: 0.5rem 0.5rem 0.75rem 0.5rem;
+    overflow: auto;
 }
 .tableColumn {
+    font-size: 11px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.tableColumn > p:first-child {
+    font-size: 13px;
+    letter-spacing: 0.3pt;
+    font-weight: 700;
+    margin: 0.25rem 0;
+    text-align: center;
 }
 .stage {
     display: grid;
     grid-template-columns: auto;
-    background: var(--bg600);
-    margin: 0.25rem;
-    font-size: 11px; /* delete */
-    opacity: 0.33; /* delete */
+    background: var(--bg100);
+    margin: 0 0.25rem;
 }
 .match {
     display: flex;
     flex-direction: column;
-    padding: 0.5rem;
-    border: 2px solid var(--bg900);
-    margin: 0.5rem 0;
+    padding: 0.25rem 0.33rem;
+    outline: 1px solid var(--bg300);
+    background: var(--bg200);
+    margin: 0.5rem 0.33rem;
+    cursor: pointer;
+    transition: 0.05s ease;
+    position: relative;
+}
+.match:hover {
+    outline: 2px solid var(--bg400);
 }
 .match > span:nth-child(1) {
     font-weight: 700;
 }
+.contenderWrap {
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
 .contenderCard {
     display: flex;
     flex-direction: column;
-    padding: 0.5rem;
+    padding: 0.25rem 0.33rem;
     margin: 0.25rem 0;
-    border: 2px solid var(--bg700);
+    outline: 1px solid var(--bg400);
+    background: var(--bg300);
+    height: 60px;
+    width: 120px;
+    box-shadow: var(--shadow000);
+}
+.contenderCardSelect {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 0.25rem 0.33rem;
+    margin: 0.25rem 0;
+    outline: 1px solid var(--bg400);
+    background: var(--bg200);
+    height: 60px;
+    width: 140px;
+    box-shadow: var(--shadow000);
+}
+.contenderCard:hover,
+.contenderCardSelect:hover {
+    outline: 2px solid var(--bg500);
+    background: var(--bg500);
+}
+.contenderCardNA {
+    display: flex;
+    flex-direction: column;
+    padding: 0.25rem 0.33rem;
+    margin: 0.25rem 0;
+    outline: 1px solid var(--bg400);
+    background: var(--bg300);
+    height: 60px;
+    width: 140px;
+    box-shadow: var(--shadow000);
+    cursor: not-allowed;
+}
+
+.contenderProps {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+    margin-left: 0.25rem;
+    height: 60px;
+}
+
+.contenderProps > div {
+    width: 17px;
+    height: 17px;
+    padding: 0.1rem;
+    margin: 0.1rem;
+    outline: 1px solid var(--bg400);
+    background: var(--bg300);
+    font-size: 16px;
+    line-height: 16px;
+    font-weight: 700;
+    border-radius: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.contenderProps > div:hover {
+    outline: 2px solid var(--bg500);
+    background: var(--bg500);
+}
+
+.match > .isError {
+    outline: 1px solid red;
+    background: red;
+}
+
+/* CONTENDER SELECT NAV */
+.contenderSelectNav {
+    position: absolute;
+    left: 100%;
+    top: 0;
+    width: 180px;
+    height: 180px;
+    background: var(--bg400);
+    outline: 2px solid var(--bg500);
+    z-index: 100;
+}
+
+.contenderSelectNav > .navMatchInfo {
+    display: flex;
+    flex-direction: column;
+    padding: 0.33rem 0.5rem;
+    border-bottom: 2px solid var(--bg500);
+}
+.contenderSelectNav > .navMatchInfo span {
+}
+.contenderSelectNav > .navMatchBody {
+    display: flex;
+    flex-direction: column;
+    padding: 0.66rem 0.5rem;
+    height: 140px;
+}
+.contenderSelectNav > .navMatchBody > button,
+.contenderSelectNav > .navMatchBody > .fakeBtn {
+    margin: 0.33rem 0;
+}
+
+.fakeBtn {
+    /* border-radius: 25px; */
+    border-radius: 10px;
+    height: 19px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: 0.08s ease-out;
+    font-size: 0.8rem;
+    font-family: Arial, Helvetica, sans-serif;
+    padding: 1px 6px;
 }

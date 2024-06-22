@@ -12,20 +12,26 @@ export default function TournamentStage({
     tableRows,
     tableColumns,
     totStages,
+    isStarted,
+    isFirstStage,
     isFinal,
     isThirdPlace,
     tableRowsSequences,
+    isError,
 }) {
-    console.log("TournamentStage: ", {
-        stage,
-        stageKey,
-        tableRows,
-        tableColumns,
-        totStages,
-        isFinal,
-        isThirdPlace,
-        tableRowsSequences,
-    });
+    // console.log("TournamentStage: ", {
+    //     stage,
+    //     stageKey,
+    //     tableRows,
+    //     tableColumns,
+    //     totStages,
+    //     isStarted,
+    //     isFirstStage,
+    //     isFinal,
+    //     isThirdPlace,
+    //     tableRowsSequences,
+    //     isError,
+    // });
 
     if (isFinal || isThirdPlace) {
         let stageAreaFinal = {
@@ -39,11 +45,12 @@ export default function TournamentStage({
 
         return (
             <div className={styles.tableColumn} style={stageAreaFinal}>
-                <span>{stage.stageName}</span>
+                <p>{stage.stageName}</p>
                 <div className={styles.stage}>
                     {renderStageMatches({
                         matches: stage.stageMatches,
                         tableRows,
+                        isError,
                         // rowSequence: isThirdPlace
                         //     ? tableRowsSequences[totStages - 1]
                         //     : tableRowsSequences[totStages - 1],
@@ -85,7 +92,7 @@ export default function TournamentStage({
         return (
             <>
                 <div className={styles.tableColumn} style={stageAreaLeft}>
-                    <span>{stage.stageName}</span>
+                    <p>{stage.stageName}</p>
                     <div
                         className={styles.stage}
                         style={{
@@ -99,11 +106,15 @@ export default function TournamentStage({
                                 tableRowsSequences,
                                 tableColumns - (tableColumns - stageKey)
                             ),
+                            isStarted,
+                            isFirstStage,
+                            isError,
+                            stageMatches: stage.stageMatches,
                         })}
                     </div>
                 </div>
                 <div className={styles.tableColumn} style={stageAreaRight}>
-                    <span>{stage.stageName}</span>
+                    <p>{stage.stageName}</p>
                     <div
                         className={styles.stage}
                         style={{
@@ -117,6 +128,10 @@ export default function TournamentStage({
                                 tableRowsSequences,
                                 tableColumns - (tableColumns - stageKey)
                             ),
+                            isStarted,
+                            isFirstStage,
+                            isError,
+                            stageMatches: stage.stageMatches,
                         })}
                     </div>
                 </div>

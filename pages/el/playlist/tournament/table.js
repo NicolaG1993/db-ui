@@ -1,18 +1,29 @@
 import {
     selectTournamentStructure,
     selectTournamentSetup,
+    selectMatchError,
+    selectTournamentIsStarted,
+    initNextMatch,
+    startTournament,
+    selectTournamentData,
 } from "@/src/application/redux/slices/tournamentSlice";
 import TournamentStage from "@/src/domains/tournament/components/TournamentStage";
 import styles from "@/src/domains/tournament/Tournament.module.css";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 
 export default function TournamentTable() {
+    const tournamentData = useSelector(selectTournamentData, shallowEqual);
     const tournamentStructure = useSelector(
         selectTournamentStructure,
         shallowEqual
     );
     const setup = useSelector(selectTournamentSetup, shallowEqual);
+    const matchError = useSelector(selectMatchError, shallowEqual);
+    const isStarted = useSelector(selectTournamentIsStarted, shallowEqual);
     const dispatch = useDispatch();
+
+    const handleStart = () => dispatch(startTournament());
+    const setupNextMatch = () => dispatch(initNextMatch());
 
     console.log("TournamentTable: ", { tournamentStructure, setup });
 
@@ -20,7 +31,31 @@ export default function TournamentTable() {
     // should i use canvas???
     return (
         <main>
-            <h1>Tournament Table</h1>
+            <div className={styles.tournamentHeading}>
+                <h1
+                    onClick={
+                        () => setupNextMatch() // delete
+                    }
+                >
+                    Tournament Table
+                </h1>
+                {!isStarted && (
+                    <>
+                        <button
+                            type="button"
+                            onClick={() => handleStart()}
+                            disabled={
+                                tournamentData.length <
+                                setup.firstStageTotMatches *
+                                    setup.contendersPerMatch
+                            }
+                        >
+                            START TOURNAMENT
+                        </button>
+                        <p>Select all contenders to procede</p>
+                    </>
+                )}
+            </div>
 
             <div
                 className={styles.tournamentTable}
@@ -38,9 +73,12 @@ export default function TournamentTable() {
                             tableRows={setup.tableRows}
                             tableColumns={setup.tableColumns}
                             totStages={setup.totStages}
+                            isStarted={isStarted}
                             isFinal={stage.stageName === "Final"}
                             isThirdPlace={stage.stageName === "3rd Place"}
+                            isFirstStage={stageKey === "1"}
                             tableRowsSequences={setup.tableRowsSequences}
+                            isError={matchError}
                         />
                     )
                 )}

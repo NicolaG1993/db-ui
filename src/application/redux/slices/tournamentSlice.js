@@ -9,12 +9,21 @@ const initialState = {
         ? JSON.parse(Cookies.get("tournamentData"))
         : [],
     isLoaded: false,
+    isStarted: false,
     tournamentTable: {
         setup: {
-            totMatches: undefined,
             contendersPerMatch: undefined,
+            totStages: undefined,
+            tableRows: undefined,
+            tableColumns: undefined,
+            totMatches: undefined,
+            totContenders: undefined,
+            tableRowsSequences: undefined,
+            firstStageTotMatches: undefined,
         }, // honestly after setting tournamentTable becomes useless - we could not store this, if not as pure infos
         tournamentStructure: undefined,
+        matchError: undefined,
+        // matchSelectorNav: undefined,
     }, // probably need cookies only here
 };
 
@@ -100,9 +109,58 @@ const tournamentSlice = createSlice({
                     tableRowsSequences: generateTableSequences(
                         result.tableRows * 2
                     ),
+                    firstStageTotMatches: Object.keys(result.firstStage).length, // test 🟨
                 },
                 tournamentStructure: result.tournamentStructure,
             };
+        },
+        updateFirstStage: (state, action) => {
+            const { newCurrentMatch, newSelectedMatch } = action.payload;
+
+            const firstStage =
+                state.tournamentTable.tournamentStructure["1"].stageMatches;
+            const newFirstStage = {
+                ...firstStage,
+                [newCurrentMatch.matchId]: newCurrentMatch,
+                [newSelectedMatch.matchId]: newSelectedMatch,
+            };
+
+            state.tournamentTable.tournamentStructure["1"].stageMatches =
+                newFirstStage;
+        },
+        updateMatchError: (state, action) => {
+            state.tournamentTable.matchError = action.payload.matchId;
+        },
+        startTournament: (state) => {
+            // todo: check if firstMatch é stato riempito
+            state.isStarted = true;
+            // se no torna error
+        },
+        quitTournament: (state) => {
+            state.isStarted = false;
+            // Todo...
+            // posso usare direttamente resetTournamentStore()? 🧠
+        },
+        initNextMatch: (state, action) => {
+            state.tournamentTable.matchError = undefined;
+            // TODO: use this action when a new match is open (next stage)
+            // setup new match
+            // check for errors here ? maybe before ? in component?
+
+            const { firstStageTotMatches, contendersPerMatch } =
+                state.tournamentTable.setup;
+
+            if (
+                state.tournamentData.length ===
+                firstStageTotMatches * contendersPerMatch
+            ) {
+                // Do action ....
+            } else {
+                // Error: Missing contenders.
+                // TODO: map data and select first match without contenders
+                state.tournamentTable.matchError = 16; // tournamentData.length / 2 + 1; // test 🟨 // mi serve .ceil() ???
+                // 🔴🔴🔴 Error not showing up in table!
+            }
         },
     },
 });
@@ -112,15 +170,23 @@ export const {
     shuffleTournamentData,
     resetTournamentStore,
     setupTournament,
+    updateFirstStage,
+    updateMatchError,
+    startTournament,
+    initNextMatch,
 } = tournamentSlice.actions;
 
 export const selectTournamentData = (state) =>
     state.tournamentStore.tournamentData;
 export const selectTournamentIsLoaded = (state) =>
     state.tournamentStore.isLoaded;
+export const selectTournamentIsStarted = (state) =>
+    state.tournamentStore.isStarted;
 export const selectTournamentStructure = (state) =>
     state.tournamentStore.tournamentTable.tournamentStructure;
 export const selectTournamentSetup = (state) =>
     state.tournamentStore.tournamentTable.setup;
+export const selectMatchError = (state) =>
+    state.tournamentStore.tournamentTable.matchError;
 
 export default tournamentSlice;

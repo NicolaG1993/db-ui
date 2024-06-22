@@ -1,7 +1,23 @@
 import TournamentMatch from "../components/TournamentMatch";
 
-const renderStageMatches = ({ matches, tableRows, rowSequence }) => {
-    console.log("renderStageMatches: ", matches, tableRows, rowSequence);
+const renderStageMatches = ({
+    matches,
+    tableRows,
+    rowSequence,
+    isFirstStage,
+    isStarted,
+    isError,
+    stageMatches,
+}) => {
+    // console.log(
+    //     "renderStageMatches: ",
+    //     matches,
+    //     tableRows,
+    //     rowSequence,
+    //     isFirstStage,
+    //     isStarted,
+    //     isError
+    // );
     return Object.entries(matches).map(([matchKey, match], i, array) => (
         <TournamentMatch
             key={"Tournament match " + match.matchId}
@@ -12,6 +28,10 @@ const renderStageMatches = ({ matches, tableRows, rowSequence }) => {
             index={i + 1}
             matchesLength={array.length}
             rowSequence={rowSequence || undefined}
+            isStarted={isStarted}
+            isFirstStage={isFirstStage}
+            isError={isError === match.matchId}
+            stageMatches={stageMatches}
         >
             {match.matchId}
         </TournamentMatch>
