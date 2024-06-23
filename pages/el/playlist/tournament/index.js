@@ -13,6 +13,7 @@ import fetchTournamentData from "@/src/domains/tournament/actions/fetchTournamen
 import styles from "@/src/domains/tournament/Tournament.module.css";
 import Head from "next/head";
 import { useRouter } from "next/router";
+import getInferiorGeometricValues from "@/src/domains/tournament/utils/getInferiorGeometricValues";
 
 // Questa fn serviva per fare un auto-detect of possible table (without leaving weird matchups)
 // I believe i can just create the table as it comes and let the user decide how to edit it
@@ -91,6 +92,7 @@ export default function TournamentSession() {
 
     const [settingsForm, setSettingsForm] = useState({
         contendersPerMatch: 2,
+        totContenders: undefined,
         order: "index",
     });
 
@@ -124,6 +126,15 @@ export default function TournamentSession() {
         // dispatch tournament settings and create first table (to edit)
         dispatch(setupTournament(settingsForm));
         router.push("/el/playlist/tournament/table");
+    };
+
+    const renderContendersOptions = (dataLength) => {
+        const options = getInferiorGeometricValues(dataLength);
+        return options.map((opt) => (
+            <option key={"Contender option " + opt} value={opt}>
+                {opt}
+            </option>
+        ));
     };
 
     // console.log("TournamentSession: ", {
@@ -305,28 +316,23 @@ export default function TournamentSession() {
 
                             <div>
                                 <span>Contenders: </span>
-                                <input
+                                {/* <input
                                     type="number"
                                     id="contenders"
                                     name="contenders"
                                     checked
                                     disabled
                                     value={tournamentData.length}
-                                ></input>
+                                ></input> */}
+                                <select value={settingsForm.totContenders}>
+                                    {renderContendersOptions(
+                                        tournamentData.length
+                                    )}
+                                </select>
                             </div>
 
                             <div>
                                 <span>Order: </span>
-                                <input
-                                    type="checkbox"
-                                    id="order"
-                                    name="order"
-                                    checked
-                                    disabled
-                                    value={"Session Playlist"}
-                                />
-                                <label htmlFor="order">Session Playlist</label>
-
                                 <select
                                     value={settingsForm.order}
                                     onChange={(e) =>
@@ -355,9 +361,15 @@ export default function TournamentSession() {
                                     }
                                 >
                                     <option value={2}>2</option>
-                                    <option value={3}>3</option>
-                                    <option value={4}>4</option>
-                                    <option value={5}>5</option>
+                                    <option value={3} disabled>
+                                        3
+                                    </option>
+                                    <option value={4} disabled>
+                                        4
+                                    </option>
+                                    <option value={5} disabled>
+                                        5
+                                    </option>
                                 </select>
                                 {/* 👇 Questa é solo una bozza, si potrebbe migliorare - adirittura aggiungere dynamic messages per nuovi settings futuri */}
                                 <p>

@@ -8,6 +8,7 @@ const initialState = {
     tournamentData: Cookies.get("tournamentData")
         ? JSON.parse(Cookies.get("tournamentData"))
         : [],
+    notSelectedData: [], // need cookie here 🧠
     isLoaded: false,
     isStarted: false,
     tournamentTable: {
@@ -98,6 +99,9 @@ const tournamentSlice = createSlice({
                 matches,
             };
             */
+            state.notSelectedData = state.tournamentData.slice(
+                result.totMatches * contendersPerMatch
+            );
             state.tournamentTable = {
                 setup: {
                     contendersPerMatch,
@@ -119,14 +123,26 @@ const tournamentSlice = createSlice({
 
             const firstStage =
                 state.tournamentTable.tournamentStructure["1"].stageMatches;
-            const newFirstStage = {
-                ...firstStage,
-                [newCurrentMatch.matchId]: newCurrentMatch,
-                [newSelectedMatch.matchId]: newSelectedMatch,
-            };
 
-            state.tournamentTable.tournamentStructure["1"].stageMatches =
-                newFirstStage;
+            if (newCurrentMatch && newSelectedMatch) {
+                // switch contenders between matches
+                const newFirstStage = {
+                    ...firstStage,
+                    [newCurrentMatch.matchId]: newCurrentMatch,
+                    [newSelectedMatch.matchId]: newSelectedMatch,
+                };
+
+                state.tournamentTable.tournamentStructure["1"].stageMatches =
+                    newFirstStage;
+            } else if (newCurrentMatch && !newSelectedMatch) {
+                // simply update match
+                const newFirstStage = {
+                    ...firstStage,
+                    [newCurrentMatch.matchId]: newCurrentMatch,
+                };
+                state.tournamentTable.tournamentStructure["1"].stageMatches =
+                    newFirstStage;
+            }
         },
         updateMatchError: (state, action) => {
             state.tournamentTable.matchError = action.payload.matchId;
@@ -162,6 +178,24 @@ const tournamentSlice = createSlice({
                 // 🔴🔴🔴 Error not showing up in table!
             }
         },
+        updateNotSelectedData: (state, action) => {
+            const { toAdd, toRemove } = action.payload;
+            let newData = state.notSelectedData;
+            if (toAdd && toRemove) {
+                state.notSelectedData = newData.map((el) =>
+                    el.id !== toRemove.id ? el : toAdd
+                );
+            } else {
+                if (toAdd) {
+                    newData.push(toAdd);
+                    state.notSelectedData = newData;
+                } else if (toRemove) {
+                    state.notSelectedData = newData.filter(
+                        (el) => el.id !== toRemove.id
+                    );
+                }
+            }
+        },
     },
 });
 
@@ -174,10 +208,13 @@ export const {
     updateMatchError,
     startTournament,
     initNextMatch,
+    updateNotSelectedData,
 } = tournamentSlice.actions;
 
 export const selectTournamentData = (state) =>
     state.tournamentStore.tournamentData;
+export const selectNotSelectedData = (state) =>
+    state.tournamentStore.notSelectedData;
 export const selectTournamentIsLoaded = (state) =>
     state.tournamentStore.isLoaded;
 export const selectTournamentIsStarted = (state) =>

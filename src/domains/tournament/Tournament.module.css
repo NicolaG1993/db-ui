@@ -299,7 +299,7 @@
     left: 100%;
     top: 0;
     width: 180px;
-    height: 180px;
+    /* height: 180px; */
     background: var(--bg400);
     outline: 2px solid var(--bg500);
     z-index: 100;
@@ -310,18 +310,42 @@
     flex-direction: column;
     padding: 0.33rem 0.5rem;
     border-bottom: 2px solid var(--bg500);
+    cursor: default;
 }
 .contenderSelectNav > .navMatchInfo span {
 }
 .contenderSelectNav > .navMatchBody {
     display: flex;
     flex-direction: column;
-    padding: 0.66rem 0.5rem;
-    height: 140px;
+    padding: 0.33rem 0.5rem;
+    height: 155px;
+    cursor: default;
+}
+.contenderSelectNav > .navMatchBody > span:first-child {
+    margin-bottom: 0.25rem;
 }
 .contenderSelectNav > .navMatchBody > button,
 .contenderSelectNav > .navMatchBody > .fakeBtn {
     margin: 0.33rem 0;
+}
+.contenderSelectNav > .navMatchBody > .contenderSelectorWrap {
+    height: 100%;
+    overflow-y: auto;
+    border: 1px solid var(--bg500);
+    background: var(--bg300);
+    cursor: default;
+}
+.contenderSelectNav > .navMatchBody > .contenderSelectorWrap > p {
+    margin: 0.33rem 0.25rem;
+    padding: 0.2rem 0.33rem;
+    border-radius: 10px;
+    cursor: pointer;
+    background: var(--bg400);
+    transition: 0.08s ease-out;
+}
+.contenderSelectNav > .navMatchBody > .contenderSelectorWrap > p:hover {
+    padding: 0.2rem 0.25rem 0.2rem 0.41rem;
+    background: var(--bg500);
 }
 
 .fakeBtn {

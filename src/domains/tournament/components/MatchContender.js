@@ -2,6 +2,7 @@ import styles from "@/src/domains/tournament/Tournament.module.css";
 
 export default function MatchContender({
     contender,
+    index,
     isStarted,
     isFirstStage,
     isError,
@@ -14,13 +15,14 @@ export default function MatchContender({
                 <div className={styles.contenderWrap}>
                     <div
                         className={styles.contenderCardSelect}
-                        onClick={() => openSelectNav({ contender })}
+                        onClick={() => openSelectNav({ contender, index })}
                     >
                         <span>✅ Contender: {contender.id}</span>
                     </div>
                 </div>
             );
         } else {
+            // contender and contender.id not updating after changes 🔴
             return (
                 <div className={styles.contenderWrap}>
                     <div className={styles.contenderCard}>
@@ -42,7 +44,7 @@ export default function MatchContender({
             >
                 <div
                     className={styles.contenderCardSelect}
-                    onClick={() => openSelectNav()}
+                    onClick={() => openSelectNav({ contender: null, index })}
                 >
                     <span>➡️ Select contender</span>
                 </div>

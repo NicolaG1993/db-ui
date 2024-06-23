@@ -2,14 +2,19 @@ import styles from "@/src/domains/tournament/Tournament.module.css";
 import {
     selectTournamentSetup,
     updateFirstStage,
+    selectNotSelectedData,
+    updateNotSelectedData,
 } from "@/src/application/redux/slices/tournamentSlice";
 import { useEffect, useRef, useState } from "react";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 
 export default function ContenderSelect({
     currentContender,
+    currentContenderIndex,
     match,
     stageMatches,
+    refreshSelectNav,
+    closeSelectNav,
 }) {
     const dispatch = useDispatch();
     // DATA:
@@ -18,6 +23,7 @@ export default function ContenderSelect({
     //
     const [ui, setUI] = useState();
     const setup = useSelector(selectTournamentSetup, shallowEqual);
+    const notSelectedData = useSelector(selectNotSelectedData, shallowEqual);
     const { firstStageTotMatches } = setup;
     const [optionSelected, setOptionSelected] = useState();
     const [newContender, setNewContender] = useState();
@@ -35,7 +41,89 @@ export default function ContenderSelect({
         label ? setUI(label) : setUI();
     };
 
-    const handleRemove = ({ currentContender, matchId }) => {};
+    const handleRemove = ({ currentContender, match, matchId }) => {
+        const newMatchContenders = [...match.contenders].map((cont) =>
+            cont.id === currentContender.id ? null : cont
+        );
+        const newCurrentMatch = { ...match, contenders: newMatchContenders };
+
+        dispatch(
+            updateFirstStage({
+                newCurrentMatch,
+            })
+        );
+
+        dispatch(
+            updateNotSelectedData({
+                toAdd: currentContender,
+            })
+        );
+
+        closeSelectNav();
+        // refreshSelectNav({ contender: null });
+    };
+
+    const handleAddNew = ({
+        currentContender,
+        currentContenderIndex,
+        newContender,
+        match,
+        currentIndex,
+    }) => {
+        // create new match
+        console.log("handleAddNew: ", {
+            currentContender,
+            currentContenderIndex,
+            newContender,
+            match,
+            currentIndex,
+        });
+        // DATA:
+        // CURRENT MATCH
+        // MATCH CONTENDER INDEX
+        // NEW CONTENDER
+        // -> Replace currentMatch[index] con newContender
+
+        // FIX or CHANGE: 👇🔴👇🔴👇🔴
+        /*
+        const newMatchContenders = [...match.contenders].map((cont, i) => {
+            if (!cont) {
+                // ... test
+                if (i === currentContenderIndex) {
+                    return newContender; // ... test
+                } else {
+                    return null; // ... test
+                }
+            } else {
+                if (cont.id === currentContender.id) {
+                    return newContender;
+                } else {
+                    return cont;
+                }
+            }
+        });
+        */
+        let newMatchContenders = [...match.contenders];
+        newMatchContenders[currentContenderIndex] = newContender;
+        const newCurrentMatch = { ...match, contenders: newMatchContenders };
+
+        // update first stage
+        dispatch(
+            updateFirstStage({
+                newCurrentMatch,
+            })
+        );
+
+        // ✅ update notSelectedData
+        dispatch(
+            updateNotSelectedData({
+                toRemove: newContender,
+            })
+        );
+
+        closeSelectNav();
+        // refreshSelectNav({ contender: newContender });
+    };
 
     const handleSwitch = ({
         match,
@@ -109,10 +197,10 @@ export default function ContenderSelect({
             selected: { ...selectedMatch, contenders: newSelectedContenders },
         });
 
-        //TODO:
         // create new first stage
         const newFirstStage = {};
         // dispatch update first matches
+        // update matches in UI
         dispatch(
             updateFirstStage({
                 newCurrentMatch: { ...match, contenders: newMatchContenders },
@@ -122,12 +210,13 @@ export default function ContenderSelect({
                 },
             })
         );
-        // update matches in UI
-        // close nav
+        // close or update nav
+        // refreshSelectNav({ contender: currentContender });
+        closeSelectNav();
     };
 
     // RENDER UI
-    const renderUi = ({ firstStageTotMatches }) => {
+    const renderUi = ({ currentContender, firstStageTotMatches }) => {
         console.log("ui: ", ui);
         if (ui === "switch") {
             // Generate options dynamically
@@ -203,7 +292,8 @@ export default function ContenderSelect({
                                     selectedMatch: stageMatches[optionSelected],
                                     matchId: match.matchId,
                                     selectedMatchId: optionSelected,
-                                    firstIndex: currentContender.index,
+                                    firstIndex: currentContenderIndex,
+                                    // firstIndex: currentContender.index,
                                     secondIndex: newContender - 1,
                                     stageMatches,
                                 })
@@ -221,33 +311,67 @@ export default function ContenderSelect({
                     </span>
                 </div>
             );
-        } else if (ui === "search") {
+        } else if (ui === "add") {
             return (
                 <div className={styles.navMatchBody}>
-                    <span onClick={() => handleUI()}>Close</span>
+                    {notSelectedData ? (
+                        <>
+                            <span>Select contender: </span>
+                            <div className={styles.contenderSelectorWrap}>
+                                {notSelectedData.map((cont) => (
+                                    <p
+                                        key={"not selected conteder " + cont.id}
+                                        onClick={() =>
+                                            handleAddNew({
+                                                currentContender,
+                                                currentContenderIndex,
+                                                newContender: cont,
+                                                match,
+                                            })
+                                        }
+                                    >
+                                        {cont.title}
+                                    </p>
+                                ))}
+                            </div>
+                        </>
+                    ) : (
+                        <p>No contenders left</p>
+                    )}
+
+                    <span
+                        className={styles.fakeBtn + " " + "button-standard"}
+                        onClick={() => handleUI()}
+                    >
+                        Close
+                    </span>
                 </div>
             );
         } else {
             return (
                 <div className={styles.navMatchBody}>
+                    {currentContender && (
+                        <span
+                            className={styles.fakeBtn + " " + "button-standard"}
+                            onClick={() => handleUI("switch")}
+                        >
+                            Switch
+                        </span>
+                    )}
                     <span
                         className={styles.fakeBtn + " " + "button-standard"}
-                        onClick={() => handleUI("switch")}
+                        onClick={() => handleUI("add")}
                     >
-                        Switch
-                    </span>
-                    <span
-                        className={styles.fakeBtn + " " + "button-standard"}
-                        onClick={() => handleUI("search")}
-                    >
-                        Search
+                        Add
                     </span>
                     <button
                         className="button-standard"
                         type="button"
+                        disabled={!currentContender} // not working 🔴
                         onClick={() =>
                             handleRemove({
                                 currentContender,
+                                match,
                                 matchId: match.matchId,
                             })
                         }
@@ -267,7 +391,7 @@ export default function ContenderSelect({
                     <span>Contender: {currentContender.id}</span>
                 )}
             </div>
-            {renderUi({ firstStageTotMatches })}
+            {renderUi({ currentContender, firstStageTotMatches })}
         </div>
     );
 }

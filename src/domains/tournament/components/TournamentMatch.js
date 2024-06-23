@@ -50,14 +50,17 @@ export default function TournamentMatch({
     const [isSelectNavOpen, setIsSelectNavOpen] = useState(false);
     const dropdownRef = useRef(null);
     const [selectedContender, setSelectedContender] = useState(false);
+    const [selectedContenderIndex, setSelectedContenderIndex] = useState(false);
 
-    const openSelectNav = ({ contender }) => {
+    const openSelectNav = ({ contender, index }) => {
         setIsSelectNavOpen(true);
-        contender && setSelectedContender(contender);
+        !!contender && setSelectedContender(contender);
+        setSelectedContenderIndex(index);
     };
     const closeSelectNav = () => {
         setIsSelectNavOpen(false);
         setSelectedContender();
+        setSelectedContenderIndex();
     };
 
     useEffect(() => {
@@ -89,7 +92,8 @@ export default function TournamentMatch({
                         " " +
                         (contender?.id || "undefined " + (i + 1))
                     }
-                    contender={{ ...contender, index: i }}
+                    contender={contender}
+                    index={i}
                     isStarted={isStarted}
                     isFirstStage={isFirstStage}
                     openSelectNav={openSelectNav}
@@ -100,8 +104,11 @@ export default function TournamentMatch({
             {isSelectNavOpen && (
                 <ContenderSelect
                     currentContender={selectedContender}
+                    currentContenderIndex={selectedContenderIndex}
                     match={match}
                     stageMatches={stageMatches}
+                    refreshSelectNav={openSelectNav}
+                    closeSelectNav={closeSelectNav}
                 />
             )}
         </div>
