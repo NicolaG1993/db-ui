@@ -1,8 +1,10 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, current } from "@reduxjs/toolkit";
 import Cookies from "js-cookie";
 import { shuffle } from "@/src/application/utils/orderData";
 import calcTournamentStructure from "@/src/domains/tournament/utils/calcTournamentStructure";
 import generateTableSequences from "@/src/domains/tournament/utils/generateTableSequences";
+import getNextStageMatch from "@/src/domains/tournament/utils/getNextStageMatch";
+import filterKeys from "@/src/domains/tournament/utils/filterKeys";
 
 const initialState = {
     tournamentData: Cookies.get("tournamentData")
@@ -203,6 +205,86 @@ const tournamentSlice = createSlice({
                 }
             }
         },
+        setMatchWinner: (state, action) => {
+            const { stage, match, winner } = action.payload;
+
+            // update current match and stage
+            let newMatch = { ...match, winner };
+            let newStageMatches = {
+                ...stage.stageMatches,
+                [`${match.matchId}`]: newMatch,
+            };
+            let newStage = { ...stage, stageMatches: newStageMatches };
+
+            // update current stage in state
+            state.tournamentTable.tournamentStructure[stage.stageId] = newStage;
+
+            // update next match and stage
+
+            // TODO: 👇🧠
+            /**
+             * get next stage and next match dynamicaly
+             * update them
+             * update store
+             */
+            let nextStage =
+                state.tournamentTable.tournamentStructure[
+                    `${stage.stageId + 1}`
+                ];
+            // let nextMatch = nextStage
+
+            ////// TESTING  👇
+            let totPrevStageMatches = stage.stageMatches.length; // 8
+            let totNextStageMatches = nextStage.stageMatches.length; // 4
+            let prevMatchId = match.matchId; // 3
+
+            // let { evenKeys, oddKeys } = filterKeys(stage.stageMatches);
+            let isEven = match.matchId % 2 === 0;
+
+            let res1 = filterKeys(newStage.stageMatches);
+            let currentMatchesColumn = isEven ? res1.evenKeys : res1.oddKeys;
+
+            let res2 = filterKeys(nextStage.stageMatches);
+            let nextMatchesColumn = isEven ? res2.evenKeys : res2.oddKeys;
+
+            // .... 🧠🧠🧠
+            const result = getNextStageMatch({
+                // selected: currentMatchIndex,
+                currentMatchesColumn,
+                nextMatchesColumn,
+                currentMatch: newMatch,
+                // currentMatches: newStage.stageMatches,
+                // nextMatches: nextStage.stageMatches,
+                // matchId: newMatch.matchId,
+                // contenderId: winner.id,
+            });
+            console.log(
+                "🧠🧠🧠🧠🧠🧠🧠🧠🧠getNextStageMatch🧠🧠🧠🧠🧠🧠🧠🧠🧠",
+                {
+                    result,
+                    // nextStage: {
+                    //     ...nextStage,
+                    //     ...result.newNextColumn,
+                    // },
+                    nextStage: current(nextStage),
+                    // newNextColumn: { ...result.newNextColumn },
+                }
+            );
+
+            Object.values(result.newNextColumn).map((el) =>
+                console.log("EL from result.newNextColumn: ", current(el))
+            );
+
+            let newNextStageMatches = {
+                ...nextStage.stageMatches,
+                ...result.newNextColumn,
+            };
+
+            state.tournamentTable.tournamentStructure[nextStage.stageId] = {
+                ...nextStage,
+                stageMatches: newNextStageMatches,
+            };
+        },
     },
 });
 
@@ -214,8 +296,10 @@ export const {
     updateFirstStage,
     updateMatchError,
     startTournament,
+    quitTournament,
     initNextMatch,
     updateNotSelectedData,
+    setMatchWinner,
 } = tournamentSlice.actions;
 
 export const selectTournamentData = (state) =>

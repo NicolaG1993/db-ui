@@ -7,7 +7,7 @@ const renderStageMatches = ({
     isFirstStage,
     isStarted,
     isError,
-    stageMatches,
+    stage,
 }) => {
     // console.log(
     //     "renderStageMatches: ",
@@ -31,7 +31,8 @@ const renderStageMatches = ({
             isStarted={isStarted}
             isFirstStage={isFirstStage}
             isError={isError === match.matchId}
-            stageMatches={stageMatches}
+            stageMatches={matches}
+            stage={stage}
         >
             {match.matchId}
         </TournamentMatch>

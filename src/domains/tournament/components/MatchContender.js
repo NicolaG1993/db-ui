@@ -3,11 +3,15 @@ import styles from "@/src/domains/tournament/Tournament.module.css";
 export default function MatchContender({
     contender,
     index,
+    matchId,
     isStarted,
     isFirstStage,
     isError,
     openSelectNav,
     closeSelectNav,
+    onClickContender,
+    isWinner,
+    isEliminated,
 }) {
     if (contender?.id) {
         if (!isStarted && isFirstStage) {
@@ -25,8 +29,19 @@ export default function MatchContender({
             // contender and contender.id not updating after changes 🔴
             return (
                 <div className={styles.contenderWrap}>
-                    <div className={styles.contenderCard}>
-                        <span>Contender: {contender.id}</span>
+                    <div
+                        className={`${styles.contenderCard} ${
+                            isWinner
+                                ? styles.winner
+                                : isEliminated
+                                ? styles.eliminated
+                                : ""
+                        }`}
+                        onClick={() => onClickContender({ winner: contender })}
+                    >
+                        {/* 🔴🧠 <span>Contender: {matchId * (index + 1)}</span>
+                        🧠 maybe add index to every contender on initTournament */}
+                        <span>Contender ID: {contender.id}</span>
                     </div>
                     <div className={styles.contenderProps}>
                         <div>+</div>

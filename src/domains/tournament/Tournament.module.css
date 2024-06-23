@@ -169,7 +169,7 @@
     color: var(--text-secondary);
 }
 .settingsWrap > .settings > div > .inputWrap > select {
-    width: 80px;
+    width: 180px;
 }
 
 .settingsWrap > .settings > div > .settingsHint {
@@ -305,6 +305,30 @@
     width: 140px;
     box-shadow: var(--shadow000);
     cursor: not-allowed;
+}
+.winner {
+    background: var(--bg600);
+    color: var(--text);
+    outline: 2px solid var(--text);
+}
+.winner:hover {
+    /* background: var(--bg900);
+    color: var(--text); */
+    /* background: var(--text);
+    color: var(--bg400); */
+    background: var(--bg600);
+    color: var(--text);
+    opacity: 0.79;
+    outline: 2px solid var(--bg800);
+}
+.eliminated {
+    background: var(--bg100);
+    color: var(--bg600);
+}
+.eliminated:hover {
+    background: var(--bg100);
+    color: var(--bg600);
+    opacity: 0.79;
 }
 
 .contenderProps {

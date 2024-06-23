@@ -5,6 +5,7 @@ import {
     selectTournamentIsStarted,
     initNextMatch,
     startTournament,
+    quitTournament,
     selectTournamentData,
     selectNotSelectedData,
     selectTournamentIsLoaded,
@@ -27,6 +28,7 @@ export default function TournamentTable() {
     const dispatch = useDispatch();
 
     const handleStart = () => dispatch(startTournament());
+    const handleQuit = () => dispatch(quitTournament());
     const setupNextMatch = () => dispatch(initNextMatch());
 
     console.log("TournamentTable: ", { tournamentStructure, setup });
@@ -43,17 +45,12 @@ export default function TournamentTable() {
                 >
                     Tournament Table
                 </h1>
-                {!isStarted && (
+                {!isStarted ? (
                     <>
                         <button
                             className="button-standard"
                             type="button"
                             onClick={() => handleStart()}
-                            // disabled={
-                            //     tournamentData.length <
-                            //     setup.firstStageTotMatches *
-                            //         setup.contendersPerMatch
-                            // }
                             disabled={
                                 setup.totContenders >
                                 tournamentData.length - notSelectedData.length
@@ -67,6 +64,16 @@ export default function TournamentTable() {
                                 ⚠️ Select all contenders to procede
                             </p>
                         )}
+                    </>
+                ) : (
+                    <>
+                        <button
+                            className="button-standard"
+                            type="button"
+                            onClick={() => handleQuit()}
+                        >
+                            QUIT TOURNAMENT
+                        </button>
                     </>
                 )}
             </div>

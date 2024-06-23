@@ -71,6 +71,12 @@ export default function TournamentStage({
             gridRowStart: 1,
             gridRowEnd: -1,
         };
+        /*
+         let stageArea = {
+            gridRowStart: tableRows - (tableRows - stageKey),
+            gridRowEnd: tableRows - stageKey + 1,
+        };
+        */
 
         let stageAreaLeft = {
             ...stageArea,
@@ -109,7 +115,7 @@ export default function TournamentStage({
                             isStarted,
                             isFirstStage,
                             isError,
-                            stageMatches: stage.stageMatches,
+                            stage,
                         })}
                     </div>
                 </div>
@@ -131,7 +137,7 @@ export default function TournamentStage({
                             isStarted,
                             isFirstStage,
                             isError,
-                            stageMatches: stage.stageMatches,
+                            stage,
                         })}
                     </div>
                 </div>

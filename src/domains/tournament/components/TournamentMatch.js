@@ -2,8 +2,11 @@ import styles from "@/src/domains/tournament/Tournament.module.css";
 import MatchContender from "./MatchContender";
 import generateTableSequences from "../utils/generateTableSequences";
 import { useEffect, useRef, useState } from "react";
-import { selectTournamentSetup } from "@/src/application/redux/slices/tournamentSlice";
-import { shallowEqual, useSelector } from "react-redux";
+import {
+    selectTournamentSetup,
+    setMatchWinner,
+} from "@/src/application/redux/slices/tournamentSlice";
+import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import ContenderSelect from "./ContenderSelect";
 
 export default function TournamentMatch({
@@ -16,6 +19,7 @@ export default function TournamentMatch({
     isFirstStage,
     isStarted,
     stageMatches,
+    stage,
 }) {
     // generateTableSequences(tableRows);
     // 🔴🧠🔴🧠 Usare e abbinare a stages - ma non so dove
@@ -46,7 +50,7 @@ export default function TournamentMatch({
     Uguali, meta, etcc ? di totRows ?
     crea fn
     */
-
+    const dispatch = useDispatch();
     const [isSelectNavOpen, setIsSelectNavOpen] = useState(false);
     const dropdownRef = useRef(null);
     const [selectedContender, setSelectedContender] = useState(false);
@@ -61,6 +65,9 @@ export default function TournamentMatch({
         setIsSelectNavOpen(false);
         setSelectedContender();
         setSelectedContenderIndex();
+    };
+    const handleMatchResult = ({ winner }) => {
+        dispatch(setMatchWinner({ stage, match, winner }));
     };
 
     useEffect(() => {
@@ -94,11 +101,16 @@ export default function TournamentMatch({
                     }
                     contender={contender}
                     index={i}
+                    matchId={match.matchId}
                     isStarted={isStarted}
                     isFirstStage={isFirstStage}
                     openSelectNav={openSelectNav}
                     closeSelectNav={closeSelectNav}
-                    // onClick={handleClickContender}
+                    onClickContender={handleMatchResult}
+                    isWinner={match.winner && match.winner.id === contender.id}
+                    isEliminated={
+                        match.winner && match.winner.id !== contender.id
+                    }
                 />
             ))}
             {isSelectNavOpen && (
