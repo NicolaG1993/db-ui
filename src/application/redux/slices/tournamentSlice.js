@@ -60,11 +60,12 @@ const tournamentSlice = createSlice({
                 finale: undefined,
             }  
             */
-            const { contendersPerMatch, order } = action.payload;
+            const { contendersPerMatch, order, totContenders } = action.payload;
             ////new Version
             const result = calcTournamentStructure({
                 allContenders: state.tournamentData,
                 contendersPerMatch,
+                totContenders,
             });
             console.log("💫 result 💫: ", result);
 
@@ -99,8 +100,12 @@ const tournamentSlice = createSlice({
                 matches,
             };
             */
-            state.notSelectedData = state.tournamentData.slice(
-                result.totMatches * contendersPerMatch
+            console.log(
+                "state.tournamentData.slice(totContenders): ",
+                state.tournamentData.slice(totContenders)
+            );
+            state.notSelectedData = [...state.tournamentData].slice(
+                totContenders
             );
             state.tournamentTable = {
                 setup: {
@@ -109,11 +114,13 @@ const tournamentSlice = createSlice({
                     tableRows: result.tableRows * 2,
                     tableColumns: (result.totStages - 1) * 2 + 2,
                     totMatches: result.totMatches,
-                    totContenders: result.totMatches * contendersPerMatch,
+                    // totContenders:
+                    //     result.firstStageTotMatches * contendersPerMatch,
+                    totContenders,
                     tableRowsSequences: generateTableSequences(
                         result.tableRows * 2
                     ),
-                    firstStageTotMatches: Object.keys(result.firstStage).length, // test 🟨
+                    firstStageTotMatches: result.firstStageTotMatches,
                 },
                 tournamentStructure: result.tournamentStructure,
             };

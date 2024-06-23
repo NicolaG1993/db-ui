@@ -94,9 +94,13 @@ const createEmptyStageMatches = ({
     return { stageMatches, totMatches: stageTotMatches };
 };
 
-const calcTournamentStructure = ({ allContenders, contendersPerMatch }) => {
+const calcTournamentStructure = ({
+    allContenders,
+    contendersPerMatch,
+    totContenders,
+}) => {
     // const contendersPerMatch = 2; // test 3 🧠
-    const totContenders = allContenders.length;
+    // const totContenders = allContenders.length;
 
     // calc totStages
     const firstStageTotMatches = Math.ceil(totContenders / contendersPerMatch);
@@ -202,6 +206,7 @@ const calcTournamentStructure = ({ allContenders, contendersPerMatch }) => {
         totStages,
         firstStage,
         totMatches,
+        firstStageTotMatches: Object.keys(firstStage).length,
     };
 };
 

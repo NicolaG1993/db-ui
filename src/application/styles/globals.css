@@ -226,6 +226,9 @@ html {
     --dangerBg100: red;
     --dangerBg200: rgb(215, 61, 61);
     --dangerBg300: rgba(255, 0, 0, 0.139);
+    --warning000: yellow;
+    --warning100: gold;
+    --warning200: goldenrod;
     --shadow000: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
 body {

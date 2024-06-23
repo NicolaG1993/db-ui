@@ -41,10 +41,16 @@ export default function ContenderSelect({
         label ? setUI(label) : setUI();
     };
 
-    const handleRemove = ({ currentContender, match, matchId }) => {
-        const newMatchContenders = [...match.contenders].map((cont) =>
-            cont.id === currentContender.id ? null : cont
+    const handleRemove = ({
+        currentContender,
+        currentContenderIndex,
+        match,
+        matchId,
+    }) => {
+        const newMatchContenders = [...match.contenders].map((cont, i) =>
+            i === currentContenderIndex ? null : cont
         );
+        // cont.id === currentContender.id ? null : cont
         const newCurrentMatch = { ...match, contenders: newMatchContenders };
 
         dispatch(
@@ -371,6 +377,7 @@ export default function ContenderSelect({
                         onClick={() =>
                             handleRemove({
                                 currentContender,
+                                currentContenderIndex,
                                 match,
                                 matchId: match.matchId,
                             })

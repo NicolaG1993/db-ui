@@ -6,6 +6,8 @@ import {
     initNextMatch,
     startTournament,
     selectTournamentData,
+    selectNotSelectedData,
+    selectTournamentIsLoaded,
 } from "@/src/application/redux/slices/tournamentSlice";
 import TournamentStage from "@/src/domains/tournament/components/TournamentStage";
 import styles from "@/src/domains/tournament/Tournament.module.css";
@@ -20,6 +22,8 @@ export default function TournamentTable() {
     const setup = useSelector(selectTournamentSetup, shallowEqual);
     const matchError = useSelector(selectMatchError, shallowEqual);
     const isStarted = useSelector(selectTournamentIsStarted, shallowEqual);
+    const isLoaded = useSelector(selectTournamentIsLoaded, shallowEqual);
+    const notSelectedData = useSelector(selectNotSelectedData, shallowEqual);
     const dispatch = useDispatch();
 
     const handleStart = () => dispatch(startTournament());
@@ -34,7 +38,7 @@ export default function TournamentTable() {
             <div className={styles.tournamentHeading}>
                 <h1
                     onClick={
-                        () => setupNextMatch() // delete
+                        () => setupNextMatch() // delete 🔴
                     }
                 >
                     Tournament Table
@@ -42,17 +46,27 @@ export default function TournamentTable() {
                 {!isStarted && (
                     <>
                         <button
+                            className="button-standard"
                             type="button"
                             onClick={() => handleStart()}
+                            // disabled={
+                            //     tournamentData.length <
+                            //     setup.firstStageTotMatches *
+                            //         setup.contendersPerMatch
+                            // }
                             disabled={
-                                tournamentData.length <
-                                setup.firstStageTotMatches *
-                                    setup.contendersPerMatch
+                                setup.totContenders >
+                                tournamentData.length - notSelectedData.length
                             }
                         >
                             START TOURNAMENT
                         </button>
-                        <p>Select all contenders to procede</p>
+                        {setup.totContenders >
+                            tournamentData.length - notSelectedData.length && (
+                            <p className={styles.tournamentWarning}>
+                                ⚠️ Select all contenders to procede
+                            </p>
+                        )}
                     </>
                 )}
             </div>

@@ -133,9 +133,51 @@
 }
 .settingsWrap > .settings {
     min-height: 100px;
-    border: 1px solid var(--bg600);
+    border: 1px solid var(--bg900);
     border-radius: 12px;
     box-shadow: var(--shadow000);
+    padding: 1rem;
+}
+.settingsWrap > .settings > div {
+    padding: 0.66rem 0 0.66rem 0.33rem;
+    border-bottom: 1px solid var(--bg600);
+}
+.settingsWrap > .settings > div:first-child {
+    padding-top: 0.33rem;
+}
+.settingsWrap > .settings > div:last-child {
+    padding-bottom: 0.33rem;
+    border-bottom: none;
+}
+.settingsWrap > .settings > div > .inputWrap {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+}
+.settingsWrap > .settings > div > .inputWrap > span:first-child {
+    width: 220px;
+    margin-right: 1rem;
+    display: inline-block;
+    font-weight: bold;
+    line-height: 25px;
+}
+.settingsWrap > .settings > div > .inputWrap > input[type="checkbox"] {
+    cursor: not-allowed;
+}
+.settingsWrap > .settings > div > .inputWrap > label {
+    color: var(--text-secondary);
+}
+.settingsWrap > .settings > div > .inputWrap > select {
+    width: 80px;
+}
+
+.settingsWrap > .settings > div > .settingsHint {
+    font-style: italic;
+    margin-top: 0.5rem;
+    margin-left: 0.5rem;
+    width: 100%;
+    font-size: 12px;
 }
 
 /* FOOTER WRAP */
@@ -166,6 +208,13 @@
 }
 .tournamentHeading button {
     margin-top: 1rem;
+}
+.tournamentWarning {
+    padding: 0.33rem 0.5rem 0.5rem 0.5rem;
+    outline: 1px solid var(--warning100);
+    color: var(--warning100);
+    background: var(--bg100);
+    border-radius: 10px;
 }
 .tournamentTable {
     display: grid;

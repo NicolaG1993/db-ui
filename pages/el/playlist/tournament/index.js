@@ -92,7 +92,7 @@ export default function TournamentSession() {
 
     const [settingsForm, setSettingsForm] = useState({
         contendersPerMatch: 2,
-        totContenders: undefined,
+        totContenders: "",
         order: "index",
     });
 
@@ -130,11 +130,13 @@ export default function TournamentSession() {
 
     const renderContendersOptions = (dataLength) => {
         const options = getInferiorGeometricValues(dataLength);
-        return options.map((opt) => (
-            <option key={"Contender option " + opt} value={opt}>
-                {opt}
-            </option>
-        ));
+        return options
+            .filter((opt) => opt >= 4)
+            .map((opt) => (
+                <option key={"Contender option " + opt} value={opt}>
+                    {opt}
+                </option>
+            ));
     };
 
     // console.log("TournamentSession: ", {
@@ -302,77 +304,69 @@ export default function TournamentSession() {
                             </form> */}
 
                             <div>
-                                <span>Use: </span>
-                                <input
-                                    type="checkbox"
-                                    id="use"
-                                    name="use"
-                                    checked
-                                    disabled
-                                    value={"Session Playlist"}
-                                />
-                                <label htmlFor="use">Session Playlist</label>
+                                <div className={styles.inputWrap}>
+                                    <span>Use: </span>
+                                    <input
+                                        type="checkbox"
+                                        id="use"
+                                        name="use"
+                                        checked
+                                        disabled
+                                        value={"Session Playlist"}
+                                    />
+                                    <label htmlFor="use">
+                                        {`Session Playlist (${tournamentData.length})`}
+                                    </label>
+                                </div>
                             </div>
 
                             <div>
-                                <span>Contenders: </span>
-                                {/* <input
-                                    type="number"
-                                    id="contenders"
-                                    name="contenders"
-                                    checked
-                                    disabled
-                                    value={tournamentData.length}
-                                ></input> */}
-                                <select value={settingsForm.totContenders}>
-                                    {renderContendersOptions(
-                                        tournamentData.length
-                                    )}
-                                </select>
+                                <div className={styles.inputWrap}>
+                                    <span>Order: </span>
+                                    <select
+                                        value={settingsForm.order}
+                                        onChange={(e) =>
+                                            setSettingsForm((prev) => ({
+                                                ...prev,
+                                                order: e.target.value,
+                                            }))
+                                        }
+                                    >
+                                        <option value={"index"}>Index</option>
+                                        <option value={"random"} disabled>
+                                            Random
+                                        </option>
+                                    </select>
+                                </div>
                             </div>
 
                             <div>
-                                <span>Order: </span>
-                                <select
-                                    value={settingsForm.order}
-                                    onChange={(e) =>
-                                        setSettingsForm((prev) => ({
-                                            ...prev,
-                                            order: e.target.value,
-                                        }))
-                                    }
-                                >
-                                    <option value={"index"}>Index</option>
-                                    <option value={"random"} disabled>
-                                        Random
-                                    </option>
-                                </select>
-                            </div>
-
-                            <div>
-                                <span>Contenders per match: </span>
-                                <select
-                                    value={settingsForm.contendersPerMatch}
-                                    onChange={(e) =>
-                                        setSettingsForm((prev) => ({
-                                            ...prev,
-                                            contendersPerMatch: e.target.value,
-                                        }))
-                                    }
-                                >
-                                    <option value={2}>2</option>
-                                    <option value={3} disabled>
-                                        3
-                                    </option>
-                                    <option value={4} disabled>
-                                        4
-                                    </option>
-                                    <option value={5} disabled>
-                                        5
-                                    </option>
-                                </select>
+                                <div className={styles.inputWrap}>
+                                    <span>Contenders per Match: </span>
+                                    <select
+                                        value={settingsForm.contendersPerMatch}
+                                        onChange={(e) =>
+                                            setSettingsForm((prev) => ({
+                                                ...prev,
+                                                contendersPerMatch:
+                                                    e.target.value,
+                                            }))
+                                        }
+                                    >
+                                        <option value={2}>2</option>
+                                        <option value={3} disabled>
+                                            3
+                                        </option>
+                                        <option value={4} disabled>
+                                            4
+                                        </option>
+                                        <option value={5} disabled>
+                                            5
+                                        </option>
+                                    </select>
+                                </div>
                                 {/* 👇 Questa é solo una bozza, si potrebbe migliorare - adirittura aggiungere dynamic messages per nuovi settings futuri */}
-                                <p>
+                                <p className={styles.settingsHint}>
                                     Suggested for{" "}
                                     {settingsForm.contendersPerMatch % 2 === 0
                                         ? "even"
@@ -380,11 +374,47 @@ export default function TournamentSession() {
                                     contenders per match
                                 </p>
                             </div>
+
+                            <div>
+                                <div className={styles.inputWrap}>
+                                    <span>Total Contenders: </span>
+                                    {/* <input
+                                    type="number"
+                                    id="contenders"
+                                    name="contenders"
+                                    checked
+                                    disabled
+                                    value={tournamentData.length}
+                                ></input> */}
+                                    <select
+                                        value={settingsForm.totContenders}
+                                        onChange={(e) =>
+                                            setSettingsForm((prev) => ({
+                                                ...prev,
+                                                totContenders: e.target.value,
+                                            }))
+                                        }
+                                    >
+                                        <option
+                                            value=""
+                                            disabled
+                                            label="Please select an option*"
+                                        ></option>
+                                        {renderContendersOptions(
+                                            tournamentData.length
+                                        )}
+                                    </select>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
                     <div className={styles.footerWrap}>
                         <button
+                            disabled={
+                                !settingsForm.totContenders ||
+                                settingsForm.totContenders < 4
+                            }
                             onClick={() => handleStart(settingsForm)}
                             className={`button-standard ${styles.continueBtn}`}
                         >
