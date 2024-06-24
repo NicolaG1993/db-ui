@@ -22,6 +22,7 @@ import {
     initSideNavData,
     selectFormSideNavData,
     selectFormStoreLabel,
+    selectFormIsFinish,
 } from "@/src/application/redux/slices/formSlice";
 import dataStructureForms from "@/src/application/settings/dataStructureForms";
 import { fetchDataForSideNav } from "@/src/domains/_app/actions/formFetchers";
@@ -29,6 +30,10 @@ import submitForm from "@/src/domains/_app/components/Form/actions/submitForm";
 import allNationalities from "@/src/application/settings/allNationalities";
 import { getError } from "@/src/application/utils/error";
 import FormHeader from "./FormHeader@2.0/FormHeader";
+import {
+    activateLoadingItem,
+    clearItem,
+} from "@/src/application/redux/slices/itemSlice";
 
 export default function Form({
     formLabel,
@@ -53,6 +58,7 @@ export default function Form({
     // const newImage = useSelector(selectFormStoreNewImage, shallowEqual);
     const formErrors = useSelector(selectFormStoreErrors, shallowEqual);
     const isLoading = useSelector(selectFormIsLoading, shallowEqual);
+    const isFinish = useSelector(selectFormIsFinish, shallowEqual);
     const sideNavData = useSelector(selectFormSideNavData, shallowEqual);
     const storedFormLabel = useSelector(selectFormStoreLabel, shallowEqual);
 
@@ -136,6 +142,10 @@ export default function Form({
                     dispatch(handlePostSuccess());
                     setOpenForm && setOpenForm(false); // forse non necessario ? // trasformare in action? not sure
 
+                    // Clear previous Item before routing
+                    dispatch(clearItem());
+                    dispatch(activateLoadingItem());
+
                     formLabel !== "record" &&
                         formLabel !== "records" &&
                         router.push(`/el/${formLabel}/${data.data.id}`);
@@ -156,7 +166,10 @@ export default function Form({
                 <FormHeader formLabel={formLabel} propsData={propsData} />
 
                 <div className={styles.formBox}>
-                    {!isLoading && FormComponent && formLabel === form.key ? (
+                    {!isLoading &&
+                    !isFinish &&
+                    FormComponent &&
+                    formLabel === form.key ? (
                         <FormComponent confirmChanges={confirmChanges} />
                     ) : (
                         // 🧠 Fare loader migliore

@@ -67,13 +67,17 @@
 }
 .selectedList > div,
 .selectedEl {
-    background-color: var(--color100);
+    background-color: var(--color000);
+    color: var(--bg100);
 }
 .unselectedEl:hover {
     background-color: var(--bg700);
     color: var(--text);
 }
 .selectedEl:hover {
-    background-color: var(--color200);
-    color: var(--text);
+    /* background-color: var(--color200);
+    color: var(--text); */
+    color: var(--text-secondary);
+    outline: 1px solid var(--text-secondary);
+    background-color: var(--color400);
 }

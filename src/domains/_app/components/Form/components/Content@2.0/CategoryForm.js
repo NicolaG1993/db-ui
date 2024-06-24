@@ -9,6 +9,7 @@ import {
     validateForm,
     updateFormState,
     selectFormIsLoadingResponse,
+    selectFormIsFinish,
 } from "@/src/application/redux/slices/formSlice";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
@@ -29,6 +30,7 @@ export default function CategoryForm({ confirmChanges }) {
         selectFormIsLoadingResponse,
         shallowEqual
     );
+    const isFinish = useSelector(selectFormIsFinish, shallowEqual);
 
     const dispatch = useDispatch();
 
@@ -146,7 +148,7 @@ export default function CategoryForm({ confirmChanges }) {
                 <div className={styles["buttons-box"]}>
                     <button
                         type="submit"
-                        disabled={isLoading} // 🧠 isLoadingResponse ?? quale usare?? 🧠
+                        disabled={isLoading || isFinish} // 🧠 isLoadingResponse ?? quale usare?? 🧠
                         className="button-standard"
                     >
                         Confirm

@@ -1,0 +1,436 @@
+/* 
+#ElMain {} 
+*/
+.main p {
+    margin: 0;
+}
+
+.body {
+    display: flex;
+    flex-wrap: wrap; /* ? */
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+}
+
+/* HEADING */
+.headingWrap {
+    margin-bottom: 5rem;
+    width: 100%;
+}
+.headingWrap > .title {
+    font-size: 42px;
+    color: var(--text);
+    text-align: center;
+}
+.headingWrap > .subtitle {
+    font-size: 13px;
+    color: var(--text-secondary);
+    text-align: center;
+}
+
+.spacer {
+    width: 100%;
+    height: 235px;
+    margin-bottom: 1rem;
+}
+
+/* RULES WRAP */
+.rulesWrap {
+    width: 100%;
+    max-width: 600px;
+    margin-bottom: 5rem;
+}
+.rulesWrap > .heading {
+    font-size: 32px;
+    font-weight: bold;
+    letter-spacing: 0.75px;
+    color: var(--text);
+    margin-bottom: 1.85rem;
+}
+
+.rulesList {
+    padding-left: 0.75rem;
+}
+
+.rulesList > li > p:first-child {
+    font-size: 24px;
+    font-weight: bold;
+    letter-spacing: 0.75px;
+    margin: 0 0 1rem 0;
+    color: var(--text-secondary);
+}
+.rulesList > li > p:nth-child(2) {
+    text-align: justify;
+}
+.rulesList > li > p:nth-child(2) {
+    /* font-size: 24px;
+    font-weight: bold; */
+    letter-spacing: 0.5px;
+    margin: 0 0 2rem 0;
+    color: var(--bg800);
+}
+.rulesList > li:nth-child(2) > p:first-child {
+    text-align: right;
+}
+
+/* OBJECTIVE WRAP */
+.objectiveWrap {
+    margin-bottom: 5rem;
+    padding: 1.5rem 1rem;
+    border: 1px solid var(--bg900);
+    border-radius: 12px;
+    width: 100%;
+    max-width: 600px;
+    box-shadow: var(--shadow000);
+}
+.objectiveWrap > .heading {
+    font-size: 24px;
+    font-weight: bold;
+    letter-spacing: 0.75px;
+    color: var(--text);
+    margin-bottom: 1rem;
+}
+.objectiveWrap > .objective {
+    color: var(--text-secondary);
+    position: relative;
+}
+.objectiveWrap > .objective > .bulletPoint {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: flex-start;
+    margin-bottom: 0.45rem;
+}
+.objectiveWrap > .objective > .bulletPoint > p {
+    /* padding: 0.25rem 0.75rem 0.25rem 0rem; */
+    font-size: 14.5px;
+}
+.objectiveWrap > .objective > .bulletPoint > p:first-child {
+    padding: 0;
+    margin: 3px 0.5rem 5px 0.75rem;
+    width: 28px;
+    text-align: left;
+    font-weight: bold;
+}
+.objectiveWrap > .objective > .bulletPoint > p:nth-child(2) {
+    padding: 0.25rem 0.75rem 0.25rem 0rem;
+    width: 100%;
+}
+
+/* SETTINGS WRAP */
+.settingsWrap {
+    width: 100%;
+    max-width: 600px;
+    margin-bottom: 3rem;
+}
+.settingsWrap > .heading {
+    font-size: 36px;
+    font-weight: bold;
+    letter-spacing: 0.75px;
+    color: var(--text);
+    margin-bottom: 3rem;
+}
+.settingsWrap > .settings {
+    min-height: 100px;
+    border: 1px solid var(--bg900);
+    border-radius: 12px;
+    box-shadow: var(--shadow000);
+    padding: 1rem;
+}
+.settingsWrap > .settings > div {
+    padding: 0.66rem 0 0.66rem 0.33rem;
+    border-bottom: 1px solid var(--bg600);
+}
+.settingsWrap > .settings > div:first-child {
+    padding-top: 0.33rem;
+}
+.settingsWrap > .settings > div:last-child {
+    padding-bottom: 0.33rem;
+    border-bottom: none;
+}
+.settingsWrap > .settings > div > .inputWrap {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+}
+.settingsWrap > .settings > div > .inputWrap > span:first-child {
+    width: 220px;
+    margin-right: 1rem;
+    display: inline-block;
+    font-weight: bold;
+    line-height: 25px;
+}
+.settingsWrap > .settings > div > .inputWrap > input[type="checkbox"] {
+    cursor: not-allowed;
+}
+.settingsWrap > .settings > div > .inputWrap > label {
+    color: var(--text-secondary);
+}
+.settingsWrap > .settings > div > .inputWrap > select {
+    width: 180px;
+}
+
+.settingsWrap > .settings > div > .settingsHint {
+    font-style: italic;
+    margin-top: 0.5rem;
+    margin-left: 0.5rem;
+    width: 100%;
+    font-size: 12px;
+}
+
+/* FOOTER WRAP */
+.footerWrap {
+    width: 100%;
+    max-width: 600px;
+    margin-bottom: 5rem;
+}
+.footerWrap > .continueBtn {
+    height: 60px;
+    /* width: 240px; */
+    width: 100%;
+    font-weight: bold;
+    font-size: 22px;
+    box-shadow: var(--shadow000);
+}
+
+/* TOURNAMENT TABLE */
+.tournamentHeading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    margin: 0 0 1.5rem 0;
+}
+.tournamentHeading h1 {
+    margin: 0;
+}
+.tournamentHeading button {
+    margin-top: 1rem;
+}
+.tournamentWarning {
+    padding: 0.33rem 0.5rem 0.5rem 0.5rem;
+    outline: 1px solid var(--warning100);
+    color: var(--warning100);
+    background: var(--bg100);
+    border-radius: 10px;
+}
+.tournamentTable {
+    display: grid;
+    grid-template-columns: 120px 1fr 120px;
+    width: 100%;
+    background: var(--bg000);
+    padding: 0.5rem 0.5rem 0.75rem 0.5rem;
+    overflow: auto;
+}
+.tableColumn {
+    font-size: 11px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.tableColumn > p:first-child {
+    font-size: 13px;
+    letter-spacing: 0.3pt;
+    font-weight: 700;
+    margin: 0.25rem 0;
+    text-align: center;
+}
+.stage {
+    display: grid;
+    grid-template-columns: auto;
+    background: var(--bg100);
+    margin: 0 0.25rem;
+}
+.match {
+    display: flex;
+    flex-direction: column;
+    padding: 0.25rem 0.33rem;
+    outline: 1px solid var(--bg300);
+    background: var(--bg200);
+    margin: 0.5rem 0.33rem;
+    cursor: pointer;
+    transition: 0.05s ease;
+    position: relative;
+}
+.match:hover {
+    outline: 2px solid var(--bg400);
+}
+.match > span:nth-child(1) {
+    font-weight: 700;
+}
+.contenderWrap {
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+.contenderCard {
+    display: flex;
+    flex-direction: column;
+    padding: 0.25rem 0.33rem;
+    margin: 0.25rem 0;
+    outline: 1px solid var(--bg400);
+    background: var(--bg300);
+    height: 60px;
+    width: 120px;
+    box-shadow: var(--shadow000);
+}
+.contenderCardSelect {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 0.25rem 0.33rem;
+    margin: 0.25rem 0;
+    outline: 1px solid var(--bg400);
+    background: var(--bg200);
+    height: 60px;
+    width: 140px;
+    box-shadow: var(--shadow000);
+}
+.contenderCard:hover,
+.contenderCardSelect:hover {
+    outline: 2px solid var(--bg500);
+    background: var(--bg500);
+}
+.contenderCardNA {
+    display: flex;
+    flex-direction: column;
+    padding: 0.25rem 0.33rem;
+    margin: 0.25rem 0;
+    outline: 1px solid var(--bg400);
+    background: var(--bg300);
+    height: 60px;
+    width: 140px;
+    box-shadow: var(--shadow000);
+    cursor: not-allowed;
+}
+.winner {
+    background: var(--bg600);
+    color: var(--text);
+    outline: 2px solid var(--text);
+}
+.winner:hover {
+    /* background: var(--bg900);
+    color: var(--text); */
+    /* background: var(--text);
+    color: var(--bg400); */
+    background: var(--bg600);
+    color: var(--text);
+    opacity: 0.79;
+    outline: 2px solid var(--bg800);
+}
+.eliminated {
+    background: var(--bg100);
+    color: var(--bg600);
+}
+.eliminated:hover {
+    background: var(--bg100);
+    color: var(--bg600);
+    opacity: 0.79;
+}
+
+.contenderProps {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+    margin-left: 0.25rem;
+    height: 60px;
+}
+
+.contenderProps > div {
+    width: 17px;
+    height: 17px;
+    padding: 0.1rem;
+    margin: 0.1rem;
+    outline: 1px solid var(--bg400);
+    background: var(--bg300);
+    font-size: 16px;
+    line-height: 16px;
+    font-weight: 700;
+    border-radius: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.contenderProps > div:hover {
+    outline: 2px solid var(--bg500);
+    background: var(--bg500);
+}
+
+.match > .isError {
+    outline: 1px solid red;
+    background: red;
+}
+
+/* CONTENDER SELECT NAV */
+.contenderSelectNav {
+    position: absolute;
+    left: 100%;
+    top: 0;
+    width: 180px;
+    /* height: 180px; */
+    background: var(--bg400);
+    outline: 2px solid var(--bg500);
+    z-index: 100;
+}
+
+.contenderSelectNav > .navMatchInfo {
+    display: flex;
+    flex-direction: column;
+    padding: 0.33rem 0.5rem;
+    border-bottom: 2px solid var(--bg500);
+    cursor: default;
+}
+.contenderSelectNav > .navMatchInfo span {
+}
+.contenderSelectNav > .navMatchBody {
+    display: flex;
+    flex-direction: column;
+    padding: 0.33rem 0.5rem;
+    height: 155px;
+    cursor: default;
+}
+.contenderSelectNav > .navMatchBody > span:first-child {
+    margin-bottom: 0.25rem;
+}
+.contenderSelectNav > .navMatchBody > button,
+.contenderSelectNav > .navMatchBody > .fakeBtn {
+    margin: 0.33rem 0;
+}
+.contenderSelectNav > .navMatchBody > .contenderSelectorWrap {
+    height: 100%;
+    overflow-y: auto;
+    border: 1px solid var(--bg500);
+    background: var(--bg300);
+    cursor: default;
+}
+.contenderSelectNav > .navMatchBody > .contenderSelectorWrap > p {
+    margin: 0.33rem 0.25rem;
+    padding: 0.2rem 0.33rem;
+    border-radius: 10px;
+    cursor: pointer;
+    background: var(--bg400);
+    transition: 0.08s ease-out;
+}
+.contenderSelectNav > .navMatchBody > .contenderSelectorWrap > p:hover {
+    padding: 0.2rem 0.25rem 0.2rem 0.41rem;
+    background: var(--bg500);
+}
+
+.fakeBtn {
+    /* border-radius: 25px; */
+    border-radius: 10px;
+    height: 19px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: 0.08s ease-out;
+    font-size: 0.8rem;
+    font-family: Arial, Helvetica, sans-serif;
+    padding: 1px 6px;
+}

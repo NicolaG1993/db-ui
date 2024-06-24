@@ -6,6 +6,7 @@ import {
     selectFormStoreSettings,
     selectFormStoreErrors,
     selectFormIsLoading,
+    selectFormIsFinish,
     validateForm,
     updateFormState,
     openSideNav,
@@ -25,15 +26,16 @@ import InputDate from "@/src/domains/_app/components/Inputs/InputDate/InputDate"
 import InputSelect from "@/src/domains/_app/components/Inputs/InputSelect/InputSelect";
 
 export default function ActorForm({ confirmChanges }) {
-    let formState = useSelector(selectFormState, shallowEqual);
-    let propsData = useSelector(selectFormPropsData, shallowEqual);
-    let form = useSelector(selectFormStoreSettings, shallowEqual);
-    let errors = useSelector(selectFormStoreErrors, shallowEqual);
-    let isLoading = useSelector(selectFormIsLoading, shallowEqual);
+    const formState = useSelector(selectFormState, shallowEqual);
+    const propsData = useSelector(selectFormPropsData, shallowEqual);
+    const form = useSelector(selectFormStoreSettings, shallowEqual);
+    const errors = useSelector(selectFormStoreErrors, shallowEqual);
+    const isLoading = useSelector(selectFormIsLoading, shallowEqual);
     const isLoadingResponse = useSelector(
         selectFormIsLoadingResponse,
         shallowEqual
     );
+    const isFinish = useSelector(selectFormIsFinish, shallowEqual);
 
     const dispatch = useDispatch();
 
@@ -278,7 +280,7 @@ export default function ActorForm({ confirmChanges }) {
                 <div className={styles["buttons-box"]}>
                     <button
                         type="submit"
-                        disabled={isLoading} // isLoadingResponse ?
+                        disabled={isLoading || isFinish} // isLoadingResponse ?
                         className="button-standard"
                     >
                         Confirm

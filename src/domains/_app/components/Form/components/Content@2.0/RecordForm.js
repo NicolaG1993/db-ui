@@ -1,4 +1,5 @@
 import {
+    selectFormIsFinish,
     selectFormIsLoading,
     selectFormPropsData,
     selectFormState,
@@ -8,24 +9,16 @@ import {
 import styles from "@/src/domains/_app/components/Form/components/Form.module.css";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 
-export default function RecordForm({
-    confirmChanges,
-    // formState,
-    // updateFormState,
-    // validateData,
-    // errors,
-    // isLoading,
-    // setOpenForm,
-}) {
+export default function RecordForm({ confirmChanges }) {
     let formState = useSelector(selectFormState, shallowEqual);
     let propsData = useSelector(selectFormPropsData, shallowEqual);
     let form = useSelector(selectFormStoreSettings, shallowEqual);
     let errors = useSelector(selectFormStoreErrors, shallowEqual);
     let isLoading = useSelector(selectFormIsLoading, shallowEqual);
+    const isFinish = useSelector(selectFormIsFinish, shallowEqual);
 
     const dispatch = useDispatch();
 
-    console.log("♟️ RecordForm: ", { formState });
     //================================================================================
     // Render UI
     //================================================================================
@@ -39,7 +32,6 @@ export default function RecordForm({
                     form,
                     propsData,
                     formLabel: form.key,
-                    // setOpenForm,
                 })
             }
             className={styles.form}
@@ -54,7 +46,6 @@ export default function RecordForm({
                     type="date"
                     name="created_at"
                     id="CreatedAt"
-                    // onChange={(e) => updateFormState(e.target.value, "date")}
                     onChange={(e) =>
                         dispatch(
                             updateFormState({
@@ -77,7 +68,7 @@ export default function RecordForm({
             >
                 <button
                     type="submit"
-                    disabled={isLoading}
+                    disabled={isLoading || isFinish}
                     className="button-standard"
                 >
                     Confirm

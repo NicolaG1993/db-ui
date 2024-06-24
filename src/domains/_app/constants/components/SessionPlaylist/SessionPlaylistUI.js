@@ -55,10 +55,6 @@ export default function SessionPlaylistUI({
     };
 
     const clearPreviousItem = (id) => {
-        console.log("clearPreviousItem:", {
-            clickedItemID: id.toString(),
-            pageID: router.query.id,
-        });
         if (id.toString() !== router.query.id) {
             dispatch(clearItem());
             dispatch(activateLoadingItem());
