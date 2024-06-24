@@ -1,6 +1,7 @@
 import nextGeometricValue from "./nextGeometricValue";
 import stepsToReachGeometricValue from "./stepsToReachGeometricValue";
 import geometricValue from "./geometricValue";
+import { current } from "@reduxjs/toolkit";
 
 const createFirstStage = ({
     realFirstStageTotMatches,
@@ -104,6 +105,16 @@ const calcTournamentStructure = ({
 
     // calc totStages
     const firstStageTotMatches = Math.ceil(totContenders / contendersPerMatch);
+    console.log("🍄 calcTournamentStructure #1: ", {
+        allContenders: current(allContenders),
+        contendersPerMatch,
+        totContenders,
+        firstStageTotMatches,
+    });
+
+    // 👇🔴👇🔴 FIX HERE! 👇🔴👇🔴 //
+    // we should have some utils for some of this // geometric sequences
+
     // const firstStageTotBranches = Math.ceil(firstStageTotMatches / 4);
     const firstStageTotMatchesPerSide = Math.ceil(firstStageTotMatches / 2);
 
@@ -112,6 +123,13 @@ const calcTournamentStructure = ({
     );
     const realFirstStageTotMatches = firstStageTotBranchesPerSide * 4 * 2;
     const realFirstStageTotMatchesPerSide = realFirstStageTotMatches / 2;
+
+    console.log("🍄 calcTournamentStructure #2: ", {
+        firstStageTotMatchesPerSide,
+        firstStageTotBranchesPerSide,
+        realFirstStageTotMatches,
+        realFirstStageTotMatchesPerSide,
+    });
 
     // let totPhases = nextGeometricValue(
     //     Math.ceil(realFirstStageTotMatchesPerSide)
@@ -124,6 +142,11 @@ const calcTournamentStructure = ({
         realFirstStageTotMatches,
         contendersPerMatch,
         allContenders,
+    });
+
+    console.log("🍄 calcTournamentStructure #3: ", {
+        totStages,
+        firstStage,
     });
 
     const assignStages = ({ totStages, firstStage }) => {

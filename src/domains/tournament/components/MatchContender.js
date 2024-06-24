@@ -13,6 +13,7 @@ export default function MatchContender({
     isWinner,
     isEliminated,
 }) {
+    console.log("➡️➡️➡️➡️ contender: ", contender);
     if (contender?.id) {
         if (!isStarted && isFirstStage) {
             return (
@@ -21,12 +22,14 @@ export default function MatchContender({
                         className={styles.contenderCardSelect}
                         onClick={() => openSelectNav({ contender, index })}
                     >
-                        <span>✅ Contender: {contender.id}</span>
+                        <span>✅ Contender: #{contender.id}</span>
                     </div>
                 </div>
             );
         } else {
-            // contender and contender.id not updating after changes 🔴
+            // contender and contender.id not updating after changes 🔴 // 🧠 still happening? 🧠
+
+            const { title, pic, rating, cast } = contender;
             return (
                 <div className={styles.contenderWrap}>
                     <div
@@ -41,7 +44,28 @@ export default function MatchContender({
                     >
                         {/* 🔴🧠 <span>Contender: {matchId * (index + 1)}</span>
                         🧠 maybe add index to every contender on initTournament */}
-                        <span>Contender ID: {contender.id}</span>
+                        <div className={styles.contenderInfo}>
+                            <span className={styles.contenderId}>
+                                #{contender.id}
+                            </span>
+                            <div className={styles.contenderTitleWrap}>
+                                <span className={styles.contenderTitle}>
+                                    {title}
+                                </span>
+                            </div>
+                            <span className={styles.contenderRating}>
+                                {rating}
+                            </span>
+                            <div className={styles.contenderCastWrap}>
+                                <span className={styles.contenderCast}>
+                                    {cast.map((act, i, array) =>
+                                        i + 1 === array.length
+                                            ? `${act.name}`
+                                            : `${act.name}, `
+                                    )}
+                                </span>
+                            </div>
+                        </div>
                     </div>
                     <div className={styles.contenderProps}>
                         <div>+</div>

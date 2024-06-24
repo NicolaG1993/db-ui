@@ -7,23 +7,28 @@ import setupNextStageMatch from "@/src/domains/tournament/utils/setupNextStageMa
 import setupFinalStages from "@/src/domains/tournament/utils/setupFinalStages";
 import filterKeys from "@/src/domains/tournament/utils/filterKeys";
 import getCurrentMatchLoser from "@/src/domains/tournament/utils/getCurrentMatchLoser";
+import {
+    getStoredData,
+    getStoredSettings,
+    getStoredCookie,
+} from "@/src/domains/_app/utils/getStoredData";
 
 const initialState = {
-    tournamentData: Cookies.get("tournamentData")
-        ? JSON.parse(Cookies.get("tournamentData"))
-        : [],
-    notSelectedData: [], // need cookie here 🧠
+    // tournamentData: Cookies.get("tournamentData")
+    //     ? JSON.parse(Cookies.get("tournamentData"))
+    //     : [],
+    tournamentData: getStoredData("tournamentData"),
+    notSelectedData: getStoredData("notSelectedData"),
     isLoaded: false,
     isStarted: false,
     isFinished: false,
     tournamentTable: {
         setup: {
-            contendersPerMatch: undefined,
+            ...getStoredSettings(),
             totStages: undefined,
             tableRows: undefined,
             tableColumns: undefined,
             totMatches: undefined,
-            totContenders: undefined,
             tableRowsSequences: undefined,
             firstStageTotMatches: undefined,
         }, // honestly after setting tournamentTable becomes useless - we could not store this, if not as pure infos
@@ -39,9 +44,20 @@ const tournamentSlice = createSlice({
     initialState,
     reducers: {
         updateTournamentData: (state, action) => {
-            Cookies.set("tournamentData", JSON.stringify(action.payload));
-            state.tournamentData = action.payload;
-            state.isLoaded = true;
+            if (action.payload) {
+                // Serialize the array to a JSON string
+                const serializedArray = JSON.stringify(action.payload); // TOO BIG FOR COOKIE
+                // Cookies.set("tournamentData", serializedArray);
+                sessionStorage.setItem("tournamentData", serializedArray);
+
+                // console.log(" 🟨 updateTournamentData: ", {
+                //     payload: action.payload,
+                //     serializedArray,
+                // });
+
+                state.tournamentData = action.payload;
+                state.isLoaded = true;
+            }
         },
         shuffleTournamentData: (state) => {
             state.isLoaded = false;
@@ -51,8 +67,15 @@ const tournamentSlice = createSlice({
             state.isLoaded = true;
         },
         resetTournamentStore: () => {
-            Cookies.remove("tournamentData");
+            sessionStorage.removeItem("tournamentData");
+            sessionStorage.removeItem("notSelectedData");
+            Cookies.remove("tournamentSettings");
             return initialState;
+        },
+        resetTournament: (state) => {
+            // TODO:
+            // go back to table first render // dont reset the whole store! we have resetTournamentStore for that already
+            // solve the annoying page reload issue, seams related
         },
         setupTournament: (state, action) => {
             // group contenders for first phase (create matches)
@@ -66,14 +89,62 @@ const tournamentSlice = createSlice({
                 finale: undefined,
             }  
             */
-            const { contendersPerMatch, order, totContenders } = action.payload;
+            // let { contendersPerMatch, order, totContenders } = action.payload;
+            // use stored values if payload doesnt provide them
+
+            let contendersPerMatch =
+                !action.payload?.contendersPerMatch &&
+                state.tournamentTable.setup.contendersPerMatch
+                    ? state.tournamentTable.setup.contendersPerMatch
+                    : action.payload?.contendersPerMatch ||
+                      initialState.tournamentTable.setup.contendersPerMatch;
+
+            let order =
+                !action.payload?.order && state.tournamentTable.setup.order
+                    ? state.tournamentTable.setup.order
+                    : action.payload?.order ||
+                      initialState.tournamentTable.setup.order;
+
+            // totContenders can be only 4, 8, 16, 32, 64, etc..
+            // we do this already in the settings input before the setup
+            let totContenders = action.payload?.totContenders
+                ? Number(action.payload.totContenders)
+                : state.tournamentTable.setup.totContenders
+                ? state.tournamentTable.setup.totContenders
+                : initialState.tournamentTable.setup.totContenders;
+            /* 🧠 PRIORITIZE "payload"!!! 🧠
+               let totContenders = !action.payload?.totContenders &&
+                state.tournamentTable.setup.totContenders
+                    ? state.tournamentTable.setup.totContenders
+                    : action.payload?.totContenders ||
+                      initialState.tournamentTable.setup.totContenders;
+                    */
+            console.log("🎸🎸🎸🎸🎸🔥🌙 setupTournament #1: ", {
+                payload: action.payload,
+                settings: {
+                    totContenders,
+                    order,
+                    contendersPerMatch,
+                },
+                setupTotContenders: state.tournamentTable.setup.totContenders,
+                initialStateTotContenders:
+                    initialState.tournamentTable.setup.totContenders,
+            });
+
+            const serializedData = JSON.stringify({
+                contendersPerMatch,
+                order,
+                totContenders,
+            });
+            Cookies.set("tournamentSettings", serializedData);
+
             ////new Version
             const result = calcTournamentStructure({
                 allContenders: state.tournamentData,
                 contendersPerMatch,
                 totContenders,
             });
-            console.log("💫 result 💫: ", result);
+            // console.log("💫 result 💫: ", result);
 
             /* 
             const totMatches = Math.ceil(
@@ -108,22 +179,26 @@ const tournamentSlice = createSlice({
             */
             console.log(
                 "state.tournamentData.slice(totContenders): ",
-                state.tournamentData.slice(totContenders)
+                current(state.tournamentData).slice(totContenders)
             );
             state.notSelectedData = [...state.tournamentData].slice(
                 totContenders
             );
 
+            const serializedArray = JSON.stringify(state.notSelectedData);
+            sessionStorage.setItem("notSelectedData", serializedArray);
+
             let setup = {
                 ...state.tournamentTable.setup,
+                // totContenders:
+                //     result.firstStageTotMatches * contendersPerMatch,
+                totContenders,
+                order,
                 contendersPerMatch,
                 totStages: result.totStages + 1,
                 tableRows: result.tableRows * 2,
                 tableColumns: (result.totStages - 1) * 2 + 2,
                 totMatches: result.totMatches,
-                // totContenders:
-                //     result.firstStageTotMatches * contendersPerMatch,
-                totContenders,
                 tableRowsSequences: generateTableSequences(
                     result.tableRows * 2
                 ),
@@ -377,6 +452,10 @@ const tournamentSlice = createSlice({
                     state.tournamentTable.tournamentStructure[
                         `${state.tournamentTable.setup.totStages}`
                     ];
+                console.log(
+                    "thirdPlaceStage 🔴🔴🔴🔴🔴🔴🔴: ",
+                    current(thirdPlaceStage)
+                );
 
                 let isEven = match.matchId % 2 === 0;
 
@@ -428,6 +507,7 @@ export const {
     shuffleTournamentData,
     resetTournamentStore,
     setupTournament,
+    resetTournament,
     updateFirstStage,
     updateMatchError,
     startTournament,

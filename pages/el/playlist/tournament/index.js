@@ -94,20 +94,10 @@ export default function TournamentSession() {
         contendersPerMatch: 2,
         totContenders: "",
         order: "index",
-    });
+    }); // I need to store this after setup
 
     useEffect(() => {
-        if (!!sessionPlaylist?.length) {
-            const ids = extractIDs(sessionPlaylist);
-            // const data = fetchTournamentData(ids)
-            fetchTournamentData(ids).then((data) => {
-                dispatch(updateTournamentData(data));
-            });
-        }
-    }, [sessionPlaylist, dispatch]);
-
-    useEffect(() => {
-        if (!!tournamentData.length) {
+        if (!!tournamentData?.length) {
             // setGameOptions(calcGames(tournamentData.length)); // non metto in redux per ora, credo serva solo all'inizio del torneo, poi user sceglie uno solo
         }
     }, [tournamentData, dispatch]);
@@ -122,7 +112,7 @@ export default function TournamentSession() {
         }
     }, [sessionPlaylist, dispatch]);
 
-    const handleStart = (settingsForm) => {
+    const handleSetup = (settingsForm) => {
         // dispatch tournament settings and create first table (to edit)
         dispatch(setupTournament(settingsForm));
         router.push("/el/playlist/tournament/table");
@@ -415,7 +405,7 @@ export default function TournamentSession() {
                                 !settingsForm.totContenders ||
                                 settingsForm.totContenders < 4
                             }
-                            onClick={() => handleStart(settingsForm)}
+                            onClick={() => handleSetup(settingsForm)}
                             className={`button-standard ${styles.continueBtn}`}
                         >
                             Get Started!

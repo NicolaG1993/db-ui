@@ -272,9 +272,10 @@
     margin: 0.25rem 0;
     outline: 1px solid var(--bg400);
     background: var(--bg300);
-    height: 60px;
+    height: 90px;
     width: 120px;
     box-shadow: var(--shadow000);
+    overflow: hidden;
 }
 .contenderCardSelect {
     display: flex;
@@ -285,7 +286,7 @@
     margin: 0.25rem 0;
     outline: 1px solid var(--bg400);
     background: var(--bg200);
-    height: 60px;
+    height: 90px;
     width: 140px;
     box-shadow: var(--shadow000);
 }
@@ -301,7 +302,7 @@
     margin: 0.25rem 0;
     outline: 1px solid var(--bg400);
     background: var(--bg300);
-    height: 60px;
+    height: 90px;
     width: 140px;
     box-shadow: var(--shadow000);
     cursor: not-allowed;
@@ -329,6 +330,59 @@
     background: var(--bg100);
     color: var(--bg600);
     opacity: 0.79;
+}
+
+/* CONTENDER CARD: INFO */
+.contenderInfo {
+    width: 110px;
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    grid-template-rows: 15px 30px 30px 10px;
+}
+.contenderInfo > .contenderId {
+    grid-row-start: 1;
+    grid-row-end: 2;
+    grid-column-start: 1;
+    grid-column-end: 2;
+}
+.contenderInfo > .contenderTitleWrap {
+    grid-row-start: 2;
+    grid-row-end: 3;
+    grid-column-start: 1;
+    grid-column-end: 7;
+    overflow: hidden;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    font-size: 10px;
+    padding: 0.25rem 0.15rem;
+    border-top: 1px solid var(--bg800);
+    margin: 0.15rem 0;
+}
+.contenderInfo > .contenderTitleWrap > .contenderTitle {
+    font-weight: bold;
+    max-height: 30px;
+}
+.contenderInfo > .contenderRating {
+    grid-row-start: 1;
+    grid-row-end: 2;
+    grid-column-start: 4;
+    grid-column-end: 7;
+    text-align: right;
+}
+.contenderInfo > .contenderCastWrap {
+    grid-row-start: 3;
+    grid-row-end: 4;
+    grid-column-start: 1;
+    grid-column-end: 7;
+    overflow: hidden;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    padding: 0.25rem;
+    margin: 0.25rem 0.1rem;
+    outline: 1px solid var(--bg800);
+    font-size: 10px;
 }
 
 .contenderProps {

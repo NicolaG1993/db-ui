@@ -18,6 +18,7 @@ const setupFinalStages = ({
         currentMatch,
         currentMatchIndex,
         isEven,
+        totMatches,
     });
 
     let finalMatch = finalStage.stageMatches[`${totMatches}`];
@@ -45,7 +46,7 @@ const setupFinalStages = ({
         (cont, i) => {
             if (solveIndexLogic(currentMatch.matchId) !== i) {
                 // select not winner
-                getCurrentMatchLoser(
+                return getCurrentMatchLoser(
                     currentMatch.contenders,
                     currentMatch.winner
                 );
