@@ -1,13 +1,14 @@
 import { current } from "@reduxjs/toolkit";
+import solveIndexLogic from "./solveIndexLogic";
 
 /*
-const getNextStageMatch = ({
+const setupNextStageMatch = ({
     currentStage,
     nextStage,
     currentStageMatchId,
     contenderId,
 }) => {
-    console.log("getNextStageMatch: ", {
+    console.log("setupNextStageMatch: ", {
         currentStage,
         nextStage: current(nextStage),
         currentStageMatchId,
@@ -43,12 +44,12 @@ const getNextStageMatch = ({
     }
 };
 
-export default getNextStageMatch;
+export default setupNextStageMatch;
 */
 
 // Example usage:
 /*
-    const result = getNextStageMatch(data.stage, data.nextStage, 17, 2);
+    const result = setupNextStageMatch(data.stage, data.nextStage, 17, 2);
     console.log(result); // Output: { matchId: 25, contenderIndex: 1 }
 */
 
@@ -246,13 +247,13 @@ The response should be:
     */
 
 /*
-function getNextStageMatch({
+function setupNextStageMatch({
     currentMatches,
     nextMatches,
     matchId,
     contenderId,
 }) {
-    console.log("getNextStageMatch: ", {
+    console.log("setupNextStageMatch: ", {
         currentMatches,
         nextMatches: current(nextMatches),
         matchId,
@@ -292,13 +293,13 @@ function getNextStageMatch({
     */
 
 /*
-function getNextStageMatch({
+function setupNextStageMatch({
     currentMatches,
     nextMatches,
     matchId,
     contenderId,
 }) {
-    console.log("getNextStageMatch: ", {
+    console.log("setupNextStageMatch: ", {
         currentMatches,
         nextMatches: current(nextMatches),
         matchId,
@@ -338,28 +339,21 @@ function getNextStageMatch({
 }
     */
 
-function getNextStageMatch({
+function setupNextStageMatch({
     currentMatchesColumn,
     nextMatchesColumn,
     currentMatch,
+    currentMatchIndex,
 }) {
-    console.log("🍄 NICK'S CHECK #0: ", {
+    console.log("🍄 NICK'S CHECK #1: ", {
         // totMatches,
         // selected,
         // nextMatchesColumn,
         currentMatchesColumn,
         nextMatchesColumn,
         currentMatch,
+        currentMatchIndex,
     });
-
-    let currentMatchIndex;
-    Object.values(currentMatchesColumn).map((match, i) => {
-        if (match.matchId === currentMatch.matchId) {
-            currentMatchIndex = i;
-        }
-    });
-
-    console.log("🍄 NICK'S CHECK #1: ", { currentMatchIndex });
 
     // const nextStageTotMatches = nextMatchesColumn;
     const nextMatchIndex = Math.floor(currentMatchIndex / 2);
@@ -374,14 +368,6 @@ function getNextStageMatch({
         nextMatchIndex,
         nextMatch: nextMatch ? current(nextMatch) : undefined,
     });
-
-    function solveIndexLogic(index) {
-        console.log("solveIndexLogic: ", { index });
-        // Calculate the remainder when index is divided by perMatch
-        let remainder = index % 2;
-        // Return 1 if remainder is 1, otherwise return 0
-        return remainder === 1 ? 1 : 0;
-    }
 
     let newNextMatch = nextMatch;
     let newNextMatchContenders = nextMatch.contenders.map((cont, i) => {
@@ -425,4 +411,4 @@ function getNextStageMatch({
     return { nextMatch, nextMatchIndex, newNextColumn };
 }
 
-export default getNextStageMatch;
+export default setupNextStageMatch;

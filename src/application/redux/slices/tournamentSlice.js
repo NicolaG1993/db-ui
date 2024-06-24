@@ -3,8 +3,10 @@ import Cookies from "js-cookie";
 import { shuffle } from "@/src/application/utils/orderData";
 import calcTournamentStructure from "@/src/domains/tournament/utils/calcTournamentStructure";
 import generateTableSequences from "@/src/domains/tournament/utils/generateTableSequences";
-import getNextStageMatch from "@/src/domains/tournament/utils/getNextStageMatch";
+import setupNextStageMatch from "@/src/domains/tournament/utils/setupNextStageMatch";
+import setupFinalStages from "@/src/domains/tournament/utils/setupFinalStages";
 import filterKeys from "@/src/domains/tournament/utils/filterKeys";
+import getCurrentMatchLoser from "@/src/domains/tournament/utils/getCurrentMatchLoser";
 
 const initialState = {
     tournamentData: Cookies.get("tournamentData")
@@ -13,6 +15,7 @@ const initialState = {
     notSelectedData: [], // need cookie here 🧠
     isLoaded: false,
     isStarted: false,
+    isFinished: false,
     tournamentTable: {
         setup: {
             contendersPerMatch: undefined,
@@ -26,6 +29,7 @@ const initialState = {
         }, // honestly after setting tournamentTable becomes useless - we could not store this, if not as pure infos
         tournamentStructure: undefined,
         matchError: undefined,
+        tournamentFinalOverview: { podium: {} },
         // matchSelectorNav: undefined,
     }, // probably need cookies only here
 };
@@ -109,21 +113,26 @@ const tournamentSlice = createSlice({
             state.notSelectedData = [...state.tournamentData].slice(
                 totContenders
             );
+
+            let setup = {
+                ...state.tournamentTable.setup,
+                contendersPerMatch,
+                totStages: result.totStages + 1,
+                tableRows: result.tableRows * 2,
+                tableColumns: (result.totStages - 1) * 2 + 2,
+                totMatches: result.totMatches,
+                // totContenders:
+                //     result.firstStageTotMatches * contendersPerMatch,
+                totContenders,
+                tableRowsSequences: generateTableSequences(
+                    result.tableRows * 2
+                ),
+                firstStageTotMatches: result.firstStageTotMatches,
+            };
+
             state.tournamentTable = {
-                setup: {
-                    contendersPerMatch,
-                    totStages: result.totStages + 1,
-                    tableRows: result.tableRows * 2,
-                    tableColumns: (result.totStages - 1) * 2 + 2,
-                    totMatches: result.totMatches,
-                    // totContenders:
-                    //     result.firstStageTotMatches * contendersPerMatch,
-                    totContenders,
-                    tableRowsSequences: generateTableSequences(
-                        result.tableRows * 2
-                    ),
-                    firstStageTotMatches: result.firstStageTotMatches,
-                },
+                ...state.tournamentTable,
+                setup,
                 tournamentStructure: result.tournamentStructure,
             };
         },
@@ -207,6 +216,11 @@ const tournamentSlice = createSlice({
         },
         setMatchWinner: (state, action) => {
             const { stage, match, winner } = action.payload;
+            const isSemifinals =
+                stage.stageId === state.tournamentTable.setup.totStages - 1;
+            const isFinalStage =
+                stage.stageId === state.tournamentTable.setup.totStages ||
+                stage.stageId === state.tournamentTable.setup.totStages + 1;
 
             // update current match and stage
             let newMatch = { ...match, winner };
@@ -219,71 +233,192 @@ const tournamentSlice = createSlice({
             // update current stage in state
             state.tournamentTable.tournamentStructure[stage.stageId] = newStage;
 
-            // update next match and stage
+            if (!isSemifinals && !isFinalStage) {
+                // update next match and stage
 
-            // TODO: 👇🧠
-            /**
-             * get next stage and next match dynamicaly
-             * update them
-             * update store
-             */
-            let nextStage =
-                state.tournamentTable.tournamentStructure[
-                    `${stage.stageId + 1}`
-                ];
-            // let nextMatch = nextStage
+                // TODO: 👇🧠
+                /**
+                 * get next stage and next match dynamicaly
+                 * update them
+                 * update store
+                 */
+                let nextStage =
+                    state.tournamentTable.tournamentStructure[
+                        `${stage.stageId + 1}`
+                    ];
+                // let nextMatch = nextStage
 
-            ////// TESTING  👇
-            let totPrevStageMatches = stage.stageMatches.length; // 8
-            let totNextStageMatches = nextStage.stageMatches.length; // 4
-            let prevMatchId = match.matchId; // 3
+                ////// TESTING  👇
+                let totPrevStageMatches = stage.stageMatches.length; // 8
+                let totNextStageMatches = nextStage.stageMatches.length; // 4
+                let prevMatchId = match.matchId; // 3
 
-            // let { evenKeys, oddKeys } = filterKeys(stage.stageMatches);
-            let isEven = match.matchId % 2 === 0;
+                // let { evenKeys, oddKeys } = filterKeys(stage.stageMatches);
+                let isEven = match.matchId % 2 === 0;
 
-            let res1 = filterKeys(newStage.stageMatches);
-            let currentMatchesColumn = isEven ? res1.evenKeys : res1.oddKeys;
+                let res1 = filterKeys(newStage.stageMatches);
+                let currentMatchesColumn = isEven
+                    ? res1.evenKeys
+                    : res1.oddKeys;
 
-            let res2 = filterKeys(nextStage.stageMatches);
-            let nextMatchesColumn = isEven ? res2.evenKeys : res2.oddKeys;
+                let res2 = filterKeys(nextStage.stageMatches);
+                let nextMatchesColumn = isEven ? res2.evenKeys : res2.oddKeys;
 
-            // .... 🧠🧠🧠
-            const result = getNextStageMatch({
-                // selected: currentMatchIndex,
-                currentMatchesColumn,
-                nextMatchesColumn,
-                currentMatch: newMatch,
-                // currentMatches: newStage.stageMatches,
-                // nextMatches: nextStage.stageMatches,
-                // matchId: newMatch.matchId,
-                // contenderId: winner.id,
-            });
-            console.log(
-                "🧠🧠🧠🧠🧠🧠🧠🧠🧠getNextStageMatch🧠🧠🧠🧠🧠🧠🧠🧠🧠",
-                {
-                    result,
-                    // nextStage: {
-                    //     ...nextStage,
-                    //     ...result.newNextColumn,
-                    // },
-                    nextStage: current(nextStage),
-                    // newNextColumn: { ...result.newNextColumn },
+                let currentMatchIndex;
+                Object.values(currentMatchesColumn).map((match, i) => {
+                    if (match.matchId === newMatch.matchId) {
+                        currentMatchIndex = i;
+                    }
+                });
+
+                const result = setupNextStageMatch({
+                    // selected: currentMatchIndex,
+                    currentMatchesColumn,
+                    nextMatchesColumn,
+                    currentMatch: newMatch,
+                    currentMatchIndex,
+                    // currentMatches: newStage.stageMatches,
+                    // nextMatches: nextStage.stageMatches,
+                    // matchId: newMatch.matchId,
+                    // contenderId: winner.id,
+                });
+                console.log(
+                    "🧠🧠🧠🧠🧠🧠🧠🧠🧠setupNextStageMatch🧠🧠🧠🧠🧠🧠🧠🧠🧠",
+                    {
+                        result,
+                        // nextStage: {
+                        //     ...nextStage,
+                        //     ...result.newNextColumn,
+                        // },
+                        nextStage: current(nextStage),
+                        // newNextColumn: { ...result.newNextColumn },
+                    }
+                );
+
+                // Object.values(result.newNextColumn).map((el) =>
+                //     console.log("EL from result.newNextColumn: ", current(el))
+                // );
+
+                let newNextStageMatches = {
+                    ...nextStage.stageMatches,
+                    ...result.newNextColumn,
+                };
+
+                state.tournamentTable.tournamentStructure[nextStage.stageId] = {
+                    ...nextStage,
+                    stageMatches: newNextStageMatches,
+                };
+            } else if (isFinalStage) {
+                // TODO .... 🧠🧠🧠🧠🧠🧠
+                // dont check for next stage logic
+                // set final object for result overview
+                // // like: top 3, more votes, mvp's, etc...
+
+                let tournamentFinalOverview = {
+                    ...state.tournamentTable.tournamentFinalOverview,
+                };
+                console.log(
+                    "🦉💫➡️ state.tournamentTable: ",
+                    current(state.tournamentTable)
+                );
+                let podium = {
+                    ...tournamentFinalOverview.podium,
+                };
+                if (
+                    stage.stageId ===
+                    state.tournamentTable.setup.totStages + 1
+                ) {
+                    // is finalMatch
+
+                    // tournamentFinalOverview.podium = {
+                    //     ...tournamentFinalOverview.podium,
+                    // };
+
+                    podium = {
+                        ...podium,
+                        1: winner,
+                        2: getCurrentMatchLoser(
+                            newMatch.contenders,
+                            newMatch.winner
+                        ),
+                    };
+
+                    // tournamentFinalOverview.podium["1"] = winner;
+                    // tournamentFinalOverview.podium["2"] = getCurrentMatchLoser(
+                    //     currentMatch.contenders,
+                    //     currentMatch.winner
+                    // );
+                } else {
+                    // is thirdPlaceMatch
+                    podium = {
+                        ...podium,
+                        3: winner,
+                    };
+                    // tournamentFinalOverview.podium["3"] = winner;
                 }
-            );
 
-            Object.values(result.newNextColumn).map((el) =>
-                console.log("EL from result.newNextColumn: ", current(el))
-            );
+                state.tournamentTable.tournamentFinalOverview = {
+                    ...tournamentFinalOverview,
+                    podium,
+                };
 
-            let newNextStageMatches = {
-                ...nextStage.stageMatches,
-                ...result.newNextColumn,
-            };
+                // end tournament
+                state.isFinished = true;
+            } else if (isSemifinals) {
+                //////////// FIX: 3rdPlace not working!!!! 🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴
 
-            state.tournamentTable.tournamentStructure[nextStage.stageId] = {
-                ...nextStage,
-                stageMatches: newNextStageMatches,
-            };
+                // set Final
+                let finalStage =
+                    state.tournamentTable.tournamentStructure[
+                        `${state.tournamentTable.setup.totStages + 1}`
+                    ];
+                // set 3rd-Place
+                let thirdPlaceStage =
+                    state.tournamentTable.tournamentStructure[
+                        `${state.tournamentTable.setup.totStages}`
+                    ];
+
+                let isEven = match.matchId % 2 === 0;
+
+                let currentMatchIndex = 0;
+                // let currentMatchIndex;
+                // Object.values(newStage.stageMatches).map((match, i) => {
+                //     if (match.matchId === newMatch.matchId) {
+                //         currentMatchIndex = i;
+                //     }
+                // });
+
+                const totMatches = state.tournamentTable.setup.totMatches;
+                const totStages = state.tournamentTable.setup.totStages;
+
+                const { newThirdPlaceStage, newFinalStage } = setupFinalStages({
+                    // currentMatchesColumn,
+                    finalStage,
+                    thirdPlaceStage,
+                    currentMatch: newMatch,
+                    currentMatchIndex,
+                    isEven,
+                    totMatches,
+                });
+
+                Object.values(newFinalStage.stageMatches).map((el) =>
+                    console.log(
+                        "EL from newFinalStage.stageMatches): ",
+                        current(el)
+                    )
+                );
+                Object.values(newThirdPlaceStage.stageMatches).map((el) =>
+                    console.log(
+                        "EL from newThirdPlaceStage.stageMatches): ",
+                        current(el)
+                    )
+                );
+
+                state.tournamentTable.tournamentStructure[totStages + 1] =
+                    newFinalStage;
+                state.tournamentTable.tournamentStructure[totStages] =
+                    newThirdPlaceStage;
+            }
         },
     },
 });

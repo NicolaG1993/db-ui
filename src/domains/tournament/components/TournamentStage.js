@@ -51,6 +51,7 @@ export default function TournamentStage({
                         matches: stage.stageMatches,
                         tableRows,
                         isError,
+                        stage,
                         // rowSequence: isThirdPlace
                         //     ? tableRowsSequences[totStages - 1]
                         //     : tableRowsSequences[totStages - 1],

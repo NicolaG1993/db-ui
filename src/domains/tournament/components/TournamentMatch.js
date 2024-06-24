@@ -67,7 +67,13 @@ export default function TournamentMatch({
         setSelectedContenderIndex();
     };
     const handleMatchResult = ({ winner }) => {
-        dispatch(setMatchWinner({ stage, match, winner }));
+        dispatch(
+            setMatchWinner({
+                stage,
+                match,
+                winner,
+            })
+        );
     };
 
     useEffect(() => {
