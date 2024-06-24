@@ -1,4 +1,6 @@
 import styles from "@/src/domains/tournament/Tournament.module.css";
+import Image from "next/image";
+import { detectImage } from "../../_app/utils/parsers";
 
 export default function MatchContender({
     contender,
@@ -12,8 +14,10 @@ export default function MatchContender({
     onClickContender,
     isWinner,
     isEliminated,
+    handleUpVote,
+    handleDownVote,
 }) {
-    console.log("➡️➡️➡️➡️ contender: ", contender);
+    // console.log("➡️➡️➡️➡️ contender: ", contender);
     if (contender?.id) {
         if (!isStarted && isFirstStage) {
             return (
@@ -58,7 +62,7 @@ export default function MatchContender({
                             </span>
                             <div className={styles.contenderCastWrap}>
                                 <span className={styles.contenderCast}>
-                                    {cast.map((act, i, array) =>
+                                    {cast?.map((act, i, array) =>
                                         i + 1 === array.length
                                             ? `${act.name}`
                                             : `${act.name}, `
@@ -66,10 +70,30 @@ export default function MatchContender({
                                 </span>
                             </div>
                         </div>
+                        <div className={styles.contenderPicWrap}>
+                            <Image
+                                src={pic ? pic : detectImage(contender)}
+                                alt="Picture of the contender"
+                                width={70}
+                                height={70}
+                            />
+                        </div>
                     </div>
                     <div className={styles.contenderProps}>
-                        <div>+</div>
-                        <div>-</div>
+                        <div
+                            onClick={() =>
+                                handleUpVote({ id: contender.id, index })
+                            }
+                        >
+                            +
+                        </div>
+                        <div
+                            onClick={() =>
+                                handleDownVote({ id: contender.id, index })
+                            }
+                        >
+                            -
+                        </div>
                     </div>
                 </div>
             );

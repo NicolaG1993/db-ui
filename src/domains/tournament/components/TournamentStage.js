@@ -115,6 +115,7 @@ export default function TournamentStage({
                             ),
                             isStarted,
                             isFirstStage,
+                            isRightSide: false,
                             isError,
                             stage,
                         })}
@@ -137,6 +138,7 @@ export default function TournamentStage({
                             ),
                             isStarted,
                             isFirstStage,
+                            isRightSide: true,
                             isError,
                             stage,
                         })}

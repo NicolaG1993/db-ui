@@ -6,6 +6,7 @@ const renderStageMatches = ({
     rowSequence,
     isFirstStage,
     isStarted,
+    isRightSide,
     isError,
     stage,
 }) => {
@@ -30,6 +31,7 @@ const renderStageMatches = ({
             rowSequence={rowSequence || undefined}
             isStarted={isStarted}
             isFirstStage={isFirstStage}
+            isRightSide={isRightSide}
             isError={isError === match.matchId}
             stageMatches={matches}
             stage={stage}

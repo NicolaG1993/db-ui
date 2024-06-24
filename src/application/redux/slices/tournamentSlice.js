@@ -62,8 +62,9 @@ const tournamentSlice = createSlice({
         shuffleTournamentData: (state) => {
             state.isLoaded = false;
             let newState = shuffle(state.tournamentData);
+            console.log("shuffle RESULT: ", current(newState));
             Cookies.set("tournamentData", JSON.stringify(newState));
-            state.tournamentData = action.payload;
+            state.tournamentData = newState;
             state.isLoaded = true;
         },
         resetTournamentStore: () => {
@@ -525,11 +526,15 @@ export const selectTournamentIsLoaded = (state) =>
     state.tournamentStore.isLoaded;
 export const selectTournamentIsStarted = (state) =>
     state.tournamentStore.isStarted;
+export const selectTournamentIsFinished = (state) =>
+    state.tournamentStore.isFinished;
 export const selectTournamentStructure = (state) =>
     state.tournamentStore.tournamentTable.tournamentStructure;
 export const selectTournamentSetup = (state) =>
     state.tournamentStore.tournamentTable.setup;
 export const selectMatchError = (state) =>
     state.tournamentStore.tournamentTable.matchError;
+export const selectTournamentFinalOverview = (state) =>
+    state.tournamentStore.tournamentTable.tournamentFinalOverview;
 
 export default tournamentSlice;

@@ -18,6 +18,7 @@ export default function TournamentMatch({
     rowSequence,
     isFirstStage,
     isStarted,
+    isRightSide,
     stageMatches,
     stage,
 }) {
@@ -76,6 +77,13 @@ export default function TournamentMatch({
         );
     };
 
+    const handleUpVote = () => {
+        // todo...
+    };
+    const handleDownVote = () => {
+        // todo...
+    };
+
     useEffect(() => {
         // only add the event listener when the dropdown is opened
         if (!isSelectNavOpen) return;
@@ -117,6 +125,8 @@ export default function TournamentMatch({
                     isEliminated={
                         match.winner && match.winner.id !== contender.id
                     }
+                    handleUpVote={handleUpVote}
+                    handleDownVote={handleDownVote}
                 />
             ))}
             {isSelectNavOpen && (
@@ -127,6 +137,7 @@ export default function TournamentMatch({
                     stageMatches={stageMatches}
                     refreshSelectNav={openSelectNav}
                     closeSelectNav={closeSelectNav}
+                    isRightSide={isRightSide}
                 />
             )}
         </div>

@@ -220,9 +220,11 @@
     display: grid;
     grid-template-columns: 120px 1fr 120px;
     width: 100%;
+    max-height: 80vh;
     background: var(--bg000);
     padding: 0.5rem 0.5rem 0.75rem 0.5rem;
     overflow: auto;
+    margin-bottom: 5rem;
 }
 .tableColumn {
     font-size: 11px;
@@ -253,6 +255,7 @@
     cursor: pointer;
     transition: 0.05s ease;
     position: relative;
+    width: 250px;
 }
 .match:hover {
     outline: 2px solid var(--bg400);
@@ -267,13 +270,15 @@
 }
 .contenderCard {
     display: flex;
-    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    /* flex-direction: column; */
     padding: 0.25rem 0.33rem;
     margin: 0.25rem 0;
     outline: 1px solid var(--bg400);
     background: var(--bg300);
     height: 90px;
-    width: 120px;
+    width: 210px;
     box-shadow: var(--shadow000);
     overflow: hidden;
 }
@@ -287,7 +292,7 @@
     outline: 1px solid var(--bg400);
     background: var(--bg200);
     height: 90px;
-    width: 140px;
+    width: 100%;
     box-shadow: var(--shadow000);
 }
 .contenderCard:hover,
@@ -303,7 +308,7 @@
     outline: 1px solid var(--bg400);
     background: var(--bg300);
     height: 90px;
-    width: 140px;
+    width: 100%;
     box-shadow: var(--shadow000);
     cursor: not-allowed;
 }
@@ -337,7 +342,7 @@
     width: 110px;
     display: grid;
     grid-template-columns: repeat(6, 1fr);
-    grid-template-rows: 15px 30px 30px 10px;
+    grid-template-rows: 15px 40px 20px 10px;
 }
 .contenderInfo > .contenderId {
     grid-row-start: 1;
@@ -351,7 +356,7 @@
     grid-column-start: 1;
     grid-column-end: 7;
     overflow: hidden;
-    height: 30px;
+    height: 40px;
     display: flex;
     align-items: center;
     font-size: 10px;
@@ -361,7 +366,7 @@
 }
 .contenderInfo > .contenderTitleWrap > .contenderTitle {
     font-weight: bold;
-    max-height: 30px;
+    max-height: 25px;
 }
 .contenderInfo > .contenderRating {
     grid-row-start: 1;
@@ -376,13 +381,17 @@
     grid-column-start: 1;
     grid-column-end: 7;
     overflow: hidden;
-    height: 30px;
+    height: 20px;
     display: flex;
-    align-items: center;
+    /* align-items: center; */
     padding: 0.25rem;
     margin: 0.25rem 0.1rem;
     outline: 1px solid var(--bg800);
     font-size: 10px;
+}
+.contenderInfo > .contenderCastWrap > .contenderCast {
+    line-height: 10px;
+    max-height: 20px;
 }
 
 .contenderProps {
@@ -392,6 +401,7 @@
     justify-content: space-evenly;
     margin-left: 0.25rem;
     height: 60px;
+    width: 30px;
 }
 
 .contenderProps > div {
@@ -423,7 +433,7 @@
 /* CONTENDER SELECT NAV */
 .contenderSelectNav {
     position: absolute;
-    left: 100%;
+    /* left: 100%; */
     top: 0;
     width: 180px;
     /* height: 180px; */
@@ -431,6 +441,9 @@
     outline: 2px solid var(--bg500);
     z-index: 100;
 }
+/* .isRightSide {
+    right: 100%;
+} */
 
 .contenderSelectNav > .navMatchInfo {
     display: flex;
@@ -487,4 +500,54 @@
     font-size: 0.8rem;
     font-family: Arial, Helvetica, sans-serif;
     padding: 1px 6px;
+}
+
+/* FINAL OVERVIEW */
+.finalOverviewWrap {
+    min-height: 50vh;
+    outline: 1px solid var(--text);
+    padding: 1rem;
+    width: 100%;
+    display: grid;
+    grid-template-rows: 80px repeat(7, 1fr);
+    grid-template-columns: repeat(7, 1fr);
+}
+.finalOverviewWrap * p {
+    margin: 0.25rem 0;
+    font-size: 14px;
+}
+
+.finalOverviewHeading {
+    grid-row-start: 1;
+    grid-row-end: 2;
+    grid-column-start: 1;
+    grid-column-end: 8;
+    padding: 1rem;
+    margin-bottom: 0.5rem;
+    border-bottom: 1px solid var(--text);
+}
+
+.podiumWrap {
+    grid-row-start: 2;
+    grid-row-end: 4;
+    grid-column-start: 1;
+    grid-column-end: 4;
+}
+.tableOverviewWrap {
+    grid-row-start: 2;
+    grid-row-end: 8;
+    grid-column-start: 5;
+    grid-column-end: 8;
+}
+.recordsWrap {
+    grid-row-start: 5;
+    grid-row-end: 9;
+    grid-column-start: 1;
+    grid-column-end: 4;
+}
+
+/* FINAL OVERVIEW: PODIUM */
+.podium {
+    outline: 1px solid var(--text);
+    padding: 1rem;
 }

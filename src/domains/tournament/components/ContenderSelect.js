@@ -15,6 +15,7 @@ export default function ContenderSelect({
     stageMatches,
     refreshSelectNav,
     closeSelectNav,
+    isRightSide,
 }) {
     const dispatch = useDispatch();
     // DATA:
@@ -392,7 +393,10 @@ export default function ContenderSelect({
     };
 
     return (
-        <div className={styles.contenderSelectNav}>
+        <div
+            className={styles.contenderSelectNav}
+            style={isRightSide ? { right: "100%" } : { left: "100%" }}
+        >
             <div className={styles.navMatchInfo}>
                 <span>Match: {match.matchId}</span>
                 {currentContender && (
