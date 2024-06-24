@@ -11,6 +11,7 @@ import {
     selectTournamentIsLoaded,
     resetTournament,
     setupTournament,
+    resetTournamentStore,
 } from "@/src/application/redux/slices/tournamentSlice";
 import TournamentStage from "@/src/domains/tournament/components/TournamentStage";
 import styles from "@/src/domains/tournament/Tournament.module.css";
@@ -32,7 +33,8 @@ export default function TournamentTable() {
 
     const handleStart = () => dispatch(startTournament());
     const handleQuit = () => dispatch(quitTournament());
-    const handleReset = () => dispatch(resetTournament());
+    // const handleReset = () => dispatch(resetTournament());
+    const handleReset = () => dispatch(resetTournamentStore());
     const setupNextMatch = () => dispatch(initNextMatch());
 
     const handleSetup = () => {

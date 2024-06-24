@@ -239,8 +239,9 @@ export default function ContenderSelect({
             const generateContenderOptions = (stageMatches, optionSelected) => {
                 // get first match data
                 // extract correct match
-                const selectedMatch = stageMatches[optionSelected];
+                const selectedMatch = stageMatches[`${optionSelected}`];
                 console.log("generateContenderOptions: ", {
+                    stageMatches,
                     optionSelected,
                     selectedMatch,
                 });
@@ -248,7 +249,7 @@ export default function ContenderSelect({
                 // map trough them
                 // create options for the select (both in use and empty)
                 const contenderOptions = [];
-                selectedMatch.contenders.map((contender, i) =>
+                selectedMatch.contenders?.map((contender, i) =>
                     contenderOptions.push(
                         <option
                             key={"contenderOptions " + (i + 1)}

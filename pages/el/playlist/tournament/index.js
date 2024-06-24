@@ -97,7 +97,7 @@ export default function TournamentSession() {
     }); // I need to store this after setup
 
     useEffect(() => {
-        if (!!tournamentData.length) {
+        if (!!tournamentData?.length) {
             // setGameOptions(calcGames(tournamentData.length)); // non metto in redux per ora, credo serva solo all'inizio del torneo, poi user sceglie uno solo
         }
     }, [tournamentData, dispatch]);

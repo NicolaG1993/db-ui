@@ -1,11 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
 import Cookies from "js-cookie";
 import { shuffle } from "@/src/application/utils/orderData";
+import { getStoredData } from "@/src/domains/_app/utils/getStoredData";
 
 const initialState = {
-    sessionPlaylist: Cookies.get("sessionPlaylist")
-        ? JSON.parse(Cookies.get("sessionPlaylist"))
-        : [],
+    sessionPlaylist: getStoredData("sessionPlaylist"),
 };
 
 // TESTARE: Ho due tab aperte e modifico SessionPlaylist da entrambe
@@ -15,26 +14,26 @@ const sessionPlaylistSlice = createSlice({
     initialState,
     reducers: {
         addToSessionPlaylist: (state, action) => {
-            let newState = Cookies.get("sessionPlaylist")
-                ? JSON.parse(Cookies.get("sessionPlaylist"))
+            let newState = getStoredData("sessionPlaylist")
+                ? getStoredData("sessionPlaylist")
                 : state.sessionPlaylist;
             newState.push(action.payload);
-            Cookies.set("sessionPlaylist", JSON.stringify(newState));
+            sessionStorage.setItem("sessionPlaylist", JSON.stringify(newState));
             state.sessionPlaylist = newState;
         },
         // used to remove directly from playlist
         removeFromSessionPlaylist: (state, action) => {
-            let newState = Cookies.get("sessionPlaylist")
-                ? JSON.parse(Cookies.get("sessionPlaylist"))
+            let newState = getStoredData("sessionPlaylist")
+                ? getStoredData("sessionPlaylist")
                 : state.sessionPlaylist;
             newState.splice(action.payload, 1);
-            Cookies.set("sessionPlaylist", JSON.stringify(newState));
+            sessionStorage.setItem("sessionPlaylist", JSON.stringify(newState));
             state.sessionPlaylist = newState;
         },
         // used to remove playlist element from outside playlist
         removeElementFromSessionPlaylist: (state, action) => {
-            let newState = Cookies.get("sessionPlaylist")
-                ? JSON.parse(Cookies.get("sessionPlaylist"))
+            let newState = getStoredData("sessionPlaylist")
+                ? getStoredData("sessionPlaylist")
                 : state.sessionPlaylist;
             if (action.payload.id) {
                 newState = newState.filter(
@@ -45,13 +44,13 @@ const sessionPlaylistSlice = createSlice({
                     ({ url }) => url !== action.payload.url
                 );
             }
-            Cookies.set("sessionPlaylist", JSON.stringify(newState));
+            sessionStorage.setItem("sessionPlaylist", JSON.stringify(newState));
             state.sessionPlaylist = newState;
         },
 
         shuffleSessionPlaylist: (state, action) => {
             let newState = shuffle(state.sessionPlaylist);
-            Cookies.set("sessionPlaylist", JSON.stringify(newState));
+            sessionStorage.setItem("sessionPlaylist", JSON.stringify(newState));
             state.sessionPlaylist = newState;
         },
 
@@ -61,11 +60,17 @@ const sessionPlaylistSlice = createSlice({
         },
 
         loadSessionPlaylist: (state, action) => {
-            Cookies.set("sessionPlaylist", JSON.stringify(action.payload));
+            sessionStorage.setItem(
+                "sessionPlaylist",
+                JSON.stringify(action.payload)
+            );
             state.sessionPlaylist = action.payload;
         },
         updateSessionPlaylist: (state, action) => {
-            Cookies.set("sessionPlaylist", JSON.stringify(action.payload));
+            sessionStorage.setItem(
+                "sessionPlaylist",
+                JSON.stringify(action.payload)
+            );
             state.sessionPlaylist = action.payload;
         },
     },

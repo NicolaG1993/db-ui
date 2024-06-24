@@ -7,26 +7,11 @@ import setupNextStageMatch from "@/src/domains/tournament/utils/setupNextStageMa
 import setupFinalStages from "@/src/domains/tournament/utils/setupFinalStages";
 import filterKeys from "@/src/domains/tournament/utils/filterKeys";
 import getCurrentMatchLoser from "@/src/domains/tournament/utils/getCurrentMatchLoser";
-
-// utility function to check for the presence of sessionStorage.
-const isBrowser = () =>
-    typeof window !== "undefined" &&
-    typeof window.sessionStorage !== "undefined";
-// Function to get data from sessionStorage
-function getStoredData(name) {
-    if (isBrowser() && sessionStorage.getItem(name)) {
-        const storedData = sessionStorage.getItem(name);
-        return storedData ? JSON.parse(storedData) : [];
-    }
-} // make utils 🧠
-function getStoredCookie(name) {
-    return Cookies.get(name) ? JSON.parse(Cookies.get(name)) : [];
-}
-function getStoredSettings() {
-    return Cookies.get("tournamentSettings")
-        ? JSON.parse(Cookies.get("tournamentSettings"))
-        : { contendersPerMatch: 2, totContenders: undefined, order: "index" };
-}
+import {
+    getStoredData,
+    getStoredSettings,
+    getStoredCookie,
+} from "@/src/domains/_app/utils/getStoredData";
 
 const initialState = {
     // tournamentData: Cookies.get("tournamentData")
@@ -65,10 +50,10 @@ const tournamentSlice = createSlice({
                 // Cookies.set("tournamentData", serializedArray);
                 sessionStorage.setItem("tournamentData", serializedArray);
 
-                console.log(" 🟨 updateTournamentData: ", {
-                    payload: action.payload,
-                    serializedArray,
-                });
+                // console.log(" 🟨 updateTournamentData: ", {
+                //     payload: action.payload,
+                //     serializedArray,
+                // });
 
                 state.tournamentData = action.payload;
                 state.isLoaded = true;
@@ -82,7 +67,9 @@ const tournamentSlice = createSlice({
             state.isLoaded = true;
         },
         resetTournamentStore: () => {
-            Cookies.remove("tournamentData");
+            sessionStorage.removeItem("tournamentData");
+            sessionStorage.removeItem("notSelectedData");
+            Cookies.remove("tournamentSettings");
             return initialState;
         },
         resetTournament: (state) => {
@@ -118,12 +105,31 @@ const tournamentSlice = createSlice({
                     : action.payload?.order ||
                       initialState.tournamentTable.setup.order;
 
-            let totContenders =
-                !action.payload?.totContenders &&
+            // totContenders can be only 4, 8, 16, 32, 64, etc..
+            // we do this already in the settings input before the setup
+            let totContenders = action.payload?.totContenders
+                ? Number(action.payload.totContenders)
+                : state.tournamentTable.setup.totContenders
+                ? state.tournamentTable.setup.totContenders
+                : initialState.tournamentTable.setup.totContenders;
+            /* 🧠 PRIORITIZE "payload"!!! 🧠
+               let totContenders = !action.payload?.totContenders &&
                 state.tournamentTable.setup.totContenders
                     ? state.tournamentTable.setup.totContenders
-                    : action.payload?.totContenders |
+                    : action.payload?.totContenders ||
                       initialState.tournamentTable.setup.totContenders;
+                    */
+            console.log("🎸🎸🎸🎸🎸🔥🌙 setupTournament #1: ", {
+                payload: action.payload,
+                settings: {
+                    totContenders,
+                    order,
+                    contendersPerMatch,
+                },
+                setupTotContenders: state.tournamentTable.setup.totContenders,
+                initialStateTotContenders:
+                    initialState.tournamentTable.setup.totContenders,
+            });
 
             const serializedData = JSON.stringify({
                 contendersPerMatch,
@@ -138,7 +144,7 @@ const tournamentSlice = createSlice({
                 contendersPerMatch,
                 totContenders,
             });
-            console.log("💫 result 💫: ", result);
+            // console.log("💫 result 💫: ", result);
 
             /* 
             const totMatches = Math.ceil(

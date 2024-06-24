@@ -1,0 +1,22 @@
+import isBrowser from "@/src/application/utils/isBrowser";
+import Cookies from "js-cookie";
+
+// Function to get data from sessionStorage
+function getStoredData(name) {
+    if (isBrowser() && sessionStorage.getItem(name)) {
+        const storedData = sessionStorage.getItem(name);
+        return storedData ? JSON.parse(storedData) : [];
+    }
+}
+
+function getStoredCookie(name) {
+    return Cookies.get(name) ? JSON.parse(Cookies.get(name)) : [];
+}
+
+function getStoredSettings() {
+    return Cookies.get("tournamentSettings")
+        ? JSON.parse(Cookies.get("tournamentSettings"))
+        : { contendersPerMatch: 2, totContenders: undefined, order: "index" };
+}
+
+export { getStoredData, getStoredCookie, getStoredSettings };
