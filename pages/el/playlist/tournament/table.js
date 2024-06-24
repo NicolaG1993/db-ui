@@ -12,7 +12,11 @@ import {
     resetTournament,
     setupTournament,
     resetTournamentStore,
+    selectTournamentIsFinished,
+    selectTournamentFinalOverview,
+    shuffleTournamentData,
 } from "@/src/application/redux/slices/tournamentSlice";
+import FinalOverview from "@/src/domains/tournament/components/FinalOverview/FinalOverview";
 import TournamentStage from "@/src/domains/tournament/components/TournamentStage";
 import styles from "@/src/domains/tournament/Tournament.module.css";
 import { useEffect } from "react";
@@ -28,6 +32,7 @@ export default function TournamentTable() {
     const matchError = useSelector(selectMatchError, shallowEqual);
     const isStarted = useSelector(selectTournamentIsStarted, shallowEqual);
     const isLoaded = useSelector(selectTournamentIsLoaded, shallowEqual);
+    const isFinished = useSelector(selectTournamentIsFinished, shallowEqual);
     const notSelectedData = useSelector(selectNotSelectedData, shallowEqual);
     const dispatch = useDispatch();
 
@@ -36,11 +41,18 @@ export default function TournamentTable() {
     // const handleReset = () => dispatch(resetTournament());
     const handleReset = () => dispatch(resetTournamentStore());
     const setupNextMatch = () => dispatch(initNextMatch());
+    const handleShuffle = () => dispatch(shuffleTournamentData());
 
     const handleSetup = () => {
         // dispatch tournament settings and create first table (to edit)
         dispatch(setupTournament());
     };
+
+    useEffect(() => {
+        if (tournamentData) {
+            handleSetup();
+        }
+    }, [tournamentData]);
 
     useEffect(() => {
         if (!tournamentStructure) {
@@ -73,6 +85,13 @@ export default function TournamentTable() {
                         >
                             START TOURNAMENT
                         </button>
+                        <button
+                            className="button-standard"
+                            type="button"
+                            onClick={() => handleShuffle()}
+                        >
+                            SHUFFLE MATCHES
+                        </button>
                         {setup.totContenders >
                             tournamentData.length - notSelectedData.length && (
                             <p className={styles.tournamentWarning}>
@@ -99,7 +118,6 @@ export default function TournamentTable() {
                     </>
                 )}
             </div>
-
             <div
                 className={styles.tournamentTable}
                 style={{
@@ -182,7 +200,6 @@ export default function TournamentTable() {
                     )
                 )} */}
             </div>
-
             {/* <div
                 className={styles.tournamentTable}
                 style={{
@@ -216,6 +233,7 @@ export default function TournamentTable() {
                     <p>Loading table...</p> // 🧠 we need case for reloading page or direct routing
                 )}
             </div> */}
+            {isFinished && <FinalOverview />}
         </main>
     );
 }
