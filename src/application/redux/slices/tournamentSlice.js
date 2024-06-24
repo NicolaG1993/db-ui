@@ -377,6 +377,10 @@ const tournamentSlice = createSlice({
                     state.tournamentTable.tournamentStructure[
                         `${state.tournamentTable.setup.totStages}`
                     ];
+                console.log(
+                    "thirdPlaceStage 🔴🔴🔴🔴🔴🔴🔴: ",
+                    current(thirdPlaceStage)
+                );
 
                 let isEven = match.matchId % 2 === 0;
 
