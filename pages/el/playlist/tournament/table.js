@@ -9,9 +9,12 @@ import {
     selectTournamentData,
     selectNotSelectedData,
     selectTournamentIsLoaded,
+    resetTournament,
+    setupTournament,
 } from "@/src/application/redux/slices/tournamentSlice";
 import TournamentStage from "@/src/domains/tournament/components/TournamentStage";
 import styles from "@/src/domains/tournament/Tournament.module.css";
+import { useEffect } from "react";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 
 export default function TournamentTable() {
@@ -29,19 +32,29 @@ export default function TournamentTable() {
 
     const handleStart = () => dispatch(startTournament());
     const handleQuit = () => dispatch(quitTournament());
+    const handleReset = () => dispatch(resetTournament());
     const setupNextMatch = () => dispatch(initNextMatch());
+
+    const handleSetup = () => {
+        // dispatch tournament settings and create first table (to edit)
+        dispatch(setupTournament());
+    };
+
+    useEffect(() => {
+        if (!tournamentStructure) {
+            handleSetup();
+        }
+    }, [tournamentStructure]);
 
     console.log("TournamentTable: ", { tournamentStructure, setup });
 
-    // Create components and save in domain 🧠
-    // should i use canvas???
     return (
         <main>
             <div className={styles.tournamentHeading}>
                 <h1
-                    onClick={
-                        () => setupNextMatch() // delete 🔴
-                    }
+                // onClick={
+                //     () => setupNextMatch() // delete 🔴
+                // }
                 >
                     Tournament Table
                 </h1>
@@ -74,6 +87,13 @@ export default function TournamentTable() {
                         >
                             QUIT TOURNAMENT
                         </button>
+                        <button
+                            className="button-standard"
+                            type="button"
+                            onClick={() => handleReset()}
+                        >
+                            RESET TOURNAMENT
+                        </button>
                     </>
                 )}
             </div>
@@ -85,24 +105,25 @@ export default function TournamentTable() {
                     gridTemplateColumns: `repeat(${setup.tableColumns}, auto)`,
                 }}
             >
-                {Object.entries(tournamentStructure).map(
-                    ([stageKey, stage]) => (
-                        <TournamentStage
-                            key={"Tournament stage " + stage.stageId}
-                            stage={stage}
-                            stageKey={stageKey}
-                            tableRows={setup.tableRows}
-                            tableColumns={setup.tableColumns}
-                            totStages={setup.totStages}
-                            isStarted={isStarted}
-                            isFinal={stage.stageName === "Final"}
-                            isThirdPlace={stage.stageName === "3rd Place"}
-                            isFirstStage={stageKey === "1"}
-                            tableRowsSequences={setup.tableRowsSequences}
-                            isError={matchError}
-                        />
-                    )
-                )}
+                {tournamentStructure &&
+                    Object.entries(tournamentStructure).map(
+                        ([stageKey, stage]) => (
+                            <TournamentStage
+                                key={"Tournament stage " + stage.stageId}
+                                stage={stage}
+                                stageKey={stageKey}
+                                tableRows={setup.tableRows}
+                                tableColumns={setup.tableColumns}
+                                totStages={setup.totStages}
+                                isStarted={isStarted}
+                                isFinal={stage.stageName === "Final"}
+                                isThirdPlace={stage.stageName === "3rd Place"}
+                                isFirstStage={stageKey === "1"}
+                                tableRowsSequences={setup.tableRowsSequences}
+                                isError={matchError}
+                            />
+                        )
+                    )}
 
                 {/* {Object.entries(tournamentStructure).map(
                     ([stageKey, stage], i) => (
