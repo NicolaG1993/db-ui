@@ -23,14 +23,16 @@ export default function SessionPlaylistAddBtn({ el }) {
     };
 
     useEffect(() => {
-        const allIds = sessionPlaylist
-            .filter((obj) => obj.id)
-            .map(({ id }) => id);
+        if (sessionPlaylist) {
+            const allIds = sessionPlaylist
+                .filter((obj) => obj.id)
+                .map(({ id }) => id);
 
-        if (!allIds.includes(el.id)) {
-            setIsClone(false);
-        } else {
-            setIsClone(true);
+            if (!allIds.includes(el.id)) {
+                setIsClone(false);
+            } else {
+                setIsClone(true);
+            }
         }
     }, [sessionPlaylist]);
 

@@ -394,6 +394,33 @@
     max-height: 20px;
 }
 
+.contenderPicWrap {
+    position: relative;
+}
+.contenderPicWrap > .openContender {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 20px;
+    height: 20px;
+    line-height: 20px;
+    padding: 0.1rem;
+    outline: 1px solid var(--bg600);
+    background: var(--bg400);
+    font-size: 14px;
+    font-weight: 700;
+    /* border-radius: 25px; */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text);
+    border: none;
+}
+.contenderPicWrap > .openContender:hover {
+    outline: 1px solid var(--text);
+    background: var(--bg500);
+}
+
 .contenderProps {
     display: flex;
     flex-direction: column;
@@ -402,15 +429,16 @@
     margin-left: 0.25rem;
     height: 60px;
     width: 30px;
+    position: relative;
 }
 
-.contenderProps > div {
+.contenderProps > button {
     width: 17px;
     height: 17px;
     padding: 0.1rem;
     margin: 0.1rem;
-    outline: 1px solid var(--bg400);
-    background: var(--bg300);
+    outline: 1px solid var(--bg600);
+    background: var(--bg400);
     font-size: 16px;
     line-height: 16px;
     font-weight: 700;
@@ -418,11 +446,16 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    color: var(--text);
+    border: none;
 }
-
-.contenderProps > div:hover {
+.contenderProps > button:hover {
     outline: 2px solid var(--bg500);
     background: var(--bg500);
+}
+.contenderVote {
+    position: absolute;
+    top: -20px;
 }
 
 .match > .isError {
