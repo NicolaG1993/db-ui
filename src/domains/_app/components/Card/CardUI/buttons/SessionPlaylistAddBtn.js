@@ -22,17 +22,15 @@ export default function SessionPlaylistAddBtn({ el }) {
     };
 
     useEffect(() => {
-        if (sessionPlaylist) {
-            // get only db elements - not urls
-            const allIds = sessionPlaylist
-                .filter((obj) => obj.id)
-                .map(({ id }) => id);
+        // get only db elements - not urls
+        const allIds = sessionPlaylist
+            ? sessionPlaylist.filter((obj) => obj.id).map(({ id }) => id)
+            : [];
 
-            if (!allIds.includes(el.id)) {
-                setIsClone(false);
-            } else {
-                setIsClone(true);
-            }
+        if (!allIds.includes(el.id)) {
+            setIsClone(false);
+        } else {
+            setIsClone(true);
         }
     }, [sessionPlaylist]);
 

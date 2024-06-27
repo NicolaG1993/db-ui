@@ -3,10 +3,11 @@ import Cookies from "js-cookie";
 
 // Function to get data from sessionStorage
 function getStoredData(name) {
+    let storedData;
     if (isBrowser() && sessionStorage.getItem(name)) {
-        const storedData = sessionStorage.getItem(name);
-        return storedData ? JSON.parse(storedData) : [];
+        storedData = sessionStorage.getItem(name);
     }
+    return storedData ? JSON.parse(storedData) : [];
 }
 
 function getStoredCookie(name) {
