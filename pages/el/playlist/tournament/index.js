@@ -123,7 +123,11 @@ export default function TournamentSession() {
         return options
             .filter((opt) => opt >= 4)
             .map((opt) => (
-                <option key={"Contender option " + opt} value={opt}>
+                <option
+                    key={"Contender option " + opt}
+                    value={opt}
+                    disabled={opt <= 4}
+                >
                     {opt}
                 </option>
             ));

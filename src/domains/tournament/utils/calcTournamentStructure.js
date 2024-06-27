@@ -116,13 +116,22 @@ const calcTournamentStructure = ({
     // we should have some utils for some of this // geometric sequences
 
     // const firstStageTotBranches = Math.ceil(firstStageTotMatches / 4);
-    const firstStageTotMatchesPerSide = Math.ceil(firstStageTotMatches / 2);
+    const firstStageTotMatchesPerSide =
+        firstStageTotMatches > 1
+            ? Math.ceil(firstStageTotMatches / 2)
+            : firstStageTotMatches; // 8->4->2 // 16->8->4
 
     const firstStageTotBranchesPerSide = Math.ceil(
         firstStageTotMatchesPerSide / 4
-    );
-    const realFirstStageTotMatches = firstStageTotBranchesPerSide * 4 * 2;
-    const realFirstStageTotMatchesPerSide = realFirstStageTotMatches / 2;
+    ); // 1 // 2
+    let realFirstStageTotMatches =
+        firstStageTotBranchesPerSide > 1
+            ? firstStageTotBranchesPerSide * 4 * 2
+            : firstStageTotBranchesPerSide * 4; // 8!(4) // 16
+    if (firstStageTotMatchesPerSide <= 1) {
+        realFirstStageTotMatches = realFirstStageTotMatches / 2;
+    }
+    const realFirstStageTotMatchesPerSide = realFirstStageTotMatches / 2; // 16!(8)
 
     console.log("🍄 calcTournamentStructure #2: ", {
         firstStageTotMatchesPerSide,

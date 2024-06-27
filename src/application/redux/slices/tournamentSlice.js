@@ -145,7 +145,7 @@ const tournamentSlice = createSlice({
                 contendersPerMatch,
                 totContenders,
             });
-            // console.log("💫 result 💫: ", result);
+            console.log("💫 result 💫: ", result);
 
             /* 
             const totMatches = Math.ceil(

@@ -9,7 +9,6 @@ import { useDispatch, shallowEqual, useSelector } from "react-redux";
 
 export default function SessionPlaylistAddBtn({ el }) {
     let sessionPlaylist = useSelector(selectSessionPlaylist, shallowEqual);
-    console.log("SessionPlaylistAddBtn renders 💩💩💩: ", { sessionPlaylist });
     const dispatch = useDispatch();
 
     const [isClone, setIsClone] = useState(false);
