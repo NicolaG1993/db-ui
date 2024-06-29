@@ -542,7 +542,7 @@
     padding: 1rem;
     width: 100%;
     display: grid;
-    grid-template-rows: 80px repeat(7, 1fr);
+    grid-template-rows: 120px repeat(7, 1fr);
     grid-template-columns: repeat(7, 1fr);
 }
 .finalOverviewWrap * p {
@@ -556,7 +556,7 @@
     grid-column-start: 1;
     grid-column-end: 8;
     padding: 1rem;
-    margin-bottom: 0.5rem;
+    margin-bottom: 2.5rem;
     border-bottom: 1px solid var(--text);
 }
 
@@ -579,11 +579,53 @@
     grid-column-end: 4;
 }
 
+/* FINAL OVERVIEW: CONTENDER */
+.finalOverviewContender {
+    outline: 1px solid var(--text);
+    padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 12px;
+    background: var(--bg300);
+}
+.finalOverviewContender:hover {
+    background: var(--bg500);
+    /* box-shadow: var(--shadow000); */
+}
+.finalOverviewContender:first-child {
+    background: var(--bg000);
+    color: var(--text-secondary);
+}
+.finalOverviewContender > div:first-child {
+    display: flex;
+    align-items: center;
+}
+.finalOverviewContender > div:first-child > span:nth-child(1),
+.finalOverviewContender > div:first-child > span:nth-child(2) {
+    width: 40px;
+}
+.finalOverviewContender > div:first-child > span:nth-child(2) {
+    margin-right: 0.5rem;
+    /* margin-left: 0.5rem; */
+}
+.finalOverviewContender > div:first-child > span:nth-child(1),
+.finalOverviewContender > div:first-child > span:nth-child(3) {
+    font-weight: bold;
+}
+
 /* FINAL OVERVIEW: PODIUM */
 .podium {
     outline: 1px solid var(--text);
     padding: 1rem;
     max-width: 740px;
+}
+.podium > .podiumContendersWrap {
+    padding: 1rem;
+}
+.podium > .podiumContendersWrap > .finalOverviewContender:first-child {
+    background: var(--bg000);
+    color: var(--text-secondary);
 }
 /* FINAL OVERVIEW: FINAL TABLE */
 .finalTable {
@@ -596,32 +638,4 @@
     padding: 1rem;
     display: flex;
     flex-direction: column;
-}
-.finalTable > .table > div {
-    outline: 1px solid var(--text);
-    padding: 1rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 12px;
-    background: var(--bg400);
-}
-.finalTable > .table > div:hover {
-    background: var(--bg500);
-}
-.finalTable > .table > div > div:first-child {
-    display: flex;
-    align-items: center;
-}
-.finalTable > .table > div > div:first-child > span:nth-child(1),
-.finalTable > .table > div > div:first-child > span:nth-child(2) {
-    width: 40px;
-}
-.finalTable > .table > div > div:first-child > span:nth-child(2) {
-    margin-right: 0.5rem;
-    /* margin-left: 0.5rem; */
-}
-.finalTable > .table > div > div:first-child > span:nth-child(1),
-.finalTable > .table > div > div:first-child > span:nth-child(3) {
-    font-weight: bold;
 }
