@@ -45,7 +45,7 @@ export default function TournamentTable() {
 
     const handleSetup = () => {
         // dispatch tournament settings and create first table (to edit)
-        dispatch(setupTournament());
+        !isStarted && !isFinished && dispatch(setupTournament());
     };
 
     useEffect(() => {

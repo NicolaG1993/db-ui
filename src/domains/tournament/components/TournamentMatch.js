@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import {
     selectTournamentSetup,
     setMatchWinner,
+    updateVote,
 } from "@/src/application/redux/slices/tournamentSlice";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import ContenderSelect from "./ContenderSelect";
@@ -76,6 +77,9 @@ export default function TournamentMatch({
             })
         );
     };
+    const handleVote = (payload) => {
+        dispatch(updateVote(payload));
+    };
 
     useEffect(() => {
         // only add the event listener when the dropdown is opened
@@ -109,6 +113,7 @@ export default function TournamentMatch({
                     contender={contender}
                     index={i}
                     matchId={match.matchId}
+                    stageId={stage.stageId}
                     isStarted={isStarted}
                     isFirstStage={isFirstStage}
                     openSelectNav={openSelectNav}
@@ -118,6 +123,7 @@ export default function TournamentMatch({
                     isEliminated={
                         match.winner && match.winner.id !== contender.id
                     }
+                    handleVote={handleVote}
                 />
             ))}
             {isSelectNavOpen && (

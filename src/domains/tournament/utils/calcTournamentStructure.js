@@ -10,8 +10,6 @@ const createFirstStage = ({
 }) => {
     let firstStage = {};
 
-    // for (let i = 0; i < realFirstStageTotMatches; i + contendersPerMatch)
-
     for (let i = 0; i < realFirstStageTotMatches; i++) {
         const contendersFraction = i;
         const contendersOffsetStart = contendersFraction * contendersPerMatch;
@@ -21,25 +19,15 @@ const createFirstStage = ({
             contendersOffsetEnd
         );
 
+        contenders = contenders.map((cont) => ({ ...cont, vote: 0 }));
+
         if (contenders.length < contendersPerMatch) {
-            const missinContenders = contendersPerMatch - contenders.length;
-            for (let i = 0; i < missinContenders; i++) {
+            const missingContenders = contendersPerMatch - contenders.length;
+            for (let i = 0; i < missingContenders; i++) {
                 contenders.push(null);
             }
         }
-        // totContenders / contendersPerMatch
-        // if (i >= contendersOffsetStart && i <= contendersOffsetEnd)
-        /*
-  const contenders = allContenders.filter((el, i, arr) => {
-    {
-      return el
-    } else {
-      return null
-    }
-  })
-  */
 
-        // doSomething();
         firstStage[i + 1] = {
             matchId: i + 1,
             contenders,
@@ -122,12 +110,17 @@ const calcTournamentStructure = ({
             : firstStageTotMatches; // 8->4->2 // 16->8->4
 
     const firstStageTotBranchesPerSide = Math.ceil(
-        firstStageTotMatchesPerSide / 4
+        firstStageTotMatchesPerSide / 2
     ); // 1 // 2
-    let realFirstStageTotMatches =
-        firstStageTotBranchesPerSide > 1
-            ? firstStageTotBranchesPerSide * 4 * 2
-            : firstStageTotBranchesPerSide * 4; // 8!(4) // 16
+    // const firstStageTotBranchesPerSide =
+    //     firstStageTotMatchesPerSide === 4
+    //         ? 2
+    //         : Math.ceil(firstStageTotMatchesPerSide / 2); // 1 // 2
+    let realFirstStageTotMatches = firstStageTotBranchesPerSide * 4; // 8!(4) // 16
+    // let realFirstStageTotMatches =
+    //     firstStageTotBranchesPerSide > 2
+    //         ? firstStageTotBranchesPerSide * 4 * 2
+    //         : firstStageTotBranchesPerSide * 4; // 8!(4) // 16
     if (firstStageTotMatchesPerSide <= 1) {
         realFirstStageTotMatches = realFirstStageTotMatches / 2;
     }

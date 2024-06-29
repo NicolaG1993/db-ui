@@ -3,6 +3,7 @@ import Image from "next/image";
 import { detectImage } from "../../_app/utils/parsers";
 import { useState } from "react";
 import Link from "next/link";
+import { handleVote } from "@/src/application/redux/slices/tournamentSlice";
 
 const getVoteEmoji = (vote) => {
     if (vote === 0) {
@@ -38,6 +39,7 @@ export default function MatchContender({
     contender,
     index,
     matchId,
+    stageId,
     isStarted,
     isFirstStage,
     isError,
@@ -46,15 +48,16 @@ export default function MatchContender({
     onClickContender,
     isWinner,
     isEliminated,
+    handleVote,
 }) {
-    const [vote, setVote] = useState(0); // move in store inside match contender ? 🧠
+    // const [vote, setVote] = useState(0); // move in store inside match contender ? 🧠
 
-    const handleUpVote = () => {
-        setVote((prev) => prev + 1);
-    };
-    const handleDownVote = () => {
-        setVote((prev) => prev - 1);
-    };
+    // const handleUpVote = () => {
+    //     setVote((prev) => prev + 1);
+    // };
+    // const handleDownVote = () => {
+    //     setVote((prev) => prev - 1);
+    // };
 
     // console.log("➡️➡️➡️➡️ contender: ", contender);
     if (contender?.id) {
@@ -130,24 +133,34 @@ export default function MatchContender({
                     <div className={styles.contenderProps}>
                         <button
                             type="button"
-                            disabled={vote >= 6}
+                            disabled={contender.vote >= 6}
                             onClick={() =>
-                                handleUpVote({ id: contender.id, index })
+                                handleVote({
+                                    direction: "up",
+                                    stageId,
+                                    matchId,
+                                    contenderId: contender.id,
+                                })
                             }
                         >
                             +
                         </button>
                         <button
                             type="button"
-                            disabled={vote <= -6}
+                            disabled={contender.vote <= -6}
                             onClick={() =>
-                                handleDownVote({ id: contender.id, index })
+                                handleVote({
+                                    direction: "down",
+                                    stageId,
+                                    matchId,
+                                    contenderId: contender.id,
+                                })
                             }
                         >
                             -
                         </button>
                         <span className={styles.contenderVote}>
-                            {getVoteEmoji(vote)}
+                            {getVoteEmoji(contender.vote)}
                         </span>
                     </div>
                 </div>
