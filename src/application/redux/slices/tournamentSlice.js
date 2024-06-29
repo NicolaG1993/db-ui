@@ -14,9 +14,6 @@ import {
 } from "@/src/domains/_app/utils/getStoredData";
 
 const initialState = {
-    // tournamentData: Cookies.get("tournamentData")
-    //     ? JSON.parse(Cookies.get("tournamentData"))
-    //     : [],
     tournamentData: getStoredData("tournamentData"),
     notSelectedData: getStoredData("notSelectedData"),
     isLoaded: false,
@@ -62,7 +59,6 @@ const tournamentSlice = createSlice({
         shuffleTournamentData: (state) => {
             state.isLoaded = false;
             let newState = shuffle(state.tournamentData);
-            console.log("shuffle RESULT: ", current(newState));
             Cookies.set("tournamentData", JSON.stringify(newState));
             state.tournamentData = newState;
             state.isLoaded = true;
@@ -145,7 +141,7 @@ const tournamentSlice = createSlice({
                 contendersPerMatch,
                 totContenders,
             });
-            // console.log("💫 result 💫: ", result);
+            console.log("💫 result 💫: ", result);
 
             /* 
             const totMatches = Math.ceil(
@@ -500,6 +496,37 @@ const tournamentSlice = createSlice({
                     newThirdPlaceStage;
             }
         },
+        updateVote: (state, action) => {
+            const { direction, stageId, matchId, contenderId } = action.payload;
+
+            console.log("updateVote: ", {
+                payload: action.payload,
+                stage: current(
+                    state.tournamentTable.tournamentStructure[stageId]
+                ),
+            });
+
+            const match =
+                state.tournamentTable.tournamentStructure[stageId].stageMatches[
+                    matchId
+                ];
+
+            const newContenders = match.contenders.map((cont) =>
+                cont !== null && contenderId === cont.id
+                    ? {
+                          ...cont,
+                          vote:
+                              direction === "up"
+                                  ? cont.vote + 1
+                                  : cont.vote - 1,
+                      }
+                    : cont
+            );
+
+            state.tournamentTable.tournamentStructure[stageId].stageMatches[
+                matchId
+            ] = { ...match, contenders: newContenders };
+        },
     },
 });
 
@@ -516,6 +543,7 @@ export const {
     initNextMatch,
     updateNotSelectedData,
     setMatchWinner,
+    updateVote,
 } = tournamentSlice.actions;
 
 export const selectTournamentData = (state) =>

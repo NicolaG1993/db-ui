@@ -9,7 +9,6 @@ import { useDispatch, shallowEqual, useSelector } from "react-redux";
 
 export default function SessionPlaylistAddBtn({ el }) {
     let sessionPlaylist = useSelector(selectSessionPlaylist, shallowEqual);
-    console.log("SessionPlaylistAddBtn renders 💩💩💩: ", { sessionPlaylist });
     const dispatch = useDispatch();
 
     const [isClone, setIsClone] = useState(false);
@@ -22,17 +21,15 @@ export default function SessionPlaylistAddBtn({ el }) {
     };
 
     useEffect(() => {
-        if (sessionPlaylist) {
-            // get only db elements - not urls
-            const allIds = sessionPlaylist
-                .filter((obj) => obj.id)
-                .map(({ id }) => id);
+        // get only db elements - not urls
+        const allIds = sessionPlaylist
+            ? sessionPlaylist.filter((obj) => obj.id).map(({ id }) => id)
+            : [];
 
-            if (!allIds.includes(el.id)) {
-                setIsClone(false);
-            } else {
-                setIsClone(true);
-            }
+        if (!allIds.includes(el.id)) {
+            setIsClone(false);
+        } else {
+            setIsClone(true);
         }
     }, [sessionPlaylist]);
 
