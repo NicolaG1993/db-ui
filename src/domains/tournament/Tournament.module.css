@@ -583,29 +583,45 @@
 .podium {
     outline: 1px solid var(--text);
     padding: 1rem;
+    max-width: 740px;
 }
 /* FINAL OVERVIEW: FINAL TABLE */
 .finalTable {
+    outline: 1px solid var(--text);
+    padding: 1rem;
+    max-width: 740px;
+}
+.finalTable > .table {
     /* outline: 1px solid var(--text); */
     padding: 1rem;
     display: flex;
     flex-direction: column;
 }
-.finalTable > div {
+.finalTable > .table > div {
     outline: 1px solid var(--text);
     padding: 1rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
     font-size: 12px;
+    background: var(--bg400);
 }
-.finalTable > div > div:first-child {
+.finalTable > .table > div:hover {
+    background: var(--bg500);
+}
+.finalTable > .table > div > div:first-child {
     display: flex;
     align-items: center;
 }
-.finalTable > div > div:first-child > span:first-child {
-    margin-right: 0.5rem;
+.finalTable > .table > div > div:first-child > span:nth-child(1),
+.finalTable > .table > div > div:first-child > span:nth-child(2) {
+    width: 40px;
 }
-.finalTable > div > div:first-child > span:nth-child(2) {
+.finalTable > .table > div > div:first-child > span:nth-child(2) {
+    margin-right: 0.5rem;
+    /* margin-left: 0.5rem; */
+}
+.finalTable > .table > div > div:first-child > span:nth-child(1),
+.finalTable > .table > div > div:first-child > span:nth-child(3) {
     font-weight: bold;
 }
