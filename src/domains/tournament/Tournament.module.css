@@ -584,3 +584,28 @@
     outline: 1px solid var(--text);
     padding: 1rem;
 }
+/* FINAL OVERVIEW: FINAL TABLE */
+.finalTable {
+    /* outline: 1px solid var(--text); */
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+}
+.finalTable > div {
+    outline: 1px solid var(--text);
+    padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 12px;
+}
+.finalTable > div > div:first-child {
+    display: flex;
+    align-items: center;
+}
+.finalTable > div > div:first-child > span:first-child {
+    margin-right: 0.5rem;
+}
+.finalTable > div > div:first-child > span:nth-child(2) {
+    font-weight: bold;
+}

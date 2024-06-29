@@ -1,9 +1,9 @@
 import styles from "@/src/domains/tournament/Tournament.module.css";
 import Image from "next/image";
-import { detectImage } from "../../_app/utils/parsers";
+import { detectImage } from "@/src/domains/_app/utils/parsers";
 import { useState } from "react";
 import Link from "next/link";
-import { handleVote } from "@/src/application/redux/slices/tournamentSlice";
+// import { handleVote } from "@/src/application/redux/slices/tournamentSlice";
 
 const getVoteEmoji = (vote) => {
     if (vote === 0) {
@@ -41,6 +41,7 @@ export default function MatchContender({
     matchId,
     stageId,
     isStarted,
+    isReady,
     isFirstStage,
     isError,
     openSelectNav,
@@ -86,7 +87,9 @@ export default function MatchContender({
                                 ? styles.eliminated
                                 : ""
                         }`}
-                        onClick={() => onClickContender({ winner: contender })}
+                        onClick={() =>
+                            isReady && onClickContender({ winner: contender })
+                        }
                     >
                         {/* 🔴🧠 <span>Contender: {matchId * (index + 1)}</span>
                         🧠 maybe add index to every contender on initTournament */}
@@ -135,6 +138,7 @@ export default function MatchContender({
                             type="button"
                             disabled={contender.vote >= 6}
                             onClick={() =>
+                                isReady &&
                                 handleVote({
                                     direction: "up",
                                     stageId,
@@ -149,6 +153,7 @@ export default function MatchContender({
                             type="button"
                             disabled={contender.vote <= -6}
                             onClick={() =>
+                                isReady &&
                                 handleVote({
                                     direction: "down",
                                     stageId,

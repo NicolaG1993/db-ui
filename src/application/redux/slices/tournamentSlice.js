@@ -12,6 +12,8 @@ import {
     getStoredSettings,
     getStoredCookie,
 } from "@/src/domains/_app/utils/getStoredData";
+import aggregateVotes from "@/src/domains/tournament/utils/aggregateVotes";
+import extractAllContenders from "@/src/domains/tournament/utils/extractAllContenders";
 
 const initialState = {
     tournamentData: getStoredData("tournamentData"),
@@ -432,6 +434,11 @@ const tournamentSlice = createSlice({
                 state.tournamentTable.tournamentFinalOverview = {
                     ...tournamentFinalOverview,
                     podium,
+                    finalTable: aggregateVotes(
+                        extractAllContenders(
+                            state.tournamentTable.tournamentStructure
+                        )
+                    ),
                 };
 
                 // end tournament
