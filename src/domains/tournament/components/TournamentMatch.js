@@ -115,6 +115,10 @@ export default function TournamentMatch({
                     matchId={match.matchId}
                     stageId={stage.stageId}
                     isStarted={isStarted}
+                    isReady={
+                        match.contenders.filter((el) => el === null).length ===
+                        0
+                    }
                     isFirstStage={isFirstStage}
                     openSelectNav={openSelectNav}
                     closeSelectNav={closeSelectNav}
