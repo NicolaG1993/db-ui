@@ -20,13 +20,22 @@ export default function FinalOverview() {
             </div>
 
             <div className={styles.tableOverviewWrap}>
-                <div className={styles.podium}>
+                <div className={styles.finalTable}>
                     <span>Final table: </span>
                     {/* <span>Da 1 a ultimo</span> */}
-                    <div className={styles.finalTable}>
-                        {finalOverview.finalTable.map((cont) => (
+                    <div className={styles.table}>
+                        <div>
+                            <div>
+                                <span>Pos.</span>
+                                <span>ID</span>
+                                <span>Title</span>
+                            </div>
+                            <span>Points ↓</span>
+                        </div>
+                        {finalOverview.finalTable.map((cont, i) => (
                             <div key={"Final table contender " + cont.id}>
                                 <div>
+                                    <span>{i + 1}</span>
                                     <span>#{cont.id}</span>
                                     <span>{cont.title}</span>
                                 </div>
