@@ -614,6 +614,53 @@
     font-weight: bold;
 }
 
+.gold,
+.silver,
+.bronze {
+    /* color: rgba(60, 60, 60, 0.95); */
+    color: var(--text);
+    outline: none;
+}
+.gold {
+    background: rgba(255, 217, 0, 0.5);
+    /* outline: 2px solid rgb(228, 175, 1); */
+    border: 2px solid rgb(228, 175, 1);
+}
+.silver {
+    background: rgba(192, 192, 192, 0.5);
+    /* outline: 2px solid rgb(156, 156, 156); */
+    border: 2px solid rgb(156, 156, 156);
+}
+.bronze {
+    background: rgba(196, 130, 30, 0.5);
+    /* outline: 2px solid rgb(167, 108, 19); */
+    border: 2px solid rgb(167, 108, 19);
+}
+.gold:hover,
+.silver:hover,
+.bronze:hover {
+    color: rgba(255, 255, 255, 1);
+    /* color: var(--text); */
+    /* color: black; */
+}
+.gold:hover {
+    background: rgb(228, 175, 1);
+}
+.silver:hover {
+    background: rgb(156, 156, 156);
+}
+.bronze:hover {
+    background: rgb(167, 108, 19);
+}
+.revertCustom {
+    background: var(--bg300);
+    color: var(--text);
+}
+.medal {
+    font-size: 19px;
+    height: 17px;
+}
+
 /* FINAL OVERVIEW: PODIUM */
 .podium {
     outline: 1px solid var(--text);
@@ -621,7 +668,8 @@
     max-width: 740px;
 }
 .podium > .podiumContendersWrap {
-    padding: 1rem;
+    margin: 1rem;
+    outline: 1px solid var(--text);
 }
 .podium > .podiumContendersWrap > .finalOverviewContender:first-child {
     background: var(--bg000);
@@ -635,7 +683,7 @@
 }
 .finalTable > .table {
     /* outline: 1px solid var(--text); */
-    padding: 1rem;
+    margin: 1rem;
     display: flex;
     flex-direction: column;
 }
