@@ -1,9 +1,9 @@
 import styles from "@/src/domains/tournament/Tournament.module.css";
 import Image from "next/image";
-import { detectImage } from "../../_app/utils/parsers";
+import { detectImage } from "@/src/domains/_app/utils/parsers";
 import { useState } from "react";
 import Link from "next/link";
-import { handleVote } from "@/src/application/redux/slices/tournamentSlice";
+// import { handleVote } from "@/src/application/redux/slices/tournamentSlice";
 
 const getVoteEmoji = (vote) => {
     if (vote === 0) {
