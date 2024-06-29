@@ -2,6 +2,7 @@ import { selectTournamentFinalOverview } from "@/src/application/redux/slices/to
 import { shallowEqual, useSelector } from "react-redux";
 import styles from "@/src/domains/tournament/Tournament.module.css";
 import Podium from "./Podium/Podium";
+import PointsTable from "./PointsTable/PointsTable";
 
 export default function FinalOverview() {
     const finalOverview = useSelector(
@@ -20,30 +21,7 @@ export default function FinalOverview() {
             </div>
 
             <div className={styles.tableOverviewWrap}>
-                <div className={styles.finalTable}>
-                    <span>Final table: </span>
-                    {/* <span>Da 1 a ultimo</span> */}
-                    <div className={styles.table}>
-                        <div>
-                            <div>
-                                <span>Pos.</span>
-                                <span>ID</span>
-                                <span>Title</span>
-                            </div>
-                            <span>Points ↓</span>
-                        </div>
-                        {finalOverview.finalTable.map((cont, i) => (
-                            <div key={"Final table contender " + cont.id}>
-                                <div>
-                                    <span>{i + 1}</span>
-                                    <span>#{cont.id}</span>
-                                    <span>{cont.title}</span>
-                                </div>
-                                <span>{cont.vote}</span>
-                            </div>
-                        ))}
-                    </div>
-                </div>
+                <PointsTable table={finalOverview.finalTable} />
             </div>
 
             <div className={styles.recordsWrap}>
