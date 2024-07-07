@@ -332,6 +332,32 @@ button:disabled:hover {
     color: white;
 }
 
+.button-with-icon {
+    display: grid;
+    grid-template-columns: 45px 200px;
+    transition: 0.08s ease-out;
+    letter-spacing: 1px;
+}
+.button-with-icon > div:first-child {
+    height: 45px;
+    padding: 8px 8px 8px 2px;
+    border-right: 1px solid var(--bg800);
+    align-self: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.button-with-icon > div:first-child > span {
+    font-size: 16px;
+    /* margin-right: 6px; */
+    width: 45px;
+}
+.button-with-icon > span:nth-child(2) {
+    align-self: center;
+    justify-self: left;
+    margin: 0 16px 0 20px;
+}
+
 input,
 select {
     background-color: var(--bg400);

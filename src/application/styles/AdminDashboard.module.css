@@ -49,7 +49,7 @@
     margin-top: 3.25rem;
     padding: 0 1em; */
     position: absolute;
-    left: -87px;
+    left: -100px;
     top: 27px;
     font-size: 12px;
     letter-spacing: 0.5px;
@@ -59,6 +59,7 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    width: 90px;
 }
 
 .selector > ul > li {
@@ -69,10 +70,16 @@
 .selector > ul > li:hover {
     color: var(--text-secondary);
     background: var(--bg400);
+    font-weight: bold;
 }
-.selected {
-    /* text-decoration: underline;
-    font-weight: bold; */
+.selector > ul > li.selected {
+    text-decoration: underline;
+    font-weight: bold;
+    color: var(--color000);
+}
+.selector > ul > li.notAllowed {
+    cursor: not-allowed;
+    color: var(--bg600);
 }
 /* FIN */
 

@@ -221,6 +221,7 @@
     grid-template-columns: 120px 1fr 120px;
     width: 100%;
     max-height: 80vh;
+    outline: 1px solid var(--text);
     background: var(--bg000);
     padding: 0.5rem 0.5rem 0.75rem 0.5rem;
     overflow: auto;
@@ -537,13 +538,14 @@
 
 /* FINAL OVERVIEW */
 .finalOverviewWrap {
-    min-height: 50vh;
+    min-height: 600px;
     outline: 1px solid var(--text);
     padding: 1rem;
     width: 100%;
     display: grid;
     grid-template-rows: 120px repeat(7, 1fr);
     grid-template-columns: repeat(7, 1fr);
+    background: var(--bg000);
 }
 .finalOverviewWrap * p {
     margin: 0.25rem 0;
