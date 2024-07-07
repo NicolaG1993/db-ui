@@ -81,12 +81,12 @@ export default function Studio({
 
                 <div className={styles.elRow}>
                     <span>Tot. Movies: </span>
-                    <p>{movies.length}</p>
+                    <p>{movies?.length}</p>
                 </div>
 
                 <div className={styles.elRow}>
                     <span>Tot. Actors: </span>
-                    <p>{actors && actors.length}</p>
+                    <p>{actors?.length}</p>
                 </div>
 
                 <div className={styles.elRowToScroll}>

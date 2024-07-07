@@ -8,6 +8,7 @@ import { formatDateEU, getAge } from "@/src/application/utils/convertTimestamp";
 import IG_icon from "/public/IG_icon.svg";
 import X_icon from "/public/X_icon.svg";
 import Modal from "@/src/domains/_app/components/Modal/Modal";
+import renderLinks from "../../../utils/renderLinks";
 
 /*
 Form "open" and "close" should be handled in redux
@@ -217,32 +218,7 @@ export default function Actor({
                 <div className={styles.elRowToScroll}>
                     <span>Tags: </span>
                     <div className={styles.tagLabelsWrap}>
-                        {parsedObj.tags ? (
-                            Object.entries(parsedObj.tags)
-                                .sort()
-                                .map(([key, arr], i) => {
-                                    return (
-                                        <div key={key}>
-                                            <div className={styles.tagLabel}>
-                                                {key}
-                                            </div>
-                                            <div>
-                                                {arr.map((el) => (
-                                                    <Link
-                                                        href={`/el/tag/${el.id}`}
-                                                        key={"tag" + el.id}
-                                                        className={styles.tagEl}
-                                                    >
-                                                        {el.name}
-                                                    </Link>
-                                                ))}
-                                            </div>
-                                        </div>
-                                    );
-                                })
-                        ) : (
-                            <p>N/A</p>
-                        )}
+                        {renderLinks(parsedObj.tags, "tag")}
                     </div>
                 </div>
 
@@ -250,32 +226,7 @@ export default function Actor({
                     <span>Categories: </span>
 
                     <div className={styles.tagLabelsWrap}>
-                        {parsedObj.categories ? (
-                            Object.entries(parsedObj.categories)
-                                .sort()
-                                .map(([key, arr], i) => {
-                                    return (
-                                        <div key={key}>
-                                            <div className={styles.tagLabel}>
-                                                {key}
-                                            </div>
-                                            <div>
-                                                {arr.map((el) => (
-                                                    <Link
-                                                        href={`/el/category/${el.id}`}
-                                                        key={"category" + el.id}
-                                                        className={styles.tagEl}
-                                                    >
-                                                        {el.name}
-                                                    </Link>
-                                                ))}
-                                            </div>
-                                        </div>
-                                    );
-                                })
-                        ) : (
-                            <p>N/A</p>
-                        )}
+                        {renderLinks(parsedObj.categories, "category")}
                     </div>
                 </div>
 

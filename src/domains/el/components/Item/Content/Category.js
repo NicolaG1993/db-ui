@@ -2,7 +2,7 @@ import styles from "@/src/application/styles/Element.module.css";
 import Link from "next/link";
 import Image from "next/image";
 import Form from "@/src/domains/_app/components/Form/components/Form";
-import RelationsList from "../../RelationsList/RelationsList";
+import RelationsList from "@/src/domains/el/components/RelationsList/RelationsList";
 import Modal from "@/src/domains/_app/components/Modal/Modal";
 
 export default function Category({
@@ -14,6 +14,7 @@ export default function Category({
     setOpenForm,
 }) {
     let { pic, id, rating, nameType, actors, movies, type } = item;
+    console.log("item: ", item);
 
     return (
         <div id={styles.Category} className={styles.elWrap}>
@@ -48,12 +49,12 @@ export default function Category({
 
                 <div className={styles.elRow}>
                     <span>Tot. Movies: </span>
-                    <p>{movies.length}</p>
+                    <p>{movies?.length}</p>
                 </div>
 
                 <div className={styles.elRow}>
                     <span>Tot. Actors: </span>
-                    <p>{actors.length}</p>
+                    <p>{actors?.length}</p>
                 </div>
 
                 <div className={styles.elRowToScroll}>
