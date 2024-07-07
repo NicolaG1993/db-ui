@@ -12,6 +12,7 @@ import Link from "next/link";
 import AddNewForm from "@/src/domains/_app/constants/components/SessionPlaylist/components/AddNewForm.js";
 import SavePlaylistForm from "@/src/domains/_app/constants/components/SessionPlaylist/components/SavePlaylistForm.js";
 import styles from "@/src/domains/_app/constants/components/SessionPlaylist/SessionPlaylist.module.css";
+import { useRouter } from "next/router";
 
 export default function PlaylistEditor() {
     // TODO: shows playlist in store ✅
@@ -31,6 +32,7 @@ export default function PlaylistEditor() {
     // REDUX //
     let sessionPlaylist = useSelector(selectSessionPlaylist, shallowEqual);
     const dispatch = useDispatch();
+    const router = useRouter();
 
     const removeFromPlaylist = (i) => {
         dispatch(removeFromSessionPlaylist(i));
@@ -66,9 +68,18 @@ export default function PlaylistEditor() {
         <main>
             <div className={"heading"}>
                 <h1>PLAYLISTS EDITOR</h1>
-                <Link href={`/all/playlists`} title={"All playlists"}>
+                {/* <Link href={`/all/playlists`} title={"All playlists"}>
                     ← All playlists
-                </Link>
+                </Link> */}
+                <button
+                    className={"button-standard button-with-icon"}
+                    onClick={() => router.push("/el/playlist/tournament")}
+                >
+                    <div>
+                        <span>◀</span>
+                    </div>
+                    <span>All playlists</span>
+                </button>
             </div>
             <div className={styles["nav-btn"]}>
                 <button
