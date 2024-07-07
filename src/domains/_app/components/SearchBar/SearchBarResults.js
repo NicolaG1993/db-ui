@@ -44,7 +44,7 @@ export default function SearchBarResults({ searchResults, labelA, labelB }) {
                             <div className={styles.results}>
                                 {searchResults.groupB.slice(0, 8).map((el) => (
                                     <Link
-                                        href={`/${labelB}/${el.id}`}
+                                        href={`/el/${labelB}/${el.id}`}
                                         key={`${labelB}Search ` + el.id}
                                     >
                                         {el.title}

@@ -1,4 +1,5 @@
 import { getError } from "@/src/application/utils/error";
+import axios from "axios";
 
 const getRandomMovie = async () => {
     try {
@@ -9,6 +10,7 @@ const getRandomMovie = async () => {
         // heiter getting only the rows lenght from db
         // or using the data directly, without calling api again
     } catch (error) {
+        console.log("error: ", error);
         return {
             status: error.response.status,
             error,
