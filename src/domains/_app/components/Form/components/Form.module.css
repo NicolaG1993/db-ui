@@ -160,14 +160,21 @@
     margin: 0;
 }
 
-.sidewrap > .nav > span {
+.sidewrap > .nav > .closeDrawerBtn {
+    background: var(--bg600);
+    border-radius: 25px;
+    /* padding: 0.5rem; */
+    width: 100px;
+    height: 30px;
+    outline: none;
+    border: none;
     float: right;
     margin-left: auto;
     cursor: pointer;
-    line-height: 30px;
 }
-.sidewrap > .nav > span:hover {
+.sidewrap > .nav > .closeDrawerBtn:hover {
     font-weight: bold;
+    background: var(--bg800);
 }
 
 .sidewrapContent {

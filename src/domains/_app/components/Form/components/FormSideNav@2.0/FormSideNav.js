@@ -151,7 +151,8 @@ export default function FormSideNav() {
                     </p>
                     <p>Select the {uiState.sideNavTopic} that you need</p>
                 </div>
-                <span
+                <button
+                    className={styles.closeDrawerBtn}
                     onClick={() =>
                         handleCloseSideNav({
                             appSettings,
@@ -163,8 +164,8 @@ export default function FormSideNav() {
                         })
                     }
                 >
-                    X
-                </span>
+                    Confirm √
+                </button>
             </div>
 
             <div className={styles.sidewrapContent}>
