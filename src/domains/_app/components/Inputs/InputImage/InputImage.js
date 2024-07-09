@@ -37,7 +37,7 @@ export default function InputImage({
                 accept="image/png, image/jpeg, image/webp"
                 onChange={(e) => onAddFile(e)}
             />
-            <label for="FileID">
+            <label htmlFor="FileID">
                 <span>Picture</span>
                 <span>Choose a file 📂</span>
             </label>

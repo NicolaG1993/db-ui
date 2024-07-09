@@ -89,10 +89,10 @@ export default function CategoryForm({ confirmChanges }) {
 
                 <div className={styles["form-row-full"]}>
                     <InputText
-                        name="title"
-                        id="Title"
+                        name="name"
+                        id="Name"
                         isMandatory={true}
-                        value={formState.title}
+                        value={formState.name}
                         onChange={(e) =>
                             dispatch(
                                 updateFormState({
@@ -110,8 +110,8 @@ export default function CategoryForm({ confirmChanges }) {
                                 })
                             )
                         }
-                        placeholder="Type the title here..."
-                        error={errors.title}
+                        placeholder="Type the name here..."
+                        error={errors.name}
                     />
                 </div>
 
