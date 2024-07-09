@@ -16,6 +16,7 @@ export default function FormSideNavSearchBar({
     };
 
     const clearSearchBar = () => {
+        console.log("clearSearchBar invoked: ⭐");
         setSearchBar("");
     };
     const handleFocus = (e) => {
@@ -27,7 +28,8 @@ export default function FormSideNavSearchBar({
 
     useEffect(() => {
         onChange(searchBar);
-    }, [searchBar, onChange]);
+        console.log("searchBar changes: ⭐", searchBar);
+    }, [searchBar]);
 
     useEffect(() => {
         setSearchBar();

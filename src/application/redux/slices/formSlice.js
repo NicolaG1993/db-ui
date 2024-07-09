@@ -410,6 +410,7 @@ const formSlice = createSlice({
                 // 🧠🧠🧠 TODO: for Levels, we should update the menustructure after filtering
                 // if a level has no result in its childs, we should close it and not render it
             } else {
+                state.sideNavData.filters.search = "";
                 state.sideNavData.filteredData = state.sideNavData.parsedData
                     ? state.sideNavData.parsedData
                     : state.sideNavData.data;
