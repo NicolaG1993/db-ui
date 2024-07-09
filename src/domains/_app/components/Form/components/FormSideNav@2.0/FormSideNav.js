@@ -24,6 +24,7 @@ import {
 import { useAppSelector } from "@/src/application/redux/lib/hooks";
 import { selectAppSettings } from "@/src/application/redux/slices/appSettingsSlice";
 import FormSideNavSearchBar from "@/src/domains/_app/components/Form/components/FormSideNav@2.0/components/FormSideNavSearchBar";
+import extractAllTags from "../../utils/extractAllTags";
 
 export default function FormSideNav() {
     const dispatch = useDispatch();
@@ -108,7 +109,15 @@ export default function FormSideNav() {
          * * * in this case i think we can restore FormSideNavSearchBar
          */
 
+        console.log("💚 handleSearch invoked: ", {
+            str,
+            searchBar,
+            sideNavRawData,
+            filteredData,
+            "filters.search": filters.search,
+        });
         if (sideNavRawData && filteredData) {
+            console.log("💚 filteredData: ", filteredData);
             dispatch(
                 searchNavData({
                     str,
@@ -206,15 +215,32 @@ export default function FormSideNav() {
                         🧠🧠🧠
                         */}
 
+                        {/* ⚠️⚠️ UPDATE ⚠️⚠️:
+
+        <DropdownMenusByLevel/> renders only if there is no search typed by the user
+        otherwise we should display  <InputsSelector/> with the filtered tags, same as we do for categories, studios, nationalities, etc..
+                                
+        FIX: in uno uso store selectors, nell'altro uso props - sbagliato ⚠️
+        Inoltre devo convertire tags data quando lo voglio usare in <InputsSelector/> ⚠️
+*/}
+
                         {!sideNavRawData ? (
                             <p>Loading filters data...</p>
                         ) : (
                             filteredData &&
                             (uiState.sideNavTopic === "tags" ? (
-                                <DropdownMenusByLevel
-                                    topic={uiState.sideNavTopic}
-                                    userStyles={styles}
-                                />
+                                filters.search ? (
+                                    <InputsSelector
+                                        // data={filteredData.map((el) => el)}
+                                        data={extractAllTags(filteredData)}
+                                        topic={uiState.sideNavTopic}
+                                    />
+                                ) : (
+                                    <DropdownMenusByLevel
+                                        topic={uiState.sideNavTopic}
+                                        userStyles={styles}
+                                    />
+                                )
                             ) : filteredData.length &&
                               uiState.sideNavTopic !== "nationalities" ? (
                                 <InputsSelector
