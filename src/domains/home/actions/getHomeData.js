@@ -19,7 +19,7 @@ const getHomeData = async () => {
                 res.data.groupAResp = sortByObjDate(
                     data.groupA,
                     "created_at",
-                    "asc"
+                    "desc"
                 ).slice(0, 6);
             }
             if (data.groupB) {
