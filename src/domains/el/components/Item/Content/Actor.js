@@ -274,6 +274,22 @@ export default function Actor({
                 </div>
             </div>
 
+            {/* FIX THIS 👇⚠️🧠
+            
+                • Infinite scrolling for data
+                • Improve UI (window is too small and should be attached to bottom of the page - no extra scrolling, is annoying)
+                • We could rework the list design
+                • We should add sorting
+
+                TODO:
+
+                🧠 "movies" should be a separate API request, that works with pagination
+                • "Tot Movies" dobbiamo averlo giá dall'inizio
+                • Le nuove pagine di "movies" vengo aggiunte a quelle gia ottenute, non sostituite
+                • Pagination dev'essere triggered quando user é in fondo alla lista + animazione caricamento
+                • Dobbiamo avere sorting 
+                
+            */}
             <div className={styles.infoWrap}>
                 <div className={styles.infoHeadingWrap}>
                     <h3>MOVIES</h3>

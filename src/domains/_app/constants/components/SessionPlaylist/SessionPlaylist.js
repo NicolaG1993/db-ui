@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
 import {
     addToSessionPlaylist,
+    getSessionPlaylist,
     selectSessionPlaylist,
 } from "@/src/application/redux/slices/sessionPlaylistSlice";
 
@@ -46,6 +47,10 @@ export default function SessionPlaylist({ open, closeWidget }) {
         addToPlaylist(obj);
         closeAddNew();
     };
+
+    useEffect(() => {
+        getSessionPlaylist();
+    }, [open]);
 
     if (open) {
         return (
