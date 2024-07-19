@@ -998,6 +998,49 @@ module.exports.deleteRelations = (id, arr, table, idColumn, arrColumn) => {
     return db.query(myQuery, keys);
 }; // eliminiamo tutti i record corrotti (IS NULL)
 
+module.exports.getRelationsPage = (
+    itemId,
+    itemLabel,
+    relationsLabel,
+    direction,
+    order,
+    page,
+    limit
+) => {
+    /*
+    I need to take all movies (relationsLabel = "movie")
+    that contains itemId
+    item = itemLabel = "actor", "category", ...
+    */
+
+    /* 🔴🧠🔴🧠 👇⚠️
+    Significa che devo guardare nella relations table quali movies (ad es.) hanno una relation con quel category (ad es.)
+    Devo poi tornare quei movies con tutte le informazioni richieste per la movie card
+   
+    const myQuery = `SELECT * 
+    FROM ${relationsLabel} 
+    WHERE ${idColumn} ILIKE '%' || $1 || '%'
+    ORDER BY ${idColumn} ASC`; 
+      */
+
+    // 🔴⚠️🔴⚠️🔴⚠️ now works only for category-movie 🔴⚠️🔴⚠️🔴⚠️
+    const myQuery = `SELECT m.*
+    FROM movie m
+    JOIN categoryRelation cr ON m.id = cr.movieID
+    WHERE cr.categoryID = $1
+    ORDER BY m.${order} ${direction}
+    LIMIT ${limit} OFFSET ${page * limit}`;
+
+    // const myQuery = `DELETE FROM ${table}
+    // WHERE ${idColumn} = $1
+    // AND (${arrColumn} = ANY($2) OR ${arrColumn} IS NULL)
+    // RETURNING *`;
+
+    // const keys = [itemId, itemLabel, relationsLabel, direction, order, page, limit];
+    const keys = [itemId];
+    return db.query(myQuery, keys);
+};
+
 /* IMPORT TABLE (delete this after) */
 // module.exports.importMovieRow = (
 //     title,

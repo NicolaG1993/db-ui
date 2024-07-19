@@ -302,9 +302,11 @@ export default function Actor({
                 {movies ? (
                     <RelationsList
                         itemName={item[nameType]}
-                        data={movies}
-                        listLabel={"movie"} // fare dinamici ? no perche custom component
-                        listGroup={"movies"}
+                        itemId={item.id}
+                        itemLabel={label}
+                        //   data={movies}
+                        relationsLabel={"movie"} // fare dinamici ? no perche custom component
+                        relationsGroup={"movies"}
                     />
                 ) : (
                     <p>N/A</p>

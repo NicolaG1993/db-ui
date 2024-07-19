@@ -94,9 +94,11 @@ export default function Category({
                 {movies ? (
                     <RelationsList
                         itemName={item[nameType]}
-                        data={movies}
-                        listLabel={"movie"}
-                        listGroup={"movies"}
+                        itemId={item.id}
+                        itemLabel={label}
+                        // data={movies}
+                        relationsLabel={"movie"}
+                        relationsGroup={"movies"}
                     />
                 ) : (
                     <p>N/A</p>
