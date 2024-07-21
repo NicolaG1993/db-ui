@@ -1,16 +1,11 @@
-import {
-    getTagByID,
-    getRelations,
-    getRelationsByArr,
-    getMovies,
-    getActors,
-} from "@/src/application/db/db.js";
-// import { sortByObjValue } from "../../../../utils/orderData";
+import { getTagByID } from "@/src/application/db/db.js";
+import { mapTagRawToTag } from "@/src/domains/el/utils/mapData";
 
 export default async function handler(req, res) {
     const { id } = req.query;
 
     try {
+        /* 
         let { rows } = await getTagByID(Number(id)); // il mio tag obj
         let relations = await getRelations(Number(id), "tagRelation", "tagID"); // tutte le relations del tag obj[]
 
@@ -35,6 +30,11 @@ export default async function handler(req, res) {
         }
 
         res.status(200).json(rows[0]);
+        */
+
+        let { rows } = await getTagByID(Number(id));
+        let tag = mapTagRawToTag(rows[0]);
+        res.status(200).json(tag);
     } catch (err) {
         console.log("ERROR!", err);
         return res.status(500).send({ message: err.message });

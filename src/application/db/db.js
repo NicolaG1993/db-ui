@@ -257,12 +257,116 @@ module.exports.getMovieByID = (id) => {
     return db.query(myQuery, key);
 };
 module.exports.getStudioByID = (id) => {
-    const myQuery = `SELECT * FROM studio WHERE id = $1`;
+    // const myQuery = `SELECT * FROM studio WHERE id = $1`;
+    const myQuery = `WITH actor_movie_count AS (
+    SELECT 
+        a.id AS actor_id,
+        a.name AS actor_name,
+        COUNT(DISTINCT ma.movieID) AS movies_count
+    FROM 
+        actor a
+        JOIN movie_actor ma ON a.id = ma.actorID
+        JOIN movie m ON ma.movieID = m.id
+        JOIN movie_studio ms ON m.id = ms.movieID
+    WHERE 
+        ms.studioID = $1
+    GROUP BY 
+        a.id, a.name
+),
+movie_count AS (
+    SELECT 
+        COUNT(DISTINCT m.id) AS total_movies
+    FROM 
+        movie_studio ms
+        JOIN movie m ON ms.movieID = m.id
+    WHERE 
+        ms.studioID = $1
+)
+SELECT 
+    s.id AS studio_id,
+    s.created_at AS studio_created_at,
+    s.name AS studio_name,
+    s.pic AS studio_pic,
+    s.website AS studio_website,
+    COALESCE(mc.total_movies, 0) AS total_movies,
+    json_agg(
+        jsonb_build_object(
+            'actor_id', amc.actor_id,
+            'actor_name', amc.actor_name,
+            'movies_count', amc.movies_count
+        )
+        ORDER BY amc.actor_name
+    ) AS actors
+FROM 
+    studio s
+    LEFT JOIN movie_studio ms ON s.id = ms.studioID
+    LEFT JOIN movie m ON ms.movieID = m.id
+    LEFT JOIN movie_actor ma ON m.id = ma.movieID
+    LEFT JOIN actor_movie_count amc ON ma.actorID = amc.actor_id
+    LEFT JOIN movie_count mc ON true
+WHERE 
+    s.id = $1
+GROUP BY 
+    s.id, s.created_at, s.name, s.pic, s.website, mc.total_movies
+ORDER BY 
+    s.name`;
     const key = [id];
     return db.query(myQuery, key);
 };
 module.exports.getDistributionByID = (id) => {
-    const myQuery = `SELECT * FROM distribution WHERE id = $1`;
+    // const myQuery = `SELECT * FROM distribution WHERE id = $1`;
+    const myQuery = `WITH actor_movie_count AS (
+    SELECT 
+        a.id AS actor_id,
+        a.name AS actor_name,
+        COUNT(DISTINCT ma.movieID) AS movies_count
+    FROM 
+        actor a
+        JOIN movie_actor ma ON a.id = ma.actorID
+        JOIN movie m ON ma.movieID = m.id
+        JOIN movie_distribution md ON m.id = md.movieID
+    WHERE 
+        md.distributionID = $1
+    GROUP BY 
+        a.id, a.name
+),
+movie_count AS (
+    SELECT 
+        COUNT(DISTINCT m.id) AS total_movies
+    FROM 
+        movie_distribution md
+        JOIN movie m ON md.movieID = m.id
+    WHERE 
+        md.distributionID = $1
+)
+SELECT 
+    d.id AS distribution_id,
+    d.created_at AS distribution_created_at,
+    d.name AS distribution_name,
+    d.pic AS distribution_pic,
+    d.website AS distribution_website,
+    COALESCE(mc.total_movies, 0) AS total_movies,
+    json_agg(
+        jsonb_build_object(
+            'actor_id', amc.actor_id,
+            'actor_name', amc.actor_name,
+            'movies_count', amc.movies_count
+        )
+        ORDER BY amc.actor_name
+    ) AS actors
+FROM 
+    distribution d
+    LEFT JOIN movie_distribution md ON d.id = md.distributionID
+    LEFT JOIN movie m ON md.movieID = m.id
+    LEFT JOIN movie_actor ma ON m.id = ma.movieID
+    LEFT JOIN actor_movie_count amc ON ma.actorID = amc.actor_id
+    LEFT JOIN movie_count mc ON true
+WHERE 
+    d.id = $1
+GROUP BY 
+    d.id, d.created_at, d.name, d.pic, d.website, mc.total_movies
+ORDER BY 
+    d.name`;
     const key = [id];
     return db.query(myQuery, key);
 };
@@ -340,7 +444,47 @@ module.exports.getCategoryByID = (id) => {
     return db.query(myQuery, key);
 };
 module.exports.getTagByID = (id) => {
-    const myQuery = `SELECT * FROM tag WHERE id = $1`;
+    // const myQuery = `SELECT * FROM tag WHERE id = $1`;
+    const myQuery = `WITH actor_movie_count AS (
+        SELECT
+            a.id AS actor_id,
+            a.name AS actor_name,
+            COUNT(DISTINCT ma.movieID) AS movies_count
+        FROM
+            actor a
+            JOIN movie_actor ma ON a.id = ma.actorID
+            JOIN tagRelation tr ON ma.movieID = tr.movieID
+        WHERE
+            tr.tagID = $1
+        GROUP BY
+            a.id, a.name
+    )
+    SELECT
+        t.id AS tag_id,
+        t.created_at AS tag_created_at,
+        t.name AS tag_name,
+        t.pic AS tag_pic,
+        t.type AS tag_type,
+        COUNT(DISTINCT m.id) AS total_movies,
+        json_agg(
+            json_build_object(
+                'actor_id', amc.actor_id,
+                'actor_name', amc.actor_name,
+                'movies_count', amc.movies_count
+            ) ORDER BY amc.actor_name
+        ) AS actors
+    FROM
+        tag t
+        LEFT JOIN tagRelation tr ON t.id = tr.tagID
+        LEFT JOIN movie m ON tr.movieID = m.id
+        LEFT JOIN movie_actor ma ON m.id = ma.movieID
+        LEFT JOIN actor_movie_count amc ON ma.actorID = amc.actor_id
+    WHERE
+        t.id = $1
+    GROUP BY
+        t.id, t.created_at, t.name, t.pic, t.type
+    ORDER BY
+        t.name`;
     const key = [id];
     return db.query(myQuery, key);
 };

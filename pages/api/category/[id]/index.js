@@ -1,46 +1,11 @@
 import { getCategoryByID } from "@/src/application/db/db.js";
-
-function filterUniqueActors(actors) {
-    const seen = new Set();
-    return actors.filter((actor) => {
-        if (seen.has(actor.id)) {
-            return false;
-        } else {
-            seen.add(actor.id);
-            return true;
-        }
-    });
-}
-
-const mapCategoryRawToCategory = (rawCategory) => {
-    let category = {
-        id: rawCategory.category_id,
-        createdAt: rawCategory.category_created_at,
-        name: rawCategory.category_name,
-        pic: rawCategory.category_pic,
-        type: rawCategory.category_type,
-        totalMovies: rawCategory.total_movies,
-        actors: rawCategory.actors.map((act) => ({
-            id: act.actor_id,
-            name: act.actor_name,
-            count: act.movies_count,
-        })),
-    };
-
-    category.actors = filterUniqueActors(category.actors);
-
-    return category;
-};
+import { mapCategoryRawToCategory } from "@/src/domains/el/utils/mapData";
 
 export default async function handler(req, res) {
     const { id } = req.query;
 
     try {
-        let { rows } = await getCategoryByID(Number(id));
-        let category = mapCategoryRawToCategory(rows[0]);
-        console.log("rows: ", rows);
         /*
-
         let { rows } = await getCategoryByID(Number(id));
 
         // GET CLIPS
@@ -93,9 +58,11 @@ export default async function handler(req, res) {
         } else {
             rows[0].actors = [];
         }
-                    
         */
 
+        let { rows } = await getCategoryByID(Number(id));
+        let category = mapCategoryRawToCategory(rows[0]);
+        console.log("rows: ", rows);
         res.status(200).json(category);
     } catch (err) {
         // console.log("ERROR!", err);

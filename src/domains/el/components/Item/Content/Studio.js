@@ -13,8 +13,17 @@ export default function Studio({
     openForm,
     setOpenForm,
 }) {
-    let { pic, id, rating, nameType, actors, movies, website, nationalities } =
-        item;
+    let {
+        pic,
+        id,
+        // rating,
+        nameType,
+        actors,
+        movies,
+        website,
+        nationalities,
+        totalMovies,
+    } = item;
 
     return (
         <div id={styles.Category} className={styles.elWrap}>
@@ -31,8 +40,8 @@ export default function Studio({
                 <div className={styles.underPicWrap}>
                     <h1>{item[nameType]}</h1>
                     <div className={styles.elRow}>
-                        <span>Rating: </span>
-                        {rating ? <p>{rating}</p> : <p>Unrated</p>}
+                        {/* <span>Rating: </span>
+                        {rating ? <p>{rating}</p> : <p>Unrated</p>} */}
                     </div>
                 </div>
             </div>
@@ -81,7 +90,7 @@ export default function Studio({
 
                 <div className={styles.elRow}>
                     <span>Tot. Movies: </span>
-                    <p>{movies?.length}</p>
+                    <p>{totalMovies}</p>
                 </div>
 
                 <div className={styles.elRow}>
@@ -103,7 +112,7 @@ export default function Studio({
                                     </Link>
                                     {" | "}
                                     <Link href={`/search`}>
-                                        <p>{el.totalMovies}</p>
+                                        <p>{el.count}</p>
                                     </Link>
                                 </div>
                             ))
@@ -118,23 +127,19 @@ export default function Studio({
                 <div className={styles.infoHeadingWrap}>
                     <h3>MOVIES</h3>
 
-                    {movies.length > 0 && (
-                        <Link href="/search">see all ({movies.length})</Link>
+                    {totalMovies > 0 && (
+                        <Link href="/search">see all ({totalMovies})</Link>
                     )}
                 </div>
 
-                {movies ? (
-                    <RelationsList
-                        itemName={item[nameType]}
-                        itemId={item.id}
-                        itemLabel={label}
-                        nameType={nameType}
-                        relationsLabel={"movie"}
-                        relationsGroup={"movies"}
-                    />
-                ) : (
-                    <p>N/A</p>
-                )}
+                <RelationsList
+                    itemName={item[nameType]}
+                    itemId={item.id}
+                    itemLabel={label}
+                    nameType={nameType}
+                    relationsLabel={"movie"}
+                    relationsGroup={"movies"}
+                />
             </div>
 
             <div className={styles.infoWrap}>

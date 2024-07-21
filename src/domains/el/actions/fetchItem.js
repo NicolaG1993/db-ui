@@ -9,7 +9,7 @@ const fetchItem = async (id, label, structure) => {
         return { status: 200, data: res };
     } catch (error) {
         return {
-            status: error.response.status,
+            status: error.response?.status,
             error,
             message: getError(error),
         };

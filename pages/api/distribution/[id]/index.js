@@ -1,15 +1,11 @@
-import {
-    getDistributionByID,
-    getRelations,
-    getMovies,
-    getRelationsByArr,
-    getActors,
-} from "@/src/application/db/db.js";
+import { getDistributionByID } from "@/src/application/db/db.js";
+import { mapDistributionRawToDistribution } from "@/src/domains/el/utils/mapData";
 
 export default async function handler(req, res) {
     const { id } = req.query;
 
     try {
+        /*
         let { rows } = await getDistributionByID(Number(id));
         // console.log("ROWS!", rows[0]);
 
@@ -82,6 +78,11 @@ export default async function handler(req, res) {
         }
         //
         res.status(200).json(rows[0]);
+        */
+        let { rows } = await getDistributionByID(Number(id));
+        let distribution = mapDistributionRawToDistribution(rows[0]);
+        console.log("rows: ", rows);
+        res.status(200).json(distribution);
     } catch (err) {
         // console.log("ERROR!", err);
         return res.status(500).json({ message: err.message });
