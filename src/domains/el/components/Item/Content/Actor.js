@@ -304,6 +304,7 @@ export default function Actor({
                         itemName={item[nameType]}
                         itemId={item.id}
                         itemLabel={label}
+                        nameType={nameType}
                         //   data={movies}
                         relationsLabel={"movie"} // fare dinamici ? no perche custom component
                         relationsGroup={"movies"}

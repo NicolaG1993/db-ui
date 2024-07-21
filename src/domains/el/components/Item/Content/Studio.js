@@ -2,7 +2,7 @@ import styles from "@/src/application/styles/Element.module.css";
 import Link from "next/link";
 import Image from "next/image";
 import Form from "@/src/domains/_app/components/Form/components/Form";
-import RelationsList from "../../RelationsList/RelationsList";
+import RelationsList from "@/src/domains/el/components/RelationsList/RelationsList";
 import Modal from "@/src/domains/_app/components/Modal/Modal";
 
 export default function Studio({
@@ -126,9 +126,11 @@ export default function Studio({
                 {movies ? (
                     <RelationsList
                         itemName={item[nameType]}
-                        data={movies}
-                        listLabel={"movie"}
-                        listGroup={"movies"}
+                        itemId={item.id}
+                        itemLabel={label}
+                        nameType={nameType}
+                        relationsLabel={"movie"}
+                        relationsGroup={"movies"}
                     />
                 ) : (
                     <p>N/A</p>

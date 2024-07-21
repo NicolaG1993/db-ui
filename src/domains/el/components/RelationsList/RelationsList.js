@@ -8,6 +8,7 @@ export default function RelationsList({
     itemName,
     itemId,
     itemLabel,
+    nameType,
     relationsLabel,
     relationsGroup,
 }) {
@@ -16,6 +17,7 @@ export default function RelationsList({
     let [data, setData] = useState([]);
     let [filters, setFilters] = useState({
         page: 1,
+        // order: nameType,
         order: "title",
         direction: "asc",
     });
@@ -66,14 +68,9 @@ export default function RelationsList({
         if (newData.data.length === 0) {
             setHasMore(false);
         } else {
-            // setData((prev) => [...prev, ...newData.data]);
             setData((prev) =>
                 filters.page === 1 ? newData.data : [...prev, ...newData.data]
             );
-            // setFilters((prev) => ({
-            //     ...filters,
-            //     page: prev.page + 1,
-            // }));
         }
         setLoading(false);
     };
@@ -97,15 +94,6 @@ export default function RelationsList({
     }, [data]);
 
     const handleScroll = () => {
-        /*
-        if (
-            window.innerHeight + document.documentElement.scrollTop !==
-            document.documentElement.offsetHeight
-        )
-            return;
-        setFilters((prev) => ({ ...filters, page: prev.page + 1 }));
-        */
-
         const container = scrollContainerRef.current;
         console.log("handleScroll: ", {
             scrollTop: container.scrollTop,
@@ -124,16 +112,12 @@ export default function RelationsList({
     };
 
     useEffect(() => {
-        /*
-        window.addEventListener("scroll", handleScroll);
-        return () => window.removeEventListener("scroll", handleScroll);
-        */
         const container = scrollContainerRef.current;
         container.addEventListener("scroll", handleScroll);
         return () => container.removeEventListener("scroll", handleScroll);
     }, []);
 
-    // Function to update filters and reset page
+    // Function to update filters and reset page(component)
     const updateFilters = (newFilters) => {
         setFilters({
             ...filters,

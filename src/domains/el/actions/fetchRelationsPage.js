@@ -22,6 +22,7 @@ export default async function fetchRelationsPage({
         // TODO:
 
         const { direction, order, page } = filters;
+        const limit = 9;
 
         const { data } = await axios.get(`/api/relations/movie-page`, {
             params: {
@@ -30,8 +31,8 @@ export default async function fetchRelationsPage({
                 relationsLabel,
                 direction,
                 order,
-                page,
-                limit: 9,
+                limit,
+                offset: page === 1 ? 0 : (page - 1) * limit,
             },
         });
 
@@ -44,6 +45,7 @@ export default async function fetchRelationsPage({
         */
         return { status: 200, data: data };
     } catch (error) {
+        console.log("error: ", error);
         return {
             status: error.response.status,
             error,
