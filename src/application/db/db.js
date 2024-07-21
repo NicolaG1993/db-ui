@@ -1234,12 +1234,36 @@ module.exports.getCategoryMoviesPage = (
       */
 
     // 🔴⚠️🔴⚠️🔴⚠️ now works only for category-movie 🔴⚠️🔴⚠️🔴⚠️
+    /*
     const myQuery = `SELECT m.*
     FROM movie m
     JOIN categoryRelation cr ON m.id = cr.movieID
     WHERE cr.categoryID = $1
     ORDER BY m.${order} ${direction}
     LIMIT ${limit} OFFSET ${offset}`;
+    */
+
+    const myQuery = `WITH movie_with_cast AS (
+    SELECT 
+        m.*,
+        (
+            SELECT json_agg(
+                json_build_object(
+                    'id', a.id,
+                    'name', a.name
+                )
+            )
+            FROM actor a
+            JOIN movie_actor ma ON a.id = ma.actorID
+            WHERE ma.movieID = m.id
+        ) AS cast
+            FROM movie m
+            JOIN categoryRelation cr ON m.id = cr.movieID
+            WHERE cr.categoryID = $1
+            ORDER BY m.${order} ${direction}
+            LIMIT ${limit} OFFSET ${offset}
+        )
+        SELECT * FROM movie_with_cast`;
 
     // const myQuery = `DELETE FROM ${table}
     // WHERE ${idColumn} = $1
@@ -1251,12 +1275,27 @@ module.exports.getCategoryMoviesPage = (
     return db.query(myQuery, keys);
 };
 module.exports.getTagMoviesPage = (itemId, direction, order, limit, offset) => {
-    const myQuery = `SELECT m.*
-    FROM movie m
-    JOIN tagRelation tr ON m.id = tr.movieID
-    WHERE tr.tagID = $1
-    ORDER BY m.${order} ${direction}
-    LIMIT ${limit} OFFSET ${offset}`;
+    const myQuery = `WITH movie_with_cast AS (
+    SELECT 
+        m.*,
+        (
+            SELECT json_agg(
+                json_build_object(
+                    'id', a.id,
+                    'name', a.name
+                )
+            )
+            FROM actor a
+            JOIN movie_actor ma ON a.id = ma.actorID
+            WHERE ma.movieID = m.id
+        ) AS cast
+            FROM movie m
+            JOIN tagRelation tr ON m.id = tr.movieID
+            WHERE tr.tagID = $1
+            ORDER BY m.${order} ${direction}
+            LIMIT ${limit} OFFSET ${offset}
+        )
+        SELECT * FROM movie_with_cast`;
     const keys = [itemId];
     return db.query(myQuery, keys);
 };
@@ -1267,12 +1306,27 @@ module.exports.getStudioMoviesPage = (
     limit,
     offset
 ) => {
-    const myQuery = `SELECT m.*
-    FROM movie m
-    JOIN movie_studio sr ON m.id = sr.movieID
-    WHERE sr.studioID = $1
-    ORDER BY m.${order} ${direction}
-    LIMIT ${limit} OFFSET ${offset}`;
+    const myQuery = `WITH movie_with_cast AS (
+    SELECT 
+        m.*,
+        (
+            SELECT json_agg(
+                json_build_object(
+                    'id', a.id,
+                    'name', a.name
+                )
+            )
+            FROM actor a
+            JOIN movie_actor ma ON a.id = ma.actorID
+            WHERE ma.movieID = m.id
+        ) AS cast
+            FROM movie m
+            JOIN movie_studio ms ON m.id = ms.movieID
+            WHERE ms.studioID = $1
+            ORDER BY m.${order} ${direction}
+            LIMIT ${limit} OFFSET ${offset}
+        )
+        SELECT * FROM movie_with_cast`;
     const keys = [itemId];
     return db.query(myQuery, keys);
 };
@@ -1283,12 +1337,27 @@ module.exports.getDistributionMoviesPage = (
     limit,
     offset
 ) => {
-    const myQuery = `SELECT m.*
-    FROM movie m
-    JOIN movie_distribution dr ON m.id = dr.movieID
-    WHERE dr.distributionID = $1
-    ORDER BY m.${order} ${direction}
-    LIMIT ${limit} OFFSET ${offset}`;
+    const myQuery = `WITH movie_with_cast AS (
+    SELECT 
+        m.*,
+        (
+            SELECT json_agg(
+                json_build_object(
+                    'id', a.id,
+                    'name', a.name
+                )
+            )
+            FROM actor a
+            JOIN movie_actor ma ON a.id = ma.actorID
+            WHERE ma.movieID = m.id
+        ) AS cast
+            FROM movie m
+            JOIN movie_distribution md ON m.id = md.movieID
+            WHERE md.distributionID = $1
+            ORDER BY m.${order} ${direction}
+            LIMIT ${limit} OFFSET ${offset}
+        )
+        SELECT * FROM movie_with_cast`;
     const keys = [itemId];
     return db.query(myQuery, keys);
 };
