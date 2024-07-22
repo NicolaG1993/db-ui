@@ -2,7 +2,8 @@ import { getError } from "@/src/application/utils/error";
 import axios from "axios";
 
 export default async function fetchRelationsPage({
-    relationsLabel,
+    // relationsLabel,
+    relationsGroup,
     itemLabel,
     itemId,
     filters,
@@ -11,7 +12,7 @@ export default async function fetchRelationsPage({
     // we need to pass arguments: id, page, order, direction, filter // (last 2 optionals)
 
     console.log("🟡⚠️🟡⚠️⭐ fetchRelationsPage: ", {
-        relationsLabel,
+        // relationsLabel,
         itemLabel,
         itemId,
         filters,
@@ -24,17 +25,20 @@ export default async function fetchRelationsPage({
         const { direction, order, page } = filters;
         const limit = 9;
 
-        const { data } = await axios.get(`/api/relations/movie-page`, {
-            params: {
-                itemId,
-                itemLabel,
-                relationsLabel,
-                direction,
-                order,
-                limit,
-                offset: page === 1 ? 0 : (page - 1) * limit,
-            },
-        });
+        const { data } = await axios.get(
+            `/api/relations/${relationsGroup}-page`,
+            {
+                params: {
+                    itemId,
+                    itemLabel,
+                    // relationsLabel,
+                    direction,
+                    order,
+                    limit,
+                    offset: page === 1 ? 0 : (page - 1) * limit,
+                },
+            }
+        );
 
         console.log("🍄🍄🍄 data: ", data);
         /* 

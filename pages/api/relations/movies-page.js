@@ -11,7 +11,7 @@ export default async function handler(req, res) {
         let {
             itemId,
             itemLabel,
-            relationsLabel,
+            // relationsLabel,
             direction,
             order,
             limit,
@@ -21,7 +21,7 @@ export default async function handler(req, res) {
         console.log("🟡⚠️🟡⚠️⭐ movie-page: ", {
             itemId,
             itemLabel,
-            relationsLabel,
+            // relationsLabel,
             direction,
             order,
             limit,

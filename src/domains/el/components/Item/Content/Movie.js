@@ -7,13 +7,14 @@ import RecordsCounter from "../RecordsCounter";
 import RelationsList from "../../RelationsList/RelationsList";
 import SessionPlaylistAddBtn from "../SessionPlaylistAddBtn";
 import Modal from "@/src/domains/_app/components/Modal/Modal";
-import renderLinks from "../../../utils/renderLinks";
+import renderLinks from "@/src/domains/el/utils/renderLinks";
+import { parseTagsForUiList } from "@/src/domains/_app/utils/parsers";
 
 export default function Movie({
     label,
     item,
-    itemInfos,
-    parsedObj,
+    // itemInfos,
+    // parsedObj,
     handleDelete,
     handleEdits,
     openForm,
@@ -25,10 +26,13 @@ export default function Movie({
         rating,
         nameType,
         urls,
-        actors,
+        // actors,
         release,
         studios,
         distributions,
+        tags,
+        categories,
+        totalActors,
     } = item;
     return (
         <div id={styles.Movie} className={styles.elWrap}>
@@ -127,20 +131,23 @@ export default function Movie({
                     <span>Categories: </span>
 
                     <div className={styles.tagLabelsWrap}>
-                        {renderLinks(parsedObj.categories, "category")}
+                        {renderLinks(
+                            parseTagsForUiList(categories),
+                            "category"
+                        )}
                     </div>
                 </div>
 
                 <div className={styles.elRowToScroll}>
                     <span>Tags: </span>
                     <div className={styles.tagLabelsWrap}>
-                        {renderLinks(parsedObj.tags, "tag")}
+                        {renderLinks(parseTagsForUiList(tags), "tag")}
                     </div>
                 </div>
 
                 <div className={styles.elRow}>
                     <span>Tot. Actors: </span>
-                    <p>{actors?.length}</p>
+                    <p>{totalActors}</p>
                 </div>
             </div>
 
@@ -148,21 +155,19 @@ export default function Movie({
                 <div className={styles.infoHeadingWrap}>
                     <h3>CAST</h3>
 
-                    {actors?.length > 0 && (
-                        <Link href="/search">see all ({actors.length})</Link>
+                    {totalActors > 0 && (
+                        <Link href="/search">see all ({totalActors})</Link>
                     )}
                 </div>
 
-                {actors ? (
-                    <RelationsList
-                        itemName={item[nameType]}
-                        data={actors}
-                        listLabel={"actor"} // fare dinamici ? no perche custom component
-                        listGroup={"actors"}
-                    />
-                ) : (
-                    <p>N/A</p>
-                )}
+                <RelationsList
+                    itemName={item[nameType]}
+                    itemId={item.id}
+                    itemLabel={label}
+                    nameType={nameType}
+                    relationsLabel={"actor"} // fare dinamici ? no perche custom component ?
+                    relationsGroup={"actors"}
+                />
             </div>
 
             <div className={styles.infoWrap}>

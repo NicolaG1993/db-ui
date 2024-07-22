@@ -3,6 +3,7 @@ import dataStructureGroups from "@/src/application/settings/dataStructureGroups"
 import Card from "@/src/domains/_app/components/Card/Card";
 import { useEffect, useState, useRef } from "react";
 import fetchRelationsPage from "@/src/domains/el/actions/fetchRelationsPage";
+import dataStructureItems from "@/src/application/settings/dataStructureItems";
 
 export default function RelationsList({
     itemName,
@@ -17,8 +18,7 @@ export default function RelationsList({
     let [data, setData] = useState([]);
     let [filters, setFilters] = useState({
         page: 1,
-        // order: nameType,
-        order: "title",
+        order: dataStructureItems[relationsLabel].nameType, // "name" || "title"
         direction: "asc",
     });
     const [loading, setLoading] = useState(false);
@@ -29,9 +29,10 @@ export default function RelationsList({
         itemName,
         itemId,
         itemLabel,
-        relationsLabel,
+        // relationsLabel,
         relationsGroup,
         table,
+        nameType,
     });
 
     /*
@@ -58,7 +59,8 @@ export default function RelationsList({
         setLoading(true);
 
         const newData = await fetchRelationsPage({
-            relationsLabel,
+            // relationsLabel,
+            relationsGroup,
             itemLabel,
             itemId,
             filters,

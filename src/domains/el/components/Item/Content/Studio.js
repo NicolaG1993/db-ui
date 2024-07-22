@@ -19,7 +19,6 @@ export default function Studio({
         // rating,
         nameType,
         actors,
-        movies,
         website,
         nationalities,
         totalMovies,

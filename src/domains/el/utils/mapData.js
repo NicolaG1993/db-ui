@@ -1,5 +1,106 @@
 import filterUniqueActors from "@/src/domains/el/utils/filterUniqueActors";
 
+/* MOVIE */
+const mapMovieRawToMovie = (rawMovie) => {
+    console.log("rawMovie: ", rawMovie);
+    let movie = {
+        id: rawMovie.movie_id,
+        title: rawMovie.title,
+        pic: rawMovie.movie_pic,
+        urls: rawMovie.movie_urls || [],
+        rating: rawMovie.movie_rating,
+        release: rawMovie.movie_release,
+        totalActors: rawMovie.actor_count,
+
+        tags:
+            rawMovie.tags?.map((tag) => ({
+                id: tag.id,
+                name: tag.name,
+                type: tag.type,
+                pic: tag.pic,
+            })) || [],
+        categories:
+            rawMovie.categories?.map((category) => ({
+                id: category.id,
+                name: category.name,
+                type: category.type,
+                pic: category.pic,
+            })) || [],
+
+        studios:
+            rawMovie.studios?.map((studio) => ({
+                id: studio.id,
+                name: studio.name,
+                website: studio.website,
+                pic: studio.pic,
+            })) || [],
+        distributions:
+            rawMovie.distributions?.map((distribution) => ({
+                id: distribution.id,
+                name: distribution.name,
+                website: distribution.website,
+                pic: distribution.pic,
+            })) || [],
+    };
+
+    return movie;
+};
+
+/* ACTOR */
+const mapActorRawToActor = (rawActor) => {
+    let actor = {
+        id: rawActor.actor[0].id,
+        createdAt: rawActor.actor[0].created_at,
+        name: rawActor.actor[0].name,
+        pic: rawActor.actor[0].pic,
+        rating: rawActor.actor[0].rating,
+        birthday: rawActor.actor[0].birthday,
+        genre: rawActor.actor[0].genre,
+        twitter: rawActor.actor[0].twitter,
+        instagram: rawActor.actor[0].instagram,
+        moreUrls: rawActor.actor[0].more_urls,
+        nationality: rawActor.actor[0].nationality,
+
+        totalMovies: rawActor.total_movies,
+
+        tags:
+            rawActor.tags?.map((tag) => ({
+                id: tag.id,
+                name: tag.name,
+                type: tag.type,
+                pic: tag.pic,
+            })) || [],
+
+        categories:
+            rawActor.categories?.map((category) => ({
+                id: category.id,
+                name: category.name,
+                type: category.type,
+                pic: category.pic,
+            })) || [],
+
+        studios:
+            rawActor.studios?.map((studio) => ({
+                id: studio.id,
+                name: studio.name,
+                website: studio.website,
+                pic: studio.pic,
+            })) || [],
+
+        distributions:
+            rawActor.distributions?.map((distribution) => ({
+                id: distribution.id,
+                name: distribution.name,
+                website: distribution.website,
+                pic: distribution.pic,
+            })) || [],
+    };
+
+    // actor.categories = filterUniqueCategories(actor.categories);
+
+    return actor;
+};
+
 /* CATEGORY */
 const mapCategoryRawToCategory = (rawCategory) => {
     let category = {
@@ -9,11 +110,12 @@ const mapCategoryRawToCategory = (rawCategory) => {
         pic: rawCategory.category_pic,
         type: rawCategory.category_type,
         totalMovies: rawCategory.total_movies,
-        actors: rawCategory.actors.map((act) => ({
-            id: act.actor_id,
-            name: act.actor_name,
-            count: act.movies_count,
-        })),
+        actors:
+            rawCategory.actors?.map((act) => ({
+                id: act.actor_id,
+                name: act.actor_name,
+                count: act.movies_count,
+            })) || [],
     };
 
     category.actors = filterUniqueActors(category.actors);
@@ -30,11 +132,12 @@ const mapTagRawToTag = (rawTag) => {
         pic: rawTag.tag_pic,
         type: rawTag.tag_type,
         totalMovies: rawTag.total_movies,
-        actors: rawTag.actors.map((act) => ({
-            id: act.actor_id,
-            name: act.actor_name,
-            count: act.movies_count,
-        })),
+        actors:
+            rawTag.actors?.map((act) => ({
+                id: act.actor_id,
+                name: act.actor_name,
+                count: act.movies_count,
+            })) || [],
     };
 
     tag.actors = filterUniqueActors(tag.actors);
@@ -51,11 +154,12 @@ const mapStudioRawToStudio = (rawStudio) => {
         pic: rawStudio.studio_pic,
         website: rawStudio.studio_website,
         totalMovies: rawStudio.total_movies,
-        actors: rawStudio.actors.map((act) => ({
-            id: act.actor_id,
-            name: act.actor_name,
-            count: act.movies_count,
-        })),
+        actors:
+            rawStudio.actors?.map((act) => ({
+                id: act.actor_id,
+                name: act.actor_name,
+                count: act.movies_count,
+            })) || [],
     };
 
     studio.actors = filterUniqueActors(studio.actors);
@@ -72,11 +176,12 @@ const mapDistributionRawToDistribution = (rawDistribution) => {
         pic: rawDistribution.distribution_pic,
         website: rawDistribution.distribution_website,
         totalMovies: rawDistribution.total_movies,
-        actors: rawDistribution.actors.map((act) => ({
-            id: act.actor_id,
-            name: act.actor_name,
-            count: act.movies_count,
-        })),
+        actors:
+            rawDistribution.actors?.map((act) => ({
+                id: act.actor_id,
+                name: act.actor_name,
+                count: act.movies_count,
+            })) || [],
     };
 
     distribution.actors = filterUniqueActors(distribution.actors);
@@ -85,6 +190,8 @@ const mapDistributionRawToDistribution = (rawDistribution) => {
 };
 
 export {
+    mapMovieRawToMovie,
+    mapActorRawToActor,
     mapCategoryRawToCategory,
     mapTagRawToTag,
     mapStudioRawToStudio,
