@@ -3,12 +3,16 @@ import Link from "next/link";
 import Image from "next/image";
 import Form from "@/src/domains/_app/components/Form/components/Form";
 import RelationsList from "@/src/domains/el/components/RelationsList/RelationsList";
-import { detectImage } from "@/src/domains/_app/utils/parsers";
+import {
+    detectImage,
+    parseTagsForUiList,
+} from "@/src/domains/_app/utils/parsers";
 import { formatDateEU, getAge } from "@/src/application/utils/convertTimestamp";
 import IG_icon from "/public/IG_icon.svg";
 import X_icon from "/public/X_icon.svg";
 import Modal from "@/src/domains/_app/components/Modal/Modal";
 import renderLinks from "@/src/domains/el/utils/renderLinks";
+import extractItemInfo from "@/src/domains/el/utils/extractItemInfo";
 
 /*
 Form "open" and "close" should be handled in redux
@@ -30,7 +34,7 @@ export default function Actor({
     label,
     group,
     item,
-    itemInfos,
+    // itemInfos,
     // parsedObj,
     handleDelete,
     handleEdits,
@@ -55,6 +59,11 @@ export default function Actor({
         nationalities,
         totalMovies,
     } = item;
+
+    const itemInfo = extractItemInfo(tags || []);
+    console.log("itemInfo: ", itemInfo);
+    let {} = itemInfo;
+
     return (
         <div id={styles.Actor} className={styles.elWrap}>
             <div className={styles.infoWrap}>
@@ -118,8 +127,8 @@ export default function Actor({
                 <div className={styles.elRow}>
                     <span>Hair: </span>
                     <div className={styles.tagsWrap}>
-                        {itemInfos && itemInfos.Hair ? (
-                            itemInfos.Hair.map((el) => (
+                        {itemInfo && itemInfo.Hair ? (
+                            itemInfo.Hair.map((el) => (
                                 <Link
                                     href={`/el/tag/${el.id}`}
                                     key={"hair " + el.id}
@@ -142,8 +151,8 @@ export default function Actor({
                 <div className={styles.elRow}>
                     <span>Ethnicity: </span>
                     <div className={styles.tagsWrap}>
-                        {itemInfos && itemInfos.Ethnicity ? (
-                            itemInfos.Ethnicity.map((el) => (
+                        {itemInfo && itemInfo.Ethnicity ? (
+                            itemInfo.Ethnicity.map((el) => (
                                 <Link
                                     href={`/el/tag/${el.id}`}
                                     key={"ethnicity " + el.id}
@@ -161,8 +170,8 @@ export default function Actor({
                 <div className={styles.elRow}>
                     <span>Body type: </span>
                     <div className={styles.tagsWrap}>
-                        {itemInfos && itemInfos["Body Types"] ? (
-                            itemInfos["Body Types"].map((el) => (
+                        {itemInfo && itemInfo["Body Types"] ? (
+                            itemInfo["Body Types"].map((el) => (
                                 <Link
                                     href={`/el/tag/${el.id}`}
                                     key={"bodyType " + el.id}
@@ -203,7 +212,7 @@ export default function Actor({
                     </div>
                 </div>
 
-                {moreUrls?.length && (
+                {!!moreUrls?.length && (
                     <div className={styles.elRow}>
                         <span>Links: </span>
                         <div>
@@ -231,7 +240,7 @@ export default function Actor({
                 <div className={styles.elRowToScroll}>
                     <span>Tags: </span>
                     <div className={styles.tagLabelsWrap}>
-                        {renderLinks(parseTagsForUiList(tags), "tag")}
+                        {tags && renderLinks(parseTagsForUiList(tags), "tag")}
                     </div>
                 </div>
 
@@ -239,10 +248,11 @@ export default function Actor({
                     <span>Categories: </span>
 
                     <div className={styles.tagLabelsWrap}>
-                        {renderLinks(
-                            parseTagsForUiList(categories),
-                            "category"
-                        )}
+                        {categories &&
+                            renderLinks(
+                                parseTagsForUiList(categories),
+                                "category"
+                            )}
                     </div>
                 </div>
 
