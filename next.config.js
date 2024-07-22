@@ -13,6 +13,7 @@ const nextConfig = {
 
     images: {
         domains: [process.env.S3_BUCKET_URL, process.env.S3_BUCKET_URL_B],
+        unoptimized: false, // set to false when vercel limit exceeded
     },
 
     env: {
