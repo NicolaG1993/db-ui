@@ -15,12 +15,15 @@ import {
     clearItem,
 } from "@/src/application/redux/slices/itemSlice";
 import { useRouter } from "next/router";
+import Image from "next/image";
+import { detectImage } from "@/src/domains/_app/utils/parsers";
 
 export default function SessionPlaylistUI({
     sessionPlaylist,
     openAddNew,
     close,
 }) {
+    console.log("sessionPlaylist: ", sessionPlaylist);
     // prendere array da cookie/redux
 
     // render objects
@@ -147,7 +150,39 @@ export default function SessionPlaylistUI({
                                     href={`/el/movie/${el.id}`}
                                     onClick={() => clearPreviousItem(el.id)}
                                 >
-                                    {el.title}
+                                    <div className={styles["row-content-wrap"]}>
+                                        <div
+                                            style={{
+                                                position: "relative",
+                                            }}
+                                            className={styles.picWrap}
+                                        >
+                                            <Image
+                                                src={
+                                                    el.pic
+                                                        ? el.pic
+                                                        : detectImage(el)
+                                                }
+                                                alt={el.title}
+                                                fill
+                                                style={{ electFit: "cover" }}
+                                            />
+                                        </div>
+                                        <div>
+                                            <h5>{el.title}</h5>
+                                            <p className={styles.subtitle}>
+                                                {el.cast &&
+                                                    el.cast.map((model, i) => (
+                                                        <span
+                                                            key={`cast ${model.name} ${i}`}
+                                                        >
+                                                            {i > 0 && ", "}
+                                                            {model.name}
+                                                        </span>
+                                                    ))}
+                                            </p>
+                                        </div>
+                                    </div>
                                 </Link>
                                 <p onClick={() => removeFromPlaylist(i)}>X</p>
                             </div>

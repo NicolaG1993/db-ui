@@ -52,7 +52,7 @@
     display: grid;
     align-items: center;
     grid-template-columns: 70px 1fr 40px;
-    padding: 0 0.5rem;
+    padding: 0.25rem 0.5rem;
     margin: 0 0.33rem;
     border-bottom: 2px solid var(--bg700);
 }
@@ -67,6 +67,39 @@
 .row > a:hover {
     text-decoration: underline;
 }
+.row > a > .row-content-wrap {
+    height: 40px;
+    display: grid;
+    grid-template-columns: 70px auto;
+}
+.row > a > .row-content-wrap > div:first-child {
+    margin-right: 0.75rem;
+}
+.row > a > .row-content-wrap > div:nth-child(2) {
+    display: flex;
+    flex-direction: column;
+    /* justify-content: center; */
+}
+.row > a > .row-content-wrap > div:nth-child(2) > h5 {
+    white-space: nowrap;
+    display: block;
+    overflow: hidden;
+    max-width: 260px;
+    font-size: 12.5px;
+    margin: 0.1rem 0 0.2rem 0;
+}
+.row > a > .row-content-wrap > div:nth-child(2) > p {
+    white-space: nowrap;
+    display: block;
+    overflow: hidden;
+    max-width: 260px;
+    margin: 0;
+}
+.subtitle {
+    font-size: 0.75em;
+    color: var(--bg900);
+}
+
 .no-data-row {
     display: flex;
     justify-content: center;
