@@ -108,6 +108,7 @@ CREATE TABLE movie_distribution(
     FOREIGN KEY (distributionID) REFERENCES distribution(id),
     UNIQUE (movieID, distributionID)
 );
+-- Perché cambio stile nome per queste tables? 🧠
 CREATE TABLE categoryRelation(
     id SERIAL PRIMARY KEY,
     categoryID integer,

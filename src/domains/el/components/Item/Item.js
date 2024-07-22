@@ -38,8 +38,8 @@ export default function Item({ label }) {
     let { ItemComponent, group } = structure;
 
     const [item, setItem] = useState();
-    const [itemInfos, setItemInfos] = useState();
-    const [parsedObj, setParsedObj] = useState(false);
+    // const [itemInfos, setItemInfos] = useState();
+    // const [parsedObj, setParsedObj] = useState(false);
     const [openForm, setOpenForm] = useState(false);
 
     // should i save errors in store instead?
@@ -57,6 +57,7 @@ export default function Item({ label }) {
     //================================================================================
     // Functions
     //================================================================================
+    /*
     const extractItemInfos = (item) => {
         let tagsObj = {};
         item.tags.map((tag) => {
@@ -73,6 +74,7 @@ export default function Item({ label }) {
         });
         setItemInfos(finalObj);
     };
+    */
 
     const handleEdits = async () => {
         const fetchedItem = await fetchData(id, label, structure);
@@ -136,6 +138,8 @@ export default function Item({ label }) {
     }, [selectedItem]);
 
     useEffect(() => {
+        console.log("ITEM: ", item);
+        /*
         if (item) {
             if (item.tags && item.tags.length) {
                 setParsedObj((obj) => ({
@@ -156,6 +160,7 @@ export default function Item({ label }) {
         else {
             setItemInfos({});
         }
+        */
     }, [item]);
 
     //================================================================================
@@ -180,8 +185,8 @@ export default function Item({ label }) {
                             label={label}
                             group={group}
                             item={item}
-                            itemInfos={itemInfos}
-                            parsedObj={parsedObj}
+                            // itemInfos={itemInfos}
+                            // parsedObj={parsedObj}
                             handleDelete={handleDelete}
                             handleEdits={handleEdits}
                             openForm={openForm}

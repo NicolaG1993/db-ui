@@ -53,7 +53,7 @@ export default function Card({ obj, table, cardKey }) {
                             )}
                         ></h5>
                         <p className={styles.subtitle}>
-                            Movies: {obj.movies ? obj.movies.length : 0}
+                            Movies: {obj.total_movies}
                         </p>
                         <p className={styles.rating}>
                             {obj.rating ? obj.rating : "unrated"}

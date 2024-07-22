@@ -1,3 +1,5 @@
+//NOT USED ? 🔴
+
 import { getRelationsByArr } from "@/src/application/db/db.js";
 
 export default async function handler(req, res) {

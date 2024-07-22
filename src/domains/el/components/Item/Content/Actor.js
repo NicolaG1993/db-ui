@@ -2,13 +2,17 @@ import styles from "@/src/application/styles/Element.module.css";
 import Link from "next/link";
 import Image from "next/image";
 import Form from "@/src/domains/_app/components/Form/components/Form";
-import RelationsList from "../../RelationsList/RelationsList";
-import { detectImage } from "@/src/domains/_app/utils/parsers";
+import RelationsList from "@/src/domains/el/components/RelationsList/RelationsList";
+import {
+    detectImage,
+    parseTagsForUiList,
+} from "@/src/domains/_app/utils/parsers";
 import { formatDateEU, getAge } from "@/src/application/utils/convertTimestamp";
 import IG_icon from "/public/IG_icon.svg";
 import X_icon from "/public/X_icon.svg";
 import Modal from "@/src/domains/_app/components/Modal/Modal";
-import renderLinks from "../../../utils/renderLinks";
+import renderLinks from "@/src/domains/el/utils/renderLinks";
+import extractItemInfo from "@/src/domains/el/utils/extractItemInfo";
 
 /*
 Form "open" and "close" should be handled in redux
@@ -30,14 +34,36 @@ export default function Actor({
     label,
     group,
     item,
-    itemInfos,
-    parsedObj,
+    // itemInfos,
+    // parsedObj,
     handleDelete,
     handleEdits,
     openForm,
     setOpenForm,
 }) {
-    let { pic, rating, movies, nameType } = item;
+    let {
+        id,
+        pic,
+        rating,
+        movies,
+        nameType,
+        twitter,
+        instagram,
+        moreUrls,
+        birthday,
+        genre,
+        tags,
+        categories,
+        studios,
+        distributions,
+        nationalities,
+        totalMovies,
+    } = item;
+
+    const itemInfo = extractItemInfo(tags || []);
+    console.log("itemInfo: ", itemInfo);
+    let {} = itemInfo;
+
     return (
         <div id={styles.Actor} className={styles.elWrap}>
             <div className={styles.infoWrap}>
@@ -66,28 +92,24 @@ export default function Actor({
 
                 <div className={styles.elRow}>
                     <span>Birthday: </span>
-                    <p>{item.birthday ? formatDateEU(item.birthday) : "N/A"}</p>
+                    <p>{birthday ? formatDateEU(birthday) : "N/A"}</p>
                 </div>
 
                 <div className={styles.elRow}>
                     <span>Age: </span>
-                    {item.birthday ? (
-                        <p>{getAge(item.birthday)} y.o.</p>
-                    ) : (
-                        <p>N/A</p>
-                    )}
+                    {birthday ? <p>{getAge(birthday)} y.o.</p> : <p>N/A</p>}
                 </div>
 
                 <div className={styles.elRow}>
                     <span>Genre: </span>
-                    {item.genre ? <p>{item.genre}</p> : <p>N/A</p>}
+                    {genre ? <p>{genre}</p> : <p>N/A</p>}
                 </div>
 
                 <div className={styles.elRow}>
                     <span>Nationality: </span>
                     <div className={styles.tagsWrap}>
-                        {item.nationalities ? (
-                            item.nationalities.map((el) => (
+                        {nationalities ? (
+                            nationalities.map((el) => (
                                 <Link
                                     href={`/el/nationality/${el}`}
                                     key={"nationality " + el}
@@ -105,8 +127,8 @@ export default function Actor({
                 <div className={styles.elRow}>
                     <span>Hair: </span>
                     <div className={styles.tagsWrap}>
-                        {itemInfos && itemInfos.Hair ? (
-                            itemInfos.Hair.map((el) => (
+                        {itemInfo && itemInfo.Hair ? (
+                            itemInfo.Hair.map((el) => (
                                 <Link
                                     href={`/el/tag/${el.id}`}
                                     key={"hair " + el.id}
@@ -129,8 +151,8 @@ export default function Actor({
                 <div className={styles.elRow}>
                     <span>Ethnicity: </span>
                     <div className={styles.tagsWrap}>
-                        {itemInfos && itemInfos.Ethnicity ? (
-                            itemInfos.Ethnicity.map((el) => (
+                        {itemInfo && itemInfo.Ethnicity ? (
+                            itemInfo.Ethnicity.map((el) => (
                                 <Link
                                     href={`/el/tag/${el.id}`}
                                     key={"ethnicity " + el.id}
@@ -148,8 +170,8 @@ export default function Actor({
                 <div className={styles.elRow}>
                     <span>Body type: </span>
                     <div className={styles.tagsWrap}>
-                        {itemInfos && itemInfos["Body Types"] ? (
-                            itemInfos["Body Types"].map((el) => (
+                        {itemInfo && itemInfo["Body Types"] ? (
+                            itemInfo["Body Types"].map((el) => (
                                 <Link
                                     href={`/el/tag/${el.id}`}
                                     key={"bodyType " + el.id}
@@ -167,9 +189,9 @@ export default function Actor({
                 <div className={styles.elRow}>
                     <span>Social: </span>
                     <div>
-                        {item.instagram && (
+                        {instagram && (
                             <a
-                                href={item.instagram}
+                                href={instagram}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className={styles.iconLink}
@@ -177,9 +199,9 @@ export default function Actor({
                                 <X_icon />
                             </a>
                         )}
-                        {item.twitter && (
+                        {twitter && (
                             <a
-                                href={item.twitter}
+                                href={twitter}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className={styles.iconLink}
@@ -190,11 +212,11 @@ export default function Actor({
                     </div>
                 </div>
 
-                {item.more_urls && (
+                {!!moreUrls?.length && (
                     <div className={styles.elRow}>
                         <span>Links: </span>
                         <div>
-                            {item.more_urls.map((url, i) => (
+                            {moreUrls.map((url, i) => (
                                 <a
                                     href={url}
                                     target="_blank"
@@ -218,7 +240,7 @@ export default function Actor({
                 <div className={styles.elRowToScroll}>
                     <span>Tags: </span>
                     <div className={styles.tagLabelsWrap}>
-                        {renderLinks(parsedObj.tags, "tag")}
+                        {tags && renderLinks(parseTagsForUiList(tags), "tag")}
                     </div>
                 </div>
 
@@ -226,15 +248,19 @@ export default function Actor({
                     <span>Categories: </span>
 
                     <div className={styles.tagLabelsWrap}>
-                        {renderLinks(parsedObj.categories, "category")}
+                        {categories &&
+                            renderLinks(
+                                parseTagsForUiList(categories),
+                                "category"
+                            )}
                     </div>
                 </div>
 
                 <div className={styles.elRow}>
                     <span>Studios: </span>
                     <div className={styles.tagsWrap}>
-                        {item.studios && item.studios.length ? (
-                            item.studios.map((el) => (
+                        {studios && studios.length ? (
+                            studios.map((el) => (
                                 <Link
                                     href={`/el/studio/${el.id}`}
                                     key={"studio" + el.id}
@@ -252,8 +278,8 @@ export default function Actor({
                 <div className={styles.elRow}>
                     <span>Distribution: </span>
                     <div className={styles.tagsWrap}>
-                        {item.distributions && item.distributions.length ? (
-                            item.distributions.map((el) => (
+                        {distributions && distributions.length ? (
+                            distributions.map((el) => (
                                 <Link
                                     href={`/el/distribution/${el.id}`}
                                     key={"distribution" + el.id}
@@ -270,7 +296,7 @@ export default function Actor({
 
                 <div className={styles.elRow}>
                     <span>Tot. Clips: </span>
-                    <p>{movies?.length}</p>
+                    <p>{totalMovies}</p>
                 </div>
             </div>
 
@@ -294,21 +320,19 @@ export default function Actor({
                 <div className={styles.infoHeadingWrap}>
                     <h3>MOVIES</h3>
 
-                    {movies?.length > 0 && (
-                        <Link href="/search">see all ({movies.length})</Link>
+                    {totalMovies > 0 && (
+                        <Link href="/search">see all ({totalMovies})</Link>
                     )}
                 </div>
 
-                {movies ? (
-                    <RelationsList
-                        itemName={item[nameType]}
-                        data={movies}
-                        listLabel={"movie"} // fare dinamici ? no perche custom component
-                        listGroup={"movies"}
-                    />
-                ) : (
-                    <p>N/A</p>
-                )}
+                <RelationsList
+                    itemName={item[nameType]}
+                    itemId={id}
+                    itemLabel={label}
+                    nameType={nameType}
+                    relationsLabel={"movie"} // fare dinamici ? no perche custom component
+                    relationsGroup={"movies"}
+                />
             </div>
 
             <div className={styles.infoWrap}>
@@ -324,7 +348,7 @@ export default function Actor({
                         Modify
                     </button>
                     <button
-                        onClick={() => handleDelete(item.id)}
+                        onClick={() => handleDelete(id)}
                         className="button-danger"
                     >
                         Delete
