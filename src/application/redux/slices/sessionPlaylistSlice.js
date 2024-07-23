@@ -1,5 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-import Cookies from "js-cookie";
 import { shuffle } from "@/src/application/utils/orderData";
 import { getStoredPersistenData } from "@/src/domains/_app/utils/getStoredData";
 
@@ -15,7 +14,7 @@ const sessionPlaylistSlice = createSlice({
     reducers: {
         addToSessionPlaylist: (state, action) => {
             let newState = getStoredPersistenData("sessionPlaylist");
-            console.log("newState: ", newState);
+            // console.log("newState: ", newState);
             newState.push(action.payload);
             localStorage.setItem("sessionPlaylist", JSON.stringify(newState));
             state.sessionPlaylist = newState;
@@ -54,7 +53,7 @@ const sessionPlaylistSlice = createSlice({
         },
 
         deleteSessionPlaylist: (state) => {
-            Cookies.remove("sessionPlaylist");
+            localStorage.removeItem("sessionPlaylist");
             state.sessionPlaylist = [];
         },
 

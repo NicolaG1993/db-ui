@@ -4,12 +4,18 @@ import ToggleInfo from "./buttons/ToggleInfo";
 import styles from "./CardUI.module.css";
 
 export default function CardUI({ obj, label }) {
+    console.log("obj: ", obj);
     return (
         <div className={styles["movie-card-ui"]}>
             {label === "movie" && (
                 <>
                     <SessionPlaylistAddBtn
-                        el={{ id: obj.id, title: obj.title }}
+                        el={{
+                            id: obj.id,
+                            title: obj.title,
+                            pic: obj.pic,
+                            cast: obj.cast,
+                        }}
                     />
                     <MovieCounter records={obj.records} />
                     <ToggleInfo />

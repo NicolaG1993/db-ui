@@ -177,7 +177,12 @@ export default function Movie({
 
                 <div className={styles.buttonsWrap}>
                     <SessionPlaylistAddBtn
-                        el={{ id: item.id, title: item.title }}
+                        el={{
+                            id: item.id,
+                            title: item.title,
+                            pic: item.pic,
+                            cast: item.cast, // but we dont have cast here! // inside Card yes 🔴🧠🔴⚠️🧠🔴⚠️
+                        }}
                     />
                     <button
                         onClick={() => setOpenForm(true)}

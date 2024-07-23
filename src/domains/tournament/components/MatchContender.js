@@ -67,7 +67,37 @@ export default function MatchContender({
                         className={styles.contenderCardSelect}
                         onClick={() => openSelectNav({ contender, index })}
                     >
-                        <span>✅ Contender: #{contender.id}</span>
+                        <div
+                            style={{
+                                position: "relative",
+                            }}
+                            className={styles.picWrap}
+                        >
+                            <Image
+                                src={
+                                    contender.pic
+                                        ? contender.pic
+                                        : detectImage(contender)
+                                }
+                                alt={contender.title}
+                                fill
+                                style={{ objectFit: "cover" }}
+                            />
+                        </div>
+
+                        <div className={styles.infoWrap}>
+                            <span>✅ Contender: #{contender.id}</span>
+                            <h5>{contender.title}</h5>
+                            <p className={styles.subtitle}>
+                                {contender.cast &&
+                                    contender.cast.map((actor, i) => (
+                                        <span key={`cast ${actor.name} ${i}`}>
+                                            {i > 0 && ", "}
+                                            {actor.name}
+                                        </span>
+                                    ))}
+                            </p>
+                        </div>
                     </div>
                 </div>
             );

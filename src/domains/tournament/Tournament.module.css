@@ -284,9 +284,11 @@
     overflow: hidden;
 }
 .contenderCardSelect {
-    display: flex;
+    display: grid;
+    grid-template-columns: 70px 1fr;
+    /* display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: center; */
     justify-content: center;
     padding: 0.25rem 0.33rem;
     margin: 0.25rem 0;
@@ -336,6 +338,39 @@
     background: var(--bg100);
     color: var(--bg600);
     opacity: 0.79;
+}
+
+/* CONTENDER SELECT: INFO */
+.picWrap {
+    height: 55px;
+    align-self: center;
+}
+.infoWrap {
+    align-self: center;
+    margin-left: 0.5rem;
+    display: grid;
+    grid-template-rows: auto auto auto;
+    /* height: 90px; */
+}
+.infoWrap > span:first-child {
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    font-size: 10.5px;
+    color: var(--bg900);
+}
+.infoWrap h5 {
+    margin: 0.35rem 0 0.25rem 0;
+    font-size: 12px;
+    white-space: nowrap;
+    overflow: hidden;
+}
+.infoWrap .subtitle {
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    font-size: 9px;
+    color: var(--bg900);
 }
 
 /* CONTENDER CARD: INFO */
