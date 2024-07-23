@@ -6,6 +6,8 @@ import {
     deleteSessionPlaylist,
     removeFromSessionPlaylist,
     shuffleSessionPlaylist,
+    addToSessionPlaylist,
+    updateSessionPlaylist,
 } from "@/src/application/redux/slices/sessionPlaylistSlice";
 // import axios from "axios";
 import Link from "next/link";
@@ -13,8 +15,14 @@ import AddNewForm from "@/src/domains/_app/constants/components/SessionPlaylist/
 import SavePlaylistForm from "@/src/domains/_app/constants/components/SessionPlaylist/components/SavePlaylistForm.js";
 import styles from "@/src/domains/_app/constants/components/SessionPlaylist/SessionPlaylist.module.css";
 import { useRouter } from "next/router";
+import Image from "next/image";
+import { detectImage } from "@/src/domains/_app/utils/parsers";
+import { resetFormStore } from "@/src/application/redux/slices/formSlice";
+import PlaylistEditor from "@/src/domains/playlists/components/PlaylistEditor/PlaylistEditor";
+import Modal from "@/src/domains/_app/components/Modal/Modal";
+import Form from "@/src/domains/_app/components/Form/components/Form";
 
-export default function PlaylistEditor() {
+export default function EditorPlaylist() {
     // TODO: shows playlist in store ✅
     // add items from db -> go to "/all/movies" ✅
     // add urls from input ✅
@@ -29,40 +37,70 @@ export default function PlaylistEditor() {
 
     // NB. Playlist creation only in SessionPlaylistUI -> to edit, user has to load it SessionPlalistUI first, then open the editor and overwrite previos save
 
-    // REDUX //
+    // COMPONENT STATE //
+    const [addNewModal, setAddNewModal] = useState(false);
+    const [saveModal, setSaveModal] = useState(false);
     let sessionPlaylist = useSelector(selectSessionPlaylist, shallowEqual);
     const dispatch = useDispatch();
     const router = useRouter();
 
+    ////////////////////////////
+    // STAY HERE!
+    const openAddNew = () => {
+        dispatch(resetFormStore());
+        setAddNewModal(true);
+    };
+    // const closeAddNew = () => {
+    //     setAddNewModal(false);
+    // };
+    const overridePlaylist = (playlist) => {
+        dispatch(updateSessionPlaylist(playlist));
+    };
+    const clearPreviousItem = (id) => {
+        if (id.toString() !== router.query.id) {
+            dispatch(clearItem());
+            dispatch(activateLoadingItem());
+        }
+    };
+    // For now we edit only SessionPlaylist, but we want any playlist 🧠👇 maybe need a separate store? or just field
     const removeFromPlaylist = (i) => {
         dispatch(removeFromSessionPlaylist(i));
     };
-
     const deletePlaylist = () => {
         dispatch(deleteSessionPlaylist());
     };
-
     const shufflePlaylist = () => {
         dispatch(shuffleSessionPlaylist());
     };
-
-    // COMPONENT STATE //
-    const [addUrlModal, setAddUrlModal] = useState(false);
-    const [saveModal, setSaveModal] = useState(false);
-
-    const openAddUrl = () => {
-        setSaveModal(false);
-        setAddUrlModal(true);
+    const handleParentUI = (uiElement, status) => {
+        if (uiElement === "ADD_NEW") {
+            status && openAddNew(); // openAddUrl();
+        } else if (uiElement === "SAVE_PLAYLIST") {
+            status && setSaveModal(true);
+        }
     };
-    const openSavePlaylist = () => {
-        console.log("openSavePlaylist invoked");
-        setAddUrlModal(false);
-        setSaveModal(true);
+    ////////////////////////////
+    ////////////////////////////
+
+    ////////////////////////
+    // !MODAL ACTIONS! //
+    ////////////////////////
+    const addNewToPlaylist = (obj) => {
+        const { id, title } = obj;
+        // questa fn viene invocata dopo che MovieForm ha finito di creare il nuovo movie
+        // voglio prenderlo e aggiungerlo in fondo alla lista
+        if (id) {
+            obj = { id, title: title || "Untitled" };
+            dispatch(addToSessionPlaylist(obj));
+        }
+        closeAddNew();
     };
     const closeModal = () => {
-        setAddUrlModal(false);
+        setAddNewModal(false);
         setSaveModal(false);
     };
+    ////////////////////////
+    ////////////////////////
 
     return (
         <main>
@@ -81,45 +119,72 @@ export default function PlaylistEditor() {
                     <span>All playlists</span>
                 </button>
             </div>
-            <div className={styles["nav-btn"]}>
-                <button
-                    onClick={() => shufflePlaylist()}
-                    className="button-standard"
-                >
-                    Shuffle ♾️
-                </button>
-                <button
-                    onClick={() => openSavePlaylist()}
-                    className="button-standard"
-                >
-                    Save 💾
-                </button>
-                <button>
-                    <Link href={`/all/movies`} title={"Add item"}>
-                        Add 🗃️
-                    </Link>
-                </button>
-                <button
-                    onClick={() => openAddUrl()}
-                    className="button-standard"
-                >
-                    Add new ➕
-                </button>
-                <button
-                    onClick={() => deletePlaylist()}
-                    className="button-standard"
-                >
-                    Delete ❌
-                </button>
-            </div>
-            <div className={styles["nav-content"]}>
-                {sessionPlaylist && sessionPlaylist.length ? (
+
+            <PlaylistEditor
+                playlist={sessionPlaylist} // 🧠 We should be able to choose any playlist (or sessionPlaylist) in this case 🧠
+                removeFromPlaylist={removeFromPlaylist}
+                clearPreviousItem={clearPreviousItem}
+                overridePlaylist={overridePlaylist}
+                deletePlaylist={deletePlaylist}
+                shufflePlaylist={shufflePlaylist}
+                size={"page"}
+                handleParentUI={handleParentUI}
+            />
+
+            {/* <SessionPlaylistTopBar
+                size={"page"}
+                openAddNew={openAddNew}
+                closeAddNew={closeAddNew} // ??
+                close={""} // ??
+            /> */}
+
+            {/* <SessionPlaylistNavHeading /> */}
+
+            {/* <div className={styles["movie-list"]}>
+                {!!sessionPlaylist?.length ? (
                     sessionPlaylist.map((el, i) => (
                         <div
                             key={"session data " + i}
                             className={styles["row"]}
                         >
-                            <Link href={`/el/movie/${el.id}`}>{el.title}</Link>
+                            <Link
+                                href={`/el/movie/${el.id}`}
+                                onClick={() => clearPreviousItem(el.id)}
+                            >
+                                <div className={styles["row-content-wrap"]}>
+                                    <div
+                                        style={{
+                                            position: "relative",
+                                        }}
+                                        className={styles.picWrap}
+                                    >
+                                        <Image
+                                            src={
+                                                el.pic
+                                                    ? el.pic
+                                                    : detectImage(el)
+                                            }
+                                            alt={el.title}
+                                            fill
+                                            style={{ objectFit: "cover" }}
+                                        />
+                                    </div>
+                                    <div>
+                                        <h5>{el.title}</h5>
+                                        <p className={styles.subtitle}>
+                                            {el.cast &&
+                                                el.cast.map((actor, i) => (
+                                                    <span
+                                                        key={`cast ${actor.name} ${i}`}
+                                                    >
+                                                        {i > 0 && ", "}
+                                                        {actor.name}
+                                                    </span>
+                                                ))}
+                                        </p>
+                                    </div>
+                                </div>
+                            </Link>
                             <p onClick={() => removeFromPlaylist(i)}>X</p>
                         </div>
                     ))
@@ -128,10 +193,12 @@ export default function PlaylistEditor() {
                         <p>No data</p>
                     </div>
                 )}
-            </div>
+            </div> */}
 
-            {/* vedi session playlist */}
-            {addUrlModal && (
+            {/* <SessionPlaylistNavTable data={sessionPlaylist} /> */}
+
+            {/* 🧠👇🔴🔴🔴 REDO: vedi session playlist */}
+            {/* {addNewModal && (
                 <div className={"modal"}>
                     <div className={"modal-container"}>
                         <span className={"modal-close"} onClick={closeModal}>
@@ -140,9 +207,28 @@ export default function PlaylistEditor() {
                         <AddNewForm closeModal={closeModal} />
                     </div>
                 </div>
-            )}
+            )} */}
 
-            {saveModal && (
+            <Modal isOpen={addNewModal || saveModal} onClose={closeModal}>
+                {addNewModal && (
+                    <Form
+                        formLabel={"movie"}
+                        handleEditsInParent={addNewToPlaylist}
+                        parentIsWaiting={true}
+                    />
+                )}
+
+                {saveModal && !!sessionPlaylist?.length && (
+                    <div className={"modal-container"}>
+                        <SavePlaylistForm
+                            closeModal={closeModal}
+                            sessionPlaylist={sessionPlaylist}
+                        />
+                    </div>
+                )}
+            </Modal>
+
+            {/* {saveModal && (
                 <div className={"modal"}>
                     <div className={"modal-container"}>
                         <span className={"modal-close"} onClick={closeModal}>
@@ -154,7 +240,7 @@ export default function PlaylistEditor() {
                         />
                     </div>
                 </div>
-            )}
+            )} */}
         </main>
     );
 }
