@@ -12,6 +12,11 @@ const mapMovieRawToMovie = (rawMovie) => {
         release: rawMovie.movie_release,
         totalActors: rawMovie.actor_count,
 
+        cast:
+            rawMovie.actors?.map((actor) => ({
+                id: actor.id,
+                name: actor.name,
+            })) || [],
         tags:
             rawMovie.tags?.map((tag) => ({
                 id: tag.id,

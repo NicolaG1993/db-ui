@@ -411,6 +411,16 @@ module.exports.getMovieByID = (id) => {
         WHERE 
             tr.movieID = $1
             OR tr.actorID IN (SELECT actorID FROM movie_actor WHERE movieID = $1)
+    ), actors AS (
+        SELECT 
+            a.id,
+            a.name
+        FROM 
+            movie_actor ma
+        JOIN 
+            actor a ON ma.actorID = a.id
+        WHERE 
+            ma.movieID = $1
     )
     SELECT 
         md.movie_id,
@@ -423,7 +433,8 @@ module.exports.getMovieByID = (id) => {
         CASE WHEN COUNT(DISTINCT c.id) > 0 THEN json_agg(DISTINCT c.*) ELSE null END AS categories,
         CASE WHEN COUNT(DISTINCT s.id) > 0 THEN json_agg(DISTINCT s.*) ELSE null END AS studios,
         CASE WHEN COUNT(DISTINCT d.id) > 0 THEN json_agg(DISTINCT d.*) ELSE null END AS distributions,
-        CASE WHEN COUNT(DISTINCT at.id) > 0 THEN json_agg(DISTINCT at.*) ELSE null END AS tags
+        CASE WHEN COUNT(DISTINCT at.id) > 0 THEN json_agg(DISTINCT at.*) ELSE null END AS tags,
+        CASE WHEN COUNT(DISTINCT a.id) > 0 THEN json_agg(DISTINCT a.*) ELSE null END AS actors
     FROM 
         movie_details md
     LEFT JOIN 
@@ -434,6 +445,8 @@ module.exports.getMovieByID = (id) => {
         distributions d ON TRUE
     LEFT JOIN 
         all_tags at ON TRUE
+    LEFT JOIN 
+        actors a ON TRUE
     GROUP BY 
         md.movie_id, md.title, md.movie_pic, md.movie_urls, md.movie_rating, md.movie_release, md.actor_count`;
     const key = [id];
