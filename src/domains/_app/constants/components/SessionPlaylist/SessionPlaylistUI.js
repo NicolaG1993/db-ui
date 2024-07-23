@@ -165,19 +165,19 @@ export default function SessionPlaylistUI({
                                                 }
                                                 alt={el.title}
                                                 fill
-                                                style={{ electFit: "cover" }}
+                                                style={{ objectFit: "cover" }}
                                             />
                                         </div>
                                         <div>
                                             <h5>{el.title}</h5>
                                             <p className={styles.subtitle}>
                                                 {el.cast &&
-                                                    el.cast.map((model, i) => (
+                                                    el.cast.map((actor, i) => (
                                                         <span
-                                                            key={`cast ${model.name} ${i}`}
+                                                            key={`cast ${actor.name} ${i}`}
                                                         >
                                                             {i > 0 && ", "}
-                                                            {model.name}
+                                                            {actor.name}
                                                         </span>
                                                     ))}
                                             </p>
