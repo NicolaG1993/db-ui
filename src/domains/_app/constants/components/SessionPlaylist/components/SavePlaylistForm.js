@@ -95,7 +95,6 @@ export default function SavePlaylistForm({ closeModal, sessionPlaylist }) {
 
     // UTILS //
     const getAllPlaylists = async () => {
-        console.log("getAllPlaylists: ", userInfo);
         try {
             let data = await fetchAllPlaylists("", userInfo.id);
             setAllPlaylists(data);
@@ -276,8 +275,8 @@ export default function SavePlaylistForm({ closeModal, sessionPlaylist }) {
 
                     {/* 🧨🧨🧨 TODO 🧨🧨🧨 */}
                     <button
-                        onClick={() =>
-                            confirmSubmitWithoutUrls(sessionPlaylist)
+                        onClick={
+                            () => confirmSubmitWithoutUrls(sessionPlaylist) // 💚 only the playlist loaded in the sessionPlaylist can be stored 💚 We Gucci
                         }
                         className="button-standard"
                     >

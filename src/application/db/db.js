@@ -16,6 +16,21 @@ if (!db) {
 
 module.exports.db;
 
+module.exports.begin = () => {
+    const myQuery = `BEGIN`;
+    return db.query(myQuery);
+};
+module.exports.commit = () => {
+    const myQuery = `COMMIT`;
+    return db.query(myQuery);
+};
+module.exports.rollback = () => {
+    const myQuery = `ROLLBACK`;
+    return db.query(myQuery);
+};
+module.exports.release = () => {
+    return db.release();
+};
 /* USER */
 module.exports.newUser = (name, email, psw) => {
     const myQuery = `INSERT INTO users 
@@ -111,7 +126,7 @@ module.exports.newPlaylist = (title, user) => {
     const myQuery = `INSERT INTO playlist
     (title, userID)
     VALUES ($1, $2) 
-    RETURNING *`;
+    RETURNING id`;
     const keys = [title, user];
     return db.query(myQuery, keys);
 };
@@ -228,6 +243,16 @@ module.exports.editPlaylist = (id, title, user) => {
         AND userID = $3
         RETURNING *`;
     const keys = [id, title, user];
+    return db.query(myQuery, keys);
+};
+module.exports.editPlaylistTitle = (title, playlistID) => {
+    const myQuery = `UPDATE playlist SET title = $1 WHERE id = $2`;
+    const keys = [title, playlistID];
+    return db.query(myQuery, keys);
+};
+module.exports.editPlaylistMovieIndex = (index, playlistID, movieID) => {
+    const myQuery = `UPDATE movie_playlist SET index = $1 WHERE playlistID = $2 AND movieID = $3`;
+    const keys = [index, playlistID, movieID];
     return db.query(myQuery, keys);
 };
 
@@ -1362,6 +1387,20 @@ module.exports.getAllActorsWithInfosByNames = (arr) => {
 module.exports.newRelations = (id, arr, table, idColumn, arrColumn) => {
     const myQuery = `INSERT INTO ${table} (${idColumn}, ${arrColumn}) VALUES ($1, UNNEST(cast($2 as integer[]))) RETURNING *`;
     const keys = [id, arr];
+    return db.query(myQuery, keys);
+};
+module.exports.newPlaylistRelations = (movieValues) => {
+    const myQuery = `INSERT INTO movie_playlist (movieID, playlistID, index) VALUES ${movieValues}`;
+    return db.query(myQuery);
+};
+module.exports.newPlaylistRelation = (movieID, playlistID, index) => {
+    const myQuery = `INSERT INTO movie_playlist (movieID, playlistID, index) VALUES ($1, $2, $3) ON CONFLICT (movieID, playlistID) DO NOTHING`;
+    const keys = [movieID, playlistID, index];
+    return db.query(myQuery, keys);
+};
+module.exports.removePlaylistRelation = (playlistID, movieID) => {
+    const myQuery = `DELETE FROM movie_playlist WHERE playlistID = $1 AND movieID = $2`;
+    const keys = [movieID, playlistID, index];
     return db.query(myQuery, keys);
 };
 module.exports.newRelationsByStrings = (

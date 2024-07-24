@@ -1,3 +1,4 @@
+/*
 import {
     editPlaylist,
     newRelations,
@@ -52,5 +53,91 @@ export default async function handler(req, res) {
     } catch (err) {
         console.log(err);
         res.status(401).send({ message: "ERROR" });
+    }
+}
+*/
+
+import {
+    begin,
+    commit,
+    rollback,
+    release,
+    editPlaylistTitle,
+    editPlaylistMovieIndex,
+    newPlaylistRelation,
+    removePlaylistRelation,
+} from "@/src/application/db/db.js";
+
+/*
+    {
+      "playlistID": 1,
+      "title": "Updated Playlist Title",
+      "updates": [
+        {
+          "type": "updateIndex",
+          "movieID": 1,
+          "index": 2
+        },
+        {
+          "type": "addMovie",
+          "movieID": 4,
+          "index": 3
+        },
+        {
+          "type": "removeMovie",
+          "movieID": 2
+        }
+      ]
+    }
+*/
+
+export default async function handler(req, res) {
+    if (req.method === "PUT") {
+        const { playlistID, title, updates } = req.body;
+
+        try {
+            await begin();
+
+            // Update the playlist title
+            if (title) {
+                await editPlaylistTitle(title, playlistID);
+            }
+
+            // Apply updates to the playlist
+            for (const update of updates) {
+                if (update.type === "updateIndex") {
+                    // Update a movie's index
+                    await editPlaylistMovieIndex(
+                        update.index,
+                        playlistID,
+                        update.movieID
+                    );
+                } else if (update.type === "addMovie") {
+                    // Add a new movie to the playlist
+                    await newPlaylistRelation(
+                        update.movieID,
+                        playlistID,
+                        update.index
+                    );
+                } else if (update.type === "removeMovie") {
+                    // Remove a movie from the playlist
+                    await removePlaylistRelation(playlistID, update.movieID);
+                }
+            }
+
+            await commit();
+            res.status(200).json({ success: true });
+        } catch (error) {
+            console.log(err);
+            await rollback();
+            res.status(500).send({
+                success: false,
+                message: "Internal Server Error",
+            });
+        } finally {
+            release();
+        }
+    } else {
+        res.status(405).json({ success: false, error: "Method Not Allowed" });
     }
 }
