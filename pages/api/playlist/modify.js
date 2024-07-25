@@ -57,16 +57,13 @@ export default async function handler(req, res) {
 }
 */
 
+import { begin, commit, rollback, release } from "@/src/application/db/db.js";
 import {
-    begin,
-    commit,
-    rollback,
-    release,
     editPlaylistTitle,
     editPlaylistMovieIndex,
     newPlaylistRelation,
     removePlaylistRelation,
-} from "@/src/application/db/db.js";
+} from "@/src/application/db/utils/playlist.js";
 
 /*
     {
@@ -94,13 +91,14 @@ import {
 export default async function handler(req, res) {
     if (req.method === "PUT") {
         const { playlistID, title, updates } = req.body;
+        const client = await connect();
 
         try {
-            await begin();
+            await begin(client);
 
             // Update the playlist title
             if (title) {
-                await editPlaylistTitle(title, playlistID);
+                await editPlaylistTitle(client, title, playlistID);
             }
 
             // Apply updates to the playlist
@@ -108,6 +106,7 @@ export default async function handler(req, res) {
                 if (update.type === "updateIndex") {
                     // Update a movie's index
                     await editPlaylistMovieIndex(
+                        client,
                         update.index,
                         playlistID,
                         update.movieID
@@ -115,27 +114,32 @@ export default async function handler(req, res) {
                 } else if (update.type === "addMovie") {
                     // Add a new movie to the playlist
                     await newPlaylistRelation(
+                        client,
                         update.movieID,
                         playlistID,
                         update.index
                     );
                 } else if (update.type === "removeMovie") {
                     // Remove a movie from the playlist
-                    await removePlaylistRelation(playlistID, update.movieID);
+                    await removePlaylistRelation(
+                        client,
+                        playlistID,
+                        update.movieID
+                    );
                 }
             }
 
-            await commit();
+            await commit(client);
             res.status(200).json({ success: true });
         } catch (error) {
             console.log(err);
-            await rollback();
+            await rollback(client);
             res.status(500).send({
                 success: false,
                 message: "Internal Server Error",
             });
         } finally {
-            release();
+            release(client);
         }
     } else {
         res.status(405).json({ success: false, error: "Method Not Allowed" });

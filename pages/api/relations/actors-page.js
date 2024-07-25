@@ -1,39 +1,41 @@
-import { getMovieActorsPage } from "@/src/application/db/db.js";
+import { begin, commit, rollback, release } from "@/src/application/db/db.js";
+import { getMovieActorsPage } from "@/src/application/db/utils/item.js";
 
 export default async function handler(req, res) {
-    try {
-        let {
-            itemId,
-            itemLabel,
-            // relationsLabel,
-            direction,
-            order,
-            limit,
-            offset,
-        } = req.query;
-
-        console.log("🟡⚠️🟡⚠️⭐ actor-page: ", {
-            itemId,
-            itemLabel,
-            // relationsLabel,
-            direction,
-            order,
-            limit,
-            offset,
-        });
-
-        if (itemLabel === "movie") {
-            const { rows } = await getMovieActorsPage(
+    if (req.method === "GET") {
+        const client = await connect();
+        try {
+            await begin(client);
+            let {
                 itemId,
+                itemLabel,
+                // relationsLabel,
                 direction,
                 order,
                 limit,
-                offset
-            );
-            res.status(200).send(rows);
+                offset,
+            } = req.query;
+
+            if (itemLabel === "movie") {
+                const { rows } = await getMovieActorsPage(
+                    client,
+                    itemId,
+                    direction,
+                    order,
+                    limit,
+                    offset
+                );
+                await commit(client);
+                res.status(200).send(rows);
+            }
+        } catch (err) {
+            await rollback(client);
+            console.log(err);
+            res.status(401).send({ message: "ERROR" });
+        } finally {
+            release(client);
         }
-    } catch (err) {
-        console.log(err);
-        res.status(401).send({ message: "ERROR" });
+    } else {
+        res.status(405).json({ success: false, error: "Method Not Allowed" });
     }
 }

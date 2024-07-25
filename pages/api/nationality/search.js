@@ -1,57 +1,69 @@
+import { begin, commit, rollback, release } from "@/src/application/db/db.js";
+import { getRelationsBySearch } from "@/src/application/db/utils/utils.js";
 import allNationalities from "@/src/application/settings/allNationalities";
-import { getRelationsBySearch } from "@/src/application/db/db.js";
 
 export default async function handler(req, res) {
-    let { str } = req.query;
-    if (!str) {
-        str = "";
-    }
+    if (req.method === "GET") {
+        let { str } = req.query;
+        if (!str) {
+            str = "";
+        }
 
-    try {
-        // const { rows } = await getAllNationalitiesRelations(str);
-        const { rows } = await getRelationsBySearch(
-            str,
-            "nationalityRelation",
-            "nationality"
-        );
-        let relations = rows;
-        // console.log("relations: ", relations);
+        const client = await connect();
+        try {
+            await begin(client);
+            // const { rows } = await getAllNationalitiesRelations(str);
+            const { rows } = await getRelationsBySearch(
+                client,
+                str,
+                "nationalityRelation",
+                "nationality"
+            );
+            await commit(client);
+            let relations = rows;
+            // console.log("relations: ", relations);
 
-        // filter only nations with relations
-        let onlyDataWithRelations = allNationalities.filter((el) =>
-            relations.find((it) => it.nationality === el.name)
-        );
+            // filter only nations with relations
+            let onlyDataWithRelations = allNationalities.filter((el) =>
+                relations.find((it) => it.nationality === el.name)
+            );
 
-        // onlyDataWithRelations = sortByObjValue(
-        //     onlyDataWithRelations,
-        //     order,
-        //     "asc"
-        // ); // fare in component
+            // onlyDataWithRelations = sortByObjValue(
+            //     onlyDataWithRelations,
+            //     order,
+            //     "asc"
+            // ); // fare in component
 
-        // console.log("onlyDataWithRelations: ", onlyDataWithRelations);
-        // for every nation count how many relations they have for every type
-        let dataWithInfos = onlyDataWithRelations.map((el) => {
-            let actors = 0;
-            let studios = 0;
-            let distributions = 0;
+            // console.log("onlyDataWithRelations: ", onlyDataWithRelations);
+            // for every nation count how many relations they have for every type
+            let dataWithInfos = onlyDataWithRelations.map((el) => {
+                let actors = 0;
+                let studios = 0;
+                let distributions = 0;
 
-            relations.map((it) => {
-                if (it.nationality === el.name) {
-                    it.actorid && actors++;
-                    it.studioid && studios++;
-                    it.distributionid && distributions++;
-                }
+                relations.map((it) => {
+                    if (it.nationality === el.name) {
+                        it.actorid && actors++;
+                        it.studioid && studios++;
+                        it.distributionid && distributions++;
+                    }
+                });
+
+                return { ...el, actors, studios, distributions };
             });
+            // console.log("dataWithInfos: ", dataWithInfos);
 
-            return { ...el, actors, studios, distributions };
-        });
-        // console.log("dataWithInfos: ", dataWithInfos);
-
-        // tornare onlyDataWithRelations (nationalieties + relations)
-        res.status(200).send(dataWithInfos);
-    } catch (err) {
-        console.log(err);
-        res.status(401).send({ message: err.message });
+            // tornare onlyDataWithRelations (nationalieties + relations)
+            res.status(200).send(dataWithInfos);
+        } catch (err) {
+            await rollback(client);
+            console.log(err);
+            res.status(500).send({ message: err.message });
+        } finally {
+            release(client);
+        }
+    } else {
+        res.status(405).json({ success: false, error: "Method Not Allowed" });
     }
 }
 

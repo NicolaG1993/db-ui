@@ -7,6 +7,9 @@ export default function PlaylistElement({ el, handleDelete }) {
     const dispatch = useDispatch();
 
     const loadPlaylist = (pl) => {
+        // I think we are not fetching playlists correctly (in the parent)
+        // for MOVIES: cast, pic and id missing 🧠
+        console.log("loadPlaylist: ", pl);
         dispatch(loadSessionPlaylist(pl.movies));
     };
 

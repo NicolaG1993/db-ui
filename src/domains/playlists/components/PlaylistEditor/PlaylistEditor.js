@@ -8,6 +8,8 @@ export default function PlaylistEditor({
     removeFromPlaylist,
     clearPreviousItem,
     overridePlaylist,
+    deletePlaylist,
+    shufflePlaylist,
     size,
     handleParentUI,
 }) {
@@ -18,6 +20,8 @@ export default function PlaylistEditor({
                 size={size}
                 handleParentUI={handleParentUI}
                 totalRows={playlist.length}
+                deletePlaylist={deletePlaylist}
+                shufflePlaylist={shufflePlaylist}
             />
 
             <PlaylistTableHeading />

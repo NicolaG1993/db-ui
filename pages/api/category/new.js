@@ -1,21 +1,38 @@
-import { newCategory } from "@/src/application/db/db.js";
+import { begin, commit, rollback, release } from "@/src/application/db/db.js";
+import { newCategory } from "@/src/application/db/utils/item.js";
 
 async function handler(req, res) {
-    let { name, pic, type } = req.body;
+    if (req.method === "POST") {
+        let { name, pic, type } = req.body;
 
-    if (!name) {
-        return res.status(422).send({ error: ["Missing one or more fields"] });
-    }
+        if (!name) {
+            return res
+                .status(422)
+                .send({ error: ["Missing one or more fields"] });
+        }
 
-    try {
-        const { rows } = await newCategory(name, pic, type);
-        res.status(200).json(rows[0]);
-    } catch (err) {
-        console.log("ERROR!!", err);
-        res.status(500).send({
-            message: ["Error updating on the server"],
-            error: err,
-        });
+        const client = await connect();
+
+        try {
+            await begin(client);
+
+            const { rows } = await newCategory(client, name, pic, type);
+            await commit(client);
+
+            res.status(200).json(rows[0]);
+        } catch (err) {
+            await rollback(client);
+
+            console.log("ERROR!!", err);
+            res.status(500).send({
+                message: ["Error updating on the server"],
+                error: err,
+            });
+        } finally {
+            release(client);
+        }
+    } else {
+        res.status(405).json({ success: false, error: "Method Not Allowed" });
     }
 }
 

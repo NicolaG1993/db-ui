@@ -1,12 +1,15 @@
 import {
+    connect,
     begin,
     commit,
     rollback,
     release,
-    newPlaylist,
-    // newRelations,
-    newPlaylistRelations,
 } from "@/src/application/db/db.js";
+import {
+    newPlaylist,
+    newPlaylistRelations,
+} from "@/src/application/db/utils/playlist.js";
+
 export default async function handler(req, res) {
     if (req.method === "POST") {
         // const { title, playlist, user } = req.body;
@@ -16,10 +19,13 @@ export default async function handler(req, res) {
             userID,
             movies,
         });
+
+        const client = await connect();
+
         try {
-            await begin();
+            await begin(client);
             // Step 1: Insert the new playlist and get its ID
-            const { rows } = await newPlaylist(title, userID);
+            const { rows } = await newPlaylist(client, title, userID);
             const newPlaylistID = rows[0].id;
             // Step 2: Prepare the values for bulk insert
             const movieValues = movies
@@ -39,7 +45,7 @@ export default async function handler(req, res) {
                 "movieID"
             );
             */
-            await commit();
+            await commit(client);
             res.status(200).send({
                 success: true,
                 message: "DONE", // ? delete ?
@@ -47,13 +53,13 @@ export default async function handler(req, res) {
             });
         } catch (err) {
             console.log(err);
-            await rollback();
+            await rollback(client);
             res.status(500).send({
                 success: false,
                 message: "Internal Server Error",
             });
         } finally {
-            release();
+            release(client);
         }
     } else {
         res.status(405).json({ success: false, error: "Method Not Allowed" });

@@ -1,23 +1,34 @@
-import {
-    getAllDistributions,
-    getAllRelations,
-} from "@/src/application/db/db.js";
+import { begin, commit, rollback, release } from "@/src/application/db/db.js";
+import { getAllDistributions } from "@/src/application/db/utils/item.js";
+import { getAllRelations } from "@/src/application/db/utils/utils.js";
 
 export default async function handler(req, res) {
-    try {
-        const { rows } = await getAllDistributions("");
-        const allRelations = await getAllRelations("movie_distribution");
+    if (req.method === "GET") {
+        const client = await connect();
+        try {
+            await begin(client);
+            const { rows } = await getAllDistributions(client, "");
+            const allRelations = await getAllRelations(
+                client,
+                "movie_distribution"
+            );
 
-        let finalObj = rows.map((o) => {
-            let count = allRelations.rows.filter(
-                (rel) => rel.studioid === o.id
-            ).length;
-            return { ...o, count: count };
-        });
-
-        res.status(200).send(finalObj);
-    } catch (err) {
-        console.log(err);
-        res.status(401).send({ message: err.message });
+            let finalObj = rows.map((o) => {
+                let count = allRelations.rows.filter(
+                    (rel) => rel.studioid === o.id
+                ).length;
+                return { ...o, count: count };
+            });
+            await commit(client);
+            res.status(200).send(finalObj);
+        } catch (err) {
+            await rollback(client);
+            console.log(err);
+            res.status(401).send({ message: err.message });
+        } finally {
+            release(client);
+        }
+    } else {
+        res.status(405).json({ success: false, error: "Method Not Allowed" });
     }
 }
