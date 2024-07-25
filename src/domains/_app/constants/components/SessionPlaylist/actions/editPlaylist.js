@@ -54,13 +54,14 @@ export default async function editPlaylist({
     newPlaylist,
     userInfo,
 }) {
-    let updates = []; // todo
-    // we need the original playlist to find and parse changes 🧠
-    // maybe handle this part in component via utils 🧠
-
-    const body = { playlistID, title, updates };
-
-    let res = await axios.put("/api/playlist/modify", body);
+    console.log("🍄🏡 editPlaylist: ", {
+        playlistID,
+        title,
+        newPlaylist,
+        userInfo,
+    });
+    const body = { playlistID, userID: userInfo.id, newPlaylist, title };
+    const res = await axios.put("/api/playlist/modify", body);
 
     return { res, message: "completed", done: true };
 }

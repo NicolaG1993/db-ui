@@ -20,10 +20,6 @@ import {
 import { getError } from "@/src/application/utils/error";
 
 export default function SavePlaylistForm({ closeModal, sessionPlaylist }) {
-    console.log("✅SavePlaylistForm rendering: ", {
-        closeModal,
-        sessionPlaylist,
-    });
     /*
     • set title - if not generate unique one from date
     • user can select playlist to update instead - same thing goes for not unique title (it will update prev version)
@@ -52,7 +48,7 @@ export default function SavePlaylistForm({ closeModal, sessionPlaylist }) {
 
     useEffect(() => {
         const newObjects = sessionPlaylist.filter((el) => el.url);
-        console.log("newObjects: ", newObjects);
+        // console.log("newObjects: ", newObjects);
         setNewElements(newObjects);
     }, [sessionPlaylist]);
 
@@ -69,7 +65,7 @@ export default function SavePlaylistForm({ closeModal, sessionPlaylist }) {
     }, [title]);
 
     useEffect(() => {
-        console.log("Hints changed: ", hints);
+        // console.log("Hints changed: ", hints);
         if (hints.length) {
             let res = findMatch(hints, title, "title");
             if (res) {
@@ -86,7 +82,7 @@ export default function SavePlaylistForm({ closeModal, sessionPlaylist }) {
     }, [hints]);
 
     useEffect(() => {
-        console.log("match changed: ", match);
+        //  console.log("match changed: ", match);
         if (match) {
             setHints([]);
         } else {
@@ -131,7 +127,7 @@ export default function SavePlaylistForm({ closeModal, sessionPlaylist }) {
         setErrors({});
 
         const newErrObj = validateTitle(title);
-        console.log("newErrObj: ", newErrObj);
+        //  console.log("newErrObj: ", newErrObj);
 
         if (Object.keys(newErrObj).length === 0) {
             if (newElements.length) {
@@ -147,7 +143,7 @@ export default function SavePlaylistForm({ closeModal, sessionPlaylist }) {
     };
 
     const askUser = () => {
-        console.log("askUser invoked!");
+        // console.log("askUser invoked!");
         setNewElementsModal(true);
     };
 
@@ -160,7 +156,8 @@ export default function SavePlaylistForm({ closeModal, sessionPlaylist }) {
                 newElements,
                 sessionPlaylist
             );
-            console.log("data: ", data);
+            //  console.log("data: ", data);
+
             // What if storeNewItemsFromUrls works but then confirmSubmit fails?
             // The playlist will contain new items but they will be already saved in the db
             // If we try save again it will save them again
@@ -178,7 +175,7 @@ export default function SavePlaylistForm({ closeModal, sessionPlaylist }) {
     };
 
     const confirmSubmit = async (newPlaylist, title) => {
-        console.log("confirmSubmit invoked: ", { newPlaylist, title });
+        // console.log("confirmSubmit invoked: ", { newPlaylist, title });
         try {
             if (match) {
                 await editPlaylist({
@@ -199,17 +196,17 @@ export default function SavePlaylistForm({ closeModal, sessionPlaylist }) {
         }
     };
 
-    console.log("💩SavePlaylistForm: ", {
-        hints,
-        title,
-        errors,
-        allPlaylists,
-        match,
-        newElementsModal,
-        newElements,
-        sessionPlaylist,
-        userInfo,
-    });
+    // console.log("💩SavePlaylistForm: ", {
+    //     hints,
+    //     title,
+    //     errors,
+    //     allPlaylists,
+    //     match,
+    //     newElementsModal,
+    //     newElements,
+    //     sessionPlaylist,
+    //     userInfo,
+    // });
 
     // RENDER //
     return (

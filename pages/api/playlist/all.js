@@ -19,7 +19,7 @@ export default async function handler(req, res) {
         } catch (err) {
             await rollback(client);
             console.log(err);
-            res.status(401).send({ message: "ERROR" });
+            res.status(500).send({ message: "ERROR" });
         } finally {
             release(client);
         }
