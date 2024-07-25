@@ -10,8 +10,8 @@ import {
 import { getUserByEmail } from "@/src/application/db/utils/user.js";
 
 export default async function handler(req, res) {
+    const { body, method } = req;
     if (method === "POST") {
-        const { body, method } = req;
         const { email } = body;
         const client = await connect();
         try {

@@ -10,8 +10,8 @@ import {
 import { newUser, getUserByEmail } from "@/src/application/db/utils/user.js";
 
 export default async function handler(req, res) {
+    const { body, method } = req;
     if (method === "POST") {
-        const { body, method } = req;
         const { name, email, password } = body;
         const client = await connect();
         try {
@@ -47,7 +47,7 @@ export default async function handler(req, res) {
             release(client);
         }
     } else {
-        // Return 404 if someone pings the API with a method other than POST
-        res.status(404).send("Not found");
+        // res.status(404).send("Not found");
+        res.status(405).json({ success: false, error: "Method Not Allowed" });
     }
 }
