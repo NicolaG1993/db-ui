@@ -181,7 +181,12 @@ export default function SavePlaylistForm({ closeModal, sessionPlaylist }) {
         console.log("confirmSubmit invoked: ", { newPlaylist, title });
         try {
             if (match) {
-                await editPlaylist(match, title, newPlaylist, userInfo); // TEST 🧨
+                await editPlaylist({
+                    playlistID: match.id,
+                    title,
+                    newPlaylist,
+                    userInfo,
+                }); // TEST 🧨
             } else {
                 await createPlaylist(title, newPlaylist, userInfo);
             }

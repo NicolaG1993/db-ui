@@ -1,4 +1,10 @@
-import { begin, commit, rollback, release } from "@/src/application/db/db.js";
+import {
+    begin,
+    commit,
+    rollback,
+    release,
+    connect,
+} from "@/src/application/db/db.js";
 import { editTag } from "@/src/application/db/utils/item.js";
 
 async function handler(req, res) {

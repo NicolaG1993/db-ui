@@ -1,4 +1,10 @@
-import { begin, commit, rollback, release } from "@/src/application/db/db.js";
+import {
+    begin,
+    commit,
+    rollback,
+    release,
+    connect,
+} from "@/src/application/db/db.js";
 import { getAllActorsWithInfosByNames } from "@/src/application/db/utils/item.js";
 
 export default async function handler(req, res) {

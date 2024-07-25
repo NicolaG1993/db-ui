@@ -1,4 +1,10 @@
-import { begin, commit, rollback, release } from "@/src/application/db/db.js";
+import {
+    begin,
+    commit,
+    rollback,
+    release,
+    connect,
+} from "@/src/application/db/db.js";
 import { deleteColumn } from "@/src/application/db/utils/utils.js";
 
 // 🧠🧠🧠 check if it's really working for every case (relations foreign keys conflicts)

@@ -1,4 +1,4 @@
-import { connect } from "@/src/application/db/client.js";
+import { connect } from "@/src/application/db/db.js";
 
 /* DINAMICS */
 // module.exports.getElementByID = (client, table, id) => {

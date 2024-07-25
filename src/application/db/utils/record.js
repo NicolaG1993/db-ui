@@ -1,4 +1,4 @@
-import { connect } from "@/src/application/db/client.js";
+import { connect } from "@/src/application/db/db.js";
 
 module.exports.newRecord = (client, id) => {
     const myQuery = `INSERT INTO counter

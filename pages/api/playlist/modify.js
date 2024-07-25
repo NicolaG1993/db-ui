@@ -57,36 +57,19 @@ export default async function handler(req, res) {
 }
 */
 
-import { begin, commit, rollback, release } from "@/src/application/db/db.js";
+import {
+    begin,
+    commit,
+    rollback,
+    release,
+    connect,
+} from "@/src/application/db/db.js";
 import {
     editPlaylistTitle,
     editPlaylistMovieIndex,
     newPlaylistRelation,
     removePlaylistRelation,
 } from "@/src/application/db/utils/playlist.js";
-
-/*
-    {
-      "playlistID": 1,
-      "title": "Updated Playlist Title",
-      "updates": [
-        {
-          "type": "updateIndex",
-          "movieID": 1,
-          "index": 2
-        },
-        {
-          "type": "addMovie",
-          "movieID": 4,
-          "index": 3
-        },
-        {
-          "type": "removeMovie",
-          "movieID": 2
-        }
-      ]
-    }
-*/
 
 export default async function handler(req, res) {
     if (req.method === "PUT") {

@@ -1,4 +1,10 @@
-import { begin, commit, rollback, release } from "@/src/application/db/db.js";
+import {
+    begin,
+    commit,
+    rollback,
+    release,
+    connect,
+} from "@/src/application/db/db.js";
 import { getMovieByID } from "@/src/application/db/utils/item.js";
 import { mapMovieRawToMovie } from "@/src/domains/el/utils/mapData";
 

@@ -1,5 +1,11 @@
 import jwt from "jsonwebtoken";
-// import { begin, commit, rollback, release } from "@/src/application/db/db.js";
+// import {
+//     begin,
+//     commit,
+//     rollback,
+//     release,
+//     connect,
+// } from "@/src/application/db/db.js";
 // import { getElementByID } from "@/src/application/db/utils/utils.js";
 
 function signToken(user) {

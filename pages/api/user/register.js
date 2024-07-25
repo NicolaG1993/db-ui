@@ -1,6 +1,12 @@
 import bcrypt from "bcryptjs";
 import { signToken } from "@/src/domains/_app/utils/auth.js";
-import { begin, commit, rollback, release } from "@/src/application/db/db.js";
+import {
+    begin,
+    commit,
+    rollback,
+    release,
+    connect,
+} from "@/src/application/db/db.js";
 import { newUser, getUserByEmail } from "@/src/application/db/utils/user.js";
 
 export default async function handler(req, res) {

@@ -1,4 +1,10 @@
-import { begin, commit, rollback, release } from "@/src/application/db/db.js";
+import {
+    begin,
+    commit,
+    rollback,
+    release,
+    connect,
+} from "@/src/application/db/db.js";
 import { getRelationsBySearch } from "@/src/application/db/utils/utils.js";
 import allNationalities from "@/src/application/settings/allNationalities";
 
