@@ -157,6 +157,7 @@ CREATE TABLE movie_playlist(
     id SERIAL PRIMARY KEY,
     movieID integer,
     playlistID integer,
+    index integer,
     FOREIGN KEY (movieID) REFERENCES movie(id),
     FOREIGN KEY (playlistID) REFERENCES playlist(id),
     UNIQUE (movieID, playlistID)

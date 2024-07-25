@@ -1,37 +1,55 @@
 import {
-    newDistribution,
-    newRelationsByStrings,
+    begin,
+    commit,
+    rollback,
+    release,
+    connect,
 } from "@/src/application/db/db.js";
+import { newDistribution } from "@/src/application/db/utils/item.js";
+import { newRelationsByStrings } from "@/src/application/db/utils/utils.js";
 
 async function handler(req, res) {
-    let { name, pic, website, nationalities } = req.body;
+    if (req.method === "POST") {
+        const client = await connect();
+        let { name, pic, website, nationalities } = req.body;
 
-    if (!name) {
-        return res.status(422).send({ error: ["Missing one or more fields"] });
-    }
+        if (!name) {
+            return res
+                .status(422)
+                .send({ error: ["Missing one or more fields"] });
+        }
 
-    try {
-        const { rows } = await newDistribution(name, pic, website);
+        try {
+            await begin(client);
+            const { rows } = await newDistribution(client, name, pic, website);
 
-        // ADD RELATIONS
-        nationalities &&
-            nationalities.length &&
-            (await newRelationsByStrings(
-                rows[0].id,
-                nationalities,
-                "nationalityRelation",
-                "distributionID",
-                "nationality"
-            ));
+            // ADD RELATIONS
+            nationalities &&
+                nationalities.length &&
+                (await newRelationsByStrings(
+                    client,
+                    rows[0].id,
+                    nationalities,
+                    "nationalityRelation",
+                    "distributionID",
+                    "nationality"
+                ));
+            await commit(client);
 
-        // console.log("COMPLETED!!", clip.rows[0]);
-        res.status(200).json(rows[0]);
-    } catch (err) {
-        console.log("ERROR!!", err);
-        res.status(500).send({
-            message: ["Error updating on the server"],
-            error: err,
-        });
+            // console.log("COMPLETED!!", clip.rows[0]);
+            res.status(200).json(rows[0]);
+        } catch (err) {
+            await rollback(client);
+            console.log("ERROR!!", err);
+            res.status(500).send({
+                message: ["Error updating on the server"],
+                error: err,
+            });
+        } finally {
+            release(client);
+        }
+    } else {
+        res.status(405).json({ success: false, error: "Method Not Allowed" });
     }
 }
 

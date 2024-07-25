@@ -1,4 +1,5 @@
-#SessionPlaylistUI {
+/* #SessionPlaylistUI { */
+#PlaylistUI {
     height: 100%;
     overflow-y: hidden;
     /* margin: 0.5rem; */
@@ -27,6 +28,8 @@
 .movie-list {
     overflow-y: auto;
     height: 100%;
+    width: 100%;
+    max-width: 520px;
     /* max-height: 400px; */
     /* padding-bottom: 0.5rem; */
     border-bottom: 2px solid var(--bg800);
@@ -51,11 +54,14 @@
 .row {
     display: grid;
     align-items: center;
-    grid-template-columns: 70px 1fr 40px;
     padding: 0.25rem 0.5rem;
     margin: 0 0.33rem;
     border-bottom: 2px solid var(--bg700);
 }
+.movie-list > .row {
+    grid-template-columns: 70px 1fr 40px;
+}
+
 .row > select {
     margin-right: 1.75rem;
     font-size: 12px;

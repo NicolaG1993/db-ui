@@ -1,53 +1,60 @@
 import {
-    newMovie,
-    newRelations,
-    getRelationsByArr,
+    begin,
+    commit,
+    rollback,
+    release,
+    connect,
 } from "@/src/application/db/db.js";
+import { newMovie } from "@/src/application/db/utils/item.js";
+import { newRelations } from "@/src/application/db/utils/utils.js";
 // import { extractMissingTagsIDs } from "@/src/domains/_app/utils/parsers";
 
 async function handler(req, res) {
-    let {
-        title,
-        pic,
-        studios,
-        distributions,
-        rating,
-        categories,
-        tags,
-        urls,
-        actors,
-        release,
-    } = req.body;
+    if (req.method === "POST") {
+        let {
+            title,
+            pic,
+            studios,
+            distributions,
+            rating,
+            categories,
+            tags,
+            urls,
+            actors,
+            release,
+        } = req.body;
 
-    console.log("req.body: ", {
-        title,
-        pic,
-        studios,
-        distributions,
-        rating,
-        categories,
-        tags,
-        urls,
-        actors,
-        release,
-    });
+        console.log("req.body: ", {
+            title,
+            pic,
+            studios,
+            distributions,
+            rating,
+            categories,
+            tags,
+            urls,
+            actors,
+            release,
+        });
 
-    if (!title) {
-        return res.status(422).send({ error: ["Missing one or more fields"] });
-    }
-    if (release) {
-        release = new Date(release);
-    } else {
-        release = null;
-    }
+        if (!title) {
+            return res
+                .status(422)
+                .send({ error: ["Missing one or more fields"] });
+        }
+        if (release) {
+            release = new Date(release);
+        } else {
+            release = null;
+        }
 
-    // if (categories.length) {
-    // }
-    // if (tags.length) {
-    //     tags = extractMissingTagsIDs(tags);
-    // }
+        // if (categories.length) {
+        // }
+        // if (tags.length) {
+        //     tags = extractMissingTagsIDs(tags);
+        // }
 
-    /* FACCIAMO GIA IN UI QUESTO
+        /* FACCIAMO GIA IN UI QUESTO
 
     // console.log("actors: ", actors);
     //actor check
@@ -82,75 +89,88 @@ async function handler(req, res) {
         console.log("tags after getRelationsByArr", tags);
     }
     */
+        const client = await connect();
+        // THIS MIGHT NEED SOME B.E. REFACTOR 🧠🧠🧠🧠
+        try {
+            await begin(client);
+            // CREATE CLIP
+            const { rows } = await newMovie(
+                client,
+                title,
+                pic,
+                Number(rating),
+                urls,
+                release
+            );
+            console.log("categories: ", categories);
+            console.log("tags: ", tags);
 
-    // THIS MIGHT NEED SOME B.E. REFACTOR 🧠🧠🧠🧠
-    try {
-        // CREATE CLIP
-        const { rows } = await newMovie(
-            title,
-            pic,
-            Number(rating),
-            urls,
-            release
-        );
-        console.log("categories: ", categories);
-        console.log("tags: ", tags);
-
-        // ADD RELATIONS
-        actors &&
-            actors.length &&
-            (await newRelations(
-                rows[0].id,
-                actors,
-                "movie_actor",
-                "movieID",
-                "actorID"
-            ));
-        studios &&
-            studios.length &&
-            (await newRelations(
-                rows[0].id,
-                studios,
-                "movie_studio",
-                "movieID",
-                "studioID"
-            ));
-        distributions &&
-            distributions.length &&
-            (await newRelations(
-                rows[0].id,
-                distributions,
-                "movie_distribution",
-                "movieID",
-                "distributionID"
-            ));
-        categories &&
-            categories.length &&
-            (await newRelations(
-                rows[0].id,
-                categories,
-                "categoryRelation",
-                "movieID",
-                "categoryID"
-            ));
-        tags &&
-            tags.length &&
-            (await newRelations(
-                rows[0].id,
-                tags,
-                "tagRelation",
-                "movieID",
-                "tagID"
-            ));
-
-        console.log("COMPLETED!!", rows[0]);
-        res.status(200).json(rows[0]);
-    } catch (err) {
-        console.log("ERROR!!", err);
-        res.status(500).send({
-            message: ["Error updating on the server"],
-            error: err,
-        });
+            // ADD RELATIONS
+            actors &&
+                actors.length &&
+                (await newRelations(
+                    client,
+                    rows[0].id,
+                    actors,
+                    "movie_actor",
+                    "movieID",
+                    "actorID"
+                ));
+            studios &&
+                studios.length &&
+                (await newRelations(
+                    client,
+                    rows[0].id,
+                    studios,
+                    "movie_studio",
+                    "movieID",
+                    "studioID"
+                ));
+            distributions &&
+                distributions.length &&
+                (await newRelations(
+                    client,
+                    rows[0].id,
+                    distributions,
+                    "movie_distribution",
+                    "movieID",
+                    "distributionID"
+                ));
+            categories &&
+                categories.length &&
+                (await newRelations(
+                    client,
+                    rows[0].id,
+                    categories,
+                    "categoryRelation",
+                    "movieID",
+                    "categoryID"
+                ));
+            tags &&
+                tags.length &&
+                (await newRelations(
+                    client,
+                    rows[0].id,
+                    tags,
+                    "tagRelation",
+                    "movieID",
+                    "tagID"
+                ));
+            await commit(client);
+            console.log("COMPLETED!!", rows[0]);
+            res.status(200).json(rows[0]);
+        } catch (err) {
+            await rollback(client);
+            console.log("ERROR!!", err);
+            res.status(500).send({
+                message: ["Error updating on the server"],
+                error: err,
+            });
+        } finally {
+            release(client);
+        }
+    } else {
+        res.status(405).json({ success: false, error: "Method Not Allowed" });
     }
 }
 

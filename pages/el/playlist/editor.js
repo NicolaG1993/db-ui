@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { shallowEqual, useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import {
@@ -6,15 +6,17 @@ import {
     deleteSessionPlaylist,
     removeFromSessionPlaylist,
     shuffleSessionPlaylist,
+    addToSessionPlaylist,
+    updateSessionPlaylist,
 } from "@/src/application/redux/slices/sessionPlaylistSlice";
-// import axios from "axios";
-import Link from "next/link";
-import AddNewForm from "@/src/domains/_app/constants/components/SessionPlaylist/components/AddNewForm.js";
 import SavePlaylistForm from "@/src/domains/_app/constants/components/SessionPlaylist/components/SavePlaylistForm.js";
-import styles from "@/src/domains/_app/constants/components/SessionPlaylist/SessionPlaylist.module.css";
 import { useRouter } from "next/router";
+import { resetFormStore } from "@/src/application/redux/slices/formSlice";
+import PlaylistEditor from "@/src/domains/playlists/components/PlaylistEditor/PlaylistEditor";
+import Modal from "@/src/domains/_app/components/Modal/Modal";
+import Form from "@/src/domains/_app/components/Form/components/Form";
 
-export default function PlaylistEditor() {
+export default function EditorPlaylist() {
     // TODO: shows playlist in store ✅
     // add items from db -> go to "/all/movies" ✅
     // add urls from input ✅
@@ -27,42 +29,68 @@ export default function PlaylistEditor() {
     // 🧠 save and name playlist in db -- user can select existing playlist to overwrite from list before submit
     // delete all ✅
 
-    // NB. Playlist creation only in SessionPlaylistUI -> to edit, user has to load it SessionPlalistUI first, then open the editor and overwrite previos save
-
-    // REDUX //
+    // COMPONENT STATE //
+    const [addNewModal, setAddNewModal] = useState(false);
+    const [saveModal, setSaveModal] = useState(false);
     let sessionPlaylist = useSelector(selectSessionPlaylist, shallowEqual);
     const dispatch = useDispatch();
     const router = useRouter();
 
+    ////////////////////////
+    // !PLAYLIST ACTIONS! //
+    ////////////////////////
+    const openAddNew = () => {
+        dispatch(resetFormStore());
+        setAddNewModal(true);
+    };
+    const overridePlaylist = (playlist) => {
+        dispatch(updateSessionPlaylist(playlist));
+    };
+    const clearPreviousItem = (id) => {
+        if (id.toString() !== router.query.id) {
+            dispatch(clearItem());
+            dispatch(activateLoadingItem());
+        }
+    };
+    // For now we edit only SessionPlaylist, but we want any playlist 🧠👇 maybe need a separate store? or just field
     const removeFromPlaylist = (i) => {
         dispatch(removeFromSessionPlaylist(i));
     };
-
     const deletePlaylist = () => {
         dispatch(deleteSessionPlaylist());
     };
-
     const shufflePlaylist = () => {
         dispatch(shuffleSessionPlaylist());
     };
-
-    // COMPONENT STATE //
-    const [addUrlModal, setAddUrlModal] = useState(false);
-    const [saveModal, setSaveModal] = useState(false);
-
-    const openAddUrl = () => {
-        setSaveModal(false);
-        setAddUrlModal(true);
+    const handleParentUI = (uiElement, status) => {
+        if (uiElement === "ADD_NEW") {
+            status && openAddNew(); // openAddUrl();
+        } else if (uiElement === "SAVE_PLAYLIST") {
+            status && setSaveModal(true);
+        }
     };
-    const openSavePlaylist = () => {
-        console.log("openSavePlaylist invoked");
-        setAddUrlModal(false);
-        setSaveModal(true);
+    ////////////////////////////
+    ////////////////////////////
+
+    ////////////////////////
+    // !MODAL ACTIONS! //
+    ////////////////////////
+    const addNewToPlaylist = (obj) => {
+        const { id, title } = obj;
+        // questa fn viene invocata dopo che MovieForm ha finito di creare il nuovo movie
+        // voglio prenderlo e aggiungerlo in fondo alla lista
+        if (id) {
+            obj = { id, title: title || "Untitled" };
+            dispatch(addToSessionPlaylist(obj));
+        }
+        closeAddNew();
     };
     const closeModal = () => {
-        setAddUrlModal(false);
+        setAddNewModal(false);
         setSaveModal(false);
     };
+    ////////////////////////
+    ////////////////////////
 
     return (
         <main>
@@ -81,80 +109,50 @@ export default function PlaylistEditor() {
                     <span>All playlists</span>
                 </button>
             </div>
-            <div className={styles["nav-btn"]}>
-                <button
-                    onClick={() => shufflePlaylist()}
-                    className="button-standard"
-                >
-                    Shuffle ♾️
-                </button>
-                <button
-                    onClick={() => openSavePlaylist()}
-                    className="button-standard"
-                >
-                    Save 💾
-                </button>
-                <button>
-                    <Link href={`/all/movies`} title={"Add item"}>
-                        Add 🗃️
-                    </Link>
-                </button>
-                <button
-                    onClick={() => openAddUrl()}
-                    className="button-standard"
-                >
-                    Add new ➕
-                </button>
-                <button
-                    onClick={() => deletePlaylist()}
-                    className="button-standard"
-                >
-                    Delete ❌
-                </button>
-            </div>
-            <div className={styles["nav-content"]}>
-                {sessionPlaylist && sessionPlaylist.length ? (
-                    sessionPlaylist.map((el, i) => (
-                        <div
-                            key={"session data " + i}
-                            className={styles["row"]}
-                        >
-                            <Link href={`/el/movie/${el.id}`}>{el.title}</Link>
-                            <p onClick={() => removeFromPlaylist(i)}>X</p>
-                        </div>
-                    ))
-                ) : (
-                    <div className={styles["no-data-row"]}>
-                        <p>No data</p>
-                    </div>
+
+            <PlaylistEditor
+                playlist={sessionPlaylist} // 🧠 We should be able to choose any playlist (or sessionPlaylist) in this case 🧠
+                removeFromPlaylist={removeFromPlaylist}
+                clearPreviousItem={clearPreviousItem}
+                overridePlaylist={overridePlaylist}
+                deletePlaylist={deletePlaylist}
+                shufflePlaylist={shufflePlaylist}
+                size={"page"}
+                handleParentUI={handleParentUI}
+            />
+
+            <Modal isOpen={addNewModal || saveModal} onClose={closeModal}>
+                {addNewModal && (
+                    <Form
+                        formLabel={"movie"}
+                        handleEditsInParent={addNewToPlaylist}
+                        parentIsWaiting={true}
+                    />
                 )}
-            </div>
 
-            {/* vedi session playlist */}
-            {addUrlModal && (
-                <div className={"modal"}>
+                {saveModal && !!sessionPlaylist?.length && (
                     <div className={"modal-container"}>
-                        <span className={"modal-close"} onClick={closeModal}>
-                            X
-                        </span>
-                        <AddNewForm closeModal={closeModal} />
-                    </div>
-                </div>
-            )}
-
-            {saveModal && (
-                <div className={"modal"}>
-                    <div className={"modal-container"}>
-                        <span className={"modal-close"} onClick={closeModal}>
-                            X
-                        </span>
                         <SavePlaylistForm
                             closeModal={closeModal}
                             sessionPlaylist={sessionPlaylist}
                         />
                     </div>
-                </div>
-            )}
+                )}
+            </Modal>
         </main>
     );
 }
+
+// TODO:
+/*
+ * API fixes for saving index 🟡
+ * API fixes for updating a playlist 🟡
+ * DB table update for index column 🟡
+ * Action should pass the index from the playlist element 🟡 or simply use the index of the SessionPlaylist, they are the same value
+ * Action for update playlist + parse arguments to pass down to it 🟡
+ * When getting the playlist display it correctly for the index value in the UI 🧠🧠🧠
+ * * 🔴 We are having some issues with index and pic (when fetched from db - maybe parsing or bad query)
+ * test everything 🧠
+ 
+* check indexes are in correct order and no duplicates or gaps ❌
+ */
