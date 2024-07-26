@@ -23,7 +23,7 @@ export default async function handler(req, res) {
             const unique = onlyUnique(onlyMovieIds);
 
             // for those values make db req to movies table
-            // get movies with all infos about cast, categories and tags
+            // get movies with all infos about actors, categories and tags
             let allMovies = await getAllMoviesWithInfosByIDS(client, unique);
 
             await commit(client);
@@ -59,8 +59,8 @@ export default async function handler(req, res) {
             const allTags = [];
 
             moviesRecords.map((movie) => {
-                if (movie.cast) {
-                    movie.cast.map((el) => {
+                if (movie.actors) {
+                    movie.actors.map((el) => {
                         allActors.push({
                             ...el,
                             totalRecords: movie.totalRecords,

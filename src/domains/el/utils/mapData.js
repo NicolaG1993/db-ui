@@ -2,7 +2,6 @@ import filterUniqueActors from "@/src/domains/el/utils/filterUniqueActors";
 
 /* MOVIE */
 const mapMovieRawToMovie = (rawMovie) => {
-    console.log("rawMovie: ", rawMovie);
     let movie = {
         id: rawMovie.movie_id,
         title: rawMovie.title,
@@ -12,7 +11,7 @@ const mapMovieRawToMovie = (rawMovie) => {
         release: rawMovie.movie_release,
         totalActors: rawMovie.actor_count,
 
-        cast:
+        actors:
             rawMovie.actors?.map((actor) => ({
                 id: actor.id,
                 name: actor.name,
@@ -54,17 +53,17 @@ const mapMovieRawToMovie = (rawMovie) => {
 /* ACTOR */
 const mapActorRawToActor = (rawActor) => {
     let actor = {
-        id: rawActor.actor[0].id,
-        createdAt: rawActor.actor[0].created_at,
-        name: rawActor.actor[0].name,
-        pic: rawActor.actor[0].pic,
-        rating: rawActor.actor[0].rating,
-        birthday: rawActor.actor[0].birthday,
-        genre: rawActor.actor[0].genre,
-        twitter: rawActor.actor[0].twitter,
-        instagram: rawActor.actor[0].instagram,
-        moreUrls: rawActor.actor[0].more_urls,
-        nationality: rawActor.actor[0].nationality,
+        id: rawActor.actor.id,
+        createdAt: rawActor.actor.created_at,
+        name: rawActor.actor.name,
+        pic: rawActor.actor.pic,
+        rating: rawActor.actor.rating,
+        birthday: rawActor.actor.birthday,
+        genre: rawActor.actor.genre,
+        twitter: rawActor.actor.twitter,
+        instagram: rawActor.actor.instagram,
+        moreUrls: rawActor.actor.more_urls,
+        nationalities: rawActor.actor.nationalities,
 
         totalMovies: rawActor.total_movies,
 
@@ -159,6 +158,7 @@ const mapStudioRawToStudio = (rawStudio) => {
         pic: rawStudio.studio_pic,
         website: rawStudio.studio_website,
         totalMovies: rawStudio.total_movies,
+        nationalities: rawStudio.studio_nationalities,
         actors:
             rawStudio.actors?.map((act) => ({
                 id: act.actor_id,
@@ -181,6 +181,7 @@ const mapDistributionRawToDistribution = (rawDistribution) => {
         pic: rawDistribution.distribution_pic,
         website: rawDistribution.distribution_website,
         totalMovies: rawDistribution.total_movies,
+        nationalities: rawDistribution.distribution_nationalities,
         actors:
             rawDistribution.actors?.map((act) => ({
                 id: act.actor_id,

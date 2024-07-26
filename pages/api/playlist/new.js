@@ -35,7 +35,7 @@ export default async function handler(req, res) {
                 )
                 .join(",");
             // Step 3: Insert movies into the movie_playlist table in a single query
-            await newPlaylistRelations(movieValues);
+            await newPlaylistRelations(client, movieValues);
             /*
             await newRelations(
                 newPlaylistID,

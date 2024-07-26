@@ -16,7 +16,7 @@ export default async function handler(req, res) {
             await begin(client);
             let { rows } = await getStudioByID(client, Number(id));
             await commit(client);
-            let studio = mapStudioRawToStudio(client, rows[0]);
+            let studio = mapStudioRawToStudio(rows[0]);
             res.status(200).json(studio);
         } catch (err) {
             await rollback(client);

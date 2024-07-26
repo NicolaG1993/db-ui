@@ -144,6 +144,7 @@ export default function StudioForm({ confirmChanges }) {
                     />
                 </div>
 
+                {/* FIX: cant save nationalities here */}
                 <div className={styles["form-row-full"]}>
                     <InputFake
                         name={"nationalities"}

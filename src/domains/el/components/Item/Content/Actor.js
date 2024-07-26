@@ -61,7 +61,7 @@ export default function Actor({
     } = item;
 
     const itemInfo = extractItemInfo(tags || []);
-    console.log("itemInfo: ", itemInfo);
+    console.log("Actor: ", { itemInfo });
     let {} = itemInfo;
 
     return (

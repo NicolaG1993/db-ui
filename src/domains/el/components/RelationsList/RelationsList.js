@@ -25,15 +25,15 @@ export default function RelationsList({
     const [hasMore, setHasMore] = useState(true);
     const scrollContainerRef = useRef(null);
 
-    console.log("🟡⚠️🟡⚠️⭐ RelationsList: ", {
-        itemName,
-        itemId,
-        itemLabel,
-        // relationsLabel,
-        relationsGroup,
-        table,
-        nameType,
-    });
+    // console.log("🟡⚠️🟡⚠️⭐ RelationsList: ", {
+    //     itemName,
+    //     itemId,
+    //     itemLabel,
+    //     // relationsLabel,
+    //     relationsGroup,
+    //     table,
+    //     nameType,
+    // });
 
     /*
     useEffect(() => {
@@ -66,7 +66,7 @@ export default function RelationsList({
             filters,
         });
 
-        console.log("newData: ", newData);
+        // console.log("newData: ", newData);
         if (newData.data.length === 0) {
             setHasMore(false);
         } else {
@@ -91,9 +91,9 @@ export default function RelationsList({
         }
     }, [filters.page]);
 
-    useEffect(() => {
-        console.log("💚🏡💚🏡 data: ", data);
-    }, [data]);
+    // useEffect(() => {
+    //     console.log("💚🏡💚🏡 data: ", data);
+    // }, [data]);
 
     const handleScroll = () => {
         const container = scrollContainerRef.current;
@@ -103,12 +103,13 @@ export default function RelationsList({
             scrollHeight: container.scrollHeight,
             condition:
                 container.scrollTop + container.clientHeight >=
-                container.scrollHeight,
+                container.scrollHeight - 2,
         });
         if (
             container.scrollTop + container.clientHeight >=
-            container.scrollHeight
+            container.scrollHeight - 2
         ) {
+            // we add "- 2" to prevent block scrolling in edge cases // where "2" stays for 2px
             setFilters((prev) => ({ ...filters, page: prev.page + 1 }));
         }
     };

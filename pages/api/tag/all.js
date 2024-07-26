@@ -13,7 +13,7 @@ export default async function handler(req, res) {
         const client = await connect();
         try {
             await begin(client);
-            const { rows } = await getAllTags("client,");
+            const { rows } = await getAllTags(client, "");
             const allRelations = await getAllRelations(client, "tagRelation");
             await commit(client);
             // per ogni tag cerchiamo il numero totale di relations col suo id, solo dove é riferito a movie!!!
