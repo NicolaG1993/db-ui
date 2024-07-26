@@ -181,7 +181,7 @@ export default function Movie({
                             id: item.id,
                             title: item.title,
                             pic: item.pic,
-                            cast: item.cast, // but we dont have cast here! // inside Card yes 🔴🧠🔴⚠️🧠🔴⚠️
+                            actors: item.actors, // but we dont have actors here! // inside Card yes 🔴🧠🔴⚠️🧠🔴⚠️
                         }}
                     />
                     <button

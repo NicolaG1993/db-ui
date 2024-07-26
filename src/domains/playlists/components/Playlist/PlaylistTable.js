@@ -55,10 +55,10 @@ export default function PlaylistTable({
                                 <div>
                                     <h5>{el.title}</h5>
                                     <p className={styles.subtitle}>
-                                        {el.cast &&
-                                            el.cast.map((actor, i) => (
+                                        {el.actors &&
+                                            el.actors.map((actor, i) => (
                                                 <span
-                                                    key={`cast ${actor.name} ${i}`}
+                                                    key={`actors ${actor.name} ${i}`}
                                                 >
                                                     {i > 0 && ", "}
                                                     {actor.name}

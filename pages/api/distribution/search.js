@@ -45,7 +45,7 @@ export default async function handler(req, res) {
                 500,
                 0,
                 "movie.title ASC"
-            ); // [{id: 1, cast: [{}, {}, ..], ..}, {id: 2}, ..]
+            ); // [{id: 1, actors: [{}, {}, ..], ..}, {id: 2}, ..]
 
             await commit(client);
 
@@ -64,13 +64,13 @@ export default async function handler(req, res) {
                 let relatedMovies = allMovies.rows.filter((movie) =>
                     stMoviesIDs.includes(movie.id)
                 );
-                // da queste estraggo tutti i cast, per valori unici
+                // da queste estraggo tutti i actors, per valori unici
                 let allCasts = [];
                 if (relatedMovies) {
                     relatedMovies.map(
                         (movie) =>
-                            movie.cast &&
-                            movie.cast.map((mo) => allCasts.push(mo))
+                            movie.actors &&
+                            movie.actors.map((mo) => allCasts.push(mo))
                     ); // [[{id: 1}, {}], [{}, {}]]
                 }
                 let stActors = getUniqueListBy(allCasts, "id");

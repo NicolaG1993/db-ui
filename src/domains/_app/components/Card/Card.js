@@ -70,10 +70,10 @@ export default function Card({ obj, table, cardKey }) {
                             ></h5>
                             {label === "movie" && (
                                 <p className={styles.subtitle}>
-                                    {obj.cast &&
-                                        obj.cast.map((model, i) => (
+                                    {obj.actors &&
+                                        obj.actors.map((model, i) => (
                                             <span
-                                                key={`cast ${model.name} ${i}`}
+                                                key={`actors ${model.name} ${i}`}
                                             >
                                                 {i > 0 && ", "}
                                                 {model.name}

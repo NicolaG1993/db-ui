@@ -196,8 +196,8 @@ export default function MovieForm({ confirmChanges }) {
 
                 <div className={styles["form-row-full"]}>
                     <InputFake
-                        name={"cast"}
-                        id={"Cast"}
+                        name={"actors"}
+                        id={"Actors"}
                         selected={formState.actors?.length || 0}
                         onClick={() => {
                             dispatch(openSideNav("actors"));

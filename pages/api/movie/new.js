@@ -21,8 +21,8 @@ async function handler(req, res) {
             tags,
             urls,
             actors,
-            release,
         } = req.body;
+        let movieRelease = req.body.release;
 
         console.log("req.body: ", {
             title,
@@ -34,7 +34,7 @@ async function handler(req, res) {
             tags,
             urls,
             actors,
-            release,
+            movieRelease,
         });
 
         if (!title) {
@@ -100,7 +100,7 @@ async function handler(req, res) {
                 pic,
                 Number(rating),
                 urls,
-                release
+                movieRelease
             );
             console.log("categories: ", categories);
             console.log("tags: ", tags);

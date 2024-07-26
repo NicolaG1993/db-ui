@@ -326,7 +326,7 @@ module.exports.search = (str, table, column) => {
 module.exports.searchClips = (str, models) => {
     const myQuery = `SELECT 
         clips.*,
-        cast_JSON.cast,
+        actors_JSON.actors,
         production_JSON.production,
         distribution_JSON.distribution,
         categories_JSON.categories,
@@ -341,15 +341,15 @@ module.exports.searchClips = (str, models) => {
                         'id', models.id,
                         'name', models.name                 
                         )
-                    ) AS cast
+                    ) AS actors
             FROM
                 clipModelsRelation
                 JOIN models        
                 ON models.id = clipModelsRelation.modelID
             GROUP BY
                 clipModelsRelation.clipID
-            ) AS cast_JSON
-            ON clips.id = cast_JSON.clipID    
+            ) AS actors_JSON
+            ON clips.id = actors_JSON.clipID    
         LEFT JOIN
             (SELECT
                 clipStudiosRelation.clipID,
@@ -427,7 +427,7 @@ module.exports.searchClips = (str, models) => {
 // module.exports.getAllClipsWithInfos = () => {
 //     const myQuery = `SELECT
 //         clips.*,
-//         json_agg(json_build_object('name', models.name, 'id', models.id)) AS cast
+//         json_agg(json_build_object('name', models.name, 'id', models.id)) AS actors
 //      FROM clips
 //      LEFT OUTER JOIN clipModelsRelation
 //      ON clips.id = clipModelsRelation.clipID
@@ -440,7 +440,7 @@ module.exports.searchClips = (str, models) => {
 module.exports.getAllClipsWithInfos = (str) => {
     const myQuery = `SELECT 
         clips.*,
-        cast_JSON.cast,
+        actors_JSON.actors,
         production_JSON.production,
         distribution_JSON.distribution,
         categories_JSON.categories,
@@ -455,14 +455,14 @@ module.exports.getAllClipsWithInfos = (str) => {
                         'id', models.id,
                         'name', models.name                 
                         )
-                    ) AS cast
+                    ) AS actors
             FROM
                 clipModelsRelation
                 JOIN models ON models.id = clipModelsRelation.modelID
             GROUP BY
                 clipModelsRelation.clipID
-            ) AS cast_JSON
-            ON clips.id = cast_JSON.clipID
+            ) AS actors_JSON
+            ON clips.id = actors_JSON.clipID
         LEFT JOIN
             (SELECT
                 clipStudiosRelation.clipID,
@@ -538,7 +538,7 @@ module.exports.getAllClipsWithInfos = (str) => {
 module.exports.getAllClipsWithInfosByIDS = (arr) => {
     const myQuery = `SELECT 
         clips.*,
-        cast_JSON.cast,
+        actors_JSON.actors,
         production_JSON.production,
         distribution_JSON.distribution,
         categories_JSON.categories,
@@ -553,14 +553,14 @@ module.exports.getAllClipsWithInfosByIDS = (arr) => {
                         'id', models.id,
                         'name', models.name                 
                         )
-                    ) AS cast
+                    ) AS actors
             FROM
                 clipModelsRelation
                 JOIN models ON models.id = clipModelsRelation.modelID
             GROUP BY
                 clipModelsRelation.clipID
-            ) AS cast_JSON
-            ON clips.id = cast_JSON.clipID
+            ) AS actors_JSON
+            ON clips.id = actors_JSON.clipID
         LEFT JOIN
             (SELECT
                 clipStudiosRelation.clipID,

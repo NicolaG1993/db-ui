@@ -214,17 +214,20 @@ export default function Records() {
                                                 <p className={styles.title}>
                                                     {el.title}
                                                 </p>
-                                                <p className={styles.cast}>
-                                                    {el.cast &&
-                                                        el.cast.map((el, i) => (
-                                                            <span
-                                                                key={
-                                                                    el.name + i
-                                                                }
-                                                            >
-                                                                • {el.name}{" "}
-                                                            </span>
-                                                        ))}
+                                                <p className={styles.actors}>
+                                                    {el.actors &&
+                                                        el.actors.map(
+                                                            (el, i) => (
+                                                                <span
+                                                                    key={
+                                                                        el.name +
+                                                                        i
+                                                                    }
+                                                                >
+                                                                    • {el.name}{" "}
+                                                                </span>
+                                                            )
+                                                        )}
                                                 </p>
                                             </div>
 

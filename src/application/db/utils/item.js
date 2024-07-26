@@ -1,3 +1,14 @@
+/*
+TODO 🔴🔴🔴🔴🔴🔴🔴🔴
+
+🟡 fix all queries to handle nationalities correctly, same goes for the mapping functions (see getActorByID - only one fixed yet) : fix studio and distribution
+🟡 fix possible issue in creating and editing as well
+🟡 check and fix other similar issues: i have noticed website in Studio, probably more...
+🟡 records counter seams to have issues, not sure, check - ALL GOOD
+🟡 check ALL new and edit forms for issues
+🔴 fix infinite scrolling
+*/
+
 import { connect } from "@/src/application/db/db.js";
 
 ///////////////////////////
@@ -330,95 +341,97 @@ module.exports.getActorByID = (client, id) => {
     const myQuery = `WITH actor_info AS (
     SELECT 
         a.*,
-        n.nationality
+        ARRAY_AGG(n.nationality) AS nationalities
     FROM 
         actor a
     LEFT JOIN 
         nationalityRelation n ON a.id = n.actorID
     WHERE 
         a.id = $1
-    ),
-    actor_tags AS (
-        SELECT 
-            t.id,
-            t.name,
-            t.pic,
-            t.type
-        FROM 
-            tag t
-        INNER JOIN 
-            tagRelation tr ON t.id = tr.tagID
-        WHERE 
-            tr.actorID = $1
-    ),
-    actor_movies AS (
-        SELECT 
-            m.id,
-            m.title,
-            m.pic,
-            m.urls,
-            m.rating,
-            m.release
-        FROM 
-            movie m
-        INNER JOIN 
-            movie_actor ma ON m.id = ma.movieID
-        WHERE 
-            ma.actorID = $1
-    ),
-    movie_count AS (
-        SELECT 
-            COUNT(*) AS total_movies
-        FROM 
-            actor_movies
-    ),
-    studios AS (
-        SELECT DISTINCT
-            s.id,
-            s.name,
-            s.pic,
-            s.website
-        FROM 
-            studio s
-        INNER JOIN 
-            movie_studio ms ON s.id = ms.studioID
-        WHERE 
-            ms.movieID IN (SELECT id FROM actor_movies)
-    ),
-    categories AS (
-        SELECT DISTINCT
-            c.id,
-            c.name,
-            c.pic,
-            c.type
-        FROM 
-            category c
-        INNER JOIN 
-            categoryRelation cr ON c.id = cr.categoryID
-        WHERE 
-            cr.movieID IN (SELECT id FROM actor_movies)
-    ),
-    distributions AS (
-        SELECT DISTINCT
-            d.id,
-            d.name,
-            d.pic,
-            d.website
-        FROM 
-            distribution d
-        INNER JOIN 
-            movie_distribution md ON d.id = md.distributionID
-        WHERE 
-            md.movieID IN (SELECT id FROM actor_movies)
-    )
-
+    GROUP BY 
+        a.id
+),
+actor_tags AS (
     SELECT 
-        (SELECT json_agg(row_to_json(actor_info)) FROM actor_info) AS actor,
-        (SELECT json_agg(row_to_json(actor_tags)) FROM actor_tags) AS tags,
-        (SELECT total_movies FROM movie_count) AS total_movies,
-        (SELECT json_agg(row_to_json(studios)) FROM studios) AS studios,
-        (SELECT json_agg(row_to_json(categories)) FROM categories) AS categories,
-        (SELECT json_agg(row_to_json(distributions)) FROM distributions) AS distributions`;
+        t.id,
+        t.name,
+        t.pic,
+        t.type
+    FROM 
+        tag t
+    INNER JOIN 
+        tagRelation tr ON t.id = tr.tagID
+    WHERE 
+        tr.actorID = $1
+),
+actor_movies AS (
+    SELECT 
+        m.id,
+        m.title,
+        m.pic,
+        m.urls,
+        m.rating,
+        m.release
+    FROM 
+        movie m
+    INNER JOIN 
+        movie_actor ma ON m.id = ma.movieID
+    WHERE 
+        ma.actorID = $1
+),
+movie_count AS (
+    SELECT 
+        COUNT(*) AS total_movies
+    FROM 
+        actor_movies
+),
+studios AS (
+    SELECT DISTINCT
+        s.id,
+        s.name,
+        s.pic,
+        s.website
+    FROM 
+        studio s
+    INNER JOIN 
+        movie_studio ms ON s.id = ms.studioID
+    WHERE 
+        ms.movieID IN (SELECT id FROM actor_movies)
+),
+categories AS (
+    SELECT DISTINCT
+        c.id,
+        c.name,
+        c.pic,
+        c.type
+    FROM 
+        category c
+    INNER JOIN 
+        categoryRelation cr ON c.id = cr.categoryID
+    WHERE 
+        cr.movieID IN (SELECT id FROM actor_movies)
+),
+distributions AS (
+    SELECT DISTINCT
+        d.id,
+        d.name,
+        d.pic,
+        d.website
+    FROM 
+        distribution d
+    INNER JOIN 
+        movie_distribution md ON d.id = md.distributionID
+    WHERE 
+        md.movieID IN (SELECT id FROM actor_movies)
+)
+
+SELECT 
+    (SELECT row_to_json(actor_info) FROM actor_info) AS actor,
+    (SELECT json_agg(row_to_json(actor_tags)) FROM actor_tags) AS tags,
+    (SELECT total_movies FROM movie_count) AS total_movies,
+    (SELECT json_agg(row_to_json(studios)) FROM studios) AS studios,
+    (SELECT json_agg(row_to_json(categories)) FROM categories) AS categories,
+    (SELECT json_agg(row_to_json(distributions)) FROM distributions) AS distributions`;
     const key = [id];
     return client.query(myQuery, key);
 };
@@ -473,7 +486,7 @@ module.exports.getAllMoviesWithInfos = (client, str, limit, offset, order) => {
     const myQuery = `SELECT 
         movie.*,
         COUNT(*) OVER() AS full_count,
-        cast_JSON.cast,
+        actors_JSON.actors,
         production_JSON.production,
         distribution_JSON.distribution,
         categories_JSON.categories,
@@ -491,14 +504,14 @@ module.exports.getAllMoviesWithInfos = (client, str, limit, offset, order) => {
                         'id', actor.id,
                         'name', actor.name                 
                         )
-                    ) AS cast
+                    ) AS actors
             FROM
                 movie_actor
                 JOIN actor ON actor.id = movie_actor.actorID
             GROUP BY
                 movie_actor.movieID
-            ) AS cast_JSON
-            ON movie.id = cast_JSON.movieID
+            ) AS actors_JSON
+            ON movie.id = actors_JSON.movieID
 
         LEFT JOIN
 
@@ -599,7 +612,7 @@ module.exports.getAllMoviesWithInfos = (client, str, limit, offset, order) => {
 module.exports.getAllMoviesWithInfosByIDS = (client, arr) => {
     const myQuery = `SELECT 
         movie.*,
-        cast_JSON.cast,
+        actors_JSON.actors,
         production_JSON.production,
         distribution_JSON.distribution,
         categories_JSON.categories,
@@ -614,14 +627,14 @@ module.exports.getAllMoviesWithInfosByIDS = (client, arr) => {
                         'id', actor.id,
                         'name', actor.name                 
                         )
-                    ) AS cast
+                    ) AS actors
             FROM
                 movie_actor
                 JOIN actor ON actor.id = movie_actor.actorID
             GROUP BY
                 movie_actor.movieID
-            ) AS cast_JSON
-            ON movie.id = cast_JSON.movieID
+            ) AS actors_JSON
+            ON movie.id = actors_JSON.movieID
         LEFT JOIN
             (SELECT
                 movie_studio.movieID,
@@ -847,12 +860,14 @@ module.exports.getStudioByID = (client, id) => {
     SELECT 
         a.id AS actor_id,
         a.name AS actor_name,
-        COUNT(DISTINCT ma.movieID) AS movies_count
+        COUNT(DISTINCT ma.movieID) AS movies_count,
+        ARRAY_AGG(DISTINCT n.nationality) AS nationalities
     FROM 
         actor a
         JOIN movie_actor ma ON a.id = ma.actorID
         JOIN movie m ON ma.movieID = m.id
         JOIN movie_studio ms ON m.id = ms.movieID
+        LEFT JOIN nationalityRelation n ON a.id = n.actorID
     WHERE 
         ms.studioID = $1
     GROUP BY 
@@ -866,6 +881,18 @@ movie_count AS (
         JOIN movie m ON ms.movieID = m.id
     WHERE 
         ms.studioID = $1
+),
+studio_nationalities AS (
+    SELECT
+        s.id AS studio_id,
+        ARRAY_AGG(DISTINCT nr.nationality) AS nationalities
+    FROM
+        studio s
+        LEFT JOIN nationalityRelation nr ON s.id = nr.studioID
+    WHERE
+        s.id = $1
+    GROUP BY
+        s.id
 )
 SELECT 
     s.id AS studio_id,
@@ -874,11 +901,13 @@ SELECT
     s.pic AS studio_pic,
     s.website AS studio_website,
     COALESCE(mc.total_movies, 0) AS total_movies,
+    sn.nationalities AS studio_nationalities,
     json_agg(
         jsonb_build_object(
             'actor_id', amc.actor_id,
             'actor_name', amc.actor_name,
-            'movies_count', amc.movies_count
+            'movies_count', amc.movies_count,
+            'nationalities', amc.nationalities
         )
         ORDER BY amc.actor_name
     ) AS actors
@@ -889,10 +918,11 @@ FROM
     LEFT JOIN movie_actor ma ON m.id = ma.movieID
     LEFT JOIN actor_movie_count amc ON ma.actorID = amc.actor_id
     LEFT JOIN movie_count mc ON true
+    LEFT JOIN studio_nationalities sn ON s.id = sn.studio_id
 WHERE 
     s.id = $1
 GROUP BY 
-    s.id, s.created_at, s.name, s.pic, s.website, mc.total_movies
+    s.id, s.created_at, s.name, s.pic, s.website, mc.total_movies, sn.nationalities
 ORDER BY 
     s.name`;
     const key = [id];
@@ -942,12 +972,14 @@ module.exports.getDistributionByID = (client, id) => {
     SELECT 
         a.id AS actor_id,
         a.name AS actor_name,
-        COUNT(DISTINCT ma.movieID) AS movies_count
+        COUNT(DISTINCT ma.movieID) AS movies_count,
+        ARRAY_AGG(DISTINCT n.nationality) AS nationalities
     FROM 
         actor a
         JOIN movie_actor ma ON a.id = ma.actorID
         JOIN movie m ON ma.movieID = m.id
         JOIN movie_distribution md ON m.id = md.movieID
+        LEFT JOIN nationalityRelation n ON a.id = n.actorID
     WHERE 
         md.distributionID = $1
     GROUP BY 
@@ -961,6 +993,18 @@ movie_count AS (
         JOIN movie m ON md.movieID = m.id
     WHERE 
         md.distributionID = $1
+),
+distribution_nationalities AS (
+    SELECT
+        d.id AS distribution_id,
+        ARRAY_AGG(DISTINCT nr.nationality) AS nationalities
+    FROM
+        distribution d
+        LEFT JOIN nationalityRelation nr ON d.id = nr.distributionID
+    WHERE
+        d.id = $1
+    GROUP BY
+        d.id
 )
 SELECT 
     d.id AS distribution_id,
@@ -969,11 +1013,13 @@ SELECT
     d.pic AS distribution_pic,
     d.website AS distribution_website,
     COALESCE(mc.total_movies, 0) AS total_movies,
+    dn.nationalities AS distribution_nationalities,
     json_agg(
         jsonb_build_object(
             'actor_id', amc.actor_id,
             'actor_name', amc.actor_name,
-            'movies_count', amc.movies_count
+            'movies_count', amc.movies_count,
+            'nationalities', amc.nationalities
         )
         ORDER BY amc.actor_name
     ) AS actors
@@ -984,10 +1030,11 @@ FROM
     LEFT JOIN movie_actor ma ON m.id = ma.movieID
     LEFT JOIN actor_movie_count amc ON ma.actorID = amc.actor_id
     LEFT JOIN movie_count mc ON true
+    LEFT JOIN distribution_nationalities dn ON d.id = dn.distribution_id
 WHERE 
     d.id = $1
 GROUP BY 
-    d.id, d.created_at, d.name, d.pic, d.website, mc.total_movies
+    d.id, d.created_at, d.name, d.pic, d.website, mc.total_movies, dn.nationalities
 ORDER BY 
     d.name`;
     const key = [id];
@@ -1229,7 +1276,7 @@ module.exports.getCategoryMoviesPage = (
     LIMIT ${limit} OFFSET ${offset}`;
     */
 
-    const myQuery = `WITH movie_with_cast AS (
+    const myQuery = `WITH movie_with_actors AS (
     SELECT 
         m.*,
         (
@@ -1242,14 +1289,14 @@ module.exports.getCategoryMoviesPage = (
             FROM actor a
             JOIN movie_actor ma ON a.id = ma.actorID
             WHERE ma.movieID = m.id
-        ) AS cast
+        ) AS actors
             FROM movie m
             JOIN categoryRelation cr ON m.id = cr.movieID
             WHERE cr.categoryID = $1
             ORDER BY m.${order} ${direction}
             LIMIT ${limit} OFFSET ${offset}
         )
-        SELECT * FROM movie_with_cast`;
+        SELECT * FROM movie_with_actors`;
 
     // const myQuery = `DELETE FROM ${table}
     // WHERE ${idColumn} = $1
@@ -1268,7 +1315,7 @@ module.exports.getTagMoviesPage = (
     limit,
     offset
 ) => {
-    const myQuery = `WITH movie_with_cast AS (
+    const myQuery = `WITH movie_with_actors AS (
     SELECT 
         m.*,
         (
@@ -1281,14 +1328,14 @@ module.exports.getTagMoviesPage = (
             FROM actor a
             JOIN movie_actor ma ON a.id = ma.actorID
             WHERE ma.movieID = m.id
-        ) AS cast
+        ) AS actors
             FROM movie m
             JOIN tagRelation tr ON m.id = tr.movieID
             WHERE tr.tagID = $1
             ORDER BY m.${order} ${direction}
             LIMIT ${limit} OFFSET ${offset}
         )
-        SELECT * FROM movie_with_cast`;
+        SELECT * FROM movie_with_actors`;
     const keys = [itemId];
     return client.query(myQuery, keys);
 };
@@ -1300,7 +1347,7 @@ module.exports.getStudioMoviesPage = (
     limit,
     offset
 ) => {
-    const myQuery = `WITH movie_with_cast AS (
+    const myQuery = `WITH movie_with_actors AS (
     SELECT 
         m.*,
         (
@@ -1313,14 +1360,14 @@ module.exports.getStudioMoviesPage = (
             FROM actor a
             JOIN movie_actor ma ON a.id = ma.actorID
             WHERE ma.movieID = m.id
-        ) AS cast
+        ) AS actors
             FROM movie m
             JOIN movie_studio ms ON m.id = ms.movieID
             WHERE ms.studioID = $1
             ORDER BY m.${order} ${direction}
             LIMIT ${limit} OFFSET ${offset}
         )
-        SELECT * FROM movie_with_cast`;
+        SELECT * FROM movie_with_actors`;
     const keys = [itemId];
     return client.query(myQuery, keys);
 };
@@ -1332,7 +1379,7 @@ module.exports.getDistributionMoviesPage = (
     limit,
     offset
 ) => {
-    const myQuery = `WITH movie_with_cast AS (
+    const myQuery = `WITH movie_with_actors AS (
     SELECT 
         m.*,
         (
@@ -1345,14 +1392,14 @@ module.exports.getDistributionMoviesPage = (
             FROM actor a
             JOIN movie_actor ma ON a.id = ma.actorID
             WHERE ma.movieID = m.id
-        ) AS cast
+        ) AS actors
             FROM movie m
             JOIN movie_distribution md ON m.id = md.movieID
             WHERE md.distributionID = $1
             ORDER BY m.${order} ${direction}
             LIMIT ${limit} OFFSET ${offset}
         )
-        SELECT * FROM movie_with_cast`;
+        SELECT * FROM movie_with_actors`;
     const keys = [itemId];
     return client.query(myQuery, keys);
 };
@@ -1370,7 +1417,7 @@ module.exports.getActorMoviesPage = (
     // WHERE tr.tagID = $1
     // ORDER BY m.${order} ${direction}
     // LIMIT ${limit} OFFSET ${page * limit}`;
-    const myQuery = `WITH movie_with_cast AS (
+    const myQuery = `WITH movie_with_actors AS (
         SELECT 
             m.*,
             (
@@ -1383,14 +1430,14 @@ module.exports.getActorMoviesPage = (
                 FROM actor a
                 JOIN movie_actor ma ON a.id = ma.actorID
                 WHERE ma.movieID = m.id
-            ) AS cast
+            ) AS actors
         FROM movie m
         JOIN movie_actor ma ON m.id = ma.movieID
         WHERE ma.actorID = $1
         ORDER BY m.${order} ${direction}
         LIMIT ${limit} OFFSET ${offset}
     )
-    SELECT * FROM movie_with_cast`;
+    SELECT * FROM movie_with_actors`;
     const keys = [itemId];
     return client.query(myQuery, keys);
 };

@@ -21,10 +21,11 @@ async function handler(req, res) {
             rating,
             urls,
             actors,
-            release,
             addedRelations,
             removedRelations,
         } = req.body;
+        let movieRelease = req.body.release;
+
         console.log("💛💛💛 addedRelations", addedRelations);
         console.log("💛💛💛 removedRelations", removedRelations);
         if (!title) {
@@ -33,10 +34,10 @@ async function handler(req, res) {
                 .send({ error: ["Missing one or more fields"] });
         }
 
-        if (release) {
-            release = new Date(release);
+        if (movieRelease) {
+            movieRelease = new Date(movieRelease);
         } else {
-            release = null;
+            movieRelease = null;
         }
 
         //
@@ -87,7 +88,7 @@ async function handler(req, res) {
                 pic,
                 Number(rating),
                 urls,
-                release
+                movieRelease
             );
 
             // ADD RELATIONS

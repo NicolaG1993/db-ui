@@ -142,17 +142,3 @@ export default function EditorPlaylist() {
         </main>
     );
 }
-
-// TODO:
-/*
- * API fixes for saving index 🟡
- * API fixes for updating a playlist 🟡
- * DB table update for index column 🟡
- * Action should pass the index from the playlist element 🟡 or simply use the index of the SessionPlaylist, they are the same value
- * Action for update playlist + parse arguments to pass down to it 🟡
- * When getting the playlist display it correctly for the index value in the UI 🧠🧠🧠
- * * 🔴 We are having some issues with index and pic (when fetched from db - maybe parsing or bad query)
- * test everything 🧠
- 
-* check indexes are in correct order and no duplicates or gaps ❌
- */

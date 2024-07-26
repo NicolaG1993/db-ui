@@ -89,9 +89,9 @@ export default function MatchContender({
                             <span>✅ Contender: #{contender.id}</span>
                             <h5>{contender.title}</h5>
                             <p className={styles.subtitle}>
-                                {contender.cast &&
-                                    contender.cast.map((actor, i) => (
-                                        <span key={`cast ${actor.name} ${i}`}>
+                                {contender.actors &&
+                                    contender.actors.map((actor, i) => (
+                                        <span key={`actor ${actor.name} ${i}`}>
                                             {i > 0 && ", "}
                                             {actor.name}
                                         </span>
@@ -104,7 +104,7 @@ export default function MatchContender({
         } else {
             // contender and contender.id not updating after changes 🔴 // 🧠 still happening? 🧠
 
-            const { title, pic, rating, cast } = contender;
+            const { title, pic, rating, actors } = contender;
             return (
                 <div className={styles.contenderWrap}>
                     <div
@@ -135,7 +135,7 @@ export default function MatchContender({
                             </span>
                             <div className={styles.contenderCastWrap}>
                                 <span className={styles.contenderCast}>
-                                    {cast?.map((act, i, array) =>
+                                    {actors?.map((act, i, array) =>
                                         i + 1 === array.length
                                             ? `${act.name}`
                                             : `${act.name}, `
