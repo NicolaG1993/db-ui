@@ -42,10 +42,10 @@ async function handler(req, res) {
                 .status(422)
                 .send({ error: ["Missing one or more fields"] });
         }
-        if (release) {
-            release = new Date(release);
+        if (movieRelease) {
+            movieRelease = new Date(movieRelease);
         } else {
-            release = null;
+            movieRelease = null;
         }
 
         // if (categories.length) {
