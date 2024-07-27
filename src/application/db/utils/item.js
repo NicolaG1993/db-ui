@@ -1,14 +1,3 @@
-/*
-TODO 🔴🔴🔴🔴🔴🔴🔴🔴
-
-🟡 fix all queries to handle nationalities correctly, same goes for the mapping functions (see getActorByID - only one fixed yet) : fix studio and distribution
-🟡 fix possible issue in creating and editing as well
-🟡 check and fix other similar issues: i have noticed website in Studio, probably more...
-🟡 records counter seams to have issues, not sure, check - ALL GOOD
-🟡 check ALL new and edit forms for issues
-🔴 fix infinite scrolling
-*/
-
 import { connect } from "@/src/application/db/db.js";
 
 ///////////////////////////

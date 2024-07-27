@@ -103,11 +103,20 @@
     align-items: flex-start;
     justify-content: flex-start;
 }
-.movieDescription > div h5 {
+
+/* .movieDescription > div h5 {
     height: 30px;
     text-align: left;
     line-height: 25px;
     padding-top: 5px;
+} */
+.movieDescriptionTitle {
+    height: 30px;
+    text-align: left;
+    line-height: 25px;
+    padding-top: 5px;
+    font-size: 0.83em;
+    font-weight: bold;
 }
 
 .gridElement h5,
