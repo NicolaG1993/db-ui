@@ -10,6 +10,8 @@ import {
     clearItem,
 } from "@/src/application/redux/slices/itemSlice";
 import { useDispatch } from "react-redux";
+import ScrollingText from "../ScrollingText/ScrollingText";
+import { createCastString } from "../../utils/interpretateData";
 
 export default function Card({ obj, table, cardKey }) {
     let { nameType, thumbnailSize, itemLabel } = table;
@@ -63,23 +65,40 @@ export default function Card({ obj, table, cardKey }) {
                 {thumbnailSize === "Landscape" && (
                     <div className={styles.movieDescription}>
                         <div>
-                            <h5
+                            {/* <h5
                                 dangerouslySetInnerHTML={createMarkup(
                                     obj[nameType]
                                 )}
-                            ></h5>
+                            ></h5> */}
+
+                            <ScrollingText
+                                text={obj[nameType]}
+                                isScrolling={true}
+                                backAndForth={true}
+                                width="250px"
+                                textStyle={styles.movieDescriptionTitle}
+                            />
+
                             {label === "movie" && (
-                                <p className={styles.subtitle}>
-                                    {obj.actors &&
-                                        obj.actors.map((model, i) => (
-                                            <span
-                                                key={`actors ${model.name} ${i}`}
-                                            >
-                                                {i > 0 && ", "}
-                                                {model.name}
-                                            </span>
-                                        ))}
-                                </p>
+                                // <p className={styles.subtitle}>
+                                //     {obj.actors &&
+                                //         obj.actors.map((model, i) => (
+                                //             <span
+                                //                 key={`actors ${model.name} ${i}`}
+                                //             >
+                                //                 {i > 0 && ", "}
+                                //                 {model.name}
+                                //             </span>
+                                //         ))}
+                                // </p>
+
+                                <ScrollingText
+                                    text={createCastString(obj?.actors || [])}
+                                    isScrolling={true}
+                                    backAndForth={true}
+                                    width="250px"
+                                    textStyle={styles.subtitle}
+                                />
                             )}
                         </div>
                         {label === "movie" && (
