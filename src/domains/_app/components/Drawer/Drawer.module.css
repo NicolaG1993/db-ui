@@ -1,0 +1,17 @@
+#Drawer {
+    position: fixed;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    transition: 0.4s ease-in;
+    background: var(--bg300);
+    z-index: 98;
+    overflow: hidden;
+}
+.sidewrap {
+    padding: 6.5rem 1rem 1rem 1rem;
+    /* border-radius: 25px; */
+    box-shadow: var(--shadow000);
+    /* background: var(--bg200); */
+    /* border-left: 1px solid var(--text); */
+}

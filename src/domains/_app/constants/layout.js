@@ -26,6 +26,7 @@ import SessionPlaylistButton from "./components/Widgets/SessionPlaylistButton";
 import { selectItemIsLoading } from "@/src/application/redux/slices/itemSlice";
 import AppBlur from "@/src/domains/_app/constants/components/AppBlur/AppBlur";
 import Tooltip from "@/src/domains/_app/constants/components/Tooltip/Tooltip";
+import Drawer from "../components/Drawer/Drawer";
 // import { useErrorBoundary } from "react-error-boundary";
 
 export default function Layout({ children }) {
@@ -34,6 +35,7 @@ export default function Layout({ children }) {
     //================================================================================
     const dispatch = useDispatch();
     // const [user, setUser] = useState();
+    const [isDrawerOpen, setIsDrawerOpen] = useState(false);
     const [showLoadingScreen, setShowLoadingScreen] = useState(false);
     const [showAuthModal, setShowAuthModal] = useState(true);
     const [renderingApp, setRenderingApp] = useState(true); // forse si potrebbe spostare in redux
@@ -76,6 +78,10 @@ export default function Layout({ children }) {
         } else if (process.env.NODE_ENV === "production") {
             setShowAuthModal(true);
         }
+    };
+
+    const toggleDrawer = () => {
+        setIsDrawerOpen(!isDrawerOpen);
     };
 
     const showTooltip = (title, text, e) => {
@@ -167,9 +173,15 @@ export default function Layout({ children }) {
                     {showLoadingScreen && <AppBlur visible={itemIsLoading} />}
 
                     <Header
+                        openDrawer={toggleDrawer}
                         showTooltip={showTooltip}
                         hideTooltip={hideTooltip}
                     />
+                    <Drawer isOpen={isDrawerOpen} onClose={toggleDrawer}>
+                        <h2>Dynamic Content</h2>
+                        <p>This content is passed dynamically to the drawer.</p>
+                        {/* <SettingsComponent /> */}
+                    </Drawer>
                     {children({ showTooltip })}
                     <Footer />
 
