@@ -1,13 +1,13 @@
 import React, { useEffect, useRef, useState } from "react";
 import styles from "./ScrollingText.module.css";
 
-const ScrollingText = ({
+export default function ScrollingText({
     text,
     isScrolling,
     backAndForth,
     width,
     textStyle,
-}) => {
+}) {
     const containerRef = useRef(null);
     const textRef = useRef(null);
     const [shouldScroll, setShouldScroll] = useState(false);
@@ -74,9 +74,7 @@ const ScrollingText = ({
             </div>
         </div>
     );
-};
-
-export default ScrollingText;
+}
 
 /*
 🧠 How can i pass stlye? Should i pass global or custom style? Should i pass className or style?

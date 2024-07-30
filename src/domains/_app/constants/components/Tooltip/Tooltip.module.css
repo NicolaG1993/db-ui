@@ -1,0 +1,24 @@
+.tooltipContainer {
+    position: absolute;
+    outline: 1px solid var(--text);
+    color: var(--text);
+    background-color: var(--bg000);
+    /* background-color: rgba(0, 0, 0, 0.7); */
+    opacity: 0.95;
+    padding: 10px;
+    border-radius: 5px;
+    z-index: 1000;
+    pointer-events: none;
+    transition: opacity 0.2s;
+}
+
+.title {
+    font-weight: bold;
+    margin-bottom: 5px;
+    font-size: 14px;
+}
+
+.text {
+    font-size: 11px;
+    color: var(--bg900);
+}

@@ -24,7 +24,8 @@ import styles from "@/src/domains/_app/constants/Layout.module.css";
 import RandomNumberButton from "./components/Widgets/RandomNumberButton";
 import SessionPlaylistButton from "./components/Widgets/SessionPlaylistButton";
 import { selectItemIsLoading } from "@/src/application/redux/slices/itemSlice";
-import AppBlur from "./components/AppBlur/AppBlur";
+import AppBlur from "@/src/domains/_app/constants/components/AppBlur/AppBlur";
+import Tooltip from "@/src/domains/_app/constants/components/Tooltip/Tooltip";
 // import { useErrorBoundary } from "react-error-boundary";
 
 export default function Layout({ children }) {
@@ -41,6 +42,12 @@ export default function Layout({ children }) {
     // const { showBoundary } = useErrorBoundary();
     // const [appError, setAppError] = useState();
     // let itemStoreError = useSelector(selectItemStoreError, shallowEqual);
+    const [tooltipVisible, setTooltipVisible] = useState(false);
+    const [tooltipProps, setTooltipProps] = useState({
+        title: "",
+        text: "",
+        position: { x: 0, y: 0 },
+    });
 
     //================================================================================
     // Functions
@@ -69,6 +76,19 @@ export default function Layout({ children }) {
         } else if (process.env.NODE_ENV === "production") {
             setShowAuthModal(true);
         }
+    };
+
+    const showTooltip = (title, text, e) => {
+        setTooltipProps({
+            title,
+            text,
+            position: { x: e.clientX, y: e.clientY },
+        });
+        setTooltipVisible(true);
+    };
+
+    const hideTooltip = () => {
+        setTooltipVisible(false);
     };
 
     //================================================================================
@@ -133,13 +153,32 @@ export default function Layout({ children }) {
             {showAuthModal ? (
                 <AuthModal />
             ) : (
-                <>
+                <div
+                    id={"Layout"}
+                    onMouseMove={(e) => {
+                        if (tooltipVisible) {
+                            setTooltipProps((prev) => ({
+                                ...prev,
+                                position: { x: e.clientX, y: e.clientY },
+                            }));
+                        }
+                    }}
+                >
                     {showLoadingScreen && <AppBlur visible={itemIsLoading} />}
-                    <Header />
-                    {children}
-                    <Widgets />
+
+                    <Header
+                        showTooltip={showTooltip}
+                        hideTooltip={hideTooltip}
+                    />
+                    {children({ showTooltip })}
                     <Footer />
-                </>
+
+                    <Tooltip {...tooltipProps} visible={tooltipVisible} />
+                    <Widgets
+                        showTooltip={showTooltip}
+                        hideTooltip={hideTooltip}
+                    />
+                </div>
             )}
         </>
     );

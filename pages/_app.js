@@ -8,6 +8,7 @@ import Layout from "@/src/domains/_app/constants/layout";
 import { ErrorBoundary } from "react-error-boundary";
 // import ErrorBoundary from "@/src/domains/_app/components/Error/components/ErrorApp/ErrorBoundary";
 import ErrorApp from "@/src/domains/_app/components/Error/components/ErrorApp/ErrorApp";
+import { TooltipProvider } from "@/src/domains/_app/contexts/TooltipContext";
 
 export default function App({ Component, pageProps }) {
     //================================================================================
@@ -32,11 +33,22 @@ export default function App({ Component, pageProps }) {
             anchorOrigin={{ vertical: "top", horizontal: "center" }}
         >
             <Provider store={store}>
-                <ErrorBoundary FallbackComponent={ErrorApp} onError={logError}>
-                    <Layout>
-                        <Component {...pageProps} />
-                    </Layout>
-                </ErrorBoundary>
+                <TooltipProvider>
+                    <ErrorBoundary
+                        FallbackComponent={ErrorApp}
+                        onError={logError}
+                    >
+                        <Layout>
+                            {({ showTooltip, hideTooltip }) => (
+                                <Component
+                                    {...pageProps}
+                                    showTooltip={showTooltip}
+                                    hideTooltip={hideTooltip}
+                                /> // do we use pageProps? 🔴 why can we pass showTooltip and hideTooltip inside it directly? 🔴
+                            )}
+                        </Layout>
+                    </ErrorBoundary>
+                </TooltipProvider>
             </Provider>
         </SnackbarProvider>
     );
