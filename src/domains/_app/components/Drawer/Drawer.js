@@ -1,15 +1,17 @@
 import styles from "@/src/domains/_app/components/Drawer/Drawer.module.css";
 
-export default function Drawer({ children, isOpen, closeDrawer }) {
+export default function Drawer({ children, isOpen, closeDrawer, title }) {
     return (
         <div
             id={styles.Drawer}
-            className={styles.sidewrap}
             style={{
                 transform: isOpen ? "translateX(66vw)" : "translateX(100vw)",
             }}
         >
-            {children}
+            <div className={styles.heading}>
+                <h2>{title}</h2>
+            </div>
+            <div className={styles.body}>{children}</div>
         </div>
     );
 }

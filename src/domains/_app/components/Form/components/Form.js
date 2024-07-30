@@ -159,6 +159,16 @@ export default function Form({
         }
     };
 
+    console.log("FORM: ", {
+        isLoading,
+        isFinish,
+        formLabel,
+        form,
+        formKey: form?.key,
+        FormComponent,
+        propsData,
+    });
+
     return (
         <div className={styles.formWrapContainer}>
             <div className={styles.formWrap}>

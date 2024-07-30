@@ -1,3 +1,6 @@
+// Merge this file with AddNewForm.js
+// They could be a single component, or use better names
+
 import { useState } from "react";
 import styles from "@/src/application/styles/AdminDashboard.module.css";
 import Form from "@/src/domains/_app/components/Form/components/Form";
@@ -5,26 +8,28 @@ import Cookies from "js-cookie";
 import { selectFormStoreUI } from "@/src/application/redux/slices/formSlice";
 import { shallowEqual, useSelector } from "react-redux";
 
-export default function AddNewWrap({ setAddForm }) {
+export default function NewDataForm({ formLabel }) {
     const [UI, setUI] = useState(
-        Cookies.get("formState")
+        formLabel
+            ? formLabel
+            : Cookies.get("formState")
             ? JSON.parse(Cookies.get("formState"))?.formLabel
             : "movie"
     );
+
+    // TODO: if (formLabel) ... 🧠🧠🧠 show only Form[formLabel]
+    // else user can choose form
 
     // check if form drawer is open
     const uiState = useSelector(selectFormStoreUI, shallowEqual);
 
     const handleFormChange = (label) => !uiState.drawerIsOpen && setUI(label);
 
+    console.log("NewDataForm: ", { formLabel, UI, uiState });
     return (
-        <div id={"Overlay"}>
-            <div className={"overlayWindow"}>
-                <div className={"topBar"}>
-                    <span onClick={() => setAddForm(false)}>X</span>
-                </div>
-
-                {/* 👇 CHANGE DOWN HERE 👇 */}
+        <>
+            {/* 👇 CHANGE DOWN HERE: make flexible 👇 */}
+            {!formLabel && (
                 <div className={styles.selector}>
                     <ul>
                         <li
@@ -89,9 +94,14 @@ export default function AddNewWrap({ setAddForm }) {
                         </li>
                     </ul>
                 </div>
-                <Form formLabel={UI} />
-            </div>
-        </div>
+            )}
+
+            <Form
+                formLabel={UI}
+                // handleEditsInParent={addNewToPlaylist}
+                parentIsWaiting={true}
+            />
+        </>
     );
 }
 

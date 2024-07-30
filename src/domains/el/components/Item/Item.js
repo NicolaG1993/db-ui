@@ -13,6 +13,8 @@ import {
     selectItem,
     activateLoadingItem,
     setStoreError,
+    selectItemIsLoading,
+    selectItemIsChanged,
 } from "@/src/application/redux/slices/itemSlice";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import deleteItem from "@/src/domains/el/actions/deleteItem";
@@ -20,7 +22,11 @@ import ItemSkeleton from "@/src/domains/el/components/Item/ItemSkeleton";
 // import ErrorUI from "@/src/domains/_app/components/Error/ErrorUI";
 import { getError } from "@/src/application/utils/error";
 import { useErrorBoundary } from "react-error-boundary";
-import { resetFormStore } from "@/src/application/redux/slices/formSlice";
+import {
+    closeForm,
+    openForm,
+    resetFormStore,
+} from "@/src/application/redux/slices/formSlice";
 
 export default function Item({ label }) {
     //================================================================================
@@ -29,6 +35,8 @@ export default function Item({ label }) {
     let selectedItem = useSelector(selectSelectedItem);
     // let itemStore = useSelector(selectItemStore, shallowEqual);
     let itemIsLoaded = useSelector(selectItemIsLoaded, shallowEqual);
+    let itemIsLoading = useSelector(selectItemIsLoading, shallowEqual);
+    let itemIsChanged = useSelector(selectItemIsChanged, shallowEqual);
 
     //================================================================================
     // Component State
@@ -40,7 +48,8 @@ export default function Item({ label }) {
     const [item, setItem] = useState();
     // const [itemInfos, setItemInfos] = useState();
     // const [parsedObj, setParsedObj] = useState(false);
-    const [openForm, setOpenForm] = useState(false);
+
+    // const [openForm, setOpenForm] = useState(false);
 
     // should i save errors in store instead?
     // and have a special overlay for it?
@@ -76,20 +85,30 @@ export default function Item({ label }) {
     };
     */
 
-    const handleEdits = async () => {
-        const fetchedItem = await fetchData(id, label, structure);
-        dispatch(selectItem(fetchedItem));
-        setOpenForm(false);
+    const openEditForm = ({ propsData, formLabel }) => {
+        dispatch(resetFormStore());
+        // setAddNewModal(true);
+        dispatch(openForm({ propsData, formLabel })); // open Form UI
+    };
+    const closeEditForm = () => {
+        // setAddNewModal(false);
+        dispatch(closeForm());
     };
 
-    const handleEditForm = (bool) => {
+    const handleItemReload = async () => {
+        const fetchedItem = await fetchData(id, label, structure);
+        dispatch(selectItem(fetchedItem));
+        // closeEditForm();
+    };
+
+    const handleEditForm = (bool, propsData) => {
         if (bool) {
             // dispatch(loadNewActiveForm(arg)); // dispatch new form con props data here!
-            dispatch(resetFormStore()); // or just reset it! EZ
-            setOpenForm(true);
+            // dispatch(resetFormStore()); // or just reset it! EZ
+            openEditForm({ propsData, formLabel: label });
         } else {
             //  dispatch(resetFormStore()); // we should do this on opening new forms
-            setOpenForm(false);
+            closeEditForm();
         }
     };
 
@@ -136,6 +155,12 @@ export default function Item({ label }) {
     useEffect(() => {
         setItem(selectedItem);
     }, [selectedItem]);
+
+    useEffect(() => {
+        if (itemIsChanged) {
+            handleItemReload();
+        }
+    }, [itemIsChanged]);
 
     useEffect(() => {
         console.log("ITEM: ", item);
@@ -188,9 +213,10 @@ export default function Item({ label }) {
                             // itemInfos={itemInfos}
                             // parsedObj={parsedObj}
                             handleDelete={handleDelete}
-                            handleEdits={handleEdits}
-                            openForm={openForm}
-                            setOpenForm={handleEditForm}
+                            // handleEdits={handleEdits}
+                            // openForm={} // isFormOpen // no need: delete
+                            // setOpenForm={handleEditForm}
+                            setFormIsOpen={handleEditForm}
                         />
                     )}
                 </>

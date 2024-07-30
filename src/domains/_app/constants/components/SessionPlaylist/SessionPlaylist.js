@@ -11,11 +11,16 @@ import {
 } from "@/src/application/redux/slices/sessionPlaylistSlice";
 import Form from "@/src/domains/_app/components/Form/components/Form";
 import Modal from "@/src/domains/_app/components/Modal/Modal";
-import { resetFormStore } from "@/src/application/redux/slices/formSlice";
+import {
+    closeForm,
+    openForm,
+    resetFormStore,
+    selectIsFormOpen,
+} from "@/src/application/redux/slices/formSlice";
 import PlaylistEditor from "@/src/domains/playlists/components/PlaylistEditor/PlaylistEditor";
 
 export default function SessionPlaylist({ open, closeWidget }) {
-    const [addNewModal, setAddNewModal] = useState(false);
+    // const [addNewModal, setAddNewModal] = useState(false);
     let sessionPlaylist = useSelector(selectSessionPlaylist, shallowEqual);
     const dispatch = useDispatch();
 
@@ -27,12 +32,14 @@ export default function SessionPlaylist({ open, closeWidget }) {
     // !PLAYLIST ACTIONS! //
     ////////////////////////
     const openAddNew = () => {
-        dispatch(resetFormStore());
-        setAddNewModal(true);
+        dispatch(resetFormStore()); // cleanup formState
+        dispatch(openForm({ formLabel: "movie" })); // open Form UI
+        // setAddNewModal(true);
     };
-    const closeAddNew = () => {
-        setAddNewModal(false);
-    };
+    // const closeAddNew = () => {
+    //     // setAddNewModal(false);
+    //     dispatch(closeForm());
+    // };
     const removeFromPlaylist = (i) => {
         dispatch(removeFromSessionPlaylist(i));
     };
@@ -69,16 +76,7 @@ export default function SessionPlaylist({ open, closeWidget }) {
     ////////////////////////
     // !MODAL ACTIONS! //
     ////////////////////////
-    const addNewToPlaylist = (obj) => {
-        const { id, title } = obj;
-        // questa fn viene invocata dopo che MovieForm ha finito di creare il nuovo movie
-        // voglio prenderlo e aggiungerlo in fondo alla lista
-        if (id) {
-            obj = { id, title: title || "Untitled" };
-            dispatch(addToSessionPlaylist(obj));
-        }
-        closeAddNew();
-    };
+
     ////////////////////////
     ////////////////////////
 
@@ -96,13 +94,13 @@ export default function SessionPlaylist({ open, closeWidget }) {
                     handleParentUI={handleParentUI}
                 />
 
-                <Modal isOpen={addNewModal} onClose={closeAddNew}>
+                {/* <Modal isOpen={addNewModal} onClose={closeAddNew}>
                     <Form
                         formLabel={"movie"}
                         handleEditsInParent={addNewToPlaylist}
                         parentIsWaiting={true}
                     />
-                </Modal>
+                </Modal> */}
             </>
         );
     }

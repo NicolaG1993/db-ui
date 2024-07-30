@@ -27,7 +27,15 @@ import { selectItemIsLoading } from "@/src/application/redux/slices/itemSlice";
 import AppBlur from "@/src/domains/_app/constants/components/AppBlur/AppBlur";
 import Tooltip from "@/src/domains/_app/constants/components/Tooltip/Tooltip";
 import Drawer from "../components/Drawer/Drawer";
+import SideNavMenu from "./components/SideNavMenu/SideNavMenu";
 // import { useErrorBoundary } from "react-error-boundary";
+import Modal from "@/src/domains/_app/components/Modal/Modal";
+import AddNewWrap from "@/src/domains/_app/constants/components/SideNavMenu/components/NewDataForm";
+import {
+    closeForm,
+    selectIsFormOpen,
+} from "@/src/application/redux/slices/formSlice";
+import DataFormWrap from "./components/SideNavMenu/components/DataFormWrap";
 
 export default function Layout({ children }) {
     //================================================================================
@@ -35,6 +43,7 @@ export default function Layout({ children }) {
     //================================================================================
     const dispatch = useDispatch();
     // const [user, setUser] = useState();
+    let isItemFormOpen = useSelector(selectIsFormOpen, shallowEqual);
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);
     const [showLoadingScreen, setShowLoadingScreen] = useState(false);
     const [showAuthModal, setShowAuthModal] = useState(true);
@@ -172,14 +181,25 @@ export default function Layout({ children }) {
                 >
                     {showLoadingScreen && <AppBlur visible={itemIsLoading} />}
 
+                    <Modal
+                        isOpen={isItemFormOpen}
+                        onClose={() => dispatch(closeForm())}
+                    >
+                        <DataFormWrap />
+                    </Modal>
+
                     <Header
                         openDrawer={toggleDrawer}
                         showTooltip={showTooltip}
                         hideTooltip={hideTooltip}
                     />
-                    <Drawer isOpen={isDrawerOpen} onClose={toggleDrawer}>
-                        <h2>Dynamic Content</h2>
-                        <p>This content is passed dynamically to the drawer.</p>
+                    <Drawer
+                        isOpen={isDrawerOpen}
+                        onClose={toggleDrawer}
+                        title={"Menu"}
+                    >
+                        <SideNavMenu onClose={toggleDrawer} />
+                        {/* <p>This content is passed dynamically to the drawer.</p> */}
                         {/* <SettingsComponent /> */}
                     </Drawer>
                     {children({ showTooltip })}
@@ -195,3 +215,12 @@ export default function Layout({ children }) {
         </>
     );
 }
+
+/*
+Fare action per formSlice che puo essere chiamata ovunque
+inoltre accetta parametro per capire quale tipo di form ci serve (AddData - AddMovie - Edit Item)
+
+In Layout (o App) apriremo un Modal contenente il tipo di ItemForm richiesto
+
+Do the same for Items
+*/

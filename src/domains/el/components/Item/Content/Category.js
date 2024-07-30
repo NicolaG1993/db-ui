@@ -9,9 +9,9 @@ export default function Category({
     label,
     item,
     handleDelete,
-    handleEdits,
-    openForm,
-    setOpenForm,
+    // handleEdits,
+    // openForm,
+    setFormIsOpen,
 }) {
     // let { pic, id, rating, nameType, actors, movies, type } = item;
     let { id, createdAt, name, pic, type, totalMovies, actors, nameType } =
@@ -111,7 +111,7 @@ export default function Category({
 
                 <div className={styles.buttonsWrap}>
                     <button
-                        onClick={() => setOpenForm(true)}
+                        onClick={() => setFormIsOpen(true, item)}
                         className="button-standard"
                     >
                         Modify
@@ -125,13 +125,13 @@ export default function Category({
                 </div>
             </div>
 
-            <Modal isOpen={openForm} onClose={() => setOpenForm(false)}>
+            {/* <Modal isOpen={openForm} onClose={() => setFormIsOpen(false)}>
                 <Form
                     formLabel={label}
                     propsData={item}
                     handleEditsInParent={handleEdits}
                 />
-            </Modal>
+            </Modal> */}
         </div>
     );
 }

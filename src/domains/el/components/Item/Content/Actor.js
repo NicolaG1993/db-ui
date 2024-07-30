@@ -27,7 +27,7 @@ on open:
 
 DEVO FORSE RIVEDERE DIFFERENZE FRA DUE FORMS?
 
-NB. che setOpenForm ha due logiche abbastanza diverse fra new e edit. Si puó migliorare secondo me.
+NB. che setFormIsOpen ha due logiche abbastanza diverse fra new e edit. Si puó migliorare secondo me.
 */
 
 export default function Actor({
@@ -37,9 +37,9 @@ export default function Actor({
     // itemInfos,
     // parsedObj,
     handleDelete,
-    handleEdits,
-    openForm,
-    setOpenForm,
+    // handleEdits,
+    // openForm,
+    setFormIsOpen,
 }) {
     let {
         id,
@@ -342,7 +342,7 @@ export default function Actor({
 
                 <div className={styles.buttonsWrap}>
                     <button
-                        onClick={() => setOpenForm(true)}
+                        onClick={() => setFormIsOpen(true, item)}
                         className="button-standard"
                     >
                         Modify
@@ -356,13 +356,13 @@ export default function Actor({
                 </div>
             </div>
 
-            <Modal isOpen={openForm} onClose={() => setOpenForm(false)}>
+            {/* <Modal isOpen={openForm} onClose={() => setFormIsOpen(false)}>
                 <Form
                     formLabel={label}
                     propsData={item}
                     handleEditsInParent={handleEdits}
                 />
-            </Modal>
+            </Modal> */}
         </div>
     );
 }

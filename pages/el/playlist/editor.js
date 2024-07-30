@@ -11,7 +11,10 @@ import {
 } from "@/src/application/redux/slices/sessionPlaylistSlice";
 import SavePlaylistForm from "@/src/domains/_app/constants/components/SessionPlaylist/components/SavePlaylistForm.js";
 import { useRouter } from "next/router";
-import { resetFormStore } from "@/src/application/redux/slices/formSlice";
+import {
+    openForm,
+    resetFormStore,
+} from "@/src/application/redux/slices/formSlice";
 import PlaylistEditor from "@/src/domains/playlists/components/PlaylistEditor/PlaylistEditor";
 import Modal from "@/src/domains/_app/components/Modal/Modal";
 import Form from "@/src/domains/_app/components/Form/components/Form";
@@ -30,7 +33,7 @@ export default function EditorPlaylist() {
     // delete all ✅
 
     // COMPONENT STATE //
-    const [addNewModal, setAddNewModal] = useState(false);
+    // const [addNewModal, setAddNewModal] = useState(false);
     const [saveModal, setSaveModal] = useState(false);
     let sessionPlaylist = useSelector(selectSessionPlaylist, shallowEqual);
     const dispatch = useDispatch();
@@ -41,7 +44,8 @@ export default function EditorPlaylist() {
     ////////////////////////
     const openAddNew = () => {
         dispatch(resetFormStore());
-        setAddNewModal(true);
+        // setAddNewModal(true);
+        dispatch(openForm({ formLabel: "movie" })); // open Form UI
     };
     const overridePlaylist = (playlist) => {
         dispatch(updateSessionPlaylist(playlist));
@@ -75,6 +79,8 @@ export default function EditorPlaylist() {
     ////////////////////////
     // !MODAL ACTIONS! //
     ////////////////////////
+
+    // We need to restore this after refactoring - maybe move logic in redux 🧠👇
     const addNewToPlaylist = (obj) => {
         const { id, title } = obj;
         // questa fn viene invocata dopo che MovieForm ha finito di creare il nuovo movie
@@ -83,10 +89,12 @@ export default function EditorPlaylist() {
             obj = { id, title: title || "Untitled" };
             dispatch(addToSessionPlaylist(obj));
         }
-        closeAddNew();
+
+        // closeModal();
+        dispatch(closeForm());
     };
     const closeModal = () => {
-        setAddNewModal(false);
+        // setAddNewModal(false);
         setSaveModal(false);
     };
     ////////////////////////
@@ -121,14 +129,16 @@ export default function EditorPlaylist() {
                 handleParentUI={handleParentUI}
             />
 
-            <Modal isOpen={addNewModal || saveModal} onClose={closeModal}>
-                {addNewModal && (
+            {/*  🧠 Maybe we should move this to Layout or something.. like Form */}
+            <Modal isOpen={saveModal} onClose={closeModal}>
+                {/* <Modal isOpen={addNewModal || saveModal} onClose={closeModal}> */}
+                {/* {addNewModal && (
                     <Form
                         formLabel={"movie"}
                         handleEditsInParent={addNewToPlaylist}
                         parentIsWaiting={true}
                     />
-                )}
+                )} */}
 
                 {saveModal && !!sessionPlaylist?.length && (
                     <div className={"modal-container"}>
