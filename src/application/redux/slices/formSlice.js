@@ -36,6 +36,7 @@ const initialState = {
     isLoading: true,
     isLoadingResponse: false,
     isFinish: false,
+    finalResponse: undefined,
     ui: {
         drawerIsOpen: false,
         sideNavTopic: false,
@@ -471,10 +472,12 @@ const formSlice = createSlice({
             }
         },
 
-        handlePostSuccess: (state) => {
+        handlePostSuccess: (state, action) => {
+            const res = action.payload?.res;
             Cookies.remove("formState");
             state.isFinish = true;
             state.isLoading = false;
+            state.finalResponse = res;
         },
         resetFormStore: () => initialState,
     },
@@ -562,6 +565,8 @@ export const selectRemovedIsFinish = (state) =>
 
 export const selectIsFormOpen = (state) => state.formStore.isFormOpen;
 export const selectIsFormSingle = (state) => state.formStore.singleFormLabel;
+
+export const selectFormResponse = (state) => state.formStore.finalResponse;
 
 export default formSlice;
 // we want to eventually store the data we fetch while the form is open

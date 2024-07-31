@@ -1,7 +1,6 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
 import {
-    addToSessionPlaylist,
     deleteSessionPlaylist,
     getSessionPlaylist,
     removeFromSessionPlaylist,
@@ -9,18 +8,13 @@ import {
     shuffleSessionPlaylist,
     updateSessionPlaylist,
 } from "@/src/application/redux/slices/sessionPlaylistSlice";
-import Form from "@/src/domains/_app/components/Form/components/Form";
-import Modal from "@/src/domains/_app/components/Modal/Modal";
 import {
-    closeForm,
     openForm,
     resetFormStore,
-    selectIsFormOpen,
 } from "@/src/application/redux/slices/formSlice";
 import PlaylistEditor from "@/src/domains/playlists/components/PlaylistEditor/PlaylistEditor";
 
 export default function SessionPlaylist({ open, closeWidget }) {
-    // const [addNewModal, setAddNewModal] = useState(false);
     let sessionPlaylist = useSelector(selectSessionPlaylist, shallowEqual);
     const dispatch = useDispatch();
 
@@ -28,18 +22,11 @@ export default function SessionPlaylist({ open, closeWidget }) {
         getSessionPlaylist();
     }, [open]);
 
-    ////////////////////////
-    // !PLAYLIST ACTIONS! //
-    ////////////////////////
     const openAddNew = () => {
         dispatch(resetFormStore()); // cleanup formState
         dispatch(openForm({ formLabel: "movie" })); // open Form UI
-        // setAddNewModal(true);
     };
-    // const closeAddNew = () => {
-    //     // setAddNewModal(false);
-    //     dispatch(closeForm());
-    // };
+
     const removeFromPlaylist = (i) => {
         dispatch(removeFromSessionPlaylist(i));
     };
@@ -66,19 +53,6 @@ export default function SessionPlaylist({ open, closeWidget }) {
             !status && closeWidget();
         }
     };
-    ////////////////////////
-    ////////////////////////
-
-    // TODO: Maybe move modal out of here?
-    // TODO: migliorare addNew Modal e Form
-    // SPIKE: Dovrei gia poter assegnare qua valori per i nuovi movies (categories, tags, etc...)
-
-    ////////////////////////
-    // !MODAL ACTIONS! //
-    ////////////////////////
-
-    ////////////////////////
-    ////////////////////////
 
     if (open) {
         return (
@@ -93,14 +67,6 @@ export default function SessionPlaylist({ open, closeWidget }) {
                     size={"widget"}
                     handleParentUI={handleParentUI}
                 />
-
-                {/* <Modal isOpen={addNewModal} onClose={closeAddNew}>
-                    <Form
-                        formLabel={"movie"}
-                        handleEditsInParent={addNewToPlaylist}
-                        parentIsWaiting={true}
-                    />
-                </Modal> */}
             </>
         );
     }

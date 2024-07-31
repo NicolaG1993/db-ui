@@ -5,7 +5,7 @@ import {
     release,
     connect,
 } from "@/src/application/db/db.js";
-import { newMovie } from "@/src/application/db/utils/item.js";
+import { newMovie, getMoviePreview } from "@/src/application/db/utils/item.js";
 import { newRelations } from "@/src/application/db/utils/utils.js";
 // import { extractMissingTagsIDs } from "@/src/domains/_app/utils/parsers";
 
@@ -23,6 +23,8 @@ async function handler(req, res) {
             actors,
         } = req.body;
         let movieRelease = req.body.release;
+
+        console.log("🍄💚🧠 req.body: ", req.body);
 
         console.log("req.body: ", {
             title,
@@ -158,7 +160,26 @@ async function handler(req, res) {
                 ));
             await commit(client);
             console.log("COMPLETED!!", rows[0]);
-            res.status(200).json(rows[0]);
+            // res.status(200).json(rows[0]);
+
+            /* 
+            let SessionPlaylistObject = {
+                id,
+                actors, // this is only id[]
+                pic,
+                title,
+            }; // used only to add directly to SessionPlaylist (when required) - other cases we dont use the response (maybe only the id)
+            // we could also make the SessionPlaylist to fetch automaticaly new/partial/broken/missing data
+
+            // res.status(200).json();
+            */
+
+            const { rows: movieResult } = await getMoviePreview(
+                client,
+                rows[0].id
+            ); // Used only to add to SessionPlaylist
+            const movie = movieResult[0];
+            res.status(200).json(movie);
         } catch (err) {
             await rollback(client);
             console.log("ERROR!!", err);
@@ -166,6 +187,22 @@ async function handler(req, res) {
                 message: ["Error updating on the server"],
                 error: err,
             });
+
+            /**
+             * 🔴 Dobbiamo tornare questo tipo di obj x poter aggiungere facilmente a SessionPlaylist:
+             * {
+                  "id": 858,
+                  "title": "All It Can Eat",
+                  "pic": "https://hot-bookmarks-bucket.s3.amazonaws.com/movies/Hentaied%20-%20Little%20Angel%20-%20All%20It%20Can%20Eat.webp",
+                  "actors": [
+                    {
+                      "id": 270,
+                      "name": "Little Angel"
+                    }
+                  ]
+                }
+             * Refactor di tutta questa call via ChatGPT, deve essere ottimizzata
+             */
         } finally {
             release(client);
         }

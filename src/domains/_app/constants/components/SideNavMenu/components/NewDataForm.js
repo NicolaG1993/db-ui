@@ -99,7 +99,7 @@ export default function NewDataForm({ formLabel }) {
             <Form
                 formLabel={UI}
                 // handleEditsInParent={addNewToPlaylist}
-                parentIsWaiting={true}
+                // parentIsWaiting={true}
             />
         </>
     );

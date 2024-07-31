@@ -806,6 +806,29 @@ module.exports.getMovieByID = (client, id) => {
     return client.query(myQuery, key);
 };
 
+module.exports.getMoviePreview = (client, id) => {
+    const myQuery = `SELECT
+    m.id,
+    m.title,
+    m.pic,
+    COALESCE(
+      json_agg(
+        json_build_object(
+          'id', a.id,
+          'name', a.name
+        )
+      ) FILTER (WHERE a.id IS NOT NULL),
+      '[]'
+    ) AS actors
+  FROM movie m
+  LEFT JOIN movie_actor ma ON m.id = ma.movieID
+  LEFT JOIN actor a ON ma.actorID = a.id
+  WHERE m.id = $1
+  GROUP BY m.id`;
+    const key = [id];
+    return client.query(myQuery, key);
+};
+
 // module.exports.getMovies = (client, arr) => {
 //     const myQuery = `SELECT movie.title, movie.id, movie.pic, movie.rating FROM movie WHERE id = ANY($1) ORDER BY title`;
 //     const key = [arr];

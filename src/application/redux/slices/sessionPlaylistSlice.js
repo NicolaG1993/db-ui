@@ -14,7 +14,7 @@ const sessionPlaylistSlice = createSlice({
     reducers: {
         addToSessionPlaylist: (state, action) => {
             let newState = getStoredPersistenData("sessionPlaylist");
-            // console.log("newState: ", newState);
+            console.log("newState: ", { newState, payload: action.payload });
             newState.push(action.payload);
             localStorage.setItem("sessionPlaylist", JSON.stringify(newState));
             state.sessionPlaylist = newState;

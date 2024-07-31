@@ -2,6 +2,7 @@ import {
     closeForm,
     selectFormIsFinish,
     selectFormPropsData,
+    selectFormResponse,
     selectFormStoreLabel,
     selectIsFormOpen,
     selectIsFormSingle,
@@ -27,6 +28,7 @@ export default function DataFormWrap() {
     let propsData = useSelector(selectFormPropsData);
     let singleFormLabel = useSelector(selectIsFormSingle);
     let isFinish = useSelector(selectFormIsFinish);
+    let formRes = useSelector(selectFormResponse, shallowEqual);
 
     console.log("DataFormWrap: ", {
         isFormOpen,
@@ -35,37 +37,37 @@ export default function DataFormWrap() {
     });
 
     // We need to restore this after refactoring - maybe move logic in redux 🧠👇
+    // This is called only for movie and only for SessionPlaylist (seams a edge case to me - maybe to store and handle somewhere else?
     const addNewToPlaylist = (obj) => {
-        const { id, title } = obj;
+        const { id } = obj;
         // questa fn viene invocata dopo che MovieForm ha finito di creare il nuovo movie
         // voglio prenderlo e aggiungerlo in fondo alla lista
         if (id) {
-            obj = { id, title: title || "Untitled" };
+            /*
+            const newMovie = {
+                ...obj,
+                title: obj.title || "Untitled", // It isn't possible to store without title
+            };
+            */
             dispatch(addToSessionPlaylist(obj));
         }
-
         dispatch(closeForm());
     };
 
     const handleEdits = async () => {
         dispatch(reloadItem());
-        // const fetchedItem = await fetchData(id, label, structure);
-        //  dispatch(selectItem(fetchedItem));
         dispatch(closeForm());
     };
-    // 👆🧠 fetchData is declared inside Item, cuz we need it there
-    // 👆🧠 We could call this when store.isFinish (or similar) becomes "true" 🧠
-    // The problem is that we are handling addNewToPlaylist from here 🔴
 
     useEffect(() => {
         if (isFinish) {
             if (isFormOpen && singleFormLabel === "movie" && !propsData) {
-                addNewToPlaylist(obj);
+                formRes && addNewToPlaylist(formRes); // we dont have obj here! 🧠🔴🔴🔴⚠️⚠️⚠️
             } else if (isFormOpen && propsData) {
                 handleEdits();
             }
         }
-    }, [isFinish]);
+    }, [isFinish, formRes]);
 
     if (isFormOpen && singleFormLabel === "" && !propsData) {
         return <NewDataForm />;
