@@ -8,13 +8,10 @@ import jwt from "jsonwebtoken";
 // } from "@/src/application/db/db.js";
 // import { getElementByID } from "@/src/application/db/utils/utils.js";
 
-function signToken(user) {
+function signToken(email) {
     return jwt.sign(
         {
-            id: user.id,
-            name: user.name,
-            email: user.email,
-            is_admin: user.is_admin,
+            email,
         },
         process.env.COOKIE_SECRET,
         {
