@@ -8,6 +8,7 @@ import {
     connect,
 } from "@/src/application/db/db.js";
 import { getUserByEmail } from "@/src/application/db/utils/user.js";
+import mapUserRawToUser from "@/src/domains/user/utils/mapUserRawToUser";
 
 export default async function handler(req, res) {
     const { body, method } = req;
@@ -30,13 +31,15 @@ export default async function handler(req, res) {
                 throw new Error("Email not verified");
             }
 
-            const isMatch = await bcrypt.compare(password, user.password);
+            const isMatch = await bcrypt.compare(password, user.psw);
             if (!isMatch) {
                 throw new Error("Invalid email or password");
             }
 
-            const token = signToken({ id: user.id, isAdmin: user.isAdmin });
-            ///////
+            const token = signToken({
+                id: user.id,
+                isAdmin: user.is_admin,
+            });
 
             await commit(client);
             res.status(200).json({ token });

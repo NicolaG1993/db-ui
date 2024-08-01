@@ -27,7 +27,7 @@ CREATE TABLE users (
     email VARCHAR(255) NOT NULL UNIQUE,
     psw VARCHAR(255) NOT NULL,
     pic VARCHAR(255),
-    isAdmin BOOLEAN DEFAULT FALSE,
+    is_admin BOOLEAN DEFAULT FALSE,
     email_verified BOOLEAN DEFAULT FALSE,
     verification_token VARCHAR(255),
     password_reset_token VARCHAR(255),
