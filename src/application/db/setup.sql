@@ -26,6 +26,7 @@ CREATE TABLE users (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     email VARCHAR(255) NOT NULL UNIQUE,
     psw VARCHAR(255) NOT NULL
+    -- add profilePic and isAdmin 🔴🧠
 );
 
 CREATE TABLE actor(

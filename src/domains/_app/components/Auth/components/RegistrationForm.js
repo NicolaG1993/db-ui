@@ -91,6 +91,7 @@ export default function RegistrationForm({ handleTab }) {
             try {
                 const data = await createUser(userName, email, password);
                 dispatch(userLogin(data));
+
                 // router.push("/");
             } catch (err) {
                 alert(getError(err));

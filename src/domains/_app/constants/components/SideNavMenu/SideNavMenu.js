@@ -7,6 +7,7 @@ import {
 } from "@/src/application/redux/slices/formSlice";
 import DropDownProfile from "./components/DropDownProfile";
 import DropDownPreferences from "./components/DropDownPreferences";
+import { userLogout } from "@/src/application/redux/slices/userSlice";
 
 export default function SideNavMenu({ onClose }) {
     const dispatch = useDispatch();
@@ -132,7 +133,7 @@ export default function SideNavMenu({ onClose }) {
                 <button disabled>TEST AREA</button>
                 <button disabled>Clear Session Data</button>
                 <button disabled>Data Migration</button>
-                <button disabled>Logout</button>
+                <button onClick={() => dispatch(userLogout())}>Logout</button>
             </div>
         </div>
     );

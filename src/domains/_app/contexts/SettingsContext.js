@@ -1,17 +1,13 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import axios from "axios";
-
-/*
-LEFT TODO:
-    🟢 Move themes logic to context - now it is still using cookies or similar
-    🟢 HOW TO Update context logic from  <DropDownPreferences/>
-    🟢 Make App reactive to Setting changes - now needs page reload
-    🟢 Remove and replace all old "keepTheme()" and "setTheme()"
-*/
+import { useSelector } from "react-redux";
+import { selectUserState } from "@/src/application/redux/slices/userSlice";
 
 export const SettingsContext = createContext();
 
-export const SettingsProvider = ({ children, userId }) => {
+export const SettingsProvider = ({ children }) => {
+    let userInfo = useSelector(selectUserState);
+
     const [settings, setSettings] = useState({
         showScrollbars: true,
         theme: undefined,
@@ -19,23 +15,25 @@ export const SettingsProvider = ({ children, userId }) => {
     const [isSettingsLoaded, setIsSettingsLoaded] = useState(false); // Not needed
 
     useEffect(() => {
-        setIsSettingsLoaded(false);
-        async function fetchSettings() {
-            try {
-                const response = await axios.get(
-                    `/api/settings/user/${userId}`
-                );
-                const userSettings = response.data;
-                if (userSettings) {
-                    setSettings(userSettings);
+        if (userInfo?.id) {
+            setIsSettingsLoaded(false);
+            async function fetchSettings() {
+                try {
+                    const response = await axios.get(
+                        `/api/settings/user/${userInfo.id}`
+                    );
+                    const userSettings = response.data;
+                    if (userSettings) {
+                        setSettings(userSettings);
+                    }
+                } catch (error) {
+                    console.error("Error fetching settings:", error);
                 }
-            } catch (error) {
-                console.error("Error fetching settings:", error);
             }
+            fetchSettings();
+            setIsSettingsLoaded(true);
         }
-        fetchSettings();
-        setIsSettingsLoaded(true);
-    }, [userId]);
+    }, [userInfo?.id]);
 
     useEffect(() => {
         if (settings.theme) {
@@ -49,7 +47,7 @@ export const SettingsProvider = ({ children, userId }) => {
     const updateSettings = async (newSettings) => {
         try {
             const response = await axios.post("/api/settings/user/modify", {
-                userId,
+                userId: userInfo.id,
                 ...newSettings,
             });
             if (response.status === 200) {
