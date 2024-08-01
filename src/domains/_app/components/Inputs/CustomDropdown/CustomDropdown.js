@@ -1,9 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import styles from "@/src/domains/_app/components/Inputs/CustomDropdown/CustomDropdown.module.css";
 import allThemes from "@/src/application/settings/allThemes";
-/*
-    Fix styling - we should pass components (ex. themes select)
-*/
 
 export default function CustomDropdown({
     options,
@@ -41,8 +38,6 @@ export default function CustomDropdown({
         };
     }, []);
 
-    console.log("selectedOption: ", { selectedValue, selectedOption });
-
     const extractThemeName = (allThemes, themeTag) => {
         const theme = allThemes.find((el) => el.tag === themeTag);
         return theme?.name || "";
@@ -64,17 +59,6 @@ export default function CustomDropdown({
                     }`}
                 >
                     {options.map((option) => (
-                        // <div
-                        //     key={option.value}
-                        //     className={`option ${
-                        //         option.value === selectedOption
-                        //             ? "selected"
-                        //             : ""
-                        //     }`}
-                        //     onClick={() => handleOptionSelect(option.value)}
-                        // >
-                        //     {option.label}
-                        // </div>
                         <OptionComponent
                             key={option.tag}
                             el={option}

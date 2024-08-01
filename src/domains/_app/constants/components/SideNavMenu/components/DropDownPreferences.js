@@ -11,33 +11,9 @@ import { useAppContext } from "@/src/domains/_app/contexts/AppContext";
 export default function DropDownPreferences({ userId }) {
     const { showScrollbars, theme, updateSettings } = useAppContext();
 
-    const [settings, setSettings] = useState({
-        showScrollbars,
-        theme,
-    }); // 🧠 I think i can remove this somehow and use only context, i just need to understand how to update Context state from the end of handleSettingChange() - maybe con "finally {}" ???
-
-    // Ho lo stesso fetch in "SettingsProvider.js" 🧠 RENDUNDANT
-    // useEffect(() => {
-    //     async function fetchSettings() {
-    //         try {
-    //             const response = await axios.get(
-    //                 `/api/settings/user/${userId}`
-    //             );
-    //             const userSettings = response.data;
-    //             if (userSettings) {
-    //                 console.log("🧑‍🏭 fetching userSettings: ", userSettings);
-    //                 setSettings(userSettings);
-    //             }
-    //         } catch (error) {
-    //             console.error("Error fetching settings:", error);
-    //         }
-    //     }
-    //     fetchSettings();
-    // }, [userId]);
-
     const handleSettingChange = async (key, value) => {
+        const settings = { showScrollbars, theme };
         const newSettings = { ...settings, [key]: value };
-        setSettings(newSettings);
         updateSettings(newSettings);
     };
 
@@ -51,7 +27,7 @@ export default function DropDownPreferences({ userId }) {
                     <span className={styles.label}>Show Scrollbars:</span>
                     <input
                         type="checkbox"
-                        checked={settings.showScrollbars}
+                        checked={showScrollbars}
                         onChange={(e) => {
                             console.log(
                                 "checkbox onChange: ",
@@ -68,14 +44,13 @@ export default function DropDownPreferences({ userId }) {
                     <span className={styles.label}>Theme:</span>
                     <CustomDropdown
                         options={allThemes}
-                        selectedValue={settings.theme}
+                        selectedValue={theme}
                         onSelect={(themeTag) =>
                             handleSettingChange("theme", themeTag)
                         }
                         OptionComponent={({ el, handleOptionSelect }) => (
                             <div
                                 className={adminDashboardtyles["theme-option"]}
-                                // value="theme-light"
                                 value={el.tag}
                                 onClick={() => handleOptionSelect(el.tag)}
                             >
