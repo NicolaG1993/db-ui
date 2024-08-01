@@ -16,14 +16,14 @@ export default function AppProviders({ children }) {
         // <ErrorBoundary FallbackComponent={ErrorFallback} onError={logError}>
     }
 
-    const userId = 3; // 🔴 Replace with actual user ID logic
+    // const userId = 3; // 🔴 Replace with actual user ID logic
 
     return (
         <SnackbarProvider
             anchorOrigin={{ vertical: "top", horizontal: "center" }}
         >
             <Provider store={store}>
-                <SettingsProvider userId={userId}>
+                <SettingsProvider>
                     <TooltipProvider>
                         <ErrorBoundary
                             FallbackComponent={ErrorApp}

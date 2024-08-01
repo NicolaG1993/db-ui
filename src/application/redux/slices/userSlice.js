@@ -14,6 +14,7 @@ const userSlice = createSlice({
             state.user = action.payload;
         },
         userLogout: (state) => {
+            console.log("userLogout invoked");
             Cookies.remove("userInfo");
             Cookies.remove("cartItems");
             state.user = null;

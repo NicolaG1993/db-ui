@@ -8,6 +8,7 @@ import {
     connect,
 } from "@/src/application/db/db.js";
 import { newUser, getUserByEmail } from "@/src/application/db/utils/user.js";
+import { createNewUserSettings } from "@/src/application/db/utils/settings.js";
 
 export default async function handler(req, res) {
     const { body, method } = req;
@@ -27,9 +28,10 @@ export default async function handler(req, res) {
             } else {
                 // register new user
                 const response = await newUser(client, name, email, hashedPsw);
+                let user = response.rows[0];
+                await createNewUserSettings(client, user.id);
                 await commit(client);
 
-                let user = response.rows[0];
                 const token = signToken(user);
 
                 res.send({
