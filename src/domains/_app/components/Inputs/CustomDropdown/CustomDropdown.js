@@ -41,6 +41,8 @@ export default function CustomDropdown({
         };
     }, []);
 
+    console.log("selectedOption: ", { selectedValue, selectedOption });
+
     return (
         <div className={styles["custom-dropdown"]} ref={dropdownRef}>
             <div

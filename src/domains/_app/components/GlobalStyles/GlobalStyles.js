@@ -2,6 +2,7 @@ import { useAppContext } from "@/src/domains/_app/contexts/AppContext";
 
 export default function GlobalStyles() {
     const { showScrollbars, theme } = useAppContext();
+    console.log("🔴 GlobalStyles: ", { showScrollbars, theme });
 
     return (
         <>

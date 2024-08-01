@@ -1,17 +1,19 @@
-function setTheme(themeName) {
-    localStorage.setItem("db-ui-theme", themeName);
-    document.documentElement.className = themeName;
-}
+// DELETE FILE 🔴👇
 
-function keepTheme() {
-    if (localStorage.getItem("db-ui-theme")) {
-        setTheme(localStorage.getItem("db-ui-theme"));
-    } else {
-        setTheme("theme-dark");
-    }
-}
+// function setTheme(themeName) {
+//     localStorage.setItem("db-ui-theme", themeName);
+//     document.documentElement.className = themeName;
+// }
 
-module.exports = {
-    setTheme,
-    keepTheme,
-};
+// function keepTheme() {
+//     if (localStorage.getItem("db-ui-theme")) {
+//         setTheme(localStorage.getItem("db-ui-theme"));
+//     } else {
+//         setTheme("theme-dark");
+//     }
+// }
+
+// module.exports = {
+//     setTheme,
+//     keepTheme,
+// };

@@ -1,6 +1,8 @@
+// ELIMINARE PAGE 🔴👇
+
 import { useEffect, useState } from "react";
-import AddNewWrap from "@/src/domains/_app/constants/components/SideNavMenu/components/NewDataForm";
-import AppSettingsWrap from "@/src/domains/admin/components/AdminDashboard/AppSettingsWrap";
+// import AddNewWrap from "@/src/domains/_app/constants/components/SideNavMenu/components/NewDataForm";
+// import AppSettingsWrap from "@/src/domains/admin/components/AdminDashboard/AppSettingsWrap";
 import styles from "@/src/application/styles/AdminDashboard.module.css";
 import axios from "axios";
 import { useDispatch } from "react-redux";
@@ -56,10 +58,10 @@ export default function Dashboard() {
                 </div>
             </main>
             {/* TODO: TRANSFORM BOTH WRAPS INTO MODAL COMPONENTS */}
-            {addForm && <AddNewWrap setAddForm={setAddForm} />}
-            {appSettings && (
+            {/* {addForm && <AddNewWrap setAddForm={setAddForm} />} */}
+            {/* {appSettings && (
                 <AppSettingsWrap toggleAppSettings={setAppSettings} />
-            )}
+            )} */}
         </>
     );
 }

@@ -8,15 +8,28 @@ import { TooltipContext } from "./TooltipContext";
 export const useAppContext = () => {
     // const user = useContext(UserContext);
     const settings = useContext(SettingsContext);
-    const { showScrollbars, theme } = settings;
+    const { showScrollbars, theme, isSettingsLoaded, updateSettings } =
+        settings;
     const tooltip = useContext(TooltipContext);
     const { showTooltip, hideTooltip } = tooltip;
 
+    console.log("useAppContext: ", {
+        settings,
+        tooltip,
+        showScrollbars,
+        theme,
+        isSettingsLoaded,
+        showTooltip,
+        hideTooltip,
+        updateSettings,
+    });
     return {
         // user,
         showScrollbars,
         theme,
+        isSettingsLoaded,
         showTooltip,
         hideTooltip,
+        updateSettings,
     };
 };

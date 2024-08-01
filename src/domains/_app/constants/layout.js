@@ -1,7 +1,7 @@
 import Head from "next/head";
 import { useEffect, useState } from "react";
 
-import { keepTheme } from "@/src/domains/_app/constants/actions/themes";
+// import { keepTheme } from "@/src/domains/_app/constants/actions/themes";
 import Header from "@/src/domains/_app/constants/components/Header/Header";
 import Footer from "@/src/domains/_app/constants/components/Footer/Footer";
 import Widgets from "@/src/domains/_app/constants/components/Widgets/Widgets";
@@ -42,6 +42,7 @@ export default function Layout({ children }) {
     // State
     //================================================================================
     const dispatch = useDispatch();
+    // const { theme } = useAppContext();
     // const [user, setUser] = useState();
     let isItemFormOpen = useSelector(selectIsFormOpen, shallowEqual);
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -110,7 +111,7 @@ export default function Layout({ children }) {
     // UseEffects
     //================================================================================
     useEffect(() => {
-        keepTheme();
+        // keepTheme();
         authCheck();
     }, []);
 

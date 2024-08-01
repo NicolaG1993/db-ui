@@ -1,6 +1,3 @@
-// Merge this file with AddNewForm.js
-// They could be a single component, or use better names
-
 import { useState } from "react";
 import styles from "@/src/application/styles/AdminDashboard.module.css";
 import Form from "@/src/domains/_app/components/Form/components/Form";

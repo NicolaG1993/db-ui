@@ -163,7 +163,7 @@ export default function Item({ label }) {
     }, [itemIsChanged]);
 
     useEffect(() => {
-        console.log("ITEM: ", item);
+        // console.log("ITEM: ", item);
         /*
         if (item) {
             if (item.tags && item.tags.length) {

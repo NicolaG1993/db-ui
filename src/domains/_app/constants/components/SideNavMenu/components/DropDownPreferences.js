@@ -6,42 +6,39 @@ import styles from "@/src/domains/_app/constants/components/SideNavMenu/SideNavM
 import adminDashboardtyles from "@/src/application/styles/AdminDashboard.module.css";
 import allThemes from "@/src/application/settings/allThemes";
 import CustomDropdown from "@/src/domains/_app/components/Inputs/CustomDropdown/CustomDropdown";
+import { useAppContext } from "@/src/domains/_app/contexts/AppContext";
 
 export default function DropDownPreferences({ userId }) {
-    const [settings, setSettings] = useState({
-        showScrollbars: true,
-        theme: "theme-light",
-    });
+    const { showScrollbars, theme, updateSettings } = useAppContext();
 
-    useEffect(() => {
-        async function fetchSettings() {
-            try {
-                const response = await axios.get(
-                    `/api/settings/user/${userId}`
-                );
-                const userSettings = response.data;
-                if (userSettings) {
-                    setSettings(userSettings);
-                }
-            } catch (error) {
-                console.error("Error fetching settings:", error);
-            }
-        }
-        fetchSettings();
-    }, [userId]);
+    const [settings, setSettings] = useState({
+        showScrollbars: showScrollbars,
+        theme: theme,
+    }); // 🧠 I think i can remove this somehow and use only context, i just need to understand how to update Context state from the end of handleSettingChange() - maybe con "finally {}" ???
+
+    // Ho lo stesso fetch in "SettingsProvider.js" 🧠 RENDUNDANT
+    // useEffect(() => {
+    //     async function fetchSettings() {
+    //         try {
+    //             const response = await axios.get(
+    //                 `/api/settings/user/${userId}`
+    //             );
+    //             const userSettings = response.data;
+    //             if (userSettings) {
+    //                 console.log("🧑‍🏭 fetching userSettings: ", userSettings);
+    //                 setSettings(userSettings);
+    //             }
+    //         } catch (error) {
+    //             console.error("Error fetching settings:", error);
+    //         }
+    //     }
+    //     fetchSettings();
+    // }, [userId]);
 
     const handleSettingChange = async (key, value) => {
         const newSettings = { ...settings, [key]: value };
         setSettings(newSettings);
-
-        try {
-            await axios.post("/api/settings/user/modify", {
-                userId,
-                ...newSettings,
-            });
-        } catch (error) {
-            console.error("Error updating settings:", error);
-        }
+        updateSettings(newSettings);
     };
 
     return (
@@ -54,12 +51,16 @@ export default function DropDownPreferences({ userId }) {
                     <input
                         type="checkbox"
                         checked={settings.showScrollbars}
-                        onChange={(e) =>
-                            handleSettingChange(
+                        onChange={(e) => {
+                            console.log(
+                                "checkbox onChange: ",
+                                e.target.checked
+                            );
+                            return handleSettingChange(
                                 "showScrollbars",
                                 e.target.checked
-                            )
-                        }
+                            );
+                        }}
                     />
                     Show Scrollbars
                 </label>
@@ -74,7 +75,8 @@ export default function DropDownPreferences({ userId }) {
                         OptionComponent={({ el, handleOptionSelect }) => (
                             <div
                                 className={adminDashboardtyles["theme-option"]}
-                                value="theme-light"
+                                // value="theme-light"
+                                value={el.tag}
                                 // onClick={() => setTheme(el.tag)}
                                 onClick={() => handleOptionSelect(el.tag)}
                             >
@@ -114,6 +116,7 @@ export default function DropDownPreferences({ userId }) {
                                 </div>
                                 <span>{el.name}</span>
                             </div>
+                            // 🧠 Move option component to CustomDropdown domain - or other domain like Themes or Settings? 🧠
                         )}
                     />
                     {/* 
