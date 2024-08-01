@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useState } from "react";
 import Tooltip from "@/src/domains/_app/constants/components/Tooltip/Tooltip";
 
-const TooltipContext = createContext();
+export const TooltipContext = createContext();
 
 export const TooltipProvider = ({ children }) => {
     const [tooltipVisible, setTooltipVisible] = useState(false);
@@ -45,4 +45,4 @@ export const TooltipProvider = ({ children }) => {
     );
 };
 
-export const useTooltip = () => useContext(TooltipContext);
+// export const useTooltip = () => useContext(TooltipContext);

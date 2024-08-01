@@ -5,7 +5,9 @@ export default function Drawer({ children, isOpen, closeDrawer, title }) {
         <div
             id={styles.Drawer}
             style={{
-                transform: isOpen ? "translateX(66vw)" : "translateX(100vw)",
+                transform: isOpen
+                    ? "translateX(calc(100vw - 350px))"
+                    : "translateX(100vw)",
             }}
         >
             <div className={styles.heading}>

@@ -150,10 +150,6 @@
     margin-bottom: 0.8rem;
 }
 .theme-option:hover {
-    display: flex;
-    align-items: center;
-    cursor: pointer;
-    margin-bottom: 0.8rem;
 }
 
 .theme-preview {
@@ -168,10 +164,14 @@
     grid-template-rows: 15px 15px;
 }
 .theme-option:hover .theme-preview {
-    outline: 2px solid var(--bg700);
+    outline: 2px solid var(--text);
+}
+.theme-option > span {
+    color: var(--text);
 }
 .theme-option:hover > span {
     font-weight: bold;
+    /* color: var(--color000); */
 }
 
 .theme-preview > div {

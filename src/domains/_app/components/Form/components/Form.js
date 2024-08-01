@@ -135,12 +135,6 @@ export default function Form({
                 propsData,
             })
                 .then(({ data }) => {
-                    console.log("🧠 🧠 ITEM CREATED: ", {
-                        data,
-                        propsData,
-                        // parentIsWaiting,
-                        // handleEditsInParent,
-                    });
                     /*
                     if ((propsData || parentIsWaiting) && handleEditsInParent) {
                         handleEditsInParent(data); // we are not using these arguments anymore
@@ -166,16 +160,6 @@ export default function Form({
                 });
         }
     };
-
-    console.log("FORM: ", {
-        isLoading,
-        isFinish,
-        formLabel,
-        form,
-        formKey: form?.key,
-        FormComponent,
-        propsData,
-    });
 
     return (
         <div className={styles.formWrapContainer}>

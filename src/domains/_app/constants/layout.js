@@ -181,26 +181,23 @@ export default function Layout({ children }) {
                 >
                     {showLoadingScreen && <AppBlur visible={itemIsLoading} />}
 
+                    <Header
+                        openDrawer={toggleDrawer}
+                        showTooltip={showTooltip}
+                        hideTooltip={hideTooltip}
+                    />
                     <Modal
                         isOpen={isItemFormOpen}
                         onClose={() => dispatch(closeForm())}
                     >
                         <DataFormWrap />
                     </Modal>
-
-                    <Header
-                        openDrawer={toggleDrawer}
-                        showTooltip={showTooltip}
-                        hideTooltip={hideTooltip}
-                    />
                     <Drawer
                         isOpen={isDrawerOpen}
                         onClose={toggleDrawer}
                         title={"Menu"}
                     >
                         <SideNavMenu onClose={toggleDrawer} />
-                        {/* <p>This content is passed dynamically to the drawer.</p> */}
-                        {/* <SettingsComponent /> */}
                     </Drawer>
                     {children({ showTooltip })}
                     <Footer />

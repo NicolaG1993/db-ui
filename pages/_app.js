@@ -1,55 +1,29 @@
-import { SnackbarProvider } from "notistack";
-import { Provider } from "react-redux";
-// import { useRouter } from "next/router";
 import "@/src/application/styles/globals.css";
-import store from "@/src/application/redux/store";
+import AppProviders from "@/src/domains/_app/components/AppProviders/AppProviders";
 import Layout from "@/src/domains/_app/constants/layout";
-
-import { ErrorBoundary } from "react-error-boundary";
-// import ErrorBoundary from "@/src/domains/_app/components/Error/components/ErrorApp/ErrorBoundary";
-import ErrorApp from "@/src/domains/_app/components/Error/components/ErrorApp/ErrorApp";
-import { TooltipProvider } from "@/src/domains/_app/contexts/TooltipContext";
 
 export default function App({ Component, pageProps }) {
     //================================================================================
     // Layout Functions
     //================================================================================
+    // NB:
     // const router = useRouter(); // non si puó usare dentro utils (non components)
-
     // non si puó importare axios e fare fetch dentro Persistent Component come Layout o Header (non vere pages)
-
-    function logError(error, info) {
-        // Use your preferred error logging service
-        // console.error("🔴 Caught an error:", error, info);
-        // Do something with the error, e.g. log to an external API
-        // <ErrorBoundary FallbackComponent={ErrorFallback} onError={logError}>
-    }
 
     //================================================================================
     // Render APP
     //================================================================================
     return (
-        <SnackbarProvider
-            anchorOrigin={{ vertical: "top", horizontal: "center" }}
-        >
-            <Provider store={store}>
-                <TooltipProvider>
-                    <ErrorBoundary
-                        FallbackComponent={ErrorApp}
-                        onError={logError}
-                    >
-                        <Layout>
-                            {({ showTooltip, hideTooltip }) => (
-                                <Component
-                                    {...pageProps}
-                                    showTooltip={showTooltip}
-                                    hideTooltip={hideTooltip}
-                                /> // do we use pageProps? 🔴 why can we pass showTooltip and hideTooltip inside it directly? 🔴
-                            )}
-                        </Layout>
-                    </ErrorBoundary>
-                </TooltipProvider>
-            </Provider>
-        </SnackbarProvider>
+        <AppProviders>
+            <Layout>
+                {({ showTooltip, hideTooltip }) => (
+                    <Component
+                        {...pageProps}
+                        showTooltip={showTooltip}
+                        hideTooltip={hideTooltip}
+                    /> // do we use pageProps? 🔴 why can we pass showTooltip and hideTooltip inside it directly? 🔴
+                )}
+            </Layout>
+        </AppProviders>
     );
 }

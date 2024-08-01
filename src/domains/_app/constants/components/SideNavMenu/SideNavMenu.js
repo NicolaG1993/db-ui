@@ -5,13 +5,16 @@ import {
     openForm,
     resetFormStore,
 } from "@/src/application/redux/slices/formSlice";
+import DropDownProfile from "./components/DropDownProfile";
+import DropDownPreferences from "./components/DropDownPreferences";
 
 export default function SideNavMenu({ onClose }) {
     const dispatch = useDispatch();
 
     // ??? They should not be handled here (Layout or Redux)
 
-    const [appSettings, setAppSettings] = useState(false);
+    // const [appSettings, setAppSettings] = useState(false);
+    const [dropDown, setDropDown] = useState();
 
     // Should not be handled here
     const addTest = async (e) => {
@@ -33,17 +36,75 @@ export default function SideNavMenu({ onClose }) {
     return (
         <div id={styles.SideNavMenu}>
             <div className={styles.dropdownsWrap}>
-                <div>
+                <div
+                    className={styles.dropdownHead}
+                    onClick={() =>
+                        setDropDown((prev) =>
+                            prev === "profile" ? "" : "profile"
+                        )
+                    }
+                >
                     <p>Profile</p>
                 </div>
 
-                <div>
-                    <p>Settings</p>
+                {dropDown === "profile" && <DropDownProfile />}
+
+                <div
+                    className={styles.dropdownHead}
+                    onClick={() =>
+                        setDropDown((prev) => (prev === "admin" ? "" : "admin"))
+                    }
+                >
+                    <p>Admin area</p>
                 </div>
 
-                <div>
-                    <p>Preferences</p>
+                {dropDown === "admin" && (
+                    <div className={styles.dropDown}>
+                        {/* <div>
+                            <p>{"Admin Area"}</p>
+                        </div> */}
+                        <div>
+                            <p>{"🚧 Work in progress..."}</p>
+                        </div>
+                    </div>
+                )}
+
+                <div
+                    className={styles.dropdownHead}
+                    onClick={() =>
+                        setDropDown((prev) =>
+                            prev === "settings" ? "" : "settings"
+                        )
+                    }
+                >
+                    <p>App Settings</p>
                 </div>
+
+                {dropDown === "settings" && (
+                    <div className={styles.dropDown}>
+                        {/* <div>
+                            <p>{"App Settings"}</p>
+                        </div> */}
+                        <div>
+                            <p>{"🚧 Work in progress..."}</p>
+                        </div>
+                    </div>
+                )}
+
+                <div
+                    className={styles.dropdownHead}
+                    onClick={() =>
+                        setDropDown((prev) =>
+                            prev === "preferences" ? "" : "preferences"
+                        )
+                    }
+                >
+                    <p>User Preferences</p>
+                </div>
+
+                {dropDown === "preferences" && (
+                    <DropDownPreferences userId={3} /> // 🔴🔴🧠 fix logic for userId
+                )}
             </div>
 
             <div className={styles.content}>

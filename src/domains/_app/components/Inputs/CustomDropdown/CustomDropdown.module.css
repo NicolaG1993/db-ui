@@ -1,0 +1,46 @@
+.custom-dropdown {
+    position: relative;
+    display: inline-block;
+    width: 200px; /* Adjust as needed */
+}
+.custom-select {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border: 1px solid var(--bg800);
+    border-radius: 4px;
+    cursor: pointer;
+    background: var(--bg400);
+}
+.selected-option {
+    flex: 1;
+}
+.options-container {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    max-height: 200px;
+    overflow-y: auto;
+    border: 1px solid var(--bg800);
+    border-radius: 4px;
+    background: var(--bg200);
+    display: none; /* Hidden by default */
+    z-index: 10;
+    padding: 0.5rem 0.5rem 0 0.5rem;
+}
+.options-container.open {
+    display: block; /* Show options when dropdown is open */
+}
+/* 
+.option {
+    padding: 10px;
+    cursor: pointer;
+}
+.option:hover {
+    background: #f1f1f1;
+}
+.option.selected {
+    background: #ddd;
+} */

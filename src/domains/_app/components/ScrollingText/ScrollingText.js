@@ -17,8 +17,8 @@ export default function ScrollingText({
         const containerWidth = containerRef.current.offsetWidth;
         const textWidth = textRef.current.offsetWidth;
 
-        console.log("Container Width:", containerWidth);
-        console.log("Text Width:", textWidth);
+        // console.log("Container Width:", containerWidth);
+        // console.log("Text Width:", textWidth);
 
         if (isScrolling) {
             setShouldScroll(textWidth > containerWidth);
@@ -37,7 +37,7 @@ export default function ScrollingText({
     useEffect(() => {
         if (textRef.current) {
             const textWidth = textRef.current.offsetWidth;
-            console.log("Animation Duration:", `${(textWidth / 100) * 2}s`);
+            // console.log("Animation Duration:", `${(textWidth / 100) * 2}s`);
         }
     }, [shouldScroll]);
 
