@@ -163,6 +163,16 @@ CREATE TABLE movie_playlist(
     UNIQUE (movieID, playlistID)
 );
 
+CREATE TABLE user_settings (
+    id SERIAL PRIMARY KEY,
+    user_id INTEGER NOT NULL UNIQUE,
+    show_scrollbars BOOLEAN DEFAULT TRUE,
+    theme VARCHAR(50) DEFAULT 'theme-light',
+    CONSTRAINT fk_user
+        FOREIGN KEY (user_id) 
+        REFERENCES users(id) 
+        ON DELETE CASCADE
+);
 
 -- ALTER TABLE clips
 -- RENAME TO movie;

@@ -1,0 +1,116 @@
+#SideNavMenu {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: static;
+    height: calc(
+        100% - 58px - 52px
+    ); /* count 100% - sidenavTopBar - Header height */
+}
+
+.dropdownsWrap > div {
+    /* outline: 1px solid var(--text); */
+    font-size: 13px;
+}
+
+.dropdownsWrap > .dropdownHead {
+    padding: 0.75rem 2.5rem;
+    border-bottom: 1px solid var(--bg600);
+    cursor: pointer;
+    background: var(--bg300);
+    transition: 0.15s ease;
+}
+.dropdownsWrap > .dropdownHead:hover {
+    background: var(--bg400);
+}
+
+/* DROPDOWNS */
+.dropdownsWrap > .dropDown {
+    padding: 1.5rem 2.75rem;
+    background: var(--bg200);
+}
+/* Profile */
+#Profile {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    /* flex-direction: column; */
+}
+#Profile > .profilePic {
+    width: 75px;
+    height: 75px;
+    border-radius: 50%;
+    background: var(--bg900);
+    margin-right: 0.75rem;
+}
+#Profile > .profileInfo {
+    display: flex;
+    flex-direction: column;
+    padding-left: 0.75rem;
+    border-left: 1px solid var(--bg600);
+}
+#Profile > .profileInfo > div:first-child {
+    margin-bottom: 1.5rem;
+}
+
+#Profile > .profileInfo > div:nth-child(2) {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+#Profile > .profileInfo > div:nth-child(2) > p:first-child {
+    cursor: pointer;
+    /* font-weight: bold; */
+    /* color: var(--bg900); */
+    color: var(--color000);
+}
+#Profile > .profileInfo > div:nth-child(2) > p:first-child:hover {
+    /* font-weight: bold; */
+    color: var(--text);
+}
+/* Settings */
+/* Preferences */
+#Preferences {
+    /* display: flex;
+    flex-direction: column; */
+}
+#Preferences > .preferencesHeading {
+    margin-bottom: 0.75rem;
+    font-weight: bold;
+}
+#Preferences > .preferencesBody {
+    display: flex;
+    flex-direction: column;
+}
+#Preferences > .preferencesBody > label {
+    margin: 0.5rem 0 0.5rem 0.5rem;
+    width: 100%;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    justify-items: start;
+}
+#Preferences > .preferencesBody > label > .label {
+    margin: 0 0.5rem 0 0;
+    width: 90px;
+    font-size: 12px;
+}
+
+/* CONTENT */
+.content {
+    /* height: 100%; */
+    width: 97%;
+    /* display: flex;
+    align-items: center;
+    justify-content: center; 
+    flex-wrap: wrap; */
+    /* flex-grow: 0.4; */
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    justify-items: center;
+    align-items: center;
+}
+
+.content button {
+    margin: 1rem 0.5rem;
+    width: 130px;
+    height: 50px;
+}

@@ -9,9 +9,9 @@ export default function Studio({
     label,
     item,
     handleDelete,
-    handleEdits,
-    openForm,
-    setOpenForm,
+    // handleEdits,
+    // openForm,
+    setFormIsOpen,
 }) {
     let {
         pic,
@@ -148,7 +148,7 @@ export default function Studio({
 
                 <div className={styles.buttonsWrap}>
                     <button
-                        onClick={() => setOpenForm(true)}
+                        onClick={() => setFormIsOpen(true, item)}
                         className="button-standard"
                     >
                         Modify
@@ -162,13 +162,13 @@ export default function Studio({
                 </div>
             </div>
 
-            <Modal isOpen={openForm} onClose={() => setOpenForm(false)}>
+            {/* <Modal isOpen={openForm} onClose={() => setFormIsOpen(false)}>
                 <Form
                     formLabel={label}
                     propsData={item}
                     handleEditsInParent={handleEdits}
                 />
-            </Modal>
+            </Modal> */}
         </div>
     );
 }

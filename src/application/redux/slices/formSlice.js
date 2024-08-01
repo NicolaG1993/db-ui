@@ -26,7 +26,9 @@ import { parseTagsByType } from "@/src/domains/_app/utils/parsers";
 // inoltre sarebbe meglio avere due formState separati per edit e create, molto piú sicuro
 
 const initialState = {
+    isFormOpen: false,
     formLabel: "",
+    singleFormLabel: "", // used to render multiple or single form
     form: undefined, // "form" potrebber essere rinominato "formObj" o "formSettings"
     // FormComponent: undefined, // non posso salvare perche component é non-serializibe data
     formState: undefined,
@@ -34,6 +36,7 @@ const initialState = {
     isLoading: true,
     isLoadingResponse: false,
     isFinish: false,
+    finalResponse: undefined,
     ui: {
         drawerIsOpen: false,
         sideNavTopic: false,
@@ -67,7 +70,20 @@ const formSlice = createSlice({
     name: "formStore",
     initialState,
     reducers: {
+        openForm: (state, action) => {
+            console.log("openForm: ", action.payload);
+            // Here we just open the form UI and set the initial values for it
+            state.propsData = action.payload?.propsData || undefined;
+            state.singleFormLabel = action.payload?.formLabel || "";
+            state.isFormOpen = true;
+        },
+        closeForm: (state, action) => {
+            // state.singleFormLabel = "";
+            // state.propsData = undefined; // no needed cuz we should have reset action already
+            state.isFormOpen = false;
+        },
         loadNewActiveForm: (state, action) => {
+            console.log("loadNewActiveForm invoked: ", action.payload);
             const { formLabel, form, propsData } = action.payload;
 
             state.isLoading = true;
@@ -456,10 +472,12 @@ const formSlice = createSlice({
             }
         },
 
-        handlePostSuccess: (state) => {
+        handlePostSuccess: (state, action) => {
+            const res = action.payload?.res;
             Cookies.remove("formState");
             state.isFinish = true;
             state.isLoading = false;
+            state.finalResponse = res;
         },
         resetFormStore: () => initialState,
     },
@@ -467,6 +485,8 @@ const formSlice = createSlice({
 
 // cercare ed eliminare quelle che non uso 🧠
 export const {
+    openForm,
+    closeForm,
     loadNewActiveForm,
     updateFormState,
     startLoading,
@@ -542,6 +562,11 @@ export const selectMissingIsFinish = (state) =>
     state.formStore.hints.missingIsFinish;
 export const selectRemovedIsFinish = (state) =>
     state.formStore.hints.removedIsFinish;
+
+export const selectIsFormOpen = (state) => state.formStore.isFormOpen;
+export const selectIsFormSingle = (state) => state.formStore.singleFormLabel;
+
+export const selectFormResponse = (state) => state.formStore.finalResponse;
 
 export default formSlice;
 // we want to eventually store the data we fetch while the form is open

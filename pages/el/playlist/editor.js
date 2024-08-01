@@ -11,37 +11,22 @@ import {
 } from "@/src/application/redux/slices/sessionPlaylistSlice";
 import SavePlaylistForm from "@/src/domains/_app/constants/components/SessionPlaylist/components/SavePlaylistForm.js";
 import { useRouter } from "next/router";
-import { resetFormStore } from "@/src/application/redux/slices/formSlice";
+import {
+    openForm,
+    resetFormStore,
+} from "@/src/application/redux/slices/formSlice";
 import PlaylistEditor from "@/src/domains/playlists/components/PlaylistEditor/PlaylistEditor";
 import Modal from "@/src/domains/_app/components/Modal/Modal";
-import Form from "@/src/domains/_app/components/Form/components/Form";
 
 export default function EditorPlaylist() {
-    // TODO: shows playlist in store ✅
-    // add items from db -> go to "/all/movies" ✅
-    // add urls from input ✅
-    // delete items ✅
-    // modify order (drag)
-    // on every change update store playlist
-
-    // BUTTONS:
-    // shuffle ✅
-    // 🧠 save and name playlist in db -- user can select existing playlist to overwrite from list before submit
-    // delete all ✅
-
-    // COMPONENT STATE //
-    const [addNewModal, setAddNewModal] = useState(false);
     const [saveModal, setSaveModal] = useState(false);
     let sessionPlaylist = useSelector(selectSessionPlaylist, shallowEqual);
     const dispatch = useDispatch();
     const router = useRouter();
 
-    ////////////////////////
-    // !PLAYLIST ACTIONS! //
-    ////////////////////////
     const openAddNew = () => {
         dispatch(resetFormStore());
-        setAddNewModal(true);
+        dispatch(openForm({ formLabel: "movie" }));
     };
     const overridePlaylist = (playlist) => {
         dispatch(updateSessionPlaylist(playlist));
@@ -52,7 +37,7 @@ export default function EditorPlaylist() {
             dispatch(activateLoadingItem());
         }
     };
-    // For now we edit only SessionPlaylist, but we want any playlist 🧠👇 maybe need a separate store? or just field
+
     const removeFromPlaylist = (i) => {
         dispatch(removeFromSessionPlaylist(i));
     };
@@ -64,33 +49,15 @@ export default function EditorPlaylist() {
     };
     const handleParentUI = (uiElement, status) => {
         if (uiElement === "ADD_NEW") {
-            status && openAddNew(); // openAddUrl();
+            status && openAddNew();
         } else if (uiElement === "SAVE_PLAYLIST") {
             status && setSaveModal(true);
         }
     };
-    ////////////////////////////
-    ////////////////////////////
 
-    ////////////////////////
-    // !MODAL ACTIONS! //
-    ////////////////////////
-    const addNewToPlaylist = (obj) => {
-        const { id, title } = obj;
-        // questa fn viene invocata dopo che MovieForm ha finito di creare il nuovo movie
-        // voglio prenderlo e aggiungerlo in fondo alla lista
-        if (id) {
-            obj = { id, title: title || "Untitled" };
-            dispatch(addToSessionPlaylist(obj));
-        }
-        closeAddNew();
-    };
     const closeModal = () => {
-        setAddNewModal(false);
         setSaveModal(false);
     };
-    ////////////////////////
-    ////////////////////////
 
     return (
         <main>
@@ -121,15 +88,8 @@ export default function EditorPlaylist() {
                 handleParentUI={handleParentUI}
             />
 
-            <Modal isOpen={addNewModal || saveModal} onClose={closeModal}>
-                {addNewModal && (
-                    <Form
-                        formLabel={"movie"}
-                        handleEditsInParent={addNewToPlaylist}
-                        parentIsWaiting={true}
-                    />
-                )}
-
+            {/*  🧠 Maybe we should move this to Layout or something.. like Form */}
+            <Modal isOpen={saveModal} onClose={closeModal}>
                 {saveModal && !!sessionPlaylist?.length && (
                     <div className={"modal-container"}>
                         <SavePlaylistForm

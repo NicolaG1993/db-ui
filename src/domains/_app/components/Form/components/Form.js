@@ -135,11 +135,13 @@ export default function Form({
                 propsData,
             })
                 .then(({ data }) => {
+                    /*
                     if ((propsData || parentIsWaiting) && handleEditsInParent) {
-                        handleEditsInParent(data);
+                        handleEditsInParent(data); // we are not using these arguments anymore
                     }
+                    */
 
-                    dispatch(handlePostSuccess());
+                    dispatch(handlePostSuccess({ res: data?.data }));
                     setOpenForm && setOpenForm(false); // forse non necessario ? // trasformare in action? not sure
 
                     // Clear previous Item before routing

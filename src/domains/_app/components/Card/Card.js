@@ -12,6 +12,8 @@ import {
 import { useDispatch } from "react-redux";
 import ScrollingText from "../ScrollingText/ScrollingText";
 import { createCastString } from "../../utils/interpretateData";
+// import { useTooltip } from "@/src/domains/_app/contexts/TooltipContext";
+import { useAppContext } from "../../contexts/AppContext";
 
 export default function Card({ obj, table, cardKey }) {
     let { nameType, thumbnailSize, itemLabel } = table;
@@ -24,8 +26,15 @@ export default function Card({ obj, table, cardKey }) {
         dispatch(activateLoadingItem());
     };
 
+    // const { showTooltip, hideTooltip } = useTooltip();
+    const { showTooltip, hideTooltip } = useAppContext();
+
     return (
-        <div className={styles.gridElement}>
+        <div
+            className={styles.gridElement}
+            onMouseOver={(e) => showTooltip(obj[nameType], "", e)}
+            onMouseOut={hideTooltip}
+        >
             <CardUI obj={obj} label={label} />
             <Link
                 className={styles.link}

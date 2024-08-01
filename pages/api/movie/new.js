@@ -5,9 +5,8 @@ import {
     release,
     connect,
 } from "@/src/application/db/db.js";
-import { newMovie } from "@/src/application/db/utils/item.js";
+import { newMovie, getMoviePreview } from "@/src/application/db/utils/item.js";
 import { newRelations } from "@/src/application/db/utils/utils.js";
-// import { extractMissingTagsIDs } from "@/src/domains/_app/utils/parsers";
 
 async function handler(req, res) {
     if (req.method === "POST") {
@@ -24,19 +23,6 @@ async function handler(req, res) {
         } = req.body;
         let movieRelease = req.body.release;
 
-        console.log("req.body: ", {
-            title,
-            pic,
-            studios,
-            distributions,
-            rating,
-            categories,
-            tags,
-            urls,
-            actors,
-            movieRelease,
-        });
-
         if (!title) {
             return res
                 .status(422)
@@ -48,49 +34,7 @@ async function handler(req, res) {
             movieRelease = null;
         }
 
-        // if (categories.length) {
-        // }
-        // if (tags.length) {
-        //     tags = extractMissingTagsIDs(tags);
-        // }
-
-        /* FACCIAMO GIA IN UI QUESTO
-
-    // console.log("actors: ", actors);
-    //actor check
-    if (actors.length) {
-        // prende tags di actor e li aggiunge
-        // tranne quelli dinamici (colore capelli, etá)
-
-        //arr viene mappata e per ogni row al suo interno si fa un filter
-        // ogni valore che é diverso da quelli specificati, e se non é doppio, si aggiunge a tags
-        try {
-            const { rows } = await getRelationsByArr(
-                actors,
-                "tagRelation",
-                "actorID"
-            ); //rows from API
-            const dinamicTags = [1, 2, 3, 5]; //tags da rimuovere [hair color, young age]
-            // console.log("rows by getRelationsByArr", rows);
-            // console.log("dinamicTags by getRelationsByArr", dinamicTags);
-
-            const result = rows.filter((x) => !dinamicTags.includes(x.tagid)); //filtra solo tag validi, senza quelli da rimuovere
-            const actorTags = result.map((el) => el.tagid); //extract all id to single int[]
-            tags = [...tags, ...actorTags];
-        } catch (err) {
-            console.log("ERROR getRelationsByArr!", err);
-            res.status(500).send({
-                message: ["Error getting data from the server"],
-                error: err,
-            });
-        }
-
-        tags.filter((el, i) => tags.indexOf(el) === i); // delete all duplicates
-        console.log("tags after getRelationsByArr", tags);
-    }
-    */
         const client = await connect();
-        // THIS MIGHT NEED SOME B.E. REFACTOR 🧠🧠🧠🧠
         try {
             await begin(client);
             // CREATE CLIP
@@ -158,7 +102,13 @@ async function handler(req, res) {
                 ));
             await commit(client);
             console.log("COMPLETED!!", rows[0]);
-            res.status(200).json(rows[0]);
+
+            const { rows: movieResult } = await getMoviePreview(
+                client,
+                rows[0].id
+            ); // Used only to add to SessionPlaylist
+            const movie = movieResult[0];
+            res.status(200).json(movie);
         } catch (err) {
             await rollback(client);
             console.log("ERROR!!", err);

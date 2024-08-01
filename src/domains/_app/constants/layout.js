@@ -1,7 +1,6 @@
 import Head from "next/head";
 import { useEffect, useState } from "react";
 
-import { keepTheme } from "@/src/domains/_app/constants/actions/themes";
 import Header from "@/src/domains/_app/constants/components/Header/Header";
 import Footer from "@/src/domains/_app/constants/components/Footer/Footer";
 import Widgets from "@/src/domains/_app/constants/components/Widgets/Widgets";
@@ -24,15 +23,28 @@ import styles from "@/src/domains/_app/constants/Layout.module.css";
 import RandomNumberButton from "./components/Widgets/RandomNumberButton";
 import SessionPlaylistButton from "./components/Widgets/SessionPlaylistButton";
 import { selectItemIsLoading } from "@/src/application/redux/slices/itemSlice";
-import AppBlur from "./components/AppBlur/AppBlur";
+import AppBlur from "@/src/domains/_app/constants/components/AppBlur/AppBlur";
+import Tooltip from "@/src/domains/_app/constants/components/Tooltip/Tooltip";
+import Drawer from "../components/Drawer/Drawer";
+import SideNavMenu from "./components/SideNavMenu/SideNavMenu";
 // import { useErrorBoundary } from "react-error-boundary";
+import Modal from "@/src/domains/_app/components/Modal/Modal";
+import AddNewWrap from "@/src/domains/_app/constants/components/SideNavMenu/components/NewDataForm";
+import {
+    closeForm,
+    selectIsFormOpen,
+} from "@/src/application/redux/slices/formSlice";
+import DataFormWrap from "./components/SideNavMenu/components/DataFormWrap";
 
 export default function Layout({ children }) {
     //================================================================================
     // State
     //================================================================================
     const dispatch = useDispatch();
+    // const { theme } = useAppContext();
     // const [user, setUser] = useState();
+    let isItemFormOpen = useSelector(selectIsFormOpen, shallowEqual);
+    const [isDrawerOpen, setIsDrawerOpen] = useState(false);
     const [showLoadingScreen, setShowLoadingScreen] = useState(false);
     const [showAuthModal, setShowAuthModal] = useState(true);
     const [renderingApp, setRenderingApp] = useState(true); // forse si potrebbe spostare in redux
@@ -41,6 +53,12 @@ export default function Layout({ children }) {
     // const { showBoundary } = useErrorBoundary();
     // const [appError, setAppError] = useState();
     // let itemStoreError = useSelector(selectItemStoreError, shallowEqual);
+    const [tooltipVisible, setTooltipVisible] = useState(false);
+    const [tooltipProps, setTooltipProps] = useState({
+        title: "",
+        text: "",
+        position: { x: 0, y: 0 },
+    });
 
     //================================================================================
     // Functions
@@ -64,18 +82,36 @@ export default function Layout({ children }) {
     const authCheck = () => {
         if (process.env.NODE_ENV === "development") {
             setShowAuthModal(false);
-            dispatch(userLogin({ id: 3 })); // setting id to enable API requests in DEV
+            dispatch(
+                userLogin({ id: 3, name: "Admin", email: "someemail@live.it" })
+            ); // setting user to enable API requests in DEV 🟠🔶🟧
             // need to find a better way to do this ? not sure if its safe to share this id on git history
         } else if (process.env.NODE_ENV === "production") {
             setShowAuthModal(true);
         }
     };
 
+    const toggleDrawer = () => {
+        setIsDrawerOpen(!isDrawerOpen);
+    };
+
+    const showTooltip = (title, text, e) => {
+        setTooltipProps({
+            title,
+            text,
+            position: { x: e.clientX, y: e.clientY },
+        });
+        setTooltipVisible(true);
+    };
+
+    const hideTooltip = () => {
+        setTooltipVisible(false);
+    };
+
     //================================================================================
     // UseEffects
     //================================================================================
     useEffect(() => {
-        keepTheme();
         authCheck();
     }, []);
 
@@ -133,14 +169,56 @@ export default function Layout({ children }) {
             {showAuthModal ? (
                 <AuthModal />
             ) : (
-                <>
+                <div
+                    id={"Layout"}
+                    onMouseMove={(e) => {
+                        if (tooltipVisible) {
+                            setTooltipProps((prev) => ({
+                                ...prev,
+                                position: { x: e.clientX, y: e.clientY },
+                            }));
+                        }
+                    }}
+                >
                     {showLoadingScreen && <AppBlur visible={itemIsLoading} />}
-                    <Header />
-                    {children}
-                    <Widgets />
+
+                    <Header
+                        openDrawer={toggleDrawer}
+                        showTooltip={showTooltip}
+                        hideTooltip={hideTooltip}
+                    />
+                    <Modal
+                        isOpen={isItemFormOpen}
+                        onClose={() => dispatch(closeForm())}
+                    >
+                        <DataFormWrap />
+                    </Modal>
+                    <Drawer
+                        isOpen={isDrawerOpen}
+                        onClose={toggleDrawer}
+                        title={"Menu"}
+                    >
+                        <SideNavMenu onClose={toggleDrawer} />
+                    </Drawer>
+                    {children({ showTooltip })}
                     <Footer />
-                </>
+
+                    <Tooltip {...tooltipProps} visible={tooltipVisible} />
+                    <Widgets
+                        showTooltip={showTooltip}
+                        hideTooltip={hideTooltip}
+                    />
+                </div>
             )}
         </>
     );
 }
+
+/*
+Fare action per formSlice che puo essere chiamata ovunque
+inoltre accetta parametro per capire quale tipo di form ci serve (AddData - AddMovie - Edit Item)
+
+In Layout (o App) apriremo un Modal contenente il tipo di ItemForm richiesto
+
+Do the same for Items
+*/
