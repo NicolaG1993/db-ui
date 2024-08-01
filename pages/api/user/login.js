@@ -8,7 +8,6 @@ import {
     connect,
 } from "@/src/application/db/db.js";
 import { getUserByEmail } from "@/src/application/db/utils/user.js";
-import mapUserRawToUser from "@/src/domains/user/utils/mapUserRawToUser";
 
 export default async function handler(req, res) {
     const { body, method } = req;

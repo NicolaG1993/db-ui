@@ -7,28 +7,39 @@ import {
     release,
     connect,
 } from "@/src/application/db/db.js";
+import { selectUserToResetPsw } from "@/src/application/db/utils/user.js";
 
 export default async function handler(req, res) {
+    // METHOD CHECK MISSING 🔴
     const { token } = req.query;
-    const { psw } = req.body;
-
+    const { psw } = req.body; // rename to "password" ? 🧠
+    const client = await connect();
     try {
+        await begin(client);
+
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
         const { email } = decoded;
 
-        const myQuery = `SELECT * FROM users WHERE email = $1 AND password_reset_token = $2 AND password_reset_expires > $3`;
-        const result = await db.query(myQuery, [email, token, new Date()]);
+        const result = await selectUserToResetPsw(
+            client,
+            email,
+            token,
+            new Date()
+        );
 
         if (result.rowCount === 0) {
-            return res.status(400).json({ error: "Invalid or expired token" });
+            throw new Error("Invalid or expired token");
         }
 
         const hashedPassword = await bcrypt.hash(psw, 10);
-        const updateQuery = `UPDATE users SET psw = $1, password_reset_token = NULL, password_reset_expires = NULL WHERE email = $2`;
-        await db.query(updateQuery, [hashedPassword, email]);
+        await resetUserPassword(client, hashedPassword, email);
 
+        await commit(client);
         res.status(200).json({ message: "Password reset successfully" });
     } catch (error) {
+        await rollback(client);
         res.status(400).json({ error: "Invalid or expired token" });
+    } finally {
+        release(client);
     }
 }

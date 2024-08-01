@@ -1,10 +1,4 @@
-import {
-    // begin,
-    // commit,
-    // rollback,
-    release,
-    connect,
-} from "@/src/application/db/db.js";
+import { release, connect } from "@/src/application/db/db.js";
 import createUser from "@/src/domains/user/utils/createUser";
 import mapUserRawToUser from "@/src/domains/user/utils/mapUserRawToUser";
 

@@ -13,11 +13,27 @@ function signToken(email) {
         {
             email,
         },
-        process.env.COOKIE_SECRET,
+        process.env.COOKIE_SECRET, // 🔴 We should have JWT_SECRET here
         {
             expiresIn: "30d",
         }
     );
+}
+
+function signTokenShort(email) {
+    return jwt.sign(
+        {
+            email,
+        },
+        process.env.COOKIE_SECRET, // 🔴 We should have JWT_SECRET here
+        {
+            expiresIn: "1h",
+        }
+    );
+}
+
+function verifyToken(token) {
+    return jwt.verify(token, process.env.COOKIE_SECRET); // 🔴 We should have JWT_SECRET here
 }
 
 /*
@@ -99,6 +115,8 @@ const isAdmin = (handler) => async (req, res, next) => {
 
 export {
     signToken,
+    signTokenShort,
+    verifyToken,
     // isAuth,
     //  isAdmin
 };
