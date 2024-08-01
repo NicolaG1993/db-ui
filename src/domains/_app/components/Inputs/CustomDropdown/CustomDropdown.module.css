@@ -1,7 +1,9 @@
 .custom-dropdown {
     position: relative;
     display: inline-block;
-    width: 200px; /* Adjust as needed */
+    width: 100%;
+    /* Adjust as needed */
+    /* width: 200px;  */
 }
 .custom-select {
     display: flex;

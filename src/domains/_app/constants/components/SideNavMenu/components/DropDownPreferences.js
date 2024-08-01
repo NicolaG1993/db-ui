@@ -12,8 +12,8 @@ export default function DropDownPreferences({ userId }) {
     const { showScrollbars, theme, updateSettings } = useAppContext();
 
     const [settings, setSettings] = useState({
-        showScrollbars: showScrollbars,
-        theme: theme,
+        showScrollbars,
+        theme,
     }); // 🧠 I think i can remove this somehow and use only context, i just need to understand how to update Context state from the end of handleSettingChange() - maybe con "finally {}" ???
 
     // Ho lo stesso fetch in "SettingsProvider.js" 🧠 RENDUNDANT
@@ -48,6 +48,7 @@ export default function DropDownPreferences({ userId }) {
             </div>
             <div className={styles.preferencesBody}>
                 <label>
+                    <span className={styles.label}>Show Scrollbars:</span>
                     <input
                         type="checkbox"
                         checked={settings.showScrollbars}
@@ -62,10 +63,9 @@ export default function DropDownPreferences({ userId }) {
                             );
                         }}
                     />
-                    Show Scrollbars
                 </label>
                 <label>
-                    Theme:
+                    <span className={styles.label}>Theme:</span>
                     <CustomDropdown
                         options={allThemes}
                         selectedValue={settings.theme}
@@ -77,7 +77,6 @@ export default function DropDownPreferences({ userId }) {
                                 className={adminDashboardtyles["theme-option"]}
                                 // value="theme-light"
                                 value={el.tag}
-                                // onClick={() => setTheme(el.tag)}
                                 onClick={() => handleOptionSelect(el.tag)}
                             >
                                 <div
@@ -119,65 +118,6 @@ export default function DropDownPreferences({ userId }) {
                             // 🧠 Move option component to CustomDropdown domain - or other domain like Themes or Settings? 🧠
                         )}
                     />
-                    {/* 
-
-                   
-
-                    
-
-                 
-                    <select
-                        value={settings.theme}
-                        onChange={(e) =>
-                            handleSettingChange("theme", e.target.value)
-                        }
-                    >
-                        {allThemes.map((el) => (
-                            <option
-                                key={el.tag}
-                                className={adminDashboardtyles["theme-option"]}
-                                value="theme-light"
-                                // onClick={() => setTheme(el.tag)}
-                            >
-                                <div
-                                    className={
-                                        adminDashboardtyles["theme-preview"]
-                                    }
-                                >
-                                    <div
-                                        style={{
-                                            background: el.rgb1,
-                                        }}
-                                    >
-                                        <span
-                                            style={{
-                                                color: el.textColor,
-                                            }}
-                                        >
-                                            T
-                                        </span>
-                                    </div>
-                                    <div
-                                        style={{
-                                            background: el.rgb2,
-                                        }}
-                                    ></div>
-                                    <div
-                                        style={{
-                                            background: el.rgb3,
-                                        }}
-                                    ></div>
-                                    <div
-                                        style={{
-                                            background: el.rgb4,
-                                        }}
-                                    ></div>
-                                </div>
-                                <span>{el.name}</span>
-                            </option>
-                        ))}
-                    </select>
-                       */}
                 </label>
             </div>
         </div>

@@ -1,8 +1,10 @@
 import { useAppContext } from "@/src/domains/_app/contexts/AppContext";
 
+// can we do this like :  document.documentElement.className = settings.theme; 🧠???
+// which one it's better in case is possible? 🧠
+
 export default function GlobalStyles() {
     const { showScrollbars, theme } = useAppContext();
-    console.log("🔴 GlobalStyles: ", { showScrollbars, theme });
 
     return (
         <>

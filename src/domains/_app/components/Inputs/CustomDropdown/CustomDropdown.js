@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import styles from "@/src/domains/_app/components/Inputs/CustomDropdown/CustomDropdown.module.css";
-
+import allThemes from "@/src/application/settings/allThemes";
 /*
     Fix styling - we should pass components (ex. themes select)
 */
@@ -43,6 +43,11 @@ export default function CustomDropdown({
 
     console.log("selectedOption: ", { selectedValue, selectedOption });
 
+    const extractThemeName = (allThemes, themeTag) => {
+        const theme = allThemes.find((el) => el.tag === themeTag);
+        return theme?.name || "";
+    };
+
     return (
         <div className={styles["custom-dropdown"]} ref={dropdownRef}>
             <div
@@ -51,7 +56,7 @@ export default function CustomDropdown({
                 tabIndex="0"
             >
                 <span className={styles["selected-option"]}>
-                    {selectedOption}
+                    {extractThemeName(allThemes, selectedOption)}
                 </span>
                 <div
                     className={`${styles["options-container"]} ${

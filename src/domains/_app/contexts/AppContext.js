@@ -13,16 +13,6 @@ export const useAppContext = () => {
     const tooltip = useContext(TooltipContext);
     const { showTooltip, hideTooltip } = tooltip;
 
-    console.log("useAppContext: ", {
-        settings,
-        tooltip,
-        showScrollbars,
-        theme,
-        isSettingsLoaded,
-        showTooltip,
-        hideTooltip,
-        updateSettings,
-    });
     return {
         // user,
         showScrollbars,

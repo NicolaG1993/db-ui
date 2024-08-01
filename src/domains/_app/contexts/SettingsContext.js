@@ -27,7 +27,6 @@ export const SettingsProvider = ({ children, userId }) => {
                 );
                 const userSettings = response.data;
                 if (userSettings) {
-                    console.log("🧑‍🏭 fetching userSettings: ", userSettings);
                     setSettings(userSettings);
                 }
             } catch (error) {
@@ -39,9 +38,9 @@ export const SettingsProvider = ({ children, userId }) => {
     }, [userId]);
 
     useEffect(() => {
-        console.log("🚧 settings is changing in SettingsProvider: ", settings);
         if (settings.theme) {
             document.documentElement.className = settings.theme;
+            // 🧠 TODO: We should also store it somewhere like cookies or sessionStorage, in case API stops working the theme should not be reset to default value (now it's happening!)
         } else {
             document.documentElement.className = "theme-light";
         }
@@ -49,10 +48,6 @@ export const SettingsProvider = ({ children, userId }) => {
 
     const updateSettings = async (newSettings) => {
         try {
-            console.log("🧑‍🏭 updating handleSettingChange: ", {
-                userId,
-                ...newSettings,
-            });
             const response = await axios.post("/api/settings/user/modify", {
                 userId,
                 ...newSettings,
