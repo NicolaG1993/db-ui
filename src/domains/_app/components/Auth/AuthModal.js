@@ -28,7 +28,7 @@ export default function AuthModal() {
         } else if (tab === "recovery") {
             return <PasswordRecoveryForm handleTab={handleTab} />;
         } else if (tab === "pswReset") {
-            return <PasswordResetForm handleTab={handleTab} />;
+            return <PasswordResetForm handleTab={handleTab} token={token} />;
         }
     };
 

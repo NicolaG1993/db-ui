@@ -2,10 +2,13 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import styles from "@/src/domains/_app/components/Auth/AuthModal.module.css";
 import { getError } from "@/src/application/utils/error";
+import resetPassword from "@/src/domains/_app/components/Auth/actions/resetPassword.js";
 import {
     confirmPassword,
     passwordValidation,
 } from "@/src/application/utils/validateForms";
+import { userLogin } from "@/src/application/redux/slices/userSlice";
+import { useRouter } from "next/router";
 
 export default function PasswordResetForm({ handleTab, token }) {
     const [password, setPassword] = useState("");
@@ -13,6 +16,7 @@ export default function PasswordResetForm({ handleTab, token }) {
     const [errors, setErrors] = useState({});
 
     const dispatch = useDispatch();
+    const router = useRouter();
 
     const validateData = (e) => {
         e.preventDefault();
@@ -48,9 +52,9 @@ export default function PasswordResetForm({ handleTab, token }) {
         e.preventDefault();
         if (Object.keys(errors).length === 0) {
             try {
-                const data = await resetUserPassword(userName, email, password);
+                const data = await resetPassword(password, token);
                 dispatch(userLogin(data));
-                // router.push("/");
+                setTimeout(() => router.push("/login"), 3000); // Redirect to login after 3 seconds
             } catch (err) {
                 alert(getError(err));
             }
@@ -63,7 +67,7 @@ export default function PasswordResetForm({ handleTab, token }) {
                 <div className={styles.inputWrap}>
                     <input
                         type="password"
-                        placeholder="Password*"
+                        placeholder="New Password*"
                         name="password"
                         id="Password"
                         value={password}
@@ -98,6 +102,10 @@ export default function PasswordResetForm({ handleTab, token }) {
                     </button>
                 </div>
             </form>
+
+            <p className={styles.changeTab} onClick={() => handleTab("login")}>
+                Return to login
+            </p>
         </div>
     );
 }
