@@ -25,9 +25,23 @@ CREATE TABLE users (
     name VARCHAR NOT NULL CHECK (name != ''),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     email VARCHAR(255) NOT NULL UNIQUE,
-    psw VARCHAR(255) NOT NULL
-    -- add profilePic and isAdmin 🔴🧠
+    psw VARCHAR(255) NOT NULL,
+    pic VARCHAR(255),
+    is_admin BOOLEAN DEFAULT FALSE,
+    email_verified BOOLEAN DEFAULT FALSE,
+    verification_token VARCHAR(255),
+    password_reset_token VARCHAR(255),
+    password_reset_expires TIMESTAMP
 );
+
+-- ALTER TABLE user
+-- ADD COLUMN pic VARCHAR(255),
+-- ADD COLUMN is_admin BOOLEAN DEFAULT FALSE;
+
+-- ALTER TABLE users ADD COLUMN email_verified BOOLEAN DEFAULT FALSE;
+-- ALTER TABLE users ADD COLUMN verification_token VARCHAR(255);
+-- ALTER TABLE users ADD COLUMN password_reset_token VARCHAR(255);
+-- ALTER TABLE users ADD COLUMN password_reset_expires TIMESTAMP;
 
 CREATE TABLE actor(
     id SERIAL PRIMARY KEY,

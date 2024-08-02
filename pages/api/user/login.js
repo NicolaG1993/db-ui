@@ -11,38 +11,44 @@ import { getUserByEmail } from "@/src/application/db/utils/user.js";
 
 export default async function handler(req, res) {
     const { body, method } = req;
+
     if (method === "POST") {
-        const { email } = body;
+        const { email, password } = body;
         const client = await connect();
+
         try {
             await begin(client);
-            let { rows } = await getUserByEmail(client, email);
-            await commit(client);
-            if (rows.length) {
-                let user = rows[0];
-                if (bcrypt.compareSync(req.body.password, user.psw)) {
-                    const token = signToken(user);
-                    res.send({
-                        id: user.id,
-                        name: user.name,
-                        email: user.email,
-                        token: token,
-                    });
-                } else {
-                    res.status(401).send({ message: "Invalid password" });
-                }
-            } else {
-                // res.status(401).send({ message: "Invalid email" });
-                res.status(404).send("User not found");
+            let result = await getUserByEmail(client, email);
+
+            if (result.rowCount === 0) {
+                throw new Error("Invalid email or password");
             }
+
+            const user = result.rows[0];
+
+            if (!user.email_verified) {
+                throw new Error("Email not verified");
+            }
+
+            const isMatch = await bcrypt.compare(password, user.psw);
+            if (!isMatch) {
+                throw new Error("Invalid email or password");
+            }
+
+            const token = signToken({
+                id: user.id,
+                isAdmin: user.is_admin,
+            });
+
+            await commit(client);
+            res.status(200).json({ token });
         } catch (err) {
             await rollback(client);
-            res.status(500);
+            res.status(400).json({ error: err.message });
         } finally {
             release(client);
         }
     } else {
-        // res.status(404).send("Not found");
         res.status(405).json({ success: false, error: "Method Not Allowed" });
     }
 }

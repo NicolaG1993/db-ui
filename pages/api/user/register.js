@@ -1,14 +1,6 @@
-import bcrypt from "bcryptjs";
-import { signToken } from "@/src/domains/_app/utils/auth.js";
-import {
-    begin,
-    commit,
-    rollback,
-    release,
-    connect,
-} from "@/src/application/db/db.js";
-import { newUser, getUserByEmail } from "@/src/application/db/utils/user.js";
-import { createNewUserSettings } from "@/src/application/db/utils/settings.js";
+import { release, connect } from "@/src/application/db/db.js";
+import createUser from "@/src/domains/user/utils/createUser";
+import mapUserRawToUser from "@/src/domains/user/utils/mapUserRawToUser";
 
 export default async function handler(req, res) {
     const { body, method } = req;
@@ -16,40 +8,16 @@ export default async function handler(req, res) {
         const { name, email, password } = body;
         const client = await connect();
         try {
-            await begin(client);
-
-            const hashedPsw = bcrypt.hashSync(password);
-            // check unique email
-            const existingEmail = await getUserByEmail(client, email);
-            if (existingEmail.rows.length) {
-                return res
-                    .status(500)
-                    .json({ message: "Questa email è già in utilizzo" });
-            } else {
-                // register new user
-                const response = await newUser(client, name, email, hashedPsw);
-                let user = response.rows[0];
-                await createNewUserSettings(client, user.id);
-                await commit(client);
-
-                const token = signToken(user);
-
-                res.send({
-                    id: user.id,
-                    name: user.name,
-                    email: user.email,
-                    token: token,
-                });
-            }
+            const user = await createUser(client, name, email, password);
+            const mappedUser = mapUserRawToUser(user);
+            res.status(200).json({ user: mappedUser });
         } catch (err) {
-            // res.status(500).json({ message: "Error occured." });
-            await rollback(client);
-            res.status(500);
+            res.status(500).json({ error: err.message });
         } finally {
             release(client);
         }
     } else {
-        // res.status(404).send("Not found");
         res.status(405).json({ success: false, error: "Method Not Allowed" });
     }
 }
+map;
