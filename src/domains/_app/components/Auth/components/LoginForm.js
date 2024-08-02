@@ -1,14 +1,12 @@
-import Link from "next/link";
-import { useRouter } from "next/router";
+// import Link from "next/link";
+// import { useRouter } from "next/router";
 import { useState } from "react";
-import { shallowEqual, useDispatch, useSelector } from "react-redux";
-
+import { useDispatch } from "react-redux";
 import styles from "@/src/domains/_app/components/Auth/AuthModal.module.css";
 import {
-    selectUserState,
+    // selectUserState,
     userLogin,
 } from "@/src/application/redux/slices/userSlice.js";
-
 import { emailValidation } from "@/src/application/utils/validateForms.js";
 import { getError } from "@/src/application/utils/error.js";
 import loginUser from "@/src/domains/_app/components/Auth/actions/loginUser.js";
@@ -21,9 +19,9 @@ export default function LoginForm({ handleTab }) {
     const [password, setPassword] = useState("");
     const [errors, setErrors] = useState({});
 
-    const router = useRouter();
+    // const router = useRouter();
     const dispatch = useDispatch();
-    let userInfo = useSelector(selectUserState, shallowEqual);
+    // let userInfo = useSelector(selectUserState, shallowEqual);
     // if (userInfo) {
     //     router.push("/");
     // }
@@ -51,8 +49,9 @@ export default function LoginForm({ handleTab }) {
         e.preventDefault();
         if (Object.keys(errors).length === 0) {
             try {
-                const data = await loginUser(email, password);
-                dispatch(userLogin(data));
+                const response = await loginUser(email, password);
+                console.log("loginUser: ", response.data);
+                dispatch(userLogin(response.data));
                 // router.push("/");
             } catch (err) {
                 alert(getError(err));
@@ -96,6 +95,12 @@ export default function LoginForm({ handleTab }) {
 
             <p className={styles.changeTab} onClick={() => handleTab("signin")}>
                 I don&apos;t have an account
+            </p>
+            <p
+                className={styles.changeTab}
+                onClick={() => handleTab("recovery")}
+            >
+                I have lost my password
             </p>
         </div>
     );

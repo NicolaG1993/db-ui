@@ -1,10 +1,10 @@
-import Link from "next/link";
-import { useRouter } from "next/router";
+// import Link from "next/link";
+// import { useRouter } from "next/router";
 import { useState } from "react";
-import { shallowEqual, useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import styles from "@/src/domains/_app/components/Auth/AuthModal.module.css";
 import {
-    selectUserState,
+    // selectUserState,
     userLogin,
 } from "@/src/application/redux/slices/userSlice.js";
 import {
@@ -26,9 +26,9 @@ export default function RegistrationForm({ handleTab }) {
     const [passwordConfirm, setPasswordConfirm] = useState("");
     const [errors, setErrors] = useState({});
 
-    const router = useRouter();
+    // const router = useRouter();
     const dispatch = useDispatch();
-    let userInfo = useSelector(selectUserState, shallowEqual);
+    // let userInfo = useSelector(selectUserState, shallowEqual);
     // if (userInfo) {
     //     router.push("/");
     // }
@@ -91,7 +91,6 @@ export default function RegistrationForm({ handleTab }) {
             try {
                 const data = await createUser(userName, email, password);
                 dispatch(userLogin(data));
-
                 // router.push("/");
             } catch (err) {
                 alert(getError(err));
@@ -102,6 +101,8 @@ export default function RegistrationForm({ handleTab }) {
     //================================================================================
     // Render UI
     //================================================================================
+
+    // Check Errors styles, they should match the errors in Item Forms 🧠 i think they are not matching now
     return (
         <div className={styles.formBox}>
             <h1>Create a new account</h1>

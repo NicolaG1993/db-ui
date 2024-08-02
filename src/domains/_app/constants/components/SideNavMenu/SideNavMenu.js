@@ -8,6 +8,7 @@ import {
 import DropDownProfile from "./components/DropDownProfile";
 import DropDownPreferences from "./components/DropDownPreferences";
 import { userLogout } from "@/src/application/redux/slices/userSlice";
+import LogoutButton from "../../../components/Auth/components/LogoutButton";
 
 export default function SideNavMenu({ onClose }) {
     const dispatch = useDispatch();
@@ -120,7 +121,11 @@ export default function SideNavMenu({ onClose }) {
                 >
                     + Add Data
                 </button>
-                <button disabled onClick={(e) => addTest(e)}>
+                <button
+                    disabled
+                    onClick={(e) => addTest(e)}
+                    className="button-standard"
+                >
                     RUN TEST
                 </button>
 
@@ -130,10 +135,16 @@ export default function SideNavMenu({ onClose }) {
                 >
                     Settings
                 </button> */}
-                <button disabled>TEST AREA</button>
-                <button disabled>Clear Session Data</button>
-                <button disabled>Data Migration</button>
-                <button onClick={() => dispatch(userLogout())}>Logout</button>
+                <button disabled className="button-standard">
+                    TEST AREA
+                </button>
+                <button disabled className="button-standard">
+                    Clear Session Data
+                </button>
+                <button disabled className="button-standard">
+                    Data Migration
+                </button>
+                <LogoutButton />
             </div>
         </div>
     );
