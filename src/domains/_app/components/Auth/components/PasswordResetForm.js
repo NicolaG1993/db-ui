@@ -53,8 +53,8 @@ export default function PasswordResetForm({ handleTab, token }) {
         if (Object.keys(errors).length === 0) {
             try {
                 const data = await resetPassword(password, token);
-                dispatch(userLogin(data));
-                setTimeout(() => router.push("/login"), 3000); // Redirect to login after 3 seconds
+                // dispatch(userLogin(data));
+                setTimeout(() => router.push("/"), 3000); // Redirect to login after 3 seconds
             } catch (err) {
                 alert(getError(err));
             }

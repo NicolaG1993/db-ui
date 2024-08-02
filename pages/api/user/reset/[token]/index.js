@@ -37,6 +37,7 @@ export default async function handler(req, res) {
 
             if (result.rowCount === 0) {
                 throw new Error("Invalid or expired token");
+                // We need to report all this kind of errors in UI 🧠🔴
             }
 
             const hashedPassword = await bcrypt.hash(psw, 10);

@@ -50,8 +50,8 @@ export default function LoginForm({ handleTab }) {
         if (Object.keys(errors).length === 0) {
             try {
                 const response = await loginUser(email, password);
-                console.log("loginUser: ", response.data);
-                dispatch(userLogin(response.data));
+                console.log("loginUser: ", response);
+                dispatch(userLogin(response)); // 🔴🔴🔴🧠 We are dispatching token - not userInfo !!!! WRONG
                 // router.push("/");
             } catch (err) {
                 alert(getError(err));

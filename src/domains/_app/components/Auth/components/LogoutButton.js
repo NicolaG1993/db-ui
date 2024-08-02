@@ -8,7 +8,7 @@ const LogoutButton = () => {
 
     const handleLogout = () => {
         dispatch(userLogout());
-        router.push("/"); // Redirect to login page
+        setTimeout(() => router.push("/"), 3000); // Redirect to login page
     };
 
     return (
