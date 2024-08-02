@@ -46,7 +46,7 @@ export default async function handler(req, res) {
                 from: process.env.EMAIL_USER,
                 to: email,
                 subject: "Password reset",
-                text: `Please reset your password by clicking the link: ${process.env.BASE_URL}/reset/${token}`,
+                text: `Please reset your password by clicking the link: ${process.env.BASE_URL}/reset-psw/${token}`,
             };
 
             await transporter.sendMail(mailOptions);

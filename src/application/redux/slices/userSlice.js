@@ -18,13 +18,12 @@ const userSlice = createSlice({
         userLogout: (state) => {
             console.log("userLogout invoked");
             Cookies.remove("userInfo");
-            Cookies.remove("cartItems");
             state.user = null;
-            state.cart = null;
         },
     },
 });
 
-export const { userLogin, userLogout } = userSlice.actions; // ACTIONS
+export const { userLogin, userLogout, storeEmailToken } = userSlice.actions; // ACTIONS
 export const selectUserState = (state) => state.user.user; // SELECTOR
+
 export default userSlice;

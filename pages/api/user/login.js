@@ -15,7 +15,7 @@ export default async function handler(req, res) {
     if (method === "POST") {
         const { email, password } = body;
         const client = await connect();
-        console.log("api/user/login CONNECT: ", { email, password });
+
         try {
             await begin(client);
             let result = await getUserByEmail(client, email);
