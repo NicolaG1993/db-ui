@@ -17,6 +17,7 @@ const nextConfig = {
     },
 
     env: {
+        BASE_URL: process.env.BASE_URL,
         DATABASE_USER: process.env.DATABASE_USER,
         DATABASE_PSW: process.env.DATABASE_PSW,
         DATABASE_PORT: process.env.DATABASE_PORT,
@@ -31,7 +32,10 @@ const nextConfig = {
         // TAGS_OBJ: process.env.TAGS_OBJ,
         // TAGS_REL: process.env.TAGS_REL,
         CUSTOM_SETTINGS: process.env.CUSTOM_SETTINGS,
-        COOKIE_SECRET: process.env.COOKIE_SECRET,
+        // COOKIE_SECRET: process.env.COOKIE_SECRET, // not used anymore
+        JWT_SECRET: process.env.JWT_SECRET,
+        EMAIL_USER: process.env.EMAIL_USER,
+        EMAIL_PASS: process.env.EMAIL_PASS,
     },
 };
 

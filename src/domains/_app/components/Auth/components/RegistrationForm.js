@@ -126,7 +126,7 @@ export default function RegistrationForm({ handleTab }) {
                 </div>
                 <div className={styles.inputWrap}>
                     <input
-                        type="text"
+                        type="email"
                         placeholder="Email*"
                         name="email"
                         id="Email"

@@ -15,10 +15,11 @@ export default async function handler(req, res) {
     if (method === "POST") {
         const { email, password } = body;
         const client = await connect();
-
+        console.log("api/user/login CONNECT: ", { email, password });
         try {
             await begin(client);
             let result = await getUserByEmail(client, email);
+            console.log("api/user/login USER: ", result.rows[0]);
 
             if (result.rowCount === 0) {
                 throw new Error("Invalid email or password");
@@ -31,6 +32,16 @@ export default async function handler(req, res) {
             }
 
             const isMatch = await bcrypt.compare(password, user.psw);
+            console.log("api/user/login BCRYPT: ", { isMatch });
+            /*
+            🔴🔴🔴🔴
+            Fare console.log di mia password con nuovo bcrypt method
+            Sostituire via query la mia password con la nuova cryptata
+            Penso che al momento non matchino e non posso fare login - Altrimenti problema con DEV env, ma non saprei
+            Potrei testare password recovery in alternativa, sembra lo scenario ideale.
+            🔴🔴🔴🔴
+            */
+
             if (!isMatch) {
                 throw new Error("Invalid email or password");
             }

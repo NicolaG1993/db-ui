@@ -39,16 +39,16 @@ export default async function createUser(client, name, email, password) {
         const transporter = nodemailer.createTransport({
             service: "Gmail",
             auth: {
-                user: process.env.EMAIL_USER, // TODO 🔴
-                pass: process.env.EMAIL_PASS, // TODO 🔴
+                user: process.env.EMAIL_USER,
+                pass: process.env.EMAIL_PASS,
             },
         });
 
         const mailOptions = {
-            from: process.env.EMAIL_USER, // TODO 🔴
+            from: process.env.EMAIL_USER,
             to: email,
             subject: "Verify your email",
-            text: `Please verify your email by clicking the link: ${process.env.BASE_URL}/verify/${verificationToken}`, // TODO 🔴
+            text: `Please verify your email by clicking the link: ${process.env.BASE_URL}/verify/${verificationToken}`,
         };
 
         await transporter.sendMail(mailOptions);

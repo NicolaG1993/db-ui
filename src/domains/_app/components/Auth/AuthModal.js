@@ -9,7 +9,7 @@ export default function AuthModal() {
 
     const handleTab = (str) => setTab(str);
 
-    const renderAuthView = ({ handleTab, tab, handleStep, step }) => {
+    const renderAuthView = ({ handleTab, tab }) => {
         if (tab === "login") {
             return <LoginForm handleTab={handleTab} />;
         } else if (tab === "signin") {
@@ -22,9 +22,5 @@ export default function AuthModal() {
     };
 
     // Can we use the Form component here? 🧠
-    return (
-        <main id={"HomeMain"}>
-            {renderAuthView({ handleTab, tab, handleStep, step })}
-        </main>
-    );
+    return <main id={"HomeMain"}>{renderAuthView({ handleTab, tab })}</main>;
 }

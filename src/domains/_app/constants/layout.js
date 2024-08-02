@@ -81,11 +81,13 @@ export default function Layout({ children }) {
 
     const authCheck = () => {
         if (process.env.NODE_ENV === "development") {
+            /*
             setShowAuthModal(false);
             dispatch(
                 userLogin({ id: 3, name: "Admin", email: "someemail@live.it" })
             ); // setting user to enable API requests in DEV 🟠🔶🟧
-            // need to find a better way to do this ? not sure if its safe to share this id on git history
+            */
+            setShowAuthModal(true); // previous condition not needed with this approach 🧠
         } else if (process.env.NODE_ENV === "production") {
             setShowAuthModal(true);
         }
