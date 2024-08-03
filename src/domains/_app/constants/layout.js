@@ -137,7 +137,7 @@ export default function Layout({ children }) {
 
     useEffect(() => {
         // setUser(userInfo);
-        userInfo && setShowAuthModal(false);
+        userInfo?.token ? setShowAuthModal(false) : setShowAuthModal(true);
     }, [userInfo]);
 
     useEffect(() => {

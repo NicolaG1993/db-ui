@@ -52,7 +52,11 @@ export default async function handler(req, res) {
             });
 
             await commit(client);
-            res.status(200).json({ token });
+
+            // Remove sensitive information before sending the user data
+            delete user.psw;
+
+            res.status(200).json({ ...user, token });
         } catch (err) {
             await rollback(client);
             res.status(400).json({ error: err.message });

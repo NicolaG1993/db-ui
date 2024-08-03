@@ -10,9 +10,7 @@ const userSlice = createSlice({
     initialState,
     reducers: {
         userLogin: (state, action) => {
-            // Are we storing token here? Not sure. We need it! 👇🧠🟠
             Cookies.set("userInfo", JSON.stringify(action.payload));
-            //  localStorage.setItem("token", response.data.token);
             state.user = action.payload;
         },
         userLogout: (state) => {

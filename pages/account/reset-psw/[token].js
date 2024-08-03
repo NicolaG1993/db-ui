@@ -6,7 +6,7 @@
 // 🧠 we dont need anything here, it's just a landing page
 // 🧠 maybe i could even delete it (if i find a better landing place!)
 
-const Reset = () => {
+export default function ResetPsw() {
     /*
     const router = useRouter();
     const dispatch = useDispatch();
@@ -48,6 +48,4 @@ const Reset = () => {
         </div>
     );
     */
-};
-
-export default Reset;
+}

@@ -9,7 +9,7 @@ import { verifyToken } from "@/src/domains/_app/utils/auth.js";
 import { verifyUserEmail } from "@/src/application/db/utils/user.js";
 
 export default async function handler(req, res) {
-    if (req.method === "POST") {
+    if (req.method === "GET") {
         const { token } = req.query;
         const client = await connect();
         try {

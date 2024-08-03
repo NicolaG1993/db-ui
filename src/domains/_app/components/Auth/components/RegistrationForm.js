@@ -93,6 +93,7 @@ export default function RegistrationForm({ handleTab }) {
                 dispatch(userLogin(data));
                 // router.push("/");
             } catch (err) {
+                console.log(err);
                 alert(getError(err));
             }
         }

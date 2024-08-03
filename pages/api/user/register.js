@@ -8,8 +8,8 @@ export default async function handler(req, res) {
         const { name, email, password } = body;
         const client = await connect();
         try {
-            const user = await createUser(client, name, email, password);
-            const mappedUser = mapUserRawToUser(user);
+            const rawUser = await createUser(client, name, email, password);
+            const mappedUser = mapUserRawToUser(rawUser);
             res.status(200).json({ user: mappedUser });
         } catch (err) {
             res.status(500).json({ error: err.message });
@@ -20,4 +20,3 @@ export default async function handler(req, res) {
         res.status(405).json({ success: false, error: "Method Not Allowed" });
     }
 }
-map;
