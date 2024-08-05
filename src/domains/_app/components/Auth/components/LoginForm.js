@@ -18,6 +18,7 @@ export default function LoginForm({ handleTab }) {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [errors, setErrors] = useState({});
+    // const [loginError, setLoginError] = useState();
 
     // const router = useRouter();
     const dispatch = useDispatch();
@@ -50,13 +51,18 @@ export default function LoginForm({ handleTab }) {
         if (Object.keys(errors).length === 0) {
             try {
                 const resp = await loginUser(email, password);
-                dispatch(userLogin(resp)); // 🔴🔴🔴🧠 We are dispatching token - not userInfo !!!! WRONG
-                // Should i return user obj as well? bc it would be possible
-                // In alternative am i supposed to decrypt the token somehow? Or just store it? If so, how?
-
+                dispatch(userLogin(resp));
                 // router.push("/");
             } catch (err) {
+                console.log("Login error: ", err);
                 alert(getError(err));
+
+                const errorCode = err.response?.data?.code;
+                if (errorCode === "EMAIL_NOT_VERIFIED") {
+                    // router.push(`/unverified-email?email=${formData.email}`);
+                    // router.push(`/account/verify`);
+                    handleTab("notVerified");
+                }
             }
         }
     };

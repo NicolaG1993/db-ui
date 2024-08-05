@@ -5,6 +5,5 @@ export default async function loginUser(email, password) {
         email,
         password,
     });
-    console.log("loginUser data: ", { data });
     return data;
 }

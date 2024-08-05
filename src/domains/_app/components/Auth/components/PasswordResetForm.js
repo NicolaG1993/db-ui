@@ -7,7 +7,7 @@ import {
     confirmPassword,
     passwordValidation,
 } from "@/src/application/utils/validateForms";
-import { userLogin } from "@/src/application/redux/slices/userSlice";
+// import { userLogin } from "@/src/application/redux/slices/userSlice";
 import { useRouter } from "next/router";
 
 export default function PasswordResetForm({ handleTab, token }) {
@@ -15,7 +15,7 @@ export default function PasswordResetForm({ handleTab, token }) {
     const [passwordConfirm, setPasswordConfirm] = useState("");
     const [errors, setErrors] = useState({});
 
-    const dispatch = useDispatch();
+    // const dispatch = useDispatch();
     const router = useRouter();
 
     const validateData = (e) => {

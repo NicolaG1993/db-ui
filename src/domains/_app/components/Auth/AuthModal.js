@@ -4,6 +4,7 @@ import RegistrationForm from "@/src/domains/_app/components/Auth/components/Regi
 import PasswordRecoveryForm from "./components/PasswordRecoveryForm";
 import PasswordResetForm from "./components/PasswordResetForm";
 import { useRouter } from "next/router";
+import EmailNotVerifiedForm from "./components/EmailNotVerifiedForm";
 
 export default function AuthModal() {
     const router = useRouter();
@@ -29,6 +30,8 @@ export default function AuthModal() {
             return <PasswordRecoveryForm handleTab={handleTab} />;
         } else if (tab === "pswReset") {
             return <PasswordResetForm handleTab={handleTab} token={token} />;
+        } else if (tab === "notVerified") {
+            return <EmailNotVerifiedForm handleTab={handleTab} token={token} />;
         }
     };
 

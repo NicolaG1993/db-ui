@@ -1,16 +1,16 @@
 import axios from "axios";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+// import { useDispatch } from "react-redux";
 
 export default function VerifyEmail() {
     const router = useRouter();
-    const dispatch = useDispatch();
+    // const dispatch = useDispatch();
     const { token } = router.query;
 
     const [error, setError] = useState(false);
     const [response, setResponse] = useState();
-    const [newEmailSent, setNewEmailSent] = useState(false);
+    // const [newEmailSent, setNewEmailSent] = useState(false);
 
     useEffect(() => {
         if (token) {
@@ -26,17 +26,18 @@ export default function VerifyEmail() {
         }
     }, [token]);
 
-    const handleResendVerification = async (token) => {
-        try {
-            await axios.post("/api/user/verify/resend-verification", { token });
-            setNewEmailSent(true);
-        } catch (error) {
-            alert(
-                "Failed to resend verification email, please reload the page to try again."
-            );
-            setError(true);
-        }
-    };
+    // Make user do this trought login form, using their email 🧠🔴🔴
+    // const handleResendVerification = async (token) => {
+    //     try {
+    //         await axios.post("/api/user/verify/resend-verification", { token });
+    //         setNewEmailSent(true);
+    //     } catch (error) {
+    //         alert(
+    //             "Failed to resend verification email, please reload the page to try again."
+    //         );
+    //         setError(true);
+    //     }
+    // };
 
     return (
         <div>
@@ -44,24 +45,13 @@ export default function VerifyEmail() {
             <div>
                 {response ? (
                     !error ? (
-                        newEmailSent ? (
-                            <p>
-                                A new verification email has been sent to you.
-                                You can close this tab.
-                            </p>
-                        ) : (
-                            <>
-                                <h2>Error</h2>
-                                <p>{response}</p>
-                                <button
-                                    onClick={() =>
-                                        handleResendVerification(token)
-                                    }
-                                >
-                                    Send new verification email
-                                </button>
-                            </>
-                        )
+                        <>
+                            <h2>Error</h2>
+                            <p>{response}</p>
+                            <button onClick={() => router.push("/")}>
+                                Go back to login
+                            </button>
+                        </>
                     ) : (
                         <>
                             <p>{response}</p>

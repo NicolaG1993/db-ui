@@ -13,7 +13,7 @@ const sendVerificationEmail = async (email, token) => {
         from: process.env.EMAIL_USER,
         to: email,
         subject: "Verify your email address",
-        text: `Please verify your email by clicking the following link: ${process.env.BASE_URL}/account/verify?token=${token}`,
+        text: `Please verify your email by clicking the following link: ${process.env.BASE_URL}/account/verify/${token}`,
     };
 
     await transporter.sendMail(mailOptions);

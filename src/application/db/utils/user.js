@@ -19,13 +19,18 @@ module.exports.getUserByEmail = (client, email) => {
     const key = [email];
     return client.query(myQuery, key);
 };
-module.exports.getUserByVerificationToken = (client, token) => {
-    const myQuery = `SELECT email, verification_token
-                    FROM users
-                    WHERE verification_token = $1`;
-    const key = [token];
+module.exports.checkUserByEmail = (client, email) => {
+    const myQuery = `SELECT id, email FROM users WHERE email = $1`;
+    const key = [email];
     return client.query(myQuery, key);
 };
+// module.exports.getUserByVerificationToken = (client, token) => {
+//     const myQuery = `SELECT email, verification_token
+//                     FROM users
+//                     WHERE verification_token = $1`;
+//     const key = [token];
+//     return client.query(myQuery, key);
+// };
 module.exports.verifyUserEmail = (client, email) => {
     const myQuery = `UPDATE users SET email_verified = TRUE, verification_token = NULL WHERE email = $1 RETURNING *`;
     const key = [email];
