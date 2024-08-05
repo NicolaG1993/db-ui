@@ -248,7 +248,8 @@ main {
 }
 #HomeMain {
     padding: 12rem 2rem;
-    min-height: 80vh;
+    min-height: 100vh;
+    /* min-height: 80vh; */
 }
 #ElMain {
     padding: 5rem 2rem 2rem;

@@ -9,12 +9,13 @@ import {
 } from "@/src/application/redux/slices/userSlice.js";
 import {
     emailValidation,
-    nameValidation,
+    nicknameValidation,
     passwordValidation,
     confirmPassword,
 } from "@/src/application/utils/validateForms.js";
 import { getError } from "@/src/application/utils/error.js";
 import createUser from "@/src/domains/_app/components/Auth/actions/createUser.js";
+import InputText from "@/src/domains/_app/components/Inputs/InputText/InputText";
 
 export default function RegistrationForm({ handleTab }) {
     //================================================================================
@@ -42,7 +43,7 @@ export default function RegistrationForm({ handleTab }) {
 
         let newErrObj = { ...errors };
         if (id === "Name") {
-            const resp = nameValidation("name", value);
+            const resp = nicknameValidation("name", value);
             if (resp) {
                 setErrors({ ...errors, [name]: resp });
             } else {
@@ -110,68 +111,52 @@ export default function RegistrationForm({ handleTab }) {
 
             <form className={styles.form} onSubmit={(e) => handleSubmit(e)}>
                 <div className={styles.inputWrap}>
-                    <input
-                        type="text"
-                        placeholder="Name*"
+                    <InputText
                         name="name"
                         id="Name"
+                        isMandatory={true}
                         value={userName}
                         onChange={(e) => setUserName(e.target.value)}
                         onBlur={(e) => validateData(e)}
+                        error={errors.name}
                     />
-                    {errors.name && (
-                        <div className={styles["form-error"]}>
-                            • {errors.name}
-                        </div>
-                    )}
                 </div>
                 <div className={styles.inputWrap}>
-                    <input
+                    <InputText
                         type="email"
-                        placeholder="Email*"
                         name="email"
                         id="Email"
+                        isMandatory={true}
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         onBlur={(e) => validateData(e)}
+                        error={errors.email}
                     />
-                    {errors.email && (
-                        <div className={styles["form-error"]}>
-                            • {errors.email}
-                        </div>
-                    )}
                 </div>
                 <div className={styles.inputWrap}>
-                    <input
+                    <InputText
                         type="password"
-                        placeholder="Password*"
                         name="password"
                         id="Password"
+                        isMandatory={true}
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         onBlur={(e) => validateData(e)}
+                        error={errors.password}
                     />
-                    {errors.password && (
-                        <div className={styles["form-error"]}>
-                            • {errors.password}
-                        </div>
-                    )}
                 </div>
                 <div className={styles.inputWrap}>
-                    <input
+                    <InputText
                         type="password"
-                        placeholder="Confirm Password*"
                         name="confirmPassword"
                         id="ConfirmPassword"
+                        label="Confirm Password"
+                        isMandatory={true}
                         value={passwordConfirm}
                         onChange={(e) => setPasswordConfirm(e.target.value)}
                         onBlur={(e) => validateData(e)}
+                        error={errors.confirmPassword}
                     />
-                    {errors.confirmPassword && (
-                        <div className={styles["form-error"]}>
-                            • {errors.confirmPassword}
-                        </div>
-                    )}
                 </div>
                 <div className={styles.buttonWrap}>
                     <button type="submit" className="button-standard">

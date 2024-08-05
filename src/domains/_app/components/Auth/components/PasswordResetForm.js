@@ -9,6 +9,7 @@ import {
 } from "@/src/application/utils/validateForms";
 // import { userLogin } from "@/src/application/redux/slices/userSlice";
 import { useRouter } from "next/router";
+import InputText from "@/src/domains/_app/components/Inputs/InputText/InputText";
 
 export default function PasswordResetForm({ handleTab, token }) {
     const [password, setPassword] = useState("");
@@ -65,36 +66,30 @@ export default function PasswordResetForm({ handleTab, token }) {
             <h1>Reset Password</h1>
             <form className={styles.form} onSubmit={(e) => handleSubmit(e)}>
                 <div className={styles.inputWrap}>
-                    <input
+                    <InputText
                         type="password"
-                        placeholder="New Password*"
                         name="password"
                         id="Password"
+                        label="New Password"
+                        isMandatory={true}
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         onBlur={(e) => validateData(e)}
+                        error={errors.password}
                     />
-                    {errors.password && (
-                        <div className={styles["form-error"]}>
-                            • {errors.password}
-                        </div>
-                    )}
                 </div>
                 <div className={styles.inputWrap}>
-                    <input
+                    <InputText
                         type="password"
-                        placeholder="Confirm Password*"
                         name="confirmPassword"
                         id="ConfirmPassword"
+                        label="Confirm Password"
+                        isMandatory={true}
                         value={passwordConfirm}
                         onChange={(e) => setPasswordConfirm(e.target.value)}
                         onBlur={(e) => validateData(e)}
+                        error={errors.confirmPassword}
                     />
-                    {errors.confirmPassword && (
-                        <div className={styles["form-error"]}>
-                            • {errors.confirmPassword}
-                        </div>
-                    )}
                 </div>
                 <div className={styles.buttonWrap}>
                     <button type="submit" className="button-standard">

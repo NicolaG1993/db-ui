@@ -10,6 +10,7 @@ import {
 import { emailValidation } from "@/src/application/utils/validateForms.js";
 import { getError } from "@/src/application/utils/error.js";
 import loginUser from "@/src/domains/_app/components/Auth/actions/loginUser.js";
+import InputText from "@/src/domains/_app/components/Inputs/InputText/InputText";
 
 export default function LoginForm({ handleTab }) {
     //================================================================================
@@ -76,24 +77,27 @@ export default function LoginForm({ handleTab }) {
 
             <form className={styles.form} onSubmit={(e) => handleSubmit(e)}>
                 <div className={styles.inputWrap}>
-                    <input
-                        type="text"
-                        placeholder="Email"
+                    <InputText
+                        type="email"
                         name="email"
-                        id="email"
+                        id="Email"
+                        isMandatory={true}
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         onBlur={(e) => validateData(e)}
+                        error={errors.email}
                     />
                 </div>
                 <div className={styles.inputWrap}>
-                    <input
+                    <InputText
                         type="password"
-                        placeholder="Password"
                         name="password"
-                        id="password"
+                        id="Password"
+                        isMandatory={true}
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
+                        onBlur={(e) => validateData(e)}
+                        error={errors.password}
                     />
                 </div>
                 <div className={styles.buttonWrap}>

@@ -10,7 +10,7 @@ import {
     validateForm,
     updateFormState,
     openSideNav,
-    selectFormIsLoadingResponse,
+    // selectFormIsLoadingResponse,
 } from "@/src/application/redux/slices/formSlice";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import {
@@ -31,10 +31,10 @@ export default function ActorForm({ confirmChanges }) {
     const form = useSelector(selectFormStoreSettings, shallowEqual);
     const errors = useSelector(selectFormStoreErrors, shallowEqual);
     const isLoading = useSelector(selectFormIsLoading, shallowEqual);
-    const isLoadingResponse = useSelector(
-        selectFormIsLoadingResponse,
-        shallowEqual
-    );
+    // const isLoadingResponse = useSelector(
+    //     selectFormIsLoadingResponse,
+    //     shallowEqual
+    // );
     const isFinish = useSelector(selectFormIsFinish, shallowEqual);
 
     const dispatch = useDispatch();
