@@ -10,11 +10,6 @@ import { useAppContext } from "@/src/domains/_app/contexts/AppContext";
 
 export default function DropDownPreferences({ userId }) {
     const { showScrollbars, theme, updateSettings } = useAppContext();
-    console.log("🚧 DropDownPreferences: ", {
-        showScrollbars,
-        theme,
-        updateSettings,
-    });
 
     const handleSettingChange = async (key, value) => {
         const settings = { showScrollbars, theme };

@@ -34,7 +34,7 @@ export default function SideNavMenu({ onClose }) {
                 // tags,
                 // nationality,
             });
-            console.log("💚💚💚 TEST COMPLETED: ", resp);
+            // console.log("💚💚💚 TEST COMPLETED: ", resp);
         } catch (err) {
             console.log("🧡🧡🧡 ERROR: ", err);
         }

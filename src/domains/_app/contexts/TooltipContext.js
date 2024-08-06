@@ -1,9 +1,11 @@
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 import Tooltip from "@/src/domains/_app/constants/components/Tooltip/Tooltip";
+import { useRouter } from "next/router";
 
 export const TooltipContext = createContext();
 
 export const TooltipProvider = ({ children }) => {
+    const router = useRouter();
     const [tooltipVisible, setTooltipVisible] = useState(false);
     const [tooltipProps, setTooltipProps] = useState({
         title: "",
@@ -36,6 +38,19 @@ export const TooltipProvider = ({ children }) => {
             }));
         }
     };
+
+    // Hide tooltip on route change
+    useEffect(() => {
+        const handleRouteChange = () => {
+            hideTooltip();
+        };
+
+        router.events.on("routeChangeStart", handleRouteChange);
+
+        return () => {
+            router.events.off("routeChangeStart", handleRouteChange);
+        };
+    }, [router.events]);
 
     return (
         <TooltipContext.Provider value={{ showTooltip, hideTooltip }}>
