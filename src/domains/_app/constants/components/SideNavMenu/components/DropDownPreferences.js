@@ -10,6 +10,11 @@ import { useAppContext } from "@/src/domains/_app/contexts/AppContext";
 
 export default function DropDownPreferences({ userId }) {
     const { showScrollbars, theme, updateSettings } = useAppContext();
+    console.log("🚧 DropDownPreferences: ", {
+        showScrollbars,
+        theme,
+        updateSettings,
+    });
 
     const handleSettingChange = async (key, value) => {
         const settings = { showScrollbars, theme };
@@ -29,10 +34,10 @@ export default function DropDownPreferences({ userId }) {
                         type="checkbox"
                         checked={showScrollbars}
                         onChange={(e) => {
-                            console.log(
-                                "checkbox onChange: ",
-                                e.target.checked
-                            );
+                            // console.log(
+                            //     "checkbox onChange: ",
+                            //     e.target.checked
+                            // );
                             return handleSettingChange(
                                 "showScrollbars",
                                 e.target.checked
