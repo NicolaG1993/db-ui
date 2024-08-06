@@ -19,7 +19,7 @@ export default function SessionPlaylist({ open, closeWidget }) {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        getSessionPlaylist();
+        dispatch(getSessionPlaylist());
     }, [open]);
 
     const openAddNew = () => {
