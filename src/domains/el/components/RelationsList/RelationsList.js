@@ -67,7 +67,7 @@ export default function RelationsList({
         });
 
         // console.log("newData: ", newData);
-        if (newData.data.length === 0) {
+        if (newData?.data?.length === 0) {
             setHasMore(false);
         } else {
             setData((prev) =>

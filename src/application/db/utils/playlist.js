@@ -105,55 +105,61 @@ WHERE
 module.exports.getAllPlaylistsWithInfos = (client, str, user) => {
     const myQuery = `WITH ordered_movies AS (
     SELECT
-        movie_playlist.playlistID,
-        JSON_BUILD_OBJECT(
-            'id', movie.id,
-            'title', movie.title,
-            'pic', movie.pic,
-            'urls', movie.urls,
-            'rating', movie.rating,
-            'release', movie.release,
-            'index', movie_playlist.index
-        ) AS movie_json
+        mp.playlistID,
+        m.id AS movie_id,
+        m.title AS movie_title,
+        m.pic AS movie_pic,
+        mp.index AS movie_index
     FROM
-        movie_playlist
+        movie_playlist mp
     JOIN
-        movie ON movie.id = movie_playlist.movieID
+        movie m ON m.id = mp.movieID
     ORDER BY
-        movie_playlist.index
+        mp.playlistID, mp.index
+),
+movie_actors AS (
+    SELECT
+        ma.movieID,
+        JSON_AGG(JSON_BUILD_OBJECT(
+            'actor_id', a.id,
+            'actor_name', a.name
+        )) AS actors
+    FROM
+        movie_actor ma
+    JOIN
+        actor a ON a.id = ma.actorID
+    GROUP BY
+        ma.movieID
 ),
 aggregated_movies AS (
     SELECT
-        playlistID,
+        om.playlistID,
         JSON_AGG(
             JSON_BUILD_OBJECT(
-                'id', movie_json->>'id',
-                'title', movie_json->>'title',
-                'pic', movie_json->>'pic',
-                'urls', movie_json->>'urls',
-                'rating', movie_json->>'rating',
-                'release', movie_json->>'release',
-                'index', movie_json->>'index'
-            )
+                'movie_id', om.movie_id,
+                'movie_title', om.movie_title,
+                'movie_pic', om.movie_pic,
+                'movie_actors', COALESCE(ma.actors, '[]'::json)
+            ) ORDER BY om.movie_index
         ) AS movies
     FROM
-        ordered_movies
+        ordered_movies om
+    LEFT JOIN
+        movie_actors ma ON om.movie_id = ma.movieID
     GROUP BY
-        playlistID
+        om.playlistID
 )
 SELECT
-    playlist.*,
-    COALESCE(aggregated_movies.movies, '[]'::json) AS movies
+    p.*,
+    COALESCE(am.movies, '[]'::json) AS movies
 FROM
-    playlist
+    playlist p
 LEFT JOIN
-    aggregated_movies
-    ON playlist.id = aggregated_movies.playlistID
-WHERE
-    playlist.title ILIKE '%' || $1 || '%'
-    AND playlist.userID = $2
+    aggregated_movies am ON p.id = am.playlistID
+WHERE p.title ILIKE '%' || $1 || '%'
+AND p.userID = $2
 ORDER BY
-    playlist.created_at DESC`;
+    p.created_at DESC`;
     // const myQuery = `SELECT
     //     playlist.*,
     //     movies_JSON.movies

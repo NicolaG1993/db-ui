@@ -18,7 +18,6 @@ export const SettingsProvider = ({ children }) => {
     const [isSettingsLoaded, setIsSettingsLoaded] = useState(false); // Not needed
 
     useEffect(() => {
-        console.log("⬜ userInfo.id changes: ", userInfo?.id);
         if (userInfo?.id) {
             setIsSettingsLoaded(false);
             async function fetchSettings() {
@@ -26,10 +25,7 @@ export const SettingsProvider = ({ children }) => {
                     const response = await axiosAuthInstance.get(
                         `/api/settings/user/${userInfo.id}`
                     );
-                    console.log(
-                        "🟨 api/settings/user/${userInfo.id} response: ",
-                        response
-                    );
+
                     const userSettings = response.data;
                     if (userSettings) {
                         setSettings(userSettings);
@@ -44,10 +40,6 @@ export const SettingsProvider = ({ children }) => {
     }, [userInfo?.id]);
 
     useEffect(() => {
-        console.log("🧠 settings changes: ", {
-            settings,
-            cookie: Cookies.get("db-ui-theme"),
-        });
         if (settings.theme) {
             document.documentElement.className = settings.theme;
             // 🧠 TODO: We should also store it somewhere like cookies or sessionStorage, in case API stops working the theme should not be reset to default value (now it's happening!)
