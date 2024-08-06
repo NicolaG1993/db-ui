@@ -9,10 +9,11 @@ import { formatDateEU } from "@/src/application/utils/convertTimestamp";
 import Form from "@/src/domains/_app/components/Form/components/Form";
 import ToggleSwitch from "@/src/domains/_app/components/ToggleSwitch/ToggleSwitch";
 import Modal from "@/src/domains/_app/components/Modal/Modal";
+import axiosAuthInstance from "@/src/application/utils/axiosAuthInstance";
 
 const fetchData = async () => {
     try {
-        const res = await axios.get("/api/record/all");
+        const res = await axiosAuthInstance.get("/api/record/all");
         // console.log("fetchData activated: ", res);
         return res.data;
     } catch (error) {

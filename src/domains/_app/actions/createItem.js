@@ -4,6 +4,7 @@ import {
     parseFormRelationsEdit,
     parseFormRelationsPromise,
 } from "@/src/domains/_app/utils/formParsers.js";
+import axiosAuthInstance from "@/src/application/utils/axiosAuthInstance";
 
 // BETA 💛
 export default async function createItem({ formState, form, propsData }) {
@@ -28,11 +29,11 @@ export default async function createItem({ formState, form, propsData }) {
             (relationsObj = parseFormRelationsEdit(relatedData, propsData)); // 🟡 ! TESTARE !
         console.log("🧠 relationsObj: ", relationsObj);
 
-        return axios.put(form.APImodify, {
+        return axiosAuthInstance.put(form.APImodify, {
             ...formState,
             ...relationsObj,
         });
-        // return axios.put(`/api/${topicLabel}/modify`, {
+        // return axiosAuthInstance.put(`/api/${topicLabel}/modify`, {
         //     ...formState,
         //     ...relationsObj,
         // });
@@ -57,11 +58,11 @@ export default async function createItem({ formState, form, propsData }) {
         //     // }
         // });
 
-        return axios.post(form.APInew, {
+        return axiosAuthInstance.post(form.APInew, {
             ...formState,
             ...relatedData,
         });
-        // return axios.post(`/api/${topicLabel}/new`, {
+        // return axiosAuthInstance.post(`/api/${topicLabel}/new`, {
         //     ...formState,
         //     ...relatedData,
         // });

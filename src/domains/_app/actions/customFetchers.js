@@ -1,17 +1,17 @@
-import axios from "axios";
 import { parseTagsByType } from "@/src/domains/_app/utils/parsers";
 import dataStructureGroups from "@/src/application/settings/dataStructureGroups";
 import { groupJsonByValue } from "@/src/application/utils/parsers";
+import axiosAuthInstance from "@/src/application/utils/axiosAuthInstance";
 
 /* USED FOR GETTING SIMPLE SIDENAV DATA IN FULLLIST */
 const fetchDataForFilter = async (str, topic, TAGS_OBJ) => {
     let { itemLabel } = dataStructureGroups[topic];
     if (topic !== "nationalities" && topic !== "nationality") {
         try {
-            // const res = await axios.get(`/api/${itemLabel}/search`, {
+            // const res = await axiosAuthInstance.get(`/api/${itemLabel}/search`, {
             //     params: { str },
             // });
-            const res = await axios.get(`/api/list/all`, {
+            const res = await axiosAuthInstance.get(`/api/list/all`, {
                 params: { table: itemLabel },
             });
             console.log("res: ", res.data);

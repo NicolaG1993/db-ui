@@ -1,4 +1,4 @@
-import axios from "axios";
+import axiosAuthInstance from "@/src/application/utils/axiosAuthInstance";
 
 export default async function storeNewItemsFromUrls(
     newElements,
@@ -6,7 +6,9 @@ export default async function storeNewItemsFromUrls(
 ) {
     let newPlaylist = sessionPlaylist;
     // create items in db for newElements
-    let { data } = await axios.post("/api/movie/new-list", { newElements });
+    let { data } = await axiosAuthInstance.post("/api/movie/new-list", {
+        newElements,
+    });
     console.log("data: ", data);
     console.log("sessionPlaylist: ", sessionPlaylist);
     if (data) {

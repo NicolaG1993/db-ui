@@ -9,6 +9,7 @@ import DropDownProfile from "./components/DropDownProfile";
 import DropDownPreferences from "./components/DropDownPreferences";
 import { userLogout } from "@/src/application/redux/slices/userSlice";
 import LogoutButton from "../../../components/Auth/components/LogoutButton";
+import axiosAuthInstance from "@/src/application/utils/axiosAuthInstance";
 
 export default function SideNavMenu({ onClose }) {
     const dispatch = useDispatch();
@@ -24,7 +25,7 @@ export default function SideNavMenu({ onClose }) {
         console.log("💛💛💛 TEST STARTING NOW");
 
         try {
-            const resp = await axios.post(`/api/test/new`, {
+            const resp = await axiosAuthInstance.post(`/api/test/new`, {
                 // ...obj,
                 // tags,
                 // nationality,

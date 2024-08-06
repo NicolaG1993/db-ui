@@ -1,6 +1,7 @@
-import axios from "axios";
+import axiosAuthInstance from "@/src/application/utils/axiosAuthInstance";
+
 export default async function deletePlaylist(id) {
-    await axios.delete(`/api/playlist/delete`, {
+    await axiosAuthInstance.delete(`/api/playlist/delete`, {
         headers: {},
         data: { id },
     });

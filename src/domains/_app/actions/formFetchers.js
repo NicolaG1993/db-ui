@@ -1,14 +1,14 @@
 import { parseTagsByType } from "../utils/parsers";
 import dataStructureGroups from "@/src/application/settings/dataStructureGroups";
+import axiosAuthInstance from "@/src/application/utils/axiosAuthInstance";
 import { groupJsonByValue } from "@/src/application/utils/parsers";
-import axios from "axios";
 
 /* USED FOR GETTING SIMPLE SIDENAV DATA IN FORMS */
 const fetchDataForSideNav = async (topic, TAGS_OBJ) => {
     if (topic !== "nationality") {
         let { itemLabel } = dataStructureGroups[topic];
         try {
-            const res = await axios.get(`/api/list/all`, {
+            const res = await axiosAuthInstance.get(`/api/list/all`, {
                 params: { table: itemLabel },
             });
             if (topic === "tags") {

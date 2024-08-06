@@ -1,8 +1,8 @@
-import { orderData } from "../../_app/utils/parsers";
-import axios from "axios";
+import axiosAuthInstance from "@/src/application/utils/axiosAuthInstance";
+// import { orderData } from "../../_app/utils/parsers";
 
 const fetchFilteredData = async (url, params) => {
-    const { data } = await axios.get(url, {
+    const { data } = await axiosAuthInstance.get(url, {
         params,
     });
     return data;

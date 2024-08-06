@@ -1,8 +1,8 @@
-import axios from "axios";
+import axiosAuthInstance from "@/src/application/utils/axiosAuthInstance";
 
 const deleteItem = async (id, table) => {
     try {
-        const { data } = await axios.delete(`/api/delete`, {
+        const { data } = await axiosAuthInstance.delete(`/api/delete`, {
             headers: {},
             data: { id, table },
         });

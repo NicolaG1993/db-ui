@@ -1,7 +1,7 @@
 import styles from "@/src/application/styles/Test.module.css";
-import axios from "axios";
 import { useState } from "react";
 import { useRouter } from "next/router";
+import axiosAuthInstance from "@/src/application/utils/axiosAuthInstance";
 
 export default function TestComponent({ formState, updateState }) {
     const [label, setLabel] = useState("");
@@ -11,7 +11,7 @@ export default function TestComponent({ formState, updateState }) {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const { data } = await axios.delete(`/api/delete`, {
+            const { data } = await axiosAuthInstance.delete(`/api/delete`, {
                 headers: {},
                 data: { id: id, table: label },
             });

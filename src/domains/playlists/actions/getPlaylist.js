@@ -1,7 +1,7 @@
-import axios from "axios";
+import axiosAuthInstance from "@/src/application/utils/axiosAuthInstance";
 
 export default async function getPlaylist(id, user) {
-    const { data } = await axios.get(`/api/playlist/${id}`, {
+    const { data } = await axiosAuthInstance.get(`/api/playlist/${id}`, {
         params: { user },
     });
     return data;

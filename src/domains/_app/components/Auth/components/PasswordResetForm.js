@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { useDispatch } from "react-redux";
+// import { useDispatch } from "react-redux";
 import styles from "@/src/domains/_app/components/Auth/AuthModal.module.css";
-import { getError } from "@/src/application/utils/error";
+// import { getError } from "@/src/application/utils/error";
 import resetPassword from "@/src/domains/_app/components/Auth/actions/resetPassword.js";
 import {
     confirmPassword,

@@ -1,6 +1,6 @@
+import axiosAuthInstance from "@/src/application/utils/axiosAuthInstance";
 import { getError } from "@/src/application/utils/error";
 import { sortByObjDate } from "@/src/application/utils/orderData";
-import axios from "axios";
 
 const getHomeData = async () => {
     let res = {
@@ -13,7 +13,7 @@ const getHomeData = async () => {
         message: undefined,
     };
     try {
-        let { data } = await axios.get(`/api/home`);
+        let { data } = await axiosAuthInstance.get(`/api/home`);
         if (data) {
             if (data.groupA) {
                 res.data.groupAResp = sortByObjDate(
