@@ -50,6 +50,7 @@
     --overlayB: rgba(50, 50, 50, 0.9);
 
     --text: white;
+    --text-secondary: rgb(210, 210, 210);
 
     --gradient000: 30, 30, 30;
 }
@@ -71,6 +72,7 @@
     --overlay: rgba(97, 97, 97, 0.3);
     --overlayB: rgba(134, 134, 134, 0.9);
     --text: white;
+    --text-secondary: rgb(182, 100, 157);
     --gradient000: 42, 42, 42;
 }
 
@@ -91,6 +93,7 @@
     --overlay: rgba(255, 255, 255, 0.3);
     --overlayB: rgba(200, 200, 200, 0.9);
     --text: rgb(30, 30, 30);
+    --text-secondary: rgb(182, 100, 157);
     --gradient000: 126, 126, 126;
 }
 
@@ -136,6 +139,7 @@
     --overlay: rgba(0, 1, 77, 0.3);
     --overlayB: rgba(14, 14, 32, 0.9);
     --text: white;
+    --text-secondary: rgb(226, 179, 61);
     --gradient000: 2, 2, 22;
 }
 
@@ -187,6 +191,7 @@
     --overlay: rgba(184, 72, 80, 0.3);
     --overlayB: rgba(101, 73, 141, 0.9);
     --text: rgb(5, 5, 5);
+    --text-secondary: rgb(171, 80, 247);
     --gradient000: 101, 73, 141;
 }
 
@@ -207,6 +212,7 @@
     --overlay: rgba(43, 68, 59, 0.3);
     --overlayB: rgba(110, 156, 126, 0.9);
     --text: rgb(5, 5, 5);
+    --text-secondary: rgb(236, 247, 80);
     --gradient000: 42, 76, 64;
 }
 

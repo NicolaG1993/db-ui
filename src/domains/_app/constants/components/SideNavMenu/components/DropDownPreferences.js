@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-import axios from "axios";
+// import { useState, useEffect } from "react";
+// import axios from "axios";
 import styles from "@/src/domains/_app/constants/components/SideNavMenu/SideNavMenu.module.css";
 // We need to move the required styles to "SideNavMenu.module.css"
 // the problem right now is that i believe we are using them somewhere else / non ho voglia di sistemarlo ora, sto facendo altro
