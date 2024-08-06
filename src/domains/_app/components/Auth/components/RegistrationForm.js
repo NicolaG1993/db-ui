@@ -94,8 +94,14 @@ export default function RegistrationForm({ handleTab }) {
                 dispatch(userLogin(data));
                 // router.push("/");
             } catch (err) {
-                console.log(err);
-                alert(getError(err));
+                const errorCode = err.response?.data?.code;
+                const errorMessage = err.response?.data?.error;
+                if (errorCode === "EMAIL_NOT_AVAILABLE") {
+                    alert(errorMessage);
+                } else {
+                    console.log("Login error: ", err);
+                    alert("Server error, try again.");
+                }
             }
         }
     };

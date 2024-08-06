@@ -42,19 +42,40 @@ export default async function handler(req, res) {
 
             if (result.rowCount === 0) {
                 res.status(404).json({
-                    error: "No user found for this email",
+                    error: "No user found for this email, please go back and register first.",
                     code: "EMAIL_NOT_FOUND",
                 });
-
-                throw new Error("No user found for this email");
+                return;
+                // throw new Error("No user found for this email");
             }
             const user = result.rows[0];
+
+            if (user.email_verified) {
+                res.status(400).json({
+                    error: "This email is already verified.",
+                    code: "EMAIL_VERIFIED",
+                });
+                return;
+            }
+
+            const now = new Date();
+            if (user.last_verification_email) {
+                const lastSent = new Date(user.last_verification_email);
+                const diffInMinutes = (now - lastSent) / 1000 / 60;
+                if (diffInMinutes < 30) {
+                    res.status(400).json({
+                        error: "You can only request a new verification email every 30 minutes.",
+                        code: "VERIFICATION_SENT",
+                    });
+                    return;
+                }
+            }
 
             // Create new token
             const newToken = signToken(email);
 
             // Update "verification_token" in db "users" table
-            await setUserNewVerificationToken(client, newToken, user.id);
+            await setUserNewVerificationToken(client, newToken, now, user.id);
 
             // Re-send verification email
             await sendVerificationEmail(email, newToken);

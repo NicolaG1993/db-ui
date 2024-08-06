@@ -36,9 +36,14 @@ module.exports.verifyUserEmail = (client, email) => {
     const key = [email];
     return client.query(myQuery, key);
 };
-module.exports.setUserNewVerificationToken = (client, newToken, userId) => {
-    const myQuery = `UPDATE users SET verification_token = $1 WHERE id = $2`;
-    const keys = [newToken, userId];
+module.exports.setUserNewVerificationToken = (
+    client,
+    newToken,
+    now,
+    userId
+) => {
+    const myQuery = `UPDATE users SET verification_token = $1, last_verification_email = $2 WHERE id = $3`;
+    const keys = [newToken, now, userId];
     return client.query(myQuery, keys);
 };
 module.exports.setUserPasswordToken = (client, token, timestamp, email) => {

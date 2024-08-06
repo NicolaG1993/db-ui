@@ -57,7 +57,14 @@ export default function PasswordResetForm({ handleTab, token }) {
                 // dispatch(userLogin(data));
                 setTimeout(() => router.push("/"), 3000); // Redirect to login after 3 seconds
             } catch (err) {
-                alert(getError(err));
+                const errorCode = err.response?.data?.code;
+                const errorMessage = err.response?.data?.error;
+                if (errorCode === "INVALID_TOKEN") {
+                    alert(errorMessage);
+                } else {
+                    console.log("Reset Password error: ", err);
+                    alert("Server error, try again.");
+                }
             }
         }
     };

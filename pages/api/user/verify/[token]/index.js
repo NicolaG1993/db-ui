@@ -21,7 +21,11 @@ export default async function handler(req, res) {
             const result = await verifyUserEmail(client, email);
 
             if (result.rowCount === 0) {
-                throw new Error("Invalid token");
+                res.status(400).json({
+                    error: "Invalid token.",
+                    code: "INVALID_TOKEN",
+                });
+                return;
             }
 
             await commit(client);

@@ -12,7 +12,14 @@ export default async function handler(req, res) {
             const mappedUser = mapUserRawToUser(rawUser);
             res.status(200).json({ user: mappedUser });
         } catch (err) {
-            res.status(500).json({ error: err.message });
+            if (err.message === "Email already in use") {
+                res.status(404).json({
+                    error: err.message,
+                    code: "EMAIL_NOT_AVAILABLE",
+                });
+            } else {
+                res.status(500).json({ error: err.message });
+            }
         } finally {
             release(client);
         }

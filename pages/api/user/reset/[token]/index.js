@@ -30,23 +30,28 @@ export default async function handler(req, res) {
                 token,
                 new Date()
             );
-            console.log("2. api/user/reset/: ", {
-                decoded,
-                result: result.rows[0],
-            });
+            // console.log("2. api/user/reset/: ", {
+            //     decoded,
+            //     result: result.rows[0],
+            // });
 
             if (result.rowCount === 0) {
-                throw new Error("Invalid or expired token");
+                // throw new Error("Invalid or expired token");
                 // We need to report all this kind of errors in UI 🧠🔴
+                res.status(400).json({
+                    error: "Invalid or expired token",
+                    code: "INVALID_TOKEN",
+                });
+                return;
             }
 
             const hashedPassword = await bcrypt.hash(psw, 10);
             await resetUserPassword(client, hashedPassword, email);
 
-            console.log("3. api/user/reset/: ", {
-                hashedPassword,
-                result: result.rows[0],
-            });
+            // console.log("3. api/user/reset/: ", {
+            //     hashedPassword,
+            //     result: result.rows[0],
+            // });
 
             await commit(client);
             res.status(200).json({ message: "Password reset successfully" });

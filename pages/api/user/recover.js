@@ -22,7 +22,17 @@ export default async function handler(req, res) {
             let result = await getUserByEmail(client, email);
 
             if (result.rowCount === 0) {
-                return res.status(400).json({ error: "Email not found" });
+                res.status(404).json({
+                    error: "Email not found",
+                    code: "EMAIL_NOT_FOUND",
+                });
+                return;
+            } else if (result.row[0].email_verified === false) {
+                res.status(400).json({
+                    error: "This email is not verified, first follow the link inside the verification email we sent you.",
+                    code: "EMAIL_NOT_VERIFIED",
+                });
+                return;
             }
 
             const token = signTokenShort(email);

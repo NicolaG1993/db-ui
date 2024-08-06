@@ -22,7 +22,12 @@ export default async function handler(req, res) {
             // console.log("api/user/login USER: ", result.rows[0]);
 
             if (result.rowCount === 0) {
-                throw new Error("Invalid email or password");
+                // throw new Error("Invalid email or password");
+                res.status(404).json({
+                    error: "Email not found",
+                    code: "EMAIL_NOT_FOUND",
+                });
+                return;
             }
 
             const user = result.rows[0];
@@ -39,7 +44,12 @@ export default async function handler(req, res) {
             const isMatch = await bcrypt.compare(password, user.psw);
 
             if (!isMatch) {
-                throw new Error("Invalid email or password");
+                // throw new Error("Invalid email or password");
+                res.status(400).json({
+                    error: "Invalid email or password",
+                    code: "INVALID_LOGIN",
+                });
+                return;
             }
 
             const token = signToken({

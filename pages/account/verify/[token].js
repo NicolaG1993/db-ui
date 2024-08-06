@@ -1,4 +1,4 @@
-import axios from "axios";
+import verifyUser from "@/src/domains/_app/components/Auth/actions/verifyUser";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 // import { useDispatch } from "react-redux";
@@ -14,17 +14,33 @@ export default function VerifyEmail() {
 
     useEffect(() => {
         if (token) {
-            axios
-                .get(`/api/user/verify?token=${token}`)
-                .then((res) => {
-                    setResponse(res.message);
+            handleToken(token)
+                .then((message) => {
+                    setResponse(message);
                 })
                 .catch((err) => {
-                    setResponse(err.response.data.error || "An error occurred");
+                    setResponse(err.message);
                     setError(true);
                 });
         }
     }, [token]);
+
+    const handleToken = async (token) => {
+        try {
+            const res = await verifyUser(token);
+            return res.message;
+        } catch (err) {
+            const errorCode = err.response?.data?.code;
+            const errorMessage = err.response?.data?.error;
+            if (errorCode === "INVALID_TOKEN") {
+                alert(errorMessage);
+                throw new Error(errorMessage);
+            } else {
+                alert("Server error, try again.");
+                throw new Error(err.response.data.error || "An error occurred");
+            }
+        }
+    };
 
     // Make user do this trought login form, using their email 🧠🔴🔴
     // const handleResendVerification = async (token) => {

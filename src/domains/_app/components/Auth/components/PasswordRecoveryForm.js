@@ -34,7 +34,17 @@ export default function PasswordRecoveryForm({ handleTab }) {
                 // dispatch(userLogin(data));
                 // router.push("/");
             } catch (err) {
-                alert(getError(err));
+                const errorCode = err.response?.data?.code;
+                const errorMessage = err.response?.data?.error;
+                if (
+                    errorCode === "EMAIL_NOT_FOUND" ||
+                    errorCode === "EMAIL_NOT_VERIFIED"
+                ) {
+                    alert(errorMessage);
+                } else {
+                    console.log("Login error: ", err);
+                    alert("Server error, try again.");
+                }
             }
         }
     };

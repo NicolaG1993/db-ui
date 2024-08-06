@@ -53,17 +53,30 @@ export default function EmailNotVerifiedForm({ handleTab }) {
                 // );
 
                 const errorCode = err.response?.data?.code;
+                const errorMessage = err.response?.data?.error;
                 if (errorCode === "EMAIL_NOT_FOUND") {
                     // TODO: email is not registered in db, user has to create account!
+                    alert(errorMessage);
                     setErrors({
                         ...errors,
-                        response:
-                            "Email not found, please go back and register first.",
+                        response: errorMessage,
+                    });
+                } else if (
+                    errorCode === "EMAIL_VERIFIED" ||
+                    errorCode === "VERIFICATION_SENT"
+                ) {
+                    alert(errorMessage);
+                    setErrors({
+                        ...errors,
+                        response: errorMessage,
                     });
                 } else {
+                    console.log("Login error: ", err);
+                    alert("Server error, try again.");
                     setErrors({
                         ...errors,
-                        response: getError(err),
+                        response: "Server error, try again",
+                        // response: getError(err),
                     });
                 }
             }

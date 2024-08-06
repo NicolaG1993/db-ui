@@ -55,14 +55,25 @@ export default function LoginForm({ handleTab }) {
                 dispatch(userLogin(resp));
                 // router.push("/");
             } catch (err) {
-                console.log("Login error: ", err);
-                alert(getError(err));
+                // console.log("Login error: ", err);
+                // alert(getError(err));
 
                 const errorCode = err.response?.data?.code;
+                const errorMessage = err.response?.data?.error;
                 if (errorCode === "EMAIL_NOT_VERIFIED") {
                     // router.push(`/unverified-email?email=${formData.email}`);
                     // router.push(`/account/verify`);
                     handleTab("notVerified");
+                } else if (
+                    errorCode === "EMAIL_NOT_FOUND" ||
+                    errorCode === "INVALID_LOGIN"
+                ) {
+                    alert(errorMessage);
+                } else {
+                    console.log("Login error: ", err);
+                    // setErrors({ ...errors, response: true });
+                    // alert(getError(err));
+                    alert("Server error, try again.");
                 }
             }
         }
