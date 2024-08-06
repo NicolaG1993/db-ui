@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import styles from "@/src/domains/_app/constants/components/SideNavMenu/SideNavMenu.module.css";
 import {
     openForm,
@@ -7,12 +7,16 @@ import {
 } from "@/src/application/redux/slices/formSlice";
 import DropDownProfile from "./components/DropDownProfile";
 import DropDownPreferences from "./components/DropDownPreferences";
-import { userLogout } from "@/src/application/redux/slices/userSlice";
+import {
+    selectUserState,
+    userLogout,
+} from "@/src/application/redux/slices/userSlice";
 import LogoutButton from "../../../components/Auth/components/LogoutButton";
 import axiosAuthInstance from "@/src/application/utils/axiosAuthInstance";
 
 export default function SideNavMenu({ onClose }) {
     const dispatch = useDispatch();
+    let userInfo = useSelector(selectUserState);
 
     // ??? They should not be handled here (Layout or Redux)
 
@@ -106,7 +110,7 @@ export default function SideNavMenu({ onClose }) {
                 </div>
 
                 {dropDown === "preferences" && (
-                    <DropDownPreferences userId={3} /> // 🔴🔴🧠 fix logic for userId
+                    <DropDownPreferences userId={userInfo.id} />
                 )}
             </div>
 
