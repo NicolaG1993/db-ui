@@ -1,3 +1,4 @@
+import axiosAuthInstance from "@/src/application/utils/axiosAuthInstance";
 import axios from "axios";
 import { useEffect, useState } from "react";
 
@@ -23,7 +24,7 @@ export default function DataMigration() {
             // ogni tabella ha bisogno di un parse personalizzato
             // inserire tabella in nuovo DB in una singola request
             //....
-            const { data } = await axios.post(`/api/convert-url`, {
+            const { data } = await axiosAuthInstance.post(`/api/convert-url`, {
                 table: "movie",
             });
             console.log("data: ", data);

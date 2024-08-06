@@ -16,7 +16,7 @@ export default async function handler(req, res) {
         try {
             await begin(client);
             const result = await getUserSettings(client, id);
-            console.log("result: ", result);
+            // console.log("result: ", result);
             await commit(client);
             const mappedSettings = mapSettingsRawToSettings(result.rows[0]);
             res.status(200).json(mappedSettings);

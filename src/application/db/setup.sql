@@ -30,6 +30,7 @@ CREATE TABLE users (
     is_admin BOOLEAN DEFAULT FALSE,
     email_verified BOOLEAN DEFAULT FALSE,
     verification_token VARCHAR(255),
+    last_verification_email TIMESTAMP,
     password_reset_token VARCHAR(255),
     password_reset_expires TIMESTAMP
 );

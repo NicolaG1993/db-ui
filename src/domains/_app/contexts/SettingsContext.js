@@ -1,7 +1,7 @@
 import { createContext, useContext, useState, useEffect } from "react";
-import axios from "axios";
 import { useSelector } from "react-redux";
 import { selectUserState } from "@/src/application/redux/slices/userSlice";
+import axiosAuthInstance from "@/src/application/utils/axiosAuthInstance";
 
 export const SettingsContext = createContext();
 
@@ -19,7 +19,7 @@ export const SettingsProvider = ({ children }) => {
             setIsSettingsLoaded(false);
             async function fetchSettings() {
                 try {
-                    const response = await axios.get(
+                    const response = await axiosAuthInstance.get(
                         `/api/settings/user/${userInfo.id}`
                     );
                     const userSettings = response.data;
@@ -46,10 +46,13 @@ export const SettingsProvider = ({ children }) => {
 
     const updateSettings = async (newSettings) => {
         try {
-            const response = await axios.post("/api/settings/user/modify", {
-                userId: userInfo.id,
-                ...newSettings,
-            });
+            const response = await axiosAuthInstance.post(
+                "/api/settings/user/modify",
+                {
+                    userId: userInfo.id,
+                    ...newSettings,
+                }
+            );
             if (response.status === 200) {
                 setSettings(newSettings);
             }

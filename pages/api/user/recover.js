@@ -6,11 +6,11 @@ import {
     connect,
 } from "@/src/application/db/db.js";
 import { signTokenShort } from "@/src/domains/_app/utils/auth.js";
-import nodemailer from "nodemailer";
 import {
     getUserByEmail,
     setUserPasswordToken,
 } from "@/src/application/db/utils/user.js";
+import sendResetPswEmail from "@/src/domains/_app/components/Auth/utils/sendResetPswEmail";
 
 export default async function handler(req, res) {
     if (req.method === "POST") {
@@ -22,7 +22,17 @@ export default async function handler(req, res) {
             let result = await getUserByEmail(client, email);
 
             if (result.rowCount === 0) {
-                return res.status(400).json({ error: "Email not found" });
+                res.status(404).json({
+                    error: "Email not found",
+                    code: "EMAIL_NOT_FOUND",
+                });
+                return;
+            } else if (result.row[0].email_verified === false) {
+                res.status(400).json({
+                    error: "This email is not verified, first follow the link inside the verification email we sent you.",
+                    code: "EMAIL_NOT_VERIFIED",
+                });
+                return;
             }
 
             const token = signTokenShort(email);
@@ -34,22 +44,7 @@ export default async function handler(req, res) {
                 email
             );
 
-            const transporter = nodemailer.createTransport({
-                service: "Gmail",
-                auth: {
-                    user: process.env.EMAIL_USER, // 🔴🔴🔴
-                    pass: process.env.EMAIL_PASS, // 🔴🔴🔴
-                },
-            });
-
-            const mailOptions = {
-                from: process.env.EMAIL_USER, // 🔴🔴🔴
-                to: email,
-                subject: "Password reset",
-                text: `Please reset your password by clicking the link: ${process.env.BASE_URL}/reset/${token}`, // 🔴🔴🔴
-            };
-
-            await transporter.sendMail(mailOptions);
+            await sendResetPswEmail(email, token);
 
             await commit(client);
             res.status(200).json({ message: "Password reset email sent" });

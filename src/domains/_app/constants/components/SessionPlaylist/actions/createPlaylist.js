@@ -1,7 +1,7 @@
-import axios from "axios";
+import axiosAuthInstance from "@/src/application/utils/axiosAuthInstance";
 
 export default async function createPlaylist(title, newPlaylist, userInfo) {
-    await axios.post("/api/playlist/new", {
+    await axiosAuthInstance.post("/api/playlist/new", {
         title,
         movies: newPlaylist,
         userID: userInfo.id,

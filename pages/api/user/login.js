@@ -19,20 +19,37 @@ export default async function handler(req, res) {
         try {
             await begin(client);
             let result = await getUserByEmail(client, email);
+            // console.log("api/user/login USER: ", result.rows[0]);
 
             if (result.rowCount === 0) {
-                throw new Error("Invalid email or password");
+                // throw new Error("Invalid email or password");
+                res.status(404).json({
+                    error: "Email not found",
+                    code: "EMAIL_NOT_FOUND",
+                });
+                return;
             }
 
             const user = result.rows[0];
 
             if (!user.email_verified) {
-                throw new Error("Email not verified");
+                // throw new Error("Email not verified");
+                res.status(400).json({
+                    error: "Email not verified",
+                    code: "EMAIL_NOT_VERIFIED",
+                });
+                return;
             }
 
             const isMatch = await bcrypt.compare(password, user.psw);
+
             if (!isMatch) {
-                throw new Error("Invalid email or password");
+                // throw new Error("Invalid email or password");
+                res.status(400).json({
+                    error: "Invalid email or password",
+                    code: "INVALID_LOGIN",
+                });
+                return;
             }
 
             const token = signToken({
@@ -41,7 +58,11 @@ export default async function handler(req, res) {
             });
 
             await commit(client);
-            res.status(200).json({ token });
+
+            // Remove sensitive information before sending the user data
+            delete user.psw;
+
+            res.status(200).json({ ...user, token });
         } catch (err) {
             await rollback(client);
             res.status(400).json({ error: err.message });

@@ -13,7 +13,7 @@ export default function extractMissingTags(
 
     /*
         // call API for retrieving ids full objects
-        const { data } = await axios.get("/api/list/filtered", {
+        const { data } = await axiosAuthInstance.get("/api/list/filtered", {
             params: { arr: JSON.stringify(tags), table: "tag", column: "name" },
         }); // I might not need this anymore, i have them already from previous screen 🧠
         */
@@ -35,7 +35,7 @@ export default function extractMissingTags(
     });
 
     /*
-        const res = await axios.get("/api/list/filtered", {
+        const res = await axiosAuthInstance.get("/api/list/filtered", {
             params: {
                 arr: JSON.stringify(missingRelationsIDs),
                 table: "tag",

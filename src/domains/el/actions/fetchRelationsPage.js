@@ -1,5 +1,5 @@
+import axiosAuthInstance from "@/src/application/utils/axiosAuthInstance";
 import { getError } from "@/src/application/utils/error";
-import axios from "axios";
 
 export default async function fetchRelationsPage({
     // relationsLabel,
@@ -25,7 +25,7 @@ export default async function fetchRelationsPage({
         const { direction, order, page } = filters;
         const limit = 9;
 
-        const { data } = await axios.get(
+        const { data } = await axiosAuthInstance.get(
             `/api/relations/${relationsGroup}-page`,
             {
                 params: {
@@ -42,7 +42,7 @@ export default async function fetchRelationsPage({
 
         // console.log("🍄🍄🍄 data: ", data);
         /* 
-        const { data } = await axios.get(`/api/${label}/${id}`);
+        const { data } = await axiosAuthInstance.get(`/api/${label}/${id}`);
       const res = { ...data, ...structure };
         delete res.ItemComponent;
         return { status: 200, data: res };

@@ -1,6 +1,7 @@
 import { getError } from "@/src/application/utils/error";
-import axios from "axios";
 // import S3 from "@/src/application/libs/s3.js";
+// import axiosAuthInstance from "@/src/application/utils/axiosAuthInstance";
+import axios from "axios";
 
 export default async function fetchS3SettingsFile(fileURL) {
     try {

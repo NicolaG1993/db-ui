@@ -1,9 +1,9 @@
-import axios from "axios";
+import axiosAuthInstance from "@/src/application/utils/axiosAuthInstance";
 
 export default async function fetchTournamentData(ids) {
     // console.log("fetchTournamentData: ", { ids });
     try {
-        const { data } = await axios.get("/api/movie/by-id", {
+        const { data } = await axiosAuthInstance.get("/api/movie/by-id", {
             params: {
                 ids: JSON.stringify(ids),
             },

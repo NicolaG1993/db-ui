@@ -1,6 +1,7 @@
-import axios from "axios";
+import axiosAuthInstance from "@/src/application/utils/axiosAuthInstance";
+
 export default async function fetchAllPlaylists(str, user) {
-    const { data } = await axios.get("/api/playlist/all", {
+    const { data } = await axiosAuthInstance.get("/api/playlist/all", {
         params: { str, user },
     });
     return data;

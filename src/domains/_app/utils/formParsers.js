@@ -1,5 +1,5 @@
+import axiosAuthInstance from "@/src/application/utils/axiosAuthInstance";
 import { formatFormInputDate } from "@/src/application/utils/convertTimestamp";
-import axios from "axios";
 
 const parseFormProps = (key, value) => {
     if (key === "birthday" || key === "release") {
@@ -170,10 +170,10 @@ const parseFormRelations = (formRelations, formState) => {
 const parseFormRelationsPromise = async (formRelations, formState) => {
     // console.log("ARR: ", formRelations); // [{topic: 'actors', label: 'actor'}, ...]
     let allRelations = {};
-    // We need Promise.all because we can't await axios with map() 👍
+    // We need Promise.all because we can't await axiosAuthInstance with map() 👍
     const allPromises = formRelations.map(({ topic, label }) => {
         if (label !== "nationality") {
-            return axios
+            return axiosAuthInstance
                 .get(`/api/list/all`, {
                     params: { table: label },
                 })
@@ -193,7 +193,7 @@ const parseFormRelationsPromise = async (formRelations, formState) => {
 }; // ridurre ad una singola API call - non usarla dentro a map 🧨🧨🧨
 const parseFormRelationsPromiseMovie = async (formRelations, formState) => {
     let allRelations = {};
-    const allData = await axios.get(`/api/all/relations`);
+    const allData = await axiosAuthInstance.get(`/api/all/relations`);
     formRelations.map(({ topic, label }) => {
         if (label !== "nationality") {
             allRelations[topic] = data[label]

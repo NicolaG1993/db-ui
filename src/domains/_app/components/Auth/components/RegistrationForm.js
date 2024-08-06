@@ -1,20 +1,21 @@
-import Link from "next/link";
-import { useRouter } from "next/router";
+// import Link from "next/link";
+// import { useRouter } from "next/router";
 import { useState } from "react";
-import { shallowEqual, useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import styles from "@/src/domains/_app/components/Auth/AuthModal.module.css";
 import {
-    selectUserState,
+    // selectUserState,
     userLogin,
 } from "@/src/application/redux/slices/userSlice.js";
 import {
     emailValidation,
-    nameValidation,
+    nicknameValidation,
     passwordValidation,
     confirmPassword,
 } from "@/src/application/utils/validateForms.js";
 import { getError } from "@/src/application/utils/error.js";
 import createUser from "@/src/domains/_app/components/Auth/actions/createUser.js";
+import InputText from "@/src/domains/_app/components/Inputs/InputText/InputText";
 
 export default function RegistrationForm({ handleTab }) {
     //================================================================================
@@ -26,9 +27,9 @@ export default function RegistrationForm({ handleTab }) {
     const [passwordConfirm, setPasswordConfirm] = useState("");
     const [errors, setErrors] = useState({});
 
-    const router = useRouter();
+    // const router = useRouter();
     const dispatch = useDispatch();
-    let userInfo = useSelector(selectUserState, shallowEqual);
+    // let userInfo = useSelector(selectUserState, shallowEqual);
     // if (userInfo) {
     //     router.push("/");
     // }
@@ -42,7 +43,7 @@ export default function RegistrationForm({ handleTab }) {
 
         let newErrObj = { ...errors };
         if (id === "Name") {
-            const resp = nameValidation("name", value);
+            const resp = nicknameValidation("name", value);
             if (resp) {
                 setErrors({ ...errors, [name]: resp });
             } else {
@@ -91,10 +92,16 @@ export default function RegistrationForm({ handleTab }) {
             try {
                 const data = await createUser(userName, email, password);
                 dispatch(userLogin(data));
-
                 // router.push("/");
             } catch (err) {
-                alert(getError(err));
+                const errorCode = err.response?.data?.code;
+                const errorMessage = err.response?.data?.error;
+                if (errorCode === "EMAIL_NOT_AVAILABLE") {
+                    alert(errorMessage);
+                } else {
+                    console.log("Login error: ", err);
+                    alert("Server error, try again.");
+                }
             }
         }
     };
@@ -102,74 +109,60 @@ export default function RegistrationForm({ handleTab }) {
     //================================================================================
     // Render UI
     //================================================================================
+
+    // Check Errors styles, they should match the errors in Item Forms 🧠 i think they are not matching now
     return (
         <div className={styles.formBox}>
             <h1>Create a new account</h1>
 
             <form className={styles.form} onSubmit={(e) => handleSubmit(e)}>
                 <div className={styles.inputWrap}>
-                    <input
-                        type="text"
-                        placeholder="Name*"
+                    <InputText
                         name="name"
                         id="Name"
+                        isMandatory={true}
                         value={userName}
                         onChange={(e) => setUserName(e.target.value)}
                         onBlur={(e) => validateData(e)}
+                        error={errors.name}
                     />
-                    {errors.name && (
-                        <div className={styles["form-error"]}>
-                            • {errors.name}
-                        </div>
-                    )}
                 </div>
                 <div className={styles.inputWrap}>
-                    <input
-                        type="text"
-                        placeholder="Email*"
+                    <InputText
+                        type="email"
                         name="email"
                         id="Email"
+                        isMandatory={true}
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         onBlur={(e) => validateData(e)}
+                        error={errors.email}
                     />
-                    {errors.email && (
-                        <div className={styles["form-error"]}>
-                            • {errors.email}
-                        </div>
-                    )}
                 </div>
                 <div className={styles.inputWrap}>
-                    <input
+                    <InputText
                         type="password"
-                        placeholder="Password*"
                         name="password"
                         id="Password"
+                        isMandatory={true}
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         onBlur={(e) => validateData(e)}
+                        error={errors.password}
                     />
-                    {errors.password && (
-                        <div className={styles["form-error"]}>
-                            • {errors.password}
-                        </div>
-                    )}
                 </div>
                 <div className={styles.inputWrap}>
-                    <input
+                    <InputText
                         type="password"
-                        placeholder="Confirm Password*"
                         name="confirmPassword"
                         id="ConfirmPassword"
+                        label="Confirm Password"
+                        isMandatory={true}
                         value={passwordConfirm}
                         onChange={(e) => setPasswordConfirm(e.target.value)}
                         onBlur={(e) => validateData(e)}
+                        error={errors.confirmPassword}
                     />
-                    {errors.confirmPassword && (
-                        <div className={styles["form-error"]}>
-                            • {errors.confirmPassword}
-                        </div>
-                    )}
                 </div>
                 <div className={styles.buttonWrap}>
                     <button type="submit" className="button-standard">

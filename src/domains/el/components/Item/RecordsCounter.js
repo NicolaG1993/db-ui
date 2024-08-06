@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
 import styles from "@/src/application/styles/Element.module.css";
 import { formatDateEU } from "@/src/application/utils/convertTimestamp";
+import axiosAuthInstance from "@/src/application/utils/axiosAuthInstance";
 
 export default function RecordsCounter({ id }) {
     const [counter, setCounter] = useState();
@@ -15,7 +15,7 @@ export default function RecordsCounter({ id }) {
 
     const fetchCounter = async () => {
         try {
-            const { data } = await axios.get(`/api/record/${id}`);
+            const { data } = await axiosAuthInstance.get(`/api/record/${id}`);
             setCounter(data);
         } catch (err) {
             console.log("ERROR in fetchCounter!", err);
@@ -24,7 +24,7 @@ export default function RecordsCounter({ id }) {
 
     const handleAddCounter = async () => {
         try {
-            const { data } = await axios.post(`/api/record/new`, {
+            const { data } = await axiosAuthInstance.post(`/api/record/new`, {
                 id: id,
             });
             setCounter([...counter, data]);
@@ -35,7 +35,7 @@ export default function RecordsCounter({ id }) {
 
     const handleRemoveCounter = async (id) => {
         try {
-            await axios.delete(`/api/delete`, {
+            await axiosAuthInstance.delete(`/api/delete`, {
                 headers: {},
                 data: { id: id, table: "counter" },
             });

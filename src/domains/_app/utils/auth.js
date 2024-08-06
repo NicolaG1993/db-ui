@@ -13,7 +13,7 @@ function signToken(email) {
         {
             email,
         },
-        process.env.COOKIE_SECRET, // 🔴 We should have JWT_SECRET here
+        process.env.JWT_SECRET,
         {
             expiresIn: "30d",
         }
@@ -25,7 +25,7 @@ function signTokenShort(email) {
         {
             email,
         },
-        process.env.COOKIE_SECRET, // 🔴 We should have JWT_SECRET here
+        process.env.JWT_SECRET,
         {
             expiresIn: "1h",
         }
@@ -33,7 +33,7 @@ function signTokenShort(email) {
 }
 
 function verifyToken(token) {
-    return jwt.verify(token, process.env.COOKIE_SECRET); // 🔴 We should have JWT_SECRET here
+    return jwt.verify(token, process.env.JWT_SECRET);
 }
 
 /*

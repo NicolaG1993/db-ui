@@ -6,6 +6,7 @@ let styles = { ...inputsStyles, ...componentStyles };
 export default function InputText({
     name,
     id,
+    label,
     value,
     onChange,
     onBlur,
@@ -13,6 +14,7 @@ export default function InputText({
     error,
     isMandatory,
     placeholder,
+    type,
 }) {
     return (
         <>
@@ -22,7 +24,8 @@ export default function InputText({
                 } ${styles["input-wrap"]} ${styles["wrap-common-styles"]}`}
             >
                 <input
-                    type="text"
+                    // type="text"
+                    type={type || "text"}
                     name={name}
                     id={id}
                     maxLength="244"
@@ -33,7 +36,9 @@ export default function InputText({
                     // className={errors.title && "input-error"}
                 ></input>
                 <label>
-                    {name.charAt(0).toUpperCase() + name.slice(1)}
+                    {label
+                        ? label
+                        : name.charAt(0).toUpperCase() + name.slice(1)}
                     {!!isMandatory && "*"}
                 </label>
             </div>

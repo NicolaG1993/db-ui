@@ -1,4 +1,4 @@
-import axios from "axios";
+import axiosAuthInstance from "@/src/application/utils/axiosAuthInstance";
 import { mergeArrays } from "@/src/application/utils/parsers";
 
 const deleteDuplicates = (arr) =>
@@ -137,7 +137,7 @@ async function oldFn({
     try {
         //NEW TAGS
 
-        const { data } = await axios.get("/api/actor/by-id", {
+        const { data } = await axiosAuthInstance.get("/api/actor/by-id", {
             params: {
                 items: JSON.stringify(currentSelection.map((el) => el.id)),
             },
@@ -161,7 +161,7 @@ async function oldFn({
             // but now formState is storing only id and name - should store all object
             // then change this! 🧠
             /*
-            const res = await axios.get("/api/actor/by-id", {
+            const res = await axiosAuthInstance.get("/api/actor/by-id", {
                 params: {
                     items: JSON.stringify(removedActors.map((el) => el.id)),
                 },

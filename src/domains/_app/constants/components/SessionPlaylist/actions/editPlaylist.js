@@ -1,5 +1,5 @@
-import axios from "axios";
 import parsePlaylistRelationsEdit from "@/src/domains/_app/constants/components/SessionPlaylist/utils/parsePlaylistRelationsEdit.js";
+import axiosAuthInstance from "@/src/application/utils/axiosAuthInstance";
 
 /*
 export default async function editPlaylist(
@@ -16,7 +16,7 @@ export default async function editPlaylist(
     });
     // get original playlist from db first
     const id = match.id;
-    let originalPlaylist = await axios.get(`/api/playlist/${id}`, {
+    let originalPlaylist = await axiosAuthInstance.get(`/api/playlist/${id}`, {
         params: { user: userInfo.id },
     });
     originalPlaylist = originalPlaylist.data;
@@ -32,7 +32,7 @@ export default async function editPlaylist(
         title
     ) {
         // edit playlist and/or relations
-        let res = await axios.put("/api/playlist/modify", {
+        let res = await axiosAuthInstance.put("/api/playlist/modify", {
             id,
             title,
             // playlistContent: newPlaylist,
@@ -61,7 +61,7 @@ export default async function editPlaylist({
         userInfo,
     });
     const body = { playlistID, userID: userInfo.id, newPlaylist, title };
-    const res = await axios.put("/api/playlist/modify", body);
+    const res = await axiosAuthInstance.put("/api/playlist/modify", body);
 
     return { res, message: "completed", done: true };
 }

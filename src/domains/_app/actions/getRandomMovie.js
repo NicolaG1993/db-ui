@@ -1,9 +1,9 @@
+import axiosAuthInstance from "@/src/application/utils/axiosAuthInstance";
 import { getError } from "@/src/application/utils/error";
-import axios from "axios";
 
 const getRandomMovie = async () => {
     try {
-        const { data } = await axios.get("/api/movie/random");
+        const { data } = await axiosAuthInstance.get("/api/movie/random");
         return { status: 200, data: data.id };
         // data is already a movie object, but i use only the id to then call movie again
         // there should be a better way to do this
