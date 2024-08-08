@@ -14,7 +14,8 @@ import {
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
 import InputImage from "@/src/domains/_app/components/Inputs/InputImage/InputImage";
-import InputText from "@/src/domains/_app/components/Inputs/InputText/InputText";
+import { InputText } from "zephyrus-components";
+import customStyles from "@/src/domains/_app/components/Inputs/InputsCustomStyles.module.css";
 import {
     createObjectURL,
     revokeObjectURL,
@@ -112,6 +113,7 @@ export default function CategoryForm({ confirmChanges }) {
                         }
                         placeholder="Type the name here..."
                         error={errors.name}
+                        customStyles={customStyles}
                     />
                 </div>
 
@@ -140,6 +142,7 @@ export default function CategoryForm({ confirmChanges }) {
                         }
                         placeholder="Type the type name here..."
                         error={errors.type}
+                        customStyles={customStyles}
                     />
                 </div>
             </div>

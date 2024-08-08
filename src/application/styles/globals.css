@@ -365,23 +365,25 @@ button:disabled:hover {
     margin: 0 16px 0 20px;
 }
 
-input,
+/* input,
 select {
     background-color: var(--bg400);
     border: 1px solid var(--bg800);
     padding: 3px;
     border-radius: 3px;
-}
+} */
 select {
     cursor: pointer;
 }
-input:hover {
+/* input:hover {
     background-color: var(--bg500);
-    border: 1px solid var(--bg800);
+    border: none;
+    outline: 1px solid var(--bg800);
 }
 select:hover {
-    border: 1px solid var(--bg900);
-}
+    border: none;
+    outline: 1px solid var(--bg900);
+} */
 
 *::-webkit-scrollbar {
     width: 1em;

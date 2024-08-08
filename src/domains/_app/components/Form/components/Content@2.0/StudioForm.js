@@ -13,8 +13,9 @@ import {
 } from "@/src/application/redux/slices/formSlice";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
+import customStyles from "@/src/domains/_app/components/Inputs/InputsCustomStyles.module.css";
+import { InputText } from "zephyrus-components";
 import InputImage from "@/src/domains/_app/components/Inputs/InputImage/InputImage";
-import InputText from "@/src/domains/_app/components/Inputs/InputText/InputText";
 import InputFake from "@/src/domains/_app/components/Inputs/InputFake/InputFake";
 import {
     createObjectURL,
@@ -113,6 +114,7 @@ export default function StudioForm({ confirmChanges }) {
                         }
                         placeholder="Type the name here..."
                         error={errors.name}
+                        customStyles={customStyles}
                     />
                 </div>
 
@@ -141,6 +143,7 @@ export default function StudioForm({ confirmChanges }) {
                         }
                         placeholder="Type the website here..."
                         error={errors.website}
+                        customStyles={customStyles}
                     />
                 </div>
 

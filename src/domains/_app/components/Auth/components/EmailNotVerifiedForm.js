@@ -9,7 +9,8 @@ import { getError } from "@/src/application/utils/error.js";
 // import loginUser from "@/src/domains/_app/components/Auth/actions/loginUser.js";
 import { useRouter } from "next/router";
 import sendNewVerificationEmail from "../actions/sendNewVerificationEmail";
-import InputText from "@/src/domains/_app/components/Inputs/InputText/InputText";
+import { InputText } from "zephyrus-components";
+import customStyles from "@/src/domains/_app/components/Inputs/InputsCustomStyles.module.css";
 
 export default function EmailNotVerifiedForm({ handleTab }) {
     const [email, setEmail] = useState("");
@@ -115,6 +116,7 @@ export default function EmailNotVerifiedForm({ handleTab }) {
                                         }
                                         onBlur={(e) => validateData(e)}
                                         error={errors.email}
+                                        customStyles={customStyles}
                                     />
                                 </div>
                                 <div className={styles.buttonWrap}>

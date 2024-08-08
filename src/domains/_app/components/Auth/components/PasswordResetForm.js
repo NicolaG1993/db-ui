@@ -9,7 +9,8 @@ import {
 } from "@/src/application/utils/validateForms";
 // import { userLogin } from "@/src/application/redux/slices/userSlice";
 import { useRouter } from "next/router";
-import InputText from "@/src/domains/_app/components/Inputs/InputText/InputText";
+import { InputText } from "zephyrus-components";
+import customStyles from "@/src/domains/_app/components/Inputs/InputsCustomStyles.module.css";
 
 export default function PasswordResetForm({ handleTab, token }) {
     const [password, setPassword] = useState("");
@@ -83,6 +84,7 @@ export default function PasswordResetForm({ handleTab, token }) {
                         onChange={(e) => setPassword(e.target.value)}
                         onBlur={(e) => validateData(e)}
                         error={errors.password}
+                        customStyles={customStyles}
                     />
                 </div>
                 <div className={styles.inputWrap}>
@@ -96,6 +98,7 @@ export default function PasswordResetForm({ handleTab, token }) {
                         onChange={(e) => setPasswordConfirm(e.target.value)}
                         onBlur={(e) => validateData(e)}
                         error={errors.confirmPassword}
+                        customStyles={customStyles}
                     />
                 </div>
                 <div className={styles.buttonWrap}>

@@ -8,9 +8,15 @@ import {
     userLogin,
 } from "@/src/application/redux/slices/userSlice.js";
 import { emailValidation } from "@/src/application/utils/validateForms.js";
-import { getError } from "@/src/application/utils/error.js";
+// import { getError } from "@/src/application/utils/error.js";
 import loginUser from "@/src/domains/_app/components/Auth/actions/loginUser.js";
-import InputText from "@/src/domains/_app/components/Inputs/InputText/InputText";
+
+import { InputText } from "zephyrus-components";
+import customStyles from "@/src/domains/_app/components/Inputs/InputsCustomStyles.module.css";
+import TestComponent from "./TestComponent";
+// import defStyles1 from "@/src/domains/_app/components/Inputs/Inputs.module.css";
+// import defStyles2 from "@/src/domains/_app/components/Inputs/InputSelect/InputSelect.module.css";
+// const defaultStyles = { ...defStyles1, ...defStyles2 };
 
 export default function LoginForm({ handleTab }) {
     //================================================================================
@@ -79,6 +85,8 @@ export default function LoginForm({ handleTab }) {
         }
     };
 
+    // const finalStyle = mergeStyles(defaultStyles, customStyles);
+
     //================================================================================
     // Render UI
     //================================================================================
@@ -87,6 +95,23 @@ export default function LoginForm({ handleTab }) {
             <h1>Login</h1>
 
             <form className={styles.form} onSubmit={(e) => handleSubmit(e)}>
+                {/* <div className={finalStyle.testStyle}>
+                    <p>Custom component</p>
+                </div> */}
+
+                {/* <TestComponent
+                    type="email"
+                    name="email"
+                    id="Email"
+                    isMandatory={true}
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    onBlur={(e) => validateData(e)}
+                    error={errors.email}
+                    disabled={false}
+                    customStyles={customStyles}
+                /> */}
+
                 <div className={styles.inputWrap}>
                     <InputText
                         type="email"
@@ -97,6 +122,8 @@ export default function LoginForm({ handleTab }) {
                         onChange={(e) => setEmail(e.target.value)}
                         onBlur={(e) => validateData(e)}
                         error={errors.email}
+                        customStyles={customStyles}
+                        placeholder="Type something..." // delete ?
                     />
                 </div>
                 <div className={styles.inputWrap}>
@@ -109,6 +136,7 @@ export default function LoginForm({ handleTab }) {
                         onChange={(e) => setPassword(e.target.value)}
                         onBlur={(e) => validateData(e)}
                         error={errors.password}
+                        customStyles={customStyles}
                     />
                 </div>
                 <div className={styles.buttonWrap}>
@@ -128,3 +156,39 @@ export default function LoginForm({ handleTab }) {
         </div>
     );
 }
+
+const mergeStyles = (defaultStyles, customStyles) => {
+    /* 
+    const mergedStyles = { ...defaultStyles };
+    console.log("🟢 mergeStyles START: ", {
+        defaultStyles,
+        customStyles,
+    });
+
+    for (const key in defaultStyles) {
+        if (defaultStyles.hasOwnProperty(key)) {
+            mergedStyles[key] = `${defaultStyles[key] || ""} ${
+                customStyles[key]
+            }`.trim();
+        }
+    }
+
+    console.log("🔴 mergeStyles END: ", {
+        mergedStyles,
+    });
+
+    return mergedStyles;
+*/
+    /////////////
+    // const classObjects = [defaultStyles, customStyles];
+    // return classObjects.reduce((acc, classObject) => {
+    //     for (const key in classObject) {
+    //         if (acc[key]) {
+    //             acc[key] += ` ${classObject[key]}`;
+    //         } else {
+    //             acc[key] = classObject[key];
+    //         }
+    //     }
+    //     return acc;
+    // }, {});
+};

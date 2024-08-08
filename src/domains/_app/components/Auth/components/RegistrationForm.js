@@ -15,7 +15,8 @@ import {
 } from "@/src/application/utils/validateForms.js";
 import { getError } from "@/src/application/utils/error.js";
 import createUser from "@/src/domains/_app/components/Auth/actions/createUser.js";
-import InputText from "@/src/domains/_app/components/Inputs/InputText/InputText";
+import { InputText } from "zephyrus-components";
+import customStyles from "@/src/domains/_app/components/Inputs/InputsCustomStyles.module.css";
 
 export default function RegistrationForm({ handleTab }) {
     //================================================================================
@@ -125,6 +126,7 @@ export default function RegistrationForm({ handleTab }) {
                         onChange={(e) => setUserName(e.target.value)}
                         onBlur={(e) => validateData(e)}
                         error={errors.name}
+                        customStyles={customStyles}
                     />
                 </div>
                 <div className={styles.inputWrap}>
@@ -137,6 +139,7 @@ export default function RegistrationForm({ handleTab }) {
                         onChange={(e) => setEmail(e.target.value)}
                         onBlur={(e) => validateData(e)}
                         error={errors.email}
+                        customStyles={customStyles}
                     />
                 </div>
                 <div className={styles.inputWrap}>
@@ -149,6 +152,7 @@ export default function RegistrationForm({ handleTab }) {
                         onChange={(e) => setPassword(e.target.value)}
                         onBlur={(e) => validateData(e)}
                         error={errors.password}
+                        customStyles={customStyles}
                     />
                 </div>
                 <div className={styles.inputWrap}>
@@ -162,6 +166,7 @@ export default function RegistrationForm({ handleTab }) {
                         onChange={(e) => setPasswordConfirm(e.target.value)}
                         onBlur={(e) => validateData(e)}
                         error={errors.confirmPassword}
+                        customStyles={customStyles}
                     />
                 </div>
                 <div className={styles.buttonWrap}>

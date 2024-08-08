@@ -39,7 +39,6 @@ export default function Movie({
             <div className={styles.infoWrap}>
                 <div className={styles.picWrap}>
                     <Image
-                        placeholder={"/no-image.png"}
                         src={pic ? pic : "/no-image.png"}
                         alt={item[nameType]}
                         style={{ objectFit: "cover" }}

@@ -18,8 +18,9 @@ import {
     createObjectURL,
     revokeObjectURL,
 } from "@/src/domains/_app/actions/useLocalImages";
+import customStyles from "@/src/domains/_app/components/Inputs/InputsCustomStyles.module.css";
+import { InputText } from "zephyrus-components";
 import InputImage from "@/src/domains/_app/components/Inputs/InputImage/InputImage";
-import InputText from "@/src/domains/_app/components/Inputs/InputText/InputText";
 import InputFake from "@/src/domains/_app/components/Inputs/InputFake/InputFake";
 import InputRating from "@/src/domains/_app/components/Inputs/InputRating/InputRating";
 import InputDate from "@/src/domains/_app/components/Inputs/InputDate/InputDate";
@@ -122,6 +123,7 @@ export default function MovieForm({ confirmChanges }) {
                         }
                         placeholder="Type the title here..."
                         error={errors.title}
+                        customStyles={customStyles}
                     />
                 </div>
 

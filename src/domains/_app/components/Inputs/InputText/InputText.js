@@ -34,7 +34,7 @@ export default function InputText({
                     value={value}
                     placeholder={placeholder}
                     // className={errors.title && "input-error"}
-                ></input>
+                />
                 <label>
                     {label
                         ? label

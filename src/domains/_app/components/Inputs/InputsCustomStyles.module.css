@@ -1,0 +1,132 @@
+/*** GENERAL STYLES ***/
+.inputRow {
+    --base-text: var(--text);
+    --base-bg000: var(--bg000);
+    --base-bg100: var(--bg100);
+    --base-bg200: var(--bg200);
+    --base-bg300: var(--bg300);
+    --base-bg400: var(--bg400);
+    --base-bg500: var(--bg500);
+    --base-bg600: var(--bg600);
+    --base-bg700: var(--bg700);
+    --base-bg800: var(--bg800);
+    --base-bg900: var(--bg900);
+    --shadow: var(--shadow000);
+    --base-error000: var(--dangerBg000);
+    --base-error100: var(--dangerBg200);
+
+    --placeholder-text: var(--base-bg700);
+    --label-text: var(--base-bg900);
+
+    --input-ready-bg: var(--base-bg300);
+    --input-ready-text: var(--base-bg900);
+    --input-ready-outline: 1px solid var(--base-bg600);
+    --input-ready-bg-hover: var(--base-bg400);
+    --input-ready-text-hover: var(--base-text);
+    --input-ready-outline-hover: 1px solid var(--base-bg800);
+    --input-ready-text-focus: var(--base-text);
+    --input-ready-outline-focus: 1px solid var(--base-bg900);
+
+    --input-error-bg: var(--base-error100);
+    --input-error-outline: 1px solid var(--base-error000);
+
+    --error-message-bg: none;
+    --error-message-text: var(--base-error000);
+    --error-message-outline: 1px solid var(--base-error000);
+
+    --input-disabled-bg: var(--base-bg500);
+    --input-disabled-text: var(--base-bg600);
+    --input-disabled-outline: 1px solid var(--base-bg600);
+}
+
+.inputWrap {
+    height: 54px;
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.input {
+    background: none;
+    border: none;
+    height: 100%;
+    width: 100%;
+    font-size: 17px;
+    border-radius: 12px;
+}
+input.input {
+    padding: 22px 3px 0 12px;
+}
+select.input {
+    padding: 22px 12px 0px 12px;
+    margin-right: 12px;
+    cursor: pointer;
+}
+.input:focus-visible {
+    outline: none;
+    border: none;
+}
+.input::placeholder {
+    font-style: italic;
+    color: var(--placeholder-text);
+}
+.label {
+    font-size: 12px;
+    font-weight: normal;
+    position: absolute;
+    top: 6px;
+    left: 12px;
+    letter-spacing: 0.5px;
+    color: var(--label-text);
+}
+
+/*** INPUT STATUS STYLES ***/
+.input-ready {
+    outline: var(--input-ready-outline);
+    background: var(--input-ready-bg);
+    color: var(--input-ready-text);
+}
+.input-ready:hover {
+    outline: var(--input-ready-outline-hover);
+    /* outline: none; */
+    color: var(--input-ready-text-hover);
+    background: var(--input-ready-bg-hover);
+}
+.input-ready:active,
+.input-ready:focus {
+    color: var(--input-ready-text-focus);
+    outline: var(--input-ready-outline-focus);
+    box-shadow: var(--shadow);
+    border: none;
+}
+
+.input-disabled {
+    outline: var(--input-disabled-outline);
+    background: var(--input-disabled-bg);
+    color: var(--input-disabled-color);
+    cursor: not-allowed;
+}
+.input-error {
+    outline: var(--input-error-outline);
+    background: var(--input-error-bg);
+}
+
+/*** ERROR MESSAGE ***/
+.error-message {
+    background: var(--error-message-bg);
+    color: var(--error-message-text);
+    outline: var(--error-message-outline);
+    padding: 0.2rem 0.75rem 0.4rem 0.75rem;
+    font-size: 13px;
+    margin-top: 0.75rem;
+    margin-bottom: 1rem;
+    border-radius: 12px;
+    font-weight: bold;
+}
+
+/*** SELECT INPUT ***/
+/* .select { } */
+.select > option {
+    color: var(--text-secondary);
+    background: var(--bg200);
+}
