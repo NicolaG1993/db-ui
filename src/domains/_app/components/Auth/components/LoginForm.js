@@ -148,7 +148,11 @@ export default function LoginForm({ handleTab }) {
                     />
                 </div>
                 <div className={styles.buttonWrap}>
-                    <button className="button-standard" type="submit">
+                    <button
+                        className="button-standard"
+                        type="submit"
+                        disabled={errors.email || errors.password}
+                    >
                         Login
                     </button>
                 </div>
