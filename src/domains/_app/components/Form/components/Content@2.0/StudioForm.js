@@ -84,8 +84,8 @@ export default function StudioForm({ confirmChanges }) {
                                 imgFile: newImage,
                             })
                         }
-                        // height={200}
-                        // width={250}
+                        height={200}
+                        width={250}
                         error={errors.pic}
                         customStyles={customStyles}
                     />
