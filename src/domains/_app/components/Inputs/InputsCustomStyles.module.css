@@ -41,6 +41,12 @@
     --input-disabled-bg: var(--base-bg500);
     --input-disabled-text: var(--base-bg600);
     --input-disabled-outline: 1px solid var(--base-bg600);
+
+    --layout-button-bg: var(--base-bg400);
+    --layout-button-text: var(--base-bg900);
+    --layout-button-outline: 1px solid var(--base-bg700);
+    --layout-button-bg-hover: var(--base-bg300);
+    --layout-button-outline-hover: 1px solid var(--bg700);
 }
 
 .inputWrap {
@@ -138,17 +144,18 @@ select.input option {
     height: 100%;
     padding: 15px 19px;
     border-radius: 12px;
-    background: var(--input-ready-bg);
-    color: var(--input-ready-text);
+    background: var(--layout-button-bg);
+    color: var(--layout-button-text);
     border: none;
     font-weight: bold;
     width: 64px;
-    outline: 1px solid var(--input-ready-outline);
+    outline: var(--layout-button-outline);
 }
 .layout-button:hover {
-    background: var(--input-ready-bg-hover);
-    outline: 1px solid var(--input-ready-outline-hover);
+    background: var(--layout-button-bg-hover);
+    outline: var(--layout-button-outline-hover);
     border: none;
+    box-shadow: var(--shadow);
 }
 .layout-button:active,
 .layout-button:focus {
