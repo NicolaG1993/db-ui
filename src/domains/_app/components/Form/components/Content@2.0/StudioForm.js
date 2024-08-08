@@ -14,9 +14,7 @@ import {
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
 import customStyles from "@/src/domains/_app/components/Inputs/InputsCustomStyles.module.css";
-import { InputText } from "zephyrus-components";
-import InputImage from "@/src/domains/_app/components/Inputs/InputImage/InputImage";
-import InputFake from "@/src/domains/_app/components/Inputs/InputFake/InputFake";
+import { InputText, InputImage, InputFake } from "zephyrus-components";
 import {
     createObjectURL,
     revokeObjectURL,
@@ -86,6 +84,10 @@ export default function StudioForm({ confirmChanges }) {
                                 imgFile: newImage,
                             })
                         }
+                        // height={200}
+                        // width={250}
+                        error={errors.pic}
+                        customStyles={customStyles}
                     />
                 </div>
 
@@ -156,6 +158,7 @@ export default function StudioForm({ confirmChanges }) {
                         onClick={() => {
                             dispatch(openSideNav("nationalities"));
                         }}
+                        customStyles={customStyles}
                     />
                 </div>
             </div>

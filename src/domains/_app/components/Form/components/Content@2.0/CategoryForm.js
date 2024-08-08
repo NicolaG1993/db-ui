@@ -1,4 +1,3 @@
-import Image from "next/image";
 import styles from "@/src/domains/_app/components/Form/components/Form.module.css";
 import {
     selectFormPropsData,
@@ -13,8 +12,7 @@ import {
 } from "@/src/application/redux/slices/formSlice";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
-import InputImage from "@/src/domains/_app/components/Inputs/InputImage/InputImage";
-import { InputText } from "zephyrus-components";
+import { InputText, InputImage } from "zephyrus-components";
 import customStyles from "@/src/domains/_app/components/Inputs/InputsCustomStyles.module.css";
 import {
     createObjectURL,
@@ -85,6 +83,10 @@ export default function CategoryForm({ confirmChanges }) {
                                 imgFile: newImage,
                             })
                         }
+                        // height={200}
+                        // width={250}
+                        error={errors.pic}
+                        customStyles={customStyles}
                     />
                 </div>
 

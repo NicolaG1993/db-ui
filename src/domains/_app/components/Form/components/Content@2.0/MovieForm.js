@@ -19,11 +19,13 @@ import {
     revokeObjectURL,
 } from "@/src/domains/_app/actions/useLocalImages";
 import customStyles from "@/src/domains/_app/components/Inputs/InputsCustomStyles.module.css";
-import { InputText } from "zephyrus-components";
-import InputImage from "@/src/domains/_app/components/Inputs/InputImage/InputImage";
-import InputFake from "@/src/domains/_app/components/Inputs/InputFake/InputFake";
-import InputRating from "@/src/domains/_app/components/Inputs/InputRating/InputRating";
-import InputDate from "@/src/domains/_app/components/Inputs/InputDate/InputDate";
+import {
+    InputText,
+    InputDate,
+    InputFake,
+    InputImage,
+    InputRating,
+} from "zephyrus-components";
 
 export default function MovieForm({ confirmChanges }) {
     const formState = useSelector(selectFormState, shallowEqual);
@@ -95,6 +97,8 @@ export default function MovieForm({ confirmChanges }) {
                         }
                         height={200}
                         width={250}
+                        error={errors.pic}
+                        customStyles={customStyles}
                     />
                 </div>
 
@@ -141,6 +145,7 @@ export default function MovieForm({ confirmChanges }) {
                             )
                         }
                         placeholder="Type URL here...   "
+                        customStyles={customStyles}
                     />
                 </div>
 
@@ -173,6 +178,7 @@ export default function MovieForm({ confirmChanges }) {
                         placeholder="Type your rating (max 5.00)"
                         isMandatory={true}
                         error={errors.rating}
+                        customStyles={customStyles}
                     />
                 </div>
 
@@ -189,6 +195,8 @@ export default function MovieForm({ confirmChanges }) {
                             )
                         }
                         value={formState.release ? formState.release : ""}
+                        error={errors.birthday}
+                        customStyles={customStyles}
                     />
                 </div>
 
@@ -204,6 +212,7 @@ export default function MovieForm({ confirmChanges }) {
                         onClick={() => {
                             dispatch(openSideNav("actors"));
                         }}
+                        customStyles={customStyles}
                     />
                 </div>
 
@@ -215,6 +224,7 @@ export default function MovieForm({ confirmChanges }) {
                         onClick={() => {
                             dispatch(openSideNav("categories"));
                         }}
+                        customStyles={customStyles}
                     />
                 </div>
 
@@ -226,6 +236,7 @@ export default function MovieForm({ confirmChanges }) {
                         onClick={() => {
                             dispatch(openSideNav("tags"));
                         }}
+                        customStyles={customStyles}
                     />
                 </div>
 
@@ -237,6 +248,7 @@ export default function MovieForm({ confirmChanges }) {
                         onClick={() => {
                             dispatch(openSideNav("studios"));
                         }}
+                        customStyles={customStyles}
                     />
                 </div>
 
@@ -248,6 +260,7 @@ export default function MovieForm({ confirmChanges }) {
                         onClick={() => {
                             dispatch(openSideNav("distributions"));
                         }}
+                        customStyles={customStyles}
                     />
                 </div>
             </div>

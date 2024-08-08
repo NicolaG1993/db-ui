@@ -19,11 +19,14 @@ import {
 } from "@/src/domains/_app/actions/useLocalImages";
 import { useState } from "react";
 import customStyles from "@/src/domains/_app/components/Inputs/InputsCustomStyles.module.css";
-import { InputText, InputSelect } from "zephyrus-components";
-import InputImage from "@/src/domains/_app/components/Inputs/InputImage/InputImage";
-import InputFake from "@/src/domains/_app/components/Inputs/InputFake/InputFake";
-import InputRating from "@/src/domains/_app/components/Inputs/InputRating/InputRating";
-import InputDate from "@/src/domains/_app/components/Inputs/InputDate/InputDate";
+import {
+    InputText,
+    InputSelect,
+    InputDate,
+    InputFake,
+    InputImage,
+    InputRating,
+} from "zephyrus-components";
 
 export default function ActorForm({ confirmChanges }) {
     const formState = useSelector(selectFormState, shallowEqual);
@@ -116,6 +119,10 @@ export default function ActorForm({ confirmChanges }) {
                                 imgFile: newImage,
                             })
                         }
+                        // height={200}
+                        // width={250}
+                        error={errors.pic}
+                        customStyles={customStyles}
                     />
                 </div>
 
@@ -189,6 +196,8 @@ export default function ActorForm({ confirmChanges }) {
                             )
                         }
                         value={formState.birthday}
+                        error={errors.birthday}
+                        customStyles={customStyles}
                     />
                 </div>
 
@@ -221,6 +230,7 @@ export default function ActorForm({ confirmChanges }) {
                         placeholder="Type your rating (max 5.00)"
                         isMandatory={true}
                         error={errors.rating}
+                        customStyles={customStyles}
                     />
                 </div>
 
@@ -263,6 +273,7 @@ export default function ActorForm({ confirmChanges }) {
                         onClick={() => {
                             dispatch(openSideNav("tags"));
                         }}
+                        customStyles={customStyles}
                     />
                 </div>
 
@@ -274,6 +285,7 @@ export default function ActorForm({ confirmChanges }) {
                         onClick={() => {
                             dispatch(openSideNav("nationalities"));
                         }}
+                        customStyles={customStyles}
                     />
                 </div>
             </div>
