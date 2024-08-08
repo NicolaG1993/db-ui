@@ -13,10 +13,6 @@ import loginUser from "@/src/domains/_app/components/Auth/actions/loginUser.js";
 
 import { InputText } from "zephyrus-components";
 import customStyles from "@/src/domains/_app/components/Inputs/InputsCustomStyles.module.css";
-import TestComponent from "./TestComponent";
-// import defStyles1 from "@/src/domains/_app/components/Inputs/Inputs.module.css";
-// import defStyles2 from "@/src/domains/_app/components/Inputs/InputSelect/InputSelect.module.css";
-// const defaultStyles = { ...defStyles1, ...defStyles2 };
 
 export default function LoginForm({ handleTab }) {
     //================================================================================
@@ -38,37 +34,72 @@ export default function LoginForm({ handleTab }) {
     // Functions
     //================================================================================
     const validateData = (e) => {
-        e.preventDefault();
         const { id, name, value } = e.target;
 
-        let newErrObj = { ...errors };
+        let error = "";
         if (id === "Email") {
-            const resp = emailValidation(value);
-            if (resp) {
-                setErrors({ ...errors, [name]: resp });
+            error = emailValidation(value);
+        } else if (id === "Password" && !value) {
+            error = "Password is required";
+        }
+
+        setErrors((prevErrors) => {
+            const newErrors = { ...prevErrors };
+            if (error) {
+                newErrors[name] = error;
             } else {
-                delete newErrObj[name];
-                setErrors(newErrObj);
+                delete newErrors[name];
             }
+            return newErrors;
+        });
+    };
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+
+        // Clear the error for the field that is being typed in
+        setErrors((prevErrors) => {
+            const newErrors = { ...prevErrors };
+            delete newErrors[name];
+            return newErrors;
+        });
+
+        if (name === "email") {
+            setEmail(value);
+        } else if (name === "password") {
+            setPassword(value);
         }
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if (Object.keys(errors).length === 0) {
+        let isValid = true;
+
+        // Validate email
+        const emailError = emailValidation(email);
+        if (emailError) {
+            setErrors((prevErrors) => ({ ...prevErrors, email: emailError }));
+            isValid = false;
+        }
+
+        // Validate password
+        if (!password) {
+            setErrors((prevErrors) => ({
+                ...prevErrors,
+                password: "Password is required",
+            }));
+            isValid = false;
+        }
+
+        if (isValid) {
             try {
                 const resp = await loginUser(email, password);
                 dispatch(userLogin(resp));
                 // router.push("/");
             } catch (err) {
-                // console.log("Login error: ", err);
-                // alert(getError(err));
-
                 const errorCode = err.response?.data?.code;
                 const errorMessage = err.response?.data?.error;
                 if (errorCode === "EMAIL_NOT_VERIFIED") {
-                    // router.push(`/unverified-email?email=${formData.email}`);
-                    // router.push(`/account/verify`);
                     handleTab("notVerified");
                 } else if (
                     errorCode === "EMAIL_NOT_FOUND" ||
@@ -76,16 +107,11 @@ export default function LoginForm({ handleTab }) {
                 ) {
                     alert(errorMessage);
                 } else {
-                    console.log("Login error: ", err);
-                    // setErrors({ ...errors, response: true });
-                    // alert(getError(err));
                     alert("Server error, try again.");
                 }
             }
         }
     };
-
-    // const finalStyle = mergeStyles(defaultStyles, customStyles);
 
     //================================================================================
     // Render UI
@@ -95,23 +121,6 @@ export default function LoginForm({ handleTab }) {
             <h1>Login</h1>
 
             <form className={styles.form} onSubmit={(e) => handleSubmit(e)}>
-                {/* <div className={finalStyle.testStyle}>
-                    <p>Custom component</p>
-                </div> */}
-
-                {/* <TestComponent
-                    type="email"
-                    name="email"
-                    id="Email"
-                    isMandatory={true}
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    onBlur={(e) => validateData(e)}
-                    error={errors.email}
-                    disabled={false}
-                    customStyles={customStyles}
-                /> */}
-
                 <div className={styles.inputWrap}>
                     <InputText
                         type="email"
@@ -119,11 +128,10 @@ export default function LoginForm({ handleTab }) {
                         id="Email"
                         isMandatory={true}
                         value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        onBlur={(e) => validateData(e)}
+                        onChange={handleChange}
+                        onBlur={validateData}
                         error={errors.email}
                         customStyles={customStyles}
-                        placeholder="Type something..." // delete ?
                     />
                 </div>
                 <div className={styles.inputWrap}>
@@ -133,14 +141,16 @@ export default function LoginForm({ handleTab }) {
                         id="Password"
                         isMandatory={true}
                         value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        onBlur={(e) => validateData(e)}
+                        onChange={handleChange}
+                        onBlur={validateData}
                         error={errors.password}
                         customStyles={customStyles}
                     />
                 </div>
                 <div className={styles.buttonWrap}>
-                    <button className="button-standard">Login</button>
+                    <button className="button-standard" type="submit">
+                        Login
+                    </button>
                 </div>
             </form>
 
@@ -156,39 +166,3 @@ export default function LoginForm({ handleTab }) {
         </div>
     );
 }
-
-const mergeStyles = (defaultStyles, customStyles) => {
-    /* 
-    const mergedStyles = { ...defaultStyles };
-    console.log("🟢 mergeStyles START: ", {
-        defaultStyles,
-        customStyles,
-    });
-
-    for (const key in defaultStyles) {
-        if (defaultStyles.hasOwnProperty(key)) {
-            mergedStyles[key] = `${defaultStyles[key] || ""} ${
-                customStyles[key]
-            }`.trim();
-        }
-    }
-
-    console.log("🔴 mergeStyles END: ", {
-        mergedStyles,
-    });
-
-    return mergedStyles;
-*/
-    /////////////
-    // const classObjects = [defaultStyles, customStyles];
-    // return classObjects.reduce((acc, classObject) => {
-    //     for (const key in classObject) {
-    //         if (acc[key]) {
-    //             acc[key] += ` ${classObject[key]}`;
-    //         } else {
-    //             acc[key] = classObject[key];
-    //         }
-    //     }
-    //     return acc;
-    // }, {});
-};

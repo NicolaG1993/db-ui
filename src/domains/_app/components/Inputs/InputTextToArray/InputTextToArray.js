@@ -4,7 +4,8 @@
 import { useState } from "react";
 import inputsStyles from "@/src/domains/_app/components/Inputs/Inputs.module.css";
 import componentStyles from "@/src/domains/_app/components/Inputs/InputTextToArray/InputTextToArray.module.css";
-import ErrorMessage from "../ErrorMessage/ErrorMessage";
+import { ErrorMessage } from "zephyrus-components";
+import customStyles from "@/src/domains/_app/components/Inputs/InputsCustomStyles.module.css";
 let styles = { ...inputsStyles, ...componentStyles };
 // import styles from "@/src/application/styles/AdminDashboard.module.css";
 
@@ -74,7 +75,9 @@ export default function InputTextToArray({
                 </button>
             </div>
 
-            {error && <ErrorMessage error={error} />}
+            {error && (
+                <ErrorMessage error={error} customStyles={customStyles} />
+            )}
 
             {formState[name] && !!formState[name]?.length && (
                 <div className={styles["input-sub-wrap"]}>

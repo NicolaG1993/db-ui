@@ -1,6 +1,7 @@
 import componentStyles from "@/src/domains/_app/components/Inputs/InputDate/InputDate.module.css";
 import inputsStyles from "@/src/domains/_app/components/Inputs/Inputs.module.css";
-import ErrorMessage from "../ErrorMessage/ErrorMessage";
+import { ErrorMessage } from "zephyrus-components";
+import customStyles from "@/src/domains/_app/components/Inputs/InputsCustomStyles.module.css";
 let styles = { ...inputsStyles, ...componentStyles };
 
 export default function InputDate({
@@ -31,7 +32,9 @@ export default function InputDate({
                 </label>
             </div>
 
-            {error && <ErrorMessage error={error} />}
+            {error && (
+                <ErrorMessage error={error} customStyles={customStyles} />
+            )}
         </>
     );
 }

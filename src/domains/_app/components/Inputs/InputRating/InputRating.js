@@ -1,6 +1,7 @@
 import inputsStyles from "@/src/domains/_app/components/Inputs/Inputs.module.css";
 import componentStyles from "@/src/domains/_app/components/Inputs/InputRating/InputRating.module.css";
-import ErrorMessage from "../ErrorMessage/ErrorMessage";
+import { ErrorMessage } from "zephyrus-components";
+import customStyles from "@/src/domains/_app/components/Inputs/InputsCustomStyles.module.css";
 let styles = { ...inputsStyles, ...componentStyles };
 
 export default function InputRating({
@@ -40,7 +41,9 @@ export default function InputRating({
                 </label>
             </div>
 
-            {error && <ErrorMessage error={error} />}
+            {error && (
+                <ErrorMessage error={error} customStyles={customStyles} />
+            )}
         </>
     );
 }

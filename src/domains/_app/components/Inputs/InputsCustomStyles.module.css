@@ -1,6 +1,7 @@
 /*** GENERAL STYLES ***/
 .inputRow {
     --base-text: var(--text);
+    --base-text-secondary: var(--text-secondary);
     --base-bg000: var(--bg000);
     --base-bg100: var(--bg100);
     --base-bg200: var(--bg200);
@@ -17,6 +18,8 @@
 
     --placeholder-text: var(--base-bg700);
     --label-text: var(--base-bg900);
+    --select-option-bg: var(--base-bg200);
+    --select-option-text: var(--base-text-secondary);
 
     --input-ready-bg: var(--base-bg300);
     --input-ready-text: var(--base-bg900);
@@ -61,6 +64,10 @@ select.input {
     padding: 22px 12px 0px 12px;
     margin-right: 12px;
     cursor: pointer;
+}
+select.input option {
+    color: var(--select-option-text);
+    background: var(--select-option-bg);
 }
 .input:focus-visible {
     outline: none;
@@ -122,11 +129,4 @@ select.input {
     margin-bottom: 1rem;
     border-radius: 12px;
     font-weight: bold;
-}
-
-/*** SELECT INPUT ***/
-/* .select { } */
-.select > option {
-    color: var(--text-secondary);
-    background: var(--bg200);
 }

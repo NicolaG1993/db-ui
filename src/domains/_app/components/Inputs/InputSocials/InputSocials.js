@@ -2,9 +2,10 @@ import { useEffect, useState } from "react";
 import componentStyles from "@/src/domains/_app/components/Inputs/InputSocials/InputSocials.module.css";
 import inputsStyles from "@/src/domains/_app/components/Inputs/Inputs.module.css";
 let styles = { ...inputsStyles, ...componentStyles };
-import ErrorMessage from "../ErrorMessage/ErrorMessage";
 import SocialElement from "./SocialElement";
 import InputField from "./InputField";
+import { ErrorMessage } from "zephyrus-components";
+import customStyles from "@/src/domains/_app/components/Inputs/InputsCustomStyles.module.css";
 
 const countLinks = (formState) => {
     console.log("🔥 countLinks invoked! ", { formState });
@@ -157,7 +158,9 @@ export default function InputSocials({
                 )}
             </div>
 
-            {error && <ErrorMessage error={error} />}
+            {error && (
+                <ErrorMessage error={error} customStyles={customStyles} />
+            )}
 
             {totSelected > 0 && (
                 <div className={styles["input-sub-wrap"]}>
