@@ -1,13 +1,12 @@
 import styles from "@/src/domains/_app/components/Form/components/Form.module.css";
 import { useState } from "react";
-import InputTextToArray from "@/src/domains/_app/components/Inputs/InputTextToArray/InputTextToArray";
 import {
     selectFormState,
     selectFormStoreErrors,
     selectFormStoreSettings,
     selectFormPropsData,
     validateForm,
-    selectFormIsLoadingResponse,
+    // selectFormIsLoadingResponse,
     updateFormState,
     openSideNav,
     selectFormIsLoading,
@@ -25,6 +24,7 @@ import {
     InputFake,
     InputImage,
     InputRating,
+    InputTextToArray,
 } from "zephyrus-components";
 
 export default function MovieForm({ confirmChanges }) {
@@ -33,10 +33,10 @@ export default function MovieForm({ confirmChanges }) {
     const form = useSelector(selectFormStoreSettings, shallowEqual);
     const errors = useSelector(selectFormStoreErrors, shallowEqual);
     let isLoading = useSelector(selectFormIsLoading, shallowEqual);
-    const isLoadingResponse = useSelector(
-        selectFormIsLoadingResponse,
-        shallowEqual
-    );
+    // const isLoadingResponse = useSelector(
+    //     selectFormIsLoadingResponse,
+    //     shallowEqual
+    // );
     const isFinish = useSelector(selectFormIsFinish, shallowEqual);
 
     const dispatch = useDispatch();

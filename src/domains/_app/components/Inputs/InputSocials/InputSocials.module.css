@@ -48,7 +48,7 @@
 }
 
 /* CUSTOM (?) */
-.openInputBtn {
+/* .openInputBtn {
     margin-bottom: 0.75rem;
 }
 
@@ -97,6 +97,7 @@
 .urlsWrap > .socialElement p:nth-child(2):hover {
     color: var(--bg900);
 }
+ */
 
 /* UNIQUE */
 .double-button-wrap {

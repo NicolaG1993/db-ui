@@ -11,7 +11,7 @@ import { emailValidation } from "@/src/application/utils/validateForms.js";
 // import { getError } from "@/src/application/utils/error.js";
 import loginUser from "@/src/domains/_app/components/Auth/actions/loginUser.js";
 
-import { InputText } from "zephyrus-components";
+import { Button, InputText } from "zephyrus-components";
 import customStyles from "@/src/domains/_app/components/Inputs/InputsCustomStyles.module.css";
 
 export default function LoginForm({ handleTab }) {
@@ -148,13 +148,13 @@ export default function LoginForm({ handleTab }) {
                     />
                 </div>
                 <div className={styles.buttonWrap}>
-                    <button
-                        className="button-standard"
+                    <Button
                         type="submit"
                         disabled={errors.email || errors.password}
-                    >
-                        Login
-                    </button>
+                        size="medium"
+                        label="Login"
+                        customStyles={customStyles}
+                    />
                 </div>
             </form>
 

@@ -1,5 +1,4 @@
 import styles from "@/src/domains/_app/components/Form/components/Form.module.css";
-import InputSocials from "@/src/domains/_app/components/Inputs/InputSocials/InputSocials";
 import {
     selectFormPropsData,
     selectFormState,
@@ -26,6 +25,7 @@ import {
     InputFake,
     InputImage,
     InputRating,
+    InputSocials,
 } from "zephyrus-components";
 
 export default function ActorForm({ confirmChanges }) {
@@ -258,6 +258,7 @@ export default function ActorForm({ confirmChanges }) {
                         placeholder={"Insert social link here..."}
                         // 🧠 anche per error dobbiamo creare un oggetto a parte, oppure avere errors.socials
                         // 🧠 FIX: NON ABBIAMO errors.socials 🧠
+                        customStyles={customStyles}
                     />
                 </div>
 

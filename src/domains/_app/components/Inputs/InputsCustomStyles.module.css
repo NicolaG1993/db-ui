@@ -1,5 +1,5 @@
 /*** GENERAL STYLES ***/
-.inputRow {
+.root {
     --base-text: var(--text);
     --base-text-secondary: var(--text-secondary);
     --base-bg000: var(--bg000);
@@ -15,7 +15,8 @@
     --shadow: var(--shadow000);
     --base-error000: var(--dangerBg000);
     --base-error100: var(--dangerBg200);
-
+}
+.inputRow {
     --placeholder-text: var(--base-bg700);
     --label-text: var(--base-bg900);
     --select-option-bg: var(--base-bg200);
@@ -41,12 +42,6 @@
     --input-disabled-bg: var(--base-bg500);
     --input-disabled-text: var(--base-bg600);
     --input-disabled-outline: 1px solid var(--base-bg600);
-
-    --layout-button-bg: var(--base-bg400);
-    --layout-button-text: var(--base-bg900);
-    --layout-button-outline: 1px solid var(--base-bg700);
-    --layout-button-bg-hover: var(--base-bg300);
-    --layout-button-outline-hover: 1px solid var(--bg700);
 }
 
 .inputWrap {
@@ -58,7 +53,8 @@
 .extendendInputWrap {
     height: 54px;
     display: grid;
-    grid-template-columns: auto 64px;
+    grid-template-columns: 1fr 64px;
+    position: relative;
 }
 .extendendInputWrap > .input {
     margin-right: 15px; /* only for InputFake layout */
@@ -142,7 +138,6 @@ select.input option {
 }
 
 /*** INPUT STATUS ELEMENTS ***/
-
 .fake-value {
     color: var(--input-ready-text);
     width: 100%;
@@ -155,29 +150,6 @@ select.input option {
 .input-ready:hover > .fake-value {
     color: var(--input-ready-text-hover);
     outline: none; /* ? */
-}
-.layout-button {
-    height: 100%;
-    padding: 15px 19px;
-    border-radius: 12px;
-    background: var(--layout-button-bg);
-    color: var(--layout-button-text);
-    border: none;
-    font-weight: bold;
-    width: 64px;
-    outline: var(--layout-button-outline);
-}
-.layout-button:hover {
-    background: var(--layout-button-bg-hover);
-    outline: var(--layout-button-outline-hover);
-    border: none;
-    box-shadow: var(--shadow);
-}
-.layout-button:active,
-.layout-button:focus {
-    background: var(--input-ready-bg-focus);
-    border: none;
-    box-shadow: var(--shadow);
 }
 
 /*** ERROR MESSAGE ***/
@@ -235,15 +207,12 @@ select.input option {
     /* background-color: var(--input-disabled-bg); */
 }
 
-/* TESTING 👇 */
 .imageInputWrap > input:focus + label {
     /* background: var(--input-ready-bg-focus); */
     border: none;
     outline: none;
     box-shadow: var(--shadow);
 }
-/* TESTING ☝️ */
-
 .imageInputWrap > label:hover {
     /* color: var(--input-ready-outline-hover); */
     /* background-color: var(--input-disabled-bg); */
@@ -288,5 +257,79 @@ select.input option {
 }
 .imageWrap > .deleteImage:hover {
     background-color: var(--input-ready-bg-focus);
-    color: var(--base-text);
+    color: var(--input-ready-text-hover);
+}
+
+/*** INPUT SOCIALS ***/
+.complexInputWrap > .input {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-right: 15px;
+    width: auto;
+}
+.complexInputWrap > .input > input {
+    background: none;
+    border: none;
+    height: 100%;
+    width: auto;
+    padding: 22px 3px 0 12px;
+    font-size: 17px;
+    border-radius: 12px 0 0 12px;
+    flex-grow: 1;
+}
+.complexInputWrap > .input > select {
+    width: 120px;
+    height: 100%;
+    border-radius: 0 12px 12px 0;
+    background: var(--input-ready-bg);
+    border: none;
+    border-left: var(--input-ready-outline);
+    padding: 0 0.5rem 0 0.5rem;
+}
+.complexInputWrap > .input > select > option {
+}
+.doubleButtonWrap {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    /* width: 150px; */
+}
+.doubleButtonWrap > button:first-child {
+    margin-right: 15px;
+}
+
+/*** SUB WRAP ***/
+/* used for InputTextToArray and InputSocials */
+.inputSubWrap {
+    margin: 15px calc(15px + 64px) 0 15px;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    /* padding: 6px 12px; */
+    background: var(--input-ready-bg);
+    /* align-items: center; */
+    outline: var(--input-ready-outline);
+    padding: 6px 0;
+}
+.inputSubWrapRow {
+    display: flex;
+    align-items: center;
+    margin: 6px 12px;
+}
+.inputSubWrapRow > input {
+    margin-right: 10px;
+    padding: 10px 12px 10px 12px;
+    border-radius: 9px;
+    background: var(--input-ready-bg);
+    color: var(--input-ready-color);
+    border: var(--input-ready-outline);
+}
+.inputSubWrapRow > input:hover,
+.inputSubWrapRow > input:focus {
+    background: var(--input-ready-bg);
+    color: var(--input-ready-text-focus);
+    /* box-shadow: 0px 0px 5px 0.5px var(--base-text); */
+    /* border: none; */
+    outline: none;
 }
