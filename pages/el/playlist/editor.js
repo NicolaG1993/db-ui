@@ -17,7 +17,7 @@ import {
 } from "@/src/application/redux/slices/formSlice";
 import PlaylistEditor from "@/src/domains/playlists/components/PlaylistEditor/PlaylistEditor";
 import Modal from "@/src/domains/_app/components/Modal/Modal";
-import { Button, TrashIcon } from "zephyrus-components";
+import { Button, IconTrash } from "zephyrus-components";
 import customStyles from "@/src/application/styles/Zephyrus.module.css";
 
 export default function EditorPlaylist() {
@@ -74,7 +74,7 @@ export default function EditorPlaylist() {
                     label="All playlists"
                     customStyles={customStyles}
                     onClick={() => router.push("/el/playlist/tournament")}
-                    icon={<TrashIcon />}
+                    icon={<IconTrash />}
                 />
             </div>
 

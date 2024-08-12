@@ -25,7 +25,6 @@ import SessionPlaylistButton from "./components/Widgets/SessionPlaylistButton";
 import { selectItemIsLoading } from "@/src/application/redux/slices/itemSlice";
 import AppBlur from "@/src/domains/_app/constants/components/AppBlur/AppBlur";
 import Tooltip from "@/src/domains/_app/constants/components/Tooltip/Tooltip";
-import Drawer from "../components/Drawer/Drawer";
 import SideNavMenu from "./components/SideNavMenu/SideNavMenu";
 // import { useErrorBoundary } from "react-error-boundary";
 import Modal from "@/src/domains/_app/components/Modal/Modal";
@@ -36,6 +35,7 @@ import {
 } from "@/src/application/redux/slices/formSlice";
 import DataFormWrap from "./components/SideNavMenu/components/DataFormWrap";
 import customStyles from "@/src/application/styles/Zephyrus.module.css";
+import { Drawer } from "zephyrus-components";
 
 export default function Layout({ children }) {
     //================================================================================
@@ -94,8 +94,17 @@ export default function Layout({ children }) {
         }
     };
 
-    const toggleDrawer = () => {
-        setIsDrawerOpen(!isDrawerOpen);
+    const openDrawer = (e, invoker) => {
+        console.log("openDrawer: ", { isDrawerOpen, invoker });
+        e.stopPropagation();
+        !isDrawerOpen && setIsDrawerOpen(true);
+    };
+    const closeDrawer = (e, invoker) => {
+        console.log("closeDrawer: ", { isDrawerOpen, invoker });
+        e.stopPropagation();
+        setTimeout(() => {
+            isDrawerOpen && setIsDrawerOpen(false);
+        }, 150);
     };
 
     const showTooltip = (title, text, e) => {
@@ -149,6 +158,10 @@ export default function Layout({ children }) {
         }
     }, [process.env.CUSTOM_SETTINGS]);
 
+    useEffect(() => {
+        console.log("🔥 isDrawerOpen is changed: ", isDrawerOpen);
+    }, [isDrawerOpen]);
+
     //================================================================================
     // Render UI
     //================================================================================
@@ -186,7 +199,9 @@ export default function Layout({ children }) {
                     {showLoadingScreen && <AppBlur visible={itemIsLoading} />}
 
                     <Header
-                        openDrawer={toggleDrawer}
+                        isDrawerOpen={isDrawerOpen}
+                        openDrawer={openDrawer}
+                        closeDrawer={closeDrawer}
                         showTooltip={showTooltip}
                         hideTooltip={hideTooltip}
                     />
@@ -198,11 +213,12 @@ export default function Layout({ children }) {
                     </Modal>
                     <Drawer
                         isOpen={isDrawerOpen}
-                        onClose={toggleDrawer}
+                        onClose={closeDrawer}
                         title={"Menu"}
                         customStyles={customStyles}
+                        showCloseButton={false}
                     >
-                        <SideNavMenu onClose={toggleDrawer} />
+                        <SideNavMenu onClose={closeDrawer} />
                     </Drawer>
                     {children({ showTooltip })}
                     <Footer />

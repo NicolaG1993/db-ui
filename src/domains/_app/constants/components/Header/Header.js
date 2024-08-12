@@ -7,7 +7,7 @@ import { activateLoadingItem } from "@/src/application/redux/slices/itemSlice";
 import getRandomMovie from "@/src/domains/_app/actions/getRandomMovie";
 // import { useErrorBoundary } from "react-error-boundary";
 
-export default function Header({ openDrawer }) {
+export default function Header({ isDrawerOpen, openDrawer, closeDrawer }) {
     const dispatch = useDispatch();
     const router = useRouter();
     // const { showBoundary } = useErrorBoundary();
@@ -125,7 +125,15 @@ export default function Header({ openDrawer }) {
                         onMouseEnter={() => seMenuOpen(false)}
                         onMouseLeave={() => seMenuOpen(false)}
                     >
-                        <p onClick={() => openDrawer()}>⚙️</p>
+                        <p
+                            onClick={(e) =>
+                                !isDrawerOpen
+                                    ? openDrawer(e, "Header")
+                                    : closeDrawer(e, "Header")
+                            }
+                        >
+                            {!isDrawerOpen ? "⚙️" : "X"}
+                        </p>
                         {/* <Link href="/admin/dashboard">Dashboard</Link> */}
                     </li>
                 </ul>

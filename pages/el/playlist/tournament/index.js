@@ -414,7 +414,7 @@ export default function TournamentSession() {
                                 !settingsForm.totContenders ||
                                 settingsForm.totContenders < 4
                             }
-                            // icon={<TrashIcon />}
+                            // icon={<IconTrash />}
                         />
                     </div>
                 </div>

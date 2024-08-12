@@ -122,11 +122,11 @@ export default function SideNavMenu({ onClose }) {
                     type="button"
                     label={"+ Add Data"}
                     customStyles={customStyles}
-                    onClick={() => {
+                    onClick={(e) => {
                         dispatch(resetFormStore()); // cleanup formState
                         dispatch(openForm()); // open Form UI
                         // setAddForm(true);
-                        onClose();
+                        onClose(e);
                     }}
                 />
                 <Button

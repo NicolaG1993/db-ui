@@ -10,7 +10,7 @@ import deletePlaylist from "@/src/domains/playlists/actions/deletePlaylist.js";
 
 import styles from "@/src/application/styles/Records.module.css"; // 🧠❌ Wrong file location, create a separate one or move rest to global
 import { useRouter } from "next/router";
-import { Button, TrashIcon } from "zephyrus-components";
+import { Button, IconTrash } from "zephyrus-components";
 import customStyles from "@/src/application/styles/Zephyrus.module.css";
 
 export default function Playlists() {
@@ -65,14 +65,14 @@ export default function Playlists() {
                         label="Session playlist editor"
                         customStyles={customStyles}
                         onClick={() => router.push("/el/playlist/editor")}
-                        icon={<TrashIcon />}
+                        icon={<IconTrash />}
                     />
                     <Button
                         size="large"
                         label="Tournament Session"
                         customStyles={customStyles}
                         onClick={() => router.push("/el/playlist/tournament")}
-                        icon={<TrashIcon />}
+                        icon={<IconTrash />}
                     />
                 </div>
             </div>

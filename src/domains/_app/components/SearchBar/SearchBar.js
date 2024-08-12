@@ -20,11 +20,11 @@ export default function SearchBar({
             ></input>
             <Button
                 size="medium"
-                onClick={clearResults}
+                // onClick={() => {}} // TODO: Was never implemented 🧠
                 type="button"
                 label="SEARCH"
                 customStyles={customStyles}
-                // id={styles.SearchBtn}
+                // id={styles.SearchBtn} // 🔴 TODO: This btn style migth needs to be unique
             />
         </div>
     );

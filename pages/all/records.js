@@ -10,7 +10,7 @@ import Form from "@/src/domains/_app/components/Form/components/Form";
 import ToggleSwitch from "@/src/domains/_app/components/ToggleSwitch/ToggleSwitch";
 import Modal from "@/src/domains/_app/components/Modal/Modal";
 import axiosAuthInstance from "@/src/application/utils/axiosAuthInstance";
-import { Button, TrashIcon } from "zephyrus-components";
+import { Button, IconTrash } from "zephyrus-components";
 import customStyles from "@/src/application/styles/Zephyrus.module.css";
 
 const fetchData = async () => {
@@ -106,7 +106,7 @@ export default function Records() {
                                                     setOpenForm(true)
                                                 )}
                                                 size="x-small"
-                                                icon={<TrashIcon />}
+                                                icon={<IconTrash />}
                                                 // label={"X"}
                                                 customStyles={customStyles}
                                             />
@@ -117,7 +117,7 @@ export default function Records() {
                                                     setOpenForm(true)
                                                 )}
                                                 size="x-small"
-                                                icon={<TrashIcon />}
+                                                icon={<IconTrash />}
                                                 // label={"Edit"}
                                                 customStyles={customStyles}
                                             />
@@ -172,7 +172,7 @@ export default function Records() {
                                                         setOpenForm(true)
                                                     )}
                                                     size="x-small"
-                                                    icon={<TrashIcon />}
+                                                    icon={<IconTrash />}
                                                     // label={"Edit"}
                                                     customStyles={customStyles}
                                                 />
@@ -183,7 +183,7 @@ export default function Records() {
                                                         handleDelete(el.id)
                                                     )}
                                                     size="x-small"
-                                                    icon={<TrashIcon />}
+                                                    icon={<IconTrash />}
                                                     // label={"X"}
                                                     customStyles={customStyles}
                                                 />
