@@ -1,9 +1,11 @@
 import styles from "@/src/application/styles/Element.module.css";
 import Link from "next/link";
 import Image from "next/image";
-import Form from "@/src/domains/_app/components/Form/components/Form";
+// import Form from "@/src/domains/_app/components/Form/components/Form";
 import RelationsList from "@/src/domains/el/components/RelationsList/RelationsList";
-import Modal from "@/src/domains/_app/components/Modal/Modal";
+// import Modal from "@/src/domains/_app/components/Modal/Modal";
+import { Button } from "zephyrus-components";
+import customStyles from "@/src/application/styles/Zephyrus.module.css";
 
 export default function Category({
     label,
@@ -110,18 +112,21 @@ export default function Category({
                 </div>
 
                 <div className={styles.buttonsWrap}>
-                    <button
+                    <Button
+                        size="medium"
+                        type="button"
+                        label="Modify"
+                        customStyles={customStyles}
                         onClick={() => setFormIsOpen(true, item)}
-                        className="button-standard"
-                    >
-                        Modify
-                    </button>
-                    <button
+                    />
+                    <Button
+                        size="medium"
+                        type="button"
+                        label="Delete"
+                        customStyles={customStyles}
                         onClick={() => handleDelete(id)}
-                        className="button-danger"
-                    >
-                        Delete
-                    </button>
+                        colorScheme="danger"
+                    />
                 </div>
             </div>
 

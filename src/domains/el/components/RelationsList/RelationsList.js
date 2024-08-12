@@ -4,6 +4,8 @@ import Card from "@/src/domains/_app/components/Card/Card";
 import { useEffect, useState, useRef } from "react";
 import fetchRelationsPage from "@/src/domains/el/actions/fetchRelationsPage";
 import dataStructureItems from "@/src/application/settings/dataStructureItems";
+import { Button } from "zephyrus-components";
+import customStyles from "@/src/application/styles/Zephyrus.module.css";
 
 export default function RelationsList({
     itemName,
@@ -131,34 +133,42 @@ export default function RelationsList({
 
     return (
         <div className={styles.relationList} ref={scrollContainerRef}>
-            {/* <button
+            {/* <Button
+                size="medium"
+                type="button"
+                label="Sort by Title Ascending"
+                customStyles={customStyles}
                 onClick={() =>
                     updateFilters({ order: "title", direction: "asc" })
                 }
-            >
-                Sort by Title Ascending
-            </button>
-            <button
+            />
+            <Button
+                size="medium"
+                type="button"
+                label="Sort by Title Descending"
+                customStyles={customStyles}
                 onClick={() =>
                     updateFilters({ order: "title", direction: "desc" })
                 }
-            >
-                Sort by Title Descending
-            </button>
-            <button
+            />
+            <Button
+                size="medium"
+                type="button"
+                label="Sort by Date Ascending"
+                customStyles={customStyles}
                 onClick={() =>
-                    updateFilters({ order: "date", direction: "asc" })
+                    updateFilters({ order: "title", direction: "desc" })
                 }
-            >
-                Sort by Date Ascending
-            </button>
-            <button
+            />
+            <Button
+                size="medium"
+                type="button"
+                label="Sort by Date Descending"
+                customStyles={customStyles}
                 onClick={() =>
                     updateFilters({ order: "date", direction: "desc" })
                 }
-            >
-                Sort by Date Descending
-            </button> */}
+            /> */}
 
             <div className={styles.relationsGrid}>
                 {data?.map((el, i) => (

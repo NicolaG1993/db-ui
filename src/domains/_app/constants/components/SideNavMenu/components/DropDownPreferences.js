@@ -5,8 +5,15 @@ import styles from "@/src/domains/_app/constants/components/SideNavMenu/SideNavM
 // the problem right now is that i believe we are using them somewhere else / non ho voglia di sistemarlo ora, sto facendo altro
 import adminDashboardtyles from "@/src/application/styles/AdminDashboard.module.css";
 import allThemes from "@/src/application/settings/allThemes";
-import CustomDropdown from "@/src/domains/_app/components/Inputs/CustomDropdown/CustomDropdown";
+// import CustomDropdown from "@/src/domains/_app/components/Inputs/CustomDropdown/CustomDropdown";
 import { useAppContext } from "@/src/domains/_app/contexts/AppContext";
+import { InputSelectCustom } from "zephyrus-components";
+import customStyles from "@/src/application/styles/Zephyrus.module.css";
+
+const extractThemeName = (allThemes, themeTag) => {
+    const theme = allThemes.find((el) => el.tag === themeTag);
+    return theme?.name || "";
+};
 
 export default function DropDownPreferences({ userId }) {
     const { showScrollbars, theme, updateSettings } = useAppContext();
@@ -42,9 +49,9 @@ export default function DropDownPreferences({ userId }) {
                 </label>
                 <label>
                     <span className={styles.label}>Theme:</span>
-                    <CustomDropdown
+                    <InputSelectCustom
                         options={allThemes}
-                        selectedValue={theme}
+                        selectedValue={extractThemeName(allThemes, theme)}
                         onSelect={(themeTag) =>
                             handleSettingChange("theme", themeTag)
                         }
@@ -92,6 +99,7 @@ export default function DropDownPreferences({ userId }) {
                             </div>
                             // 🧠 Move option component to CustomDropdown domain - or other domain like Themes or Settings? 🧠
                         )}
+                        customStyles={customStyles}
                     />
                 </label>
             </div>

@@ -13,6 +13,8 @@ import X_icon from "/public/X_icon.svg";
 import Modal from "@/src/domains/_app/components/Modal/Modal";
 import renderLinks from "@/src/domains/el/utils/renderLinks";
 import extractItemInfo from "@/src/domains/el/utils/extractItemInfo";
+import { Button } from "zephyrus-components";
+import customStyles from "@/src/application/styles/Zephyrus.module.css";
 
 /*
 Form "open" and "close" should be handled in redux
@@ -341,18 +343,21 @@ export default function Actor({
                 </div>
 
                 <div className={styles.buttonsWrap}>
-                    <button
+                    <Button
+                        size="medium"
+                        type="button"
+                        label="Modify"
+                        customStyles={customStyles}
                         onClick={() => setFormIsOpen(true, item)}
-                        className="button-standard"
-                    >
-                        Modify
-                    </button>
-                    <button
+                    />
+                    <Button
+                        size="medium"
+                        type="button"
+                        label="Delete"
+                        colorScheme="danger"
+                        customStyles={customStyles}
                         onClick={() => handleDelete(id)}
-                        className="button-danger"
-                    >
-                        Delete
-                    </button>
+                    />
                 </div>
             </div>
 

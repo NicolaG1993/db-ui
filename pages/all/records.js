@@ -10,6 +10,8 @@ import Form from "@/src/domains/_app/components/Form/components/Form";
 import ToggleSwitch from "@/src/domains/_app/components/ToggleSwitch/ToggleSwitch";
 import Modal from "@/src/domains/_app/components/Modal/Modal";
 import axiosAuthInstance from "@/src/application/utils/axiosAuthInstance";
+import { Button, TrashIcon } from "zephyrus-components";
+import customStyles from "@/src/application/styles/Zephyrus.module.css";
 
 const fetchData = async () => {
     try {
@@ -98,23 +100,27 @@ export default function Records() {
                                     />
                                     {multipleSelection && (
                                         <>
-                                            <button
+                                            <Button
                                                 onClick={() => (
                                                     setRecs(recs),
                                                     setOpenForm(true)
                                                 )}
-                                            >
-                                                X
-                                            </button>
+                                                size="x-small"
+                                                icon={<TrashIcon />}
+                                                // label={"X"}
+                                                customStyles={customStyles}
+                                            />
 
-                                            <button
+                                            <Button
                                                 onClick={() => (
                                                     setRecs(recs),
                                                     setOpenForm(true)
                                                 )}
-                                            >
-                                                Edit
-                                            </button>
+                                                size="x-small"
+                                                icon={<TrashIcon />}
+                                                // label={"Edit"}
+                                                customStyles={customStyles}
+                                            />
                                         </>
                                     )}
                                 </div>
@@ -160,22 +166,27 @@ export default function Records() {
                                             </div>
                                         ) : (
                                             <div className={styles.btnWrap}>
-                                                <button
+                                                <Button
                                                     onClick={() => (
                                                         setRec(el),
                                                         setOpenForm(true)
                                                     )}
-                                                >
-                                                    Edit
-                                                </button>
-                                                <button
+                                                    size="x-small"
+                                                    icon={<TrashIcon />}
+                                                    // label={"Edit"}
+                                                    customStyles={customStyles}
+                                                />
+
+                                                <Button
                                                     onClick={() => (
                                                         setRec(el),
                                                         handleDelete(el.id)
                                                     )}
-                                                >
-                                                    X
-                                                </button>
+                                                    size="x-small"
+                                                    icon={<TrashIcon />}
+                                                    // label={"X"}
+                                                    customStyles={customStyles}
+                                                />
                                             </div>
                                         )}
                                     </div>

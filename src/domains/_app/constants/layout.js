@@ -35,6 +35,7 @@ import {
     selectIsFormOpen,
 } from "@/src/application/redux/slices/formSlice";
 import DataFormWrap from "./components/SideNavMenu/components/DataFormWrap";
+import customStyles from "@/src/application/styles/Zephyrus.module.css";
 
 export default function Layout({ children }) {
     //================================================================================
@@ -199,6 +200,7 @@ export default function Layout({ children }) {
                         isOpen={isDrawerOpen}
                         onClose={toggleDrawer}
                         title={"Menu"}
+                        customStyles={customStyles}
                     >
                         <SideNavMenu onClose={toggleDrawer} />
                     </Drawer>

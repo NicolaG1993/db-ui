@@ -1,10 +1,13 @@
-import Link from "next/link";
 import styles from "./PlaylistElement.module.css";
 import { useDispatch } from "react-redux";
 import { loadSessionPlaylist } from "@/src/application/redux/slices/sessionPlaylistSlice";
+import { useRouter } from "next/router";
+import { Button } from "zephyrus-components";
+import customStyles from "@/src/application/styles/Zephyrus.module.css";
 
 export default function PlaylistElement({ el, handleDelete }) {
     const dispatch = useDispatch();
+    const router = useRouter();
 
     const loadPlaylist = (pl) => {
         // I think we are not fetching playlists correctly (in the parent)
@@ -24,16 +27,30 @@ export default function PlaylistElement({ el, handleDelete }) {
 
             <p>{el.movies?.length || 0} movies</p>
 
-            <Link href={`/el/playlist/${el.id}`} title={el.title}>
-                <button className={styles.btn}>View</button>
-            </Link>
-
-            <button className={styles.btn} onClick={() => loadPlaylist(el)}>
-                Load
-            </button>
-            <button className={styles.btn} onClick={() => handleDelete(el)}>
-                Delete
-            </button>
+            <Button
+                size="medium"
+                type="button"
+                label="View"
+                customStyles={customStyles}
+                onClick={() => router.push(`/el/playlist/${el.id}`)}
+                // className={styles.btn} // TODO? 🔴
+            />
+            <Button
+                size="medium"
+                type="button"
+                label="Load"
+                customStyles={customStyles}
+                onClick={() => loadPlaylist(el)}
+                // className={styles.btn} // TODO? 🔴
+            />
+            <Button
+                size="medium"
+                type="button"
+                label="Delete"
+                customStyles={customStyles}
+                onClick={() => handleDelete(el)}
+                // className={styles.btn} // TODO? 🔴
+            />
         </div>
     );
 }

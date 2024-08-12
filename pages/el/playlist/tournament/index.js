@@ -14,7 +14,8 @@ import styles from "@/src/domains/tournament/Tournament.module.css";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import getInferiorGeometricValues from "@/src/domains/tournament/utils/getInferiorGeometricValues";
-
+import { Button } from "zephyrus-components";
+import customStyles from "@/src/application/styles/Zephyrus.module.css";
 // Questa fn serviva per fare un auto-detect of possible table (without leaving weird matchups)
 // I believe i can just create the table as it comes and let the user decide how to edit it
 /*
@@ -404,16 +405,17 @@ export default function TournamentSession() {
                     </div>
 
                     <div className={styles.footerWrap}>
-                        <button
+                        <Button
+                            size="xx-large" // 🔴 this requires new style
+                            label="Get Started!"
+                            customStyles={customStyles}
+                            onClick={() => handleSetup(settingsForm)}
                             disabled={
                                 !settingsForm.totContenders ||
                                 settingsForm.totContenders < 4
                             }
-                            onClick={() => handleSetup(settingsForm)}
-                            className={`button-standard ${styles.continueBtn}`}
-                        >
-                            Get Started!
-                        </button>
+                            // icon={<TrashIcon />}
+                        />
                     </div>
                 </div>
             )}

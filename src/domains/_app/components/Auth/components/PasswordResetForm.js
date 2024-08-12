@@ -9,8 +9,8 @@ import {
 } from "@/src/application/utils/validateForms";
 // import { userLogin } from "@/src/application/redux/slices/userSlice";
 import { useRouter } from "next/router";
-import { InputText } from "zephyrus-components";
-import customStyles from "@/src/domains/_app/components/Inputs/InputsCustomStyles.module.css";
+import { Button, InputText } from "zephyrus-components";
+import customStyles from "@/src/application/styles/Zephyrus.module.css";
 
 export default function PasswordResetForm({ handleTab, token }) {
     const [password, setPassword] = useState("");
@@ -102,9 +102,12 @@ export default function PasswordResetForm({ handleTab, token }) {
                     />
                 </div>
                 <div className={styles.buttonWrap}>
-                    <button type="submit" className="button-standard">
-                        Confirm
-                    </button>
+                    <Button
+                        type="submit"
+                        size="medium"
+                        label="Confirm"
+                        customStyles={customStyles}
+                    />
                 </div>
             </form>
 

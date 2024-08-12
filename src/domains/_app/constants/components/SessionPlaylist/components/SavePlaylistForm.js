@@ -18,6 +18,8 @@ import {
     updateSessionPlaylist,
 } from "@/src/application/redux/slices/sessionPlaylistSlice";
 import { getError } from "@/src/application/utils/error";
+import { Button } from "zephyrus-components";
+import customStyles from "@/src/application/styles/Zephyrus.module.css";
 
 export default function SavePlaylistForm({ closeModal, sessionPlaylist }) {
     /*
@@ -231,12 +233,14 @@ export default function SavePlaylistForm({ closeModal, sessionPlaylist }) {
                             value={title}
                             required
                         />
-                        <button
+
+                        <Button
+                            size="medium"
+                            type="button"
+                            label={match ? "Update" : "Save"}
+                            customStyles={customStyles}
                             onClick={(e) => handleSubmit(e)}
-                            className="button-standard"
-                        >
-                            {match ? "Update" : "Save"}
-                        </button>
+                        />
                     </div>
 
                     {title && (
@@ -268,22 +272,25 @@ export default function SavePlaylistForm({ closeModal, sessionPlaylist }) {
                         Please confirm if you want to add them to the database
                     </p>
 
-                    <button
+                    <Button
+                        size="medium"
+                        type="button"
+                        label={"Confirm"}
+                        customStyles={customStyles}
                         onClick={(e) => handleNewItems(e)}
-                        className="button-standard"
-                    >
-                        Confirm
-                    </button>
+                    />
 
                     {/* 🧨🧨🧨 TODO 🧨🧨🧨 */}
-                    <button
+                    <Button
+                        size="medium"
+                        type="button"
+                        label={"Delete them"}
+                        customStyles={customStyles}
                         onClick={
                             () => confirmSubmitWithoutUrls(sessionPlaylist) // 💚 only the playlist loaded in the sessionPlaylist can be stored 💚 We Gucci
                         }
-                        className="button-standard"
-                    >
-                        Delete them
-                    </button>
+                        colorScheme="danger"
+                    />
                 </div>
             )}
         </>

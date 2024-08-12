@@ -25,6 +25,8 @@ import { useAppSelector } from "@/src/application/redux/lib/hooks";
 import { selectAppSettings } from "@/src/application/redux/slices/appSettingsSlice";
 import FormSideNavSearchBar from "@/src/domains/_app/components/Form/components/FormSideNav@2.0/components/FormSideNavSearchBar";
 import extractAllTags from "../../utils/extractAllTags";
+import { Button } from "zephyrus-components";
+import customStyles from "@/src/application/styles/Zephyrus.module.css";
 
 export default function FormSideNav() {
     const dispatch = useDispatch();
@@ -160,8 +162,9 @@ export default function FormSideNav() {
                     </p>
                     <p>Select the {uiState.sideNavTopic} that you need</p>
                 </div>
-                <button
-                    className={styles.closeDrawerBtn}
+                <Button
+                    size="medium"
+                    type="button"
                     onClick={() =>
                         handleCloseSideNav({
                             appSettings,
@@ -172,9 +175,10 @@ export default function FormSideNav() {
                             currentSelection,
                         })
                     }
-                >
-                    Confirm √
-                </button>
+                    disabled={isLoading || isFinish} // isLoadingResponse ?
+                    label="Confirm √"
+                    customStyles={customStyles}
+                />
             </div>
 
             <div className={styles.sidewrapContent}>

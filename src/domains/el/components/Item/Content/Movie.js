@@ -1,14 +1,16 @@
 import styles from "@/src/application/styles/Element.module.css";
 import Link from "next/link";
 import Image from "next/image";
-import Form from "@/src/domains/_app/components/Form/components/Form";
+// import Form from "@/src/domains/_app/components/Form/components/Form";
 import { formatDateEU } from "@/src/application/utils/convertTimestamp";
 import RecordsCounter from "../RecordsCounter";
 import RelationsList from "../../RelationsList/RelationsList";
 import SessionPlaylistAddBtn from "../SessionPlaylistAddBtn";
-import Modal from "@/src/domains/_app/components/Modal/Modal";
+// import Modal from "@/src/domains/_app/components/Modal/Modal";
 import renderLinks from "@/src/domains/el/utils/renderLinks";
 import { parseTagsForUiList } from "@/src/domains/_app/utils/parsers";
+import { Button } from "zephyrus-components";
+import customStyles from "@/src/application/styles/Zephyrus.module.css";
 
 export default function Movie({
     label,
@@ -183,18 +185,21 @@ export default function Movie({
                             actors: item.actors, // but we dont have actors here! // inside Card yes 🔴🧠🔴⚠️🧠🔴⚠️
                         }}
                     />
-                    <button
+                    <Button
+                        size="medium"
+                        type="button"
+                        label="Modify"
+                        customStyles={customStyles}
                         onClick={() => setFormIsOpen(true, item)}
-                        className="button-standard"
-                    >
-                        Modify
-                    </button>
-                    <button
+                    />
+                    <Button
+                        size="medium"
+                        type="button"
+                        label="Delete"
+                        customStyles={customStyles}
                         onClick={() => handleDelete(id)}
-                        className="button-danger"
-                    >
-                        Delete
-                    </button>
+                        colorScheme="danger"
+                    />
                 </div>
             </div>
 

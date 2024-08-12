@@ -1,5 +1,8 @@
-import Link from "next/link";
+// import Link from "next/link";
 import styles from "@/src/domains/_app/constants/components/SessionPlaylist/SessionPlaylist.module.css";
+import { useRouter } from "next/router";
+import { Button } from "zephyrus-components";
+import customStyles from "@/src/application/styles/Zephyrus.module.css";
 
 export default function PlaylistTopBar({
     totalRows,
@@ -8,75 +11,96 @@ export default function PlaylistTopBar({
     shufflePlaylist,
     handleParentUI,
 }) {
+    const router = useRouter();
     if (size === "widget") {
         return (
             <div className={styles["nav-btn"]}>
-                <button
+                <Button
+                    size="mini"
+                    type="button"
+                    label=" Shuffle ♾️"
+                    customStyles={customStyles}
                     onClick={() => shufflePlaylist()}
-                    className="button-standard"
                     disabled={!totalRows}
-                >
-                    Shuffle ♾️
-                </button>
-                {/* <button className="button-standard">Save 💾</button> */}
-                <button
-                    onClick={() => handleParentUI("WIDGET", false)}
-                    className="button-standard"
-                >
-                    <Link href={`/el/playlist/editor`} title={"Plalist editor"}>
-                        Editor ➡️
-                    </Link>
-                </button>
-                <button
+                />
+                <Button
+                    size="mini"
+                    type="button"
+                    label=" Editor ➡️"
+                    customStyles={customStyles}
+                    onClick={() => {
+                        handleParentUI("WIDGET", false);
+                        router.push("/el/playlist/editor");
+                    }}
+                    disabled={!totalRows}
+                />
+                {/* <Button
+                    size="mini"
+                    type="button"
+                    label=" Save 💾"
+                    customStyles={customStyles}
+                    onClick={() => handleParentUI("SAVE_PLAYLIST", true)}
+                    disabled={!totalRows}
+                    /> 
+                */}
+                <Button
+                    size="mini"
+                    type="button"
+                    label=" Add new ➕"
+                    customStyles={customStyles}
                     onClick={() => handleParentUI("ADD_NEW", true)}
-                    className="button-standard"
-                >
-                    Add new ➕
-                </button>
-                <button
+                />
+                <Button
+                    size="mini"
+                    type="button"
+                    label=" Delete ❌"
+                    customStyles={customStyles}
                     onClick={() => deletePlaylist()}
-                    className="button-standard"
                     disabled={!totalRows}
-                >
-                    Delete ❌
-                </button>
+                />
             </div>
         );
     } else {
         return (
             <div className={styles["nav-btn"]}>
-                <button
+                <Button
+                    size="mini"
+                    type="button"
+                    label=" Shuffle ♾️"
+                    customStyles={customStyles}
                     onClick={() => shufflePlaylist()}
-                    className="button-standard"
                     disabled={!totalRows}
-                >
-                    Shuffle ♾️
-                </button>
-                <button
+                />
+                <Button
+                    size="mini"
+                    type="button"
+                    label=" Save 💾"
+                    customStyles={customStyles}
                     onClick={() => handleParentUI("SAVE_PLAYLIST", true)}
-                    className="button-standard"
                     disabled={!totalRows}
-                >
-                    Save 💾
-                </button>
-                <button>
-                    <Link href={`/all/movies`} title={"Add item"}>
-                        Add 🗃️
-                    </Link>
-                </button>
-                <button
+                />
+                <Button
+                    size="mini"
+                    type="button"
+                    label=" Add 🗃️"
+                    customStyles={customStyles}
+                    onClick={() => router.push("/all/movies")}
+                />
+                <Button
+                    size="mini"
+                    type="button"
+                    label=" Add new ➕"
+                    customStyles={customStyles}
                     onClick={() => handleParentUI("ADD_NEW", true)}
-                    className="button-standard"
-                >
-                    Add new ➕
-                </button>
-                <button
+                />
+                <Button
+                    size="mini"
+                    type="button"
+                    label=" Delete ❌"
+                    customStyles={customStyles}
                     onClick={() => deletePlaylist()}
-                    className="button-standard"
                     disabled={!totalRows}
-                >
-                    Delete ❌
-                </button>
+                />
             </div>
         );
     }

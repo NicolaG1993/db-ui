@@ -1,4 +1,6 @@
 import styles from "./SearchBarSmall.module.css";
+import customStyles from "@/src/application/styles/Zephyrus.module.css";
+import { Button } from "zephyrus-components";
 
 export default function SearchBarSmall({
     searchBar,
@@ -22,9 +24,13 @@ export default function SearchBarSmall({
                 onFocus={handleFocus}
                 onBlur={handleBlur}
             ></input>
-            <button onClick={(e) => handleClear(e)} className="button-standard">
-                Clear
-            </button>
+            <Button
+                size="small"
+                onClick={(e) => handleClear(e)}
+                type="button"
+                label="Clear"
+                customStyles={customStyles}
+            />
         </div>
     );
 }

@@ -13,6 +13,8 @@ import {
 } from "@/src/application/redux/slices/userSlice";
 import LogoutButton from "../../../components/Auth/components/LogoutButton";
 import axiosAuthInstance from "@/src/application/utils/axiosAuthInstance";
+import { Button } from "zephyrus-components";
+import customStyles from "@/src/application/styles/Zephyrus.module.css";
 
 export default function SideNavMenu({ onClose }) {
     const dispatch = useDispatch();
@@ -115,40 +117,50 @@ export default function SideNavMenu({ onClose }) {
             </div>
 
             <div className={styles.content}>
-                <button
+                <Button
+                    size="medium"
+                    type="button"
+                    label={"+ Add Data"}
+                    customStyles={customStyles}
                     onClick={() => {
                         dispatch(resetFormStore()); // cleanup formState
                         dispatch(openForm()); // open Form UI
                         // setAddForm(true);
                         onClose();
                     }}
-                    className="button-standard"
-                >
-                    + Add Data
-                </button>
-                <button
-                    disabled
+                />
+                <Button
+                    size="medium"
+                    type="button"
+                    label={"RUN TEST"}
+                    customStyles={customStyles}
                     onClick={(e) => addTest(e)}
-                    className="button-standard"
-                >
-                    RUN TEST
-                </button>
-
-                {/* <button
-                    onClick={() => setAppSettings(true)}
-                    className="button-standard"
-                >
-                    Settings
-                </button> */}
-                <button disabled className="button-standard">
-                    TEST AREA
-                </button>
-                <button disabled className="button-standard">
-                    Clear Session Data
-                </button>
-                <button disabled className="button-standard">
-                    Data Migration
-                </button>
+                    disabled={true}
+                />
+                <Button
+                    size="medium"
+                    type="button"
+                    label={"TEST AREA"}
+                    customStyles={customStyles}
+                    onClick={(e) => {}}
+                    disabled={true}
+                />
+                <Button
+                    size="medium"
+                    type="button"
+                    label={"Clear Session Data"}
+                    customStyles={customStyles}
+                    onClick={(e) => {}}
+                    disabled={true}
+                />
+                <Button
+                    size="medium"
+                    type="button"
+                    label={"Data Migration"}
+                    customStyles={customStyles}
+                    onClick={(e) => {}}
+                    disabled={true}
+                />
                 <LogoutButton />
             </div>
         </div>

@@ -20,6 +20,8 @@ import { useEffect, useState } from "react";
 import { shallowEqual, useDispatch } from "react-redux";
 import styles from "@/src/domains/_app/components/Form/components/Form.module.css";
 import Element from "@/src/domains/all/components/Filters/InputsSelector/components/Element";
+import { Button } from "zephyrus-components";
+import customStyles from "@/src/application/styles/Zephyrus.module.css";
 
 // fare util 🧠
 const extractFormData = (formData) => {
@@ -217,17 +219,17 @@ export default function FormSideHints() {
                                     </div>
                                     {/* 🧠 SKIP POTREBBE SEMPLICEMENTE ELIMINARE HINTS 🧠 */}
                                     <div className={styles.buttonsWrap}>
-                                        <button
-                                            title="Skip this step"
+                                        <Button
+                                            size="small"
                                             type="button"
+                                            label="Skip this step"
+                                            customStyles={customStyles}
                                             onClick={() =>
                                                 handleSkipMissingHints(hints)
                                             }
-                                            className="button-standard"
                                             disabled={hints.missingIsFinish}
-                                        >
-                                            Skip
-                                        </button>
+                                        />
+
                                         {/* 🧠 CONFIRM -> SET I RELATIVI TAGS (INDIPENDENTEMENTE DALL'ALTRO),
                                              XK SE UNO È NUOVO NON SARÀ MAI IN ALTRA COLONNA.
                                              INOLTRE LA LISTA CONFERMATA VIENE BLOCCATA, NON MODIFICABILE.
@@ -237,15 +239,15 @@ export default function FormSideHints() {
 
                                              OPPURE "CONTINUE" RESTA DISABLED FINCHÈ NON HO SISTEMATO GLI ALTRI DUE
                                               🧠 */}
-                                        <button
-                                            title="Confirm your choice"
+
+                                        <Button
+                                            size="small"
                                             type="submit"
+                                            label="Confirm your choice"
+                                            customStyles={customStyles}
                                             form="missingHintsForm"
-                                            className="button-standard"
                                             disabled={hints.missingIsFinish}
-                                        >
-                                            Confirm
-                                        </button>
+                                        />
                                     </div>
                                 </form>
                             ) : (
@@ -297,24 +299,22 @@ export default function FormSideHints() {
                                         ))}
                                     </div>
                                     <div className={styles.buttonsWrap}>
-                                        <button
-                                            title="Skip this step"
+                                        <Button
+                                            size="small"
                                             type="button"
+                                            label="Skip this step"
+                                            customStyles={customStyles}
                                             onClick={() =>
                                                 handleSkipRemovedHints(hints)
                                             }
-                                            className="button-standard"
-                                        >
-                                            Skip
-                                        </button>
-                                        <button
-                                            title="Confirm your choice"
+                                        />
+                                        <Button
+                                            size="small"
                                             type="submit"
+                                            label="Confirm your choice"
+                                            customStyles={customStyles}
                                             form="removedHintsForm"
-                                            className="button-standard"
-                                        >
-                                            Confirm
-                                        </button>
+                                        />
                                     </div>
                                 </form>
                             ) : (
@@ -425,37 +425,24 @@ export default function FormSideHints() {
             </div>
 
             <div className={styles.sideHintsFooter}>
-                {/* {!!hints.removed?.length && (
-                    <button
-                        title="Confirm Tags"
-                        type="button"
-                        onClick={closeHintsDrawer}
-                        className="button-standard"
-                    >
-                        Confirm Tags
-                    </button>
-                )} */}
-
                 {!missingIsFinish && !removedIsFinish ? (
-                    <button
-                        title="Skip all Tags"
+                    <Button
+                        size="medium"
                         type="button"
+                        label="Skip all Tags"
                         onClick={skipAllHints}
-                        className="button-alternative"
                         disabled={true}
-                    >
-                        Skip
-                    </button>
+                        customStyles={customStyles}
+                    />
                 ) : (
-                    <button
-                        title="Confirm Tags"
+                    <Button
+                        size="medium"
                         type="button"
+                        label="Confirm Tags"
                         onClick={closeHintsDrawer}
-                        className="button-alternative"
-                    >
-                        Continue
-                        {/* Confirm Tags */}
-                    </button>
+                        colorScheme="secondary"
+                        customStyles={customStyles}
+                    />
                 )}
             </div>
         </div>

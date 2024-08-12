@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 import DropdownMenusByLevel from "./DropdownMenusByLevel/DropdownMenusByLevel";
 import styles from "@/src/application/styles/Home.module.css";
-import axios from "axios";
+// import axios from "axios";
 import InputsSelector from "./InputsSelector/InputsSelector";
 import NationalitiesSelector from "./NationalitiesSelector/NationalitiesSelector";
 import ActiveElements from "./ActiveElements/ActiveElements";
-
+import { Button } from "zephyrus-components";
+import customStyles from "@/src/application/styles/Zephyrus.module.css";
 //================================================================================
 // Filters Bar
 //================================================================================
@@ -61,21 +62,23 @@ export default function FiltersBar({
             )}
 
             <div className={styles.uiControls}>
-                <button
+                <Button
+                    size="small"
+                    type="button"
+                    label={"Remove filters"}
+                    customStyles={customStyles}
                     onClick={() => {
                         deleteAllFilters({});
                         setFilterSelect(undefined);
                     }}
-                    className="button-standard"
-                >
-                    Remove filters
-                </button>
-                <button
+                />
+                <Button
+                    size="small"
+                    type="button"
+                    label={"Close"}
+                    customStyles={customStyles}
                     onClick={() => closeFilters(false)}
-                    className="button-standard"
-                >
-                    Close
-                </button>
+                />
             </div>
         </div>
     );

@@ -9,8 +9,8 @@ import { getError } from "@/src/application/utils/error.js";
 // import loginUser from "@/src/domains/_app/components/Auth/actions/loginUser.js";
 import { useRouter } from "next/router";
 import sendNewVerificationEmail from "../actions/sendNewVerificationEmail";
-import { InputText } from "zephyrus-components";
-import customStyles from "@/src/domains/_app/components/Inputs/InputsCustomStyles.module.css";
+import { Button, InputText } from "zephyrus-components";
+import customStyles from "@/src/application/styles/Zephyrus.module.css";
 
 export default function EmailNotVerifiedForm({ handleTab }) {
     const [email, setEmail] = useState("");
@@ -120,9 +120,12 @@ export default function EmailNotVerifiedForm({ handleTab }) {
                                     />
                                 </div>
                                 <div className={styles.buttonWrap}>
-                                    <button className="button-standard">
-                                        Send new email
-                                    </button>
+                                    <Button
+                                        type="submit"
+                                        size="large"
+                                        label="Send new email"
+                                        customStyles={customStyles}
+                                    />
                                 </div>
                             </form>
                             <p
@@ -138,12 +141,24 @@ export default function EmailNotVerifiedForm({ handleTab }) {
                 <>
                     <h2>Error</h2>
                     <p>{errors.response}</p>
-                    <button onClick={() => handleTab("login")}>Go back</button>
+                    <Button
+                        type="button"
+                        size="medium"
+                        label="Go back"
+                        customStyles={customStyles}
+                        onClick={() => handleTab("login")}
+                    />
                 </>
             ) : (
                 <>
                     <p>{response}</p>
-                    <button onClick={() => handleTab("login")}>Go back</button>
+                    <Button
+                        type="button"
+                        size="medium"
+                        label="Go back"
+                        customStyles={customStyles}
+                        onClick={() => handleTab("login")}
+                    />
                 </>
             )}
         </div>

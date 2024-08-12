@@ -1,0 +1,18 @@
+/*** GENERAL STYLES ***/
+.root {
+    --base-text: var(--text);
+    --base-text-secondary: var(--text-secondary);
+    --base-bg000: var(--bg000);
+    --base-bg100: var(--bg100);
+    --base-bg200: var(--bg200);
+    --base-bg300: var(--bg300);
+    --base-bg400: var(--bg400);
+    --base-bg500: var(--bg500);
+    --base-bg600: var(--bg600);
+    --base-bg700: var(--bg700);
+    --base-bg800: var(--bg800);
+    --base-bg900: var(--bg900);
+    --shadow: var(--shadow000);
+    --base-error000: var(--dangerBg000);
+    --base-error100: var(--dangerBg200);
+}

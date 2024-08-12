@@ -38,11 +38,6 @@ export default function CustomDropdown({
         };
     }, []);
 
-    const extractThemeName = (allThemes, themeTag) => {
-        const theme = allThemes.find((el) => el.tag === themeTag);
-        return theme?.name || "";
-    };
-
     return (
         <div className={styles["custom-dropdown"]} ref={dropdownRef}>
             <div
@@ -51,7 +46,7 @@ export default function CustomDropdown({
                 tabIndex="0"
             >
                 <span className={styles["selected-option"]}>
-                    {extractThemeName(allThemes, selectedOption)}
+                    {selectedOption}
                 </span>
                 <div
                     className={`${styles["options-container"]} ${

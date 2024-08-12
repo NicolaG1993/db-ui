@@ -13,10 +13,10 @@ import {
     passwordValidation,
     confirmPassword,
 } from "@/src/application/utils/validateForms.js";
-import { getError } from "@/src/application/utils/error.js";
+// import { getError } from "@/src/application/utils/error.js";
 import createUser from "@/src/domains/_app/components/Auth/actions/createUser.js";
-import { InputText } from "zephyrus-components";
-import customStyles from "@/src/domains/_app/components/Inputs/InputsCustomStyles.module.css";
+import { Button, InputText } from "zephyrus-components";
+import customStyles from "@/src/application/styles/Zephyrus.module.css";
 
 export default function RegistrationForm({ handleTab }) {
     //================================================================================
@@ -170,9 +170,12 @@ export default function RegistrationForm({ handleTab }) {
                     />
                 </div>
                 <div className={styles.buttonWrap}>
-                    <button type="submit" className="button-standard">
-                        Create user
-                    </button>
+                    <Button
+                        size="medium"
+                        type="submit"
+                        label="Create user"
+                        customStyles={customStyles}
+                    />
                 </div>
             </form>
 

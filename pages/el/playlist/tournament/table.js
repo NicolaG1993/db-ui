@@ -9,11 +9,11 @@ import {
     selectTournamentData,
     selectNotSelectedData,
     selectTournamentIsLoaded,
-    resetTournament,
+    // resetTournament,
     setupTournament,
     resetTournamentStore,
     selectTournamentIsFinished,
-    selectTournamentFinalOverview,
+    // selectTournamentFinalOverview,
     shuffleTournamentData,
 } from "@/src/application/redux/slices/tournamentSlice";
 import FinalOverview from "@/src/domains/tournament/components/FinalOverview/FinalOverview";
@@ -21,6 +21,8 @@ import TournamentStage from "@/src/domains/tournament/components/TournamentStage
 import styles from "@/src/domains/tournament/Tournament.module.css";
 import { useEffect } from "react";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
+import { Button } from "zephyrus-components";
+import customStyles from "@/src/application/styles/Zephyrus.module.css";
 
 export default function TournamentTable() {
     const tournamentData = useSelector(selectTournamentData, shallowEqual);
@@ -65,33 +67,28 @@ export default function TournamentTable() {
     return (
         <main>
             <div className={styles.tournamentHeading}>
-                <h1
-                // onClick={
-                //     () => setupNextMatch() // delete 🔴
-                // }
-                >
-                    Tournament Table
-                </h1>
+                <h1>Tournament Table</h1>
                 {!isStarted ? (
                     <>
-                        <button
-                            className="button-standard"
+                        <Button
                             type="button"
-                            onClick={() => handleStart()}
+                            size="large"
+                            label="START TOURNAMENT"
+                            customStyles={customStyles}
                             disabled={
                                 setup.totContenders >
                                 tournamentData.length - notSelectedData.length
                             }
-                        >
-                            START TOURNAMENT
-                        </button>
-                        <button
-                            className="button-standard"
+                            onClick={() => handleStart()}
+                        />
+                        <Button
                             type="button"
+                            size="large"
+                            label="SHUFFLE MATCHES"
+                            customStyles={customStyles}
                             onClick={() => handleShuffle()}
-                        >
-                            SHUFFLE MATCHES
-                        </button>
+                        />
+
                         {setup.totContenders >
                             tournamentData.length - notSelectedData.length && (
                             <p className={styles.tournamentWarning}>
@@ -101,20 +98,20 @@ export default function TournamentTable() {
                     </>
                 ) : (
                     <>
-                        <button
-                            className="button-standard"
+                        <Button
                             type="button"
+                            size="large"
+                            label="QUIT TOURNAMENT"
+                            customStyles={customStyles}
                             onClick={() => handleQuit()}
-                        >
-                            QUIT TOURNAMENT
-                        </button>
-                        <button
-                            className="button-standard"
+                        />
+                        <Button
                             type="button"
+                            size="large"
+                            label="RESET TOURNAMENT"
+                            customStyles={customStyles}
                             onClick={() => handleReset()}
-                        >
-                            RESET TOURNAMENT
-                        </button>
+                        />
                     </>
                 )}
             </div>
@@ -144,144 +141,9 @@ export default function TournamentTable() {
                             />
                         )
                     )}
-
-                {/* {Object.entries(tournamentStructure).map(
-                    ([stageKey, stage], i) => (
-                        <div
-                            key={"Tournament stage " + stage.stageId}
-                            className={styles.stage}
-                            style={{
-                                gridColumnStart:
-                                    stageKey % 2 !== 0
-                                        ? setup.tableColumns -
-                                          (setup.tableColumns - stageKey)
-                                        : setup.tableColumns - stageKey, // 🧠 create util
-                                gridColumnEnd:
-                                    stageKey % 2 !== 0
-                                        ? setup.tableColumns -
-                                          (setup.tableColumns - stageKey) +
-                                          1
-                                        : setup.tableColumns - stageKey + 1,
-                            }}
-                        >
-                            {Object.entries(stage.stageMatches).map(
-                                ([key, match], i) => (
-                                    <div
-                                        key={
-                                            "Tournament match " + match.matchId
-                                        }
-                                        className={styles.match}
-                                    >
-                                        {match.contenders.map(
-                                            (contender, i) => (
-                                                <div
-                                                    key={
-                                                        "Tournament contender " +
-                                                        match.matchId +
-                                                        " " +
-                                                        (contender?.id ||
-                                                            "undefined " + i)
-                                                    }
-                                                    className={
-                                                        styles.contenderCard
-                                                    }
-                                                >
-                                                    <span>
-                                                        Contender:{" "}
-                                                        {contender?.id || "N/A"}
-                                                    </span>
-                                                </div>
-                                            )
-                                        )}
-                                    </div>
-                                )
-                            )}
-                        </div>
-                    )
-                )} */}
             </div>
-            {/* <div
-                className={styles.tournamentTable}
-                style={{
-                    gridTemplateRows: `repeat(${
-                        matches?.length / 2 || 1
-                    }, 1fr)`,
-                }}
-            >
-                {matches ? (
-                    Object.entries(matches).map(([key, match], i, arr) => (
-                        <div
-                            key={"Tournament match " + i}
-                            className={styles.match}
-                            style={{
-                                gridColumnStart: (i + 1) % 2 === 0 ? "3" : "1", // 🧠 create util
-                                gridColumnEnd: (i + 1) % 2 === 0 ? "4" : "2",
-                            }}
-                        >
-                            {Array.isArray(match) &&
-                                match.map((el, i, arr) => (
-                                    <div
-                                        key={"Tournament el " + i}
-                                        className={styles.contenderCard}
-                                    >
-                                        <span>Contender: {el.id}</span>
-                                    </div>
-                                ))}
-                        </div>
-                    ))
-                ) : (
-                    <p>Loading table...</p> // 🧠 we need case for reloading page or direct routing
-                )}
-            </div> */}
+
             {isFinished && <FinalOverview />}
         </main>
     );
 }
-
-///////////////////////////// ELIMINARE 👇👇👇🔴🔴🔴🔴
-/*
-calcTournamentBranches(state.tournamentData, contendersPerMatch);
-
-const calcTournamentBranches = (allContenders, contendersPerMatch) => {
-    const totMatches = Math.ceil(allContenders / contendersPerMatch);
-
-    // ...
-    let finalResponse;
-
-    do {} while (condition);
-
-    calcNextBranch({
-        currentStage: allContenders,
-        totCurrentStageMatches: totMatches,
-        contendersPerMatch,
-    });
-};
-
-const calcNextBranch = ({
-    currentStage,
-    totCurrentStageMatches,
-    contendersPerMatch,
-}) => {
-    const nextStageIsFinal = totCurrentStageMatches === 2;
-
-    if (nextStageIsFinal) {
-        return currentStage;
-    } else {
-        // return [[null, null], [null, null]]
-
-        // group nextStage
-        let nextStage = [];
-
-        let matchAccumulator = [];
-        currentStage.map((it, i, arr) => {
-            matchAccumulator.push(it);
-            if ((i + 1) % contendersPerMatch === 0 || arr.length - 1 === i) {
-                nextStage.push(matchAccumulator);
-                matchAccumulator = [];
-            }
-        });
-
-        return nextStage;
-    }
-};
-*/

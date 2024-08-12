@@ -8,6 +8,8 @@ import {
 } from "@/src/application/redux/slices/formSlice";
 import styles from "@/src/domains/_app/components/Form/components/Form.module.css";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
+import { Button } from "zephyrus-components";
+import customStyles from "@/src/application/styles/Zephyrus.module.css";
 
 export default function RecordForm({ confirmChanges }) {
     let formState = useSelector(selectFormState, shallowEqual);
@@ -66,13 +68,13 @@ export default function RecordForm({ confirmChanges }) {
             <div
                 className={`${styles["form-col-left"]} ${styles["buttons-box"]}`}
             >
-                <button
+                <Button
+                    size="medium"
                     type="submit"
-                    disabled={isLoading || isFinish}
-                    className="button-standard"
-                >
-                    Confirm
-                </button>
+                    disabled={isLoading || isFinish} // isLoadingResponse ?
+                    label="Confirm"
+                    customStyles={customStyles}
+                />
             </div>
         </form>
     );

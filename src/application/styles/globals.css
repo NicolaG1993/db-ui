@@ -284,8 +284,8 @@ ul {
     margin: 0;
 }
 
+/*
 button {
-    /* border-radius: 3px; */
     border-radius: 10px;
     cursor: pointer;
     transition: 0.08s ease-out;
@@ -294,7 +294,7 @@ button {
 button:hover {
     box-shadow: var(--shadow000);
 }
-button:disabled {
+ button:disabled {
     color: var(--bg700);
     background-color: var(--bg300);
     border: 1px solid var(--bg500);
@@ -337,7 +337,7 @@ button:disabled:hover {
     background-color: var(--dangerBg000);
     border: 1px solid var(--dangerBg000);
     color: white;
-}
+} 
 
 .button-with-icon {
     display: grid;
@@ -356,7 +356,6 @@ button:disabled:hover {
 }
 .button-with-icon > div:first-child > span {
     font-size: 16px;
-    /* margin-right: 6px; */
     width: 45px;
 }
 .button-with-icon > span:nth-child(2) {
@@ -364,6 +363,7 @@ button:disabled:hover {
     justify-self: left;
     margin: 0 16px 0 20px;
 }
+*/
 
 /* input,
 select {

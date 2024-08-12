@@ -2,6 +2,8 @@ import styles from "@/src/domains/tournament/Tournament.module.css";
 import Image from "next/image";
 import { detectImage } from "@/src/domains/_app/utils/parsers";
 import Link from "next/link";
+import { Button } from "zephyrus-components";
+import customStyles from "@/src/application/styles/Zephyrus.module.css";
 
 const getVoteEmoji = (vote) => {
     if (vote === 0) {
@@ -162,8 +164,11 @@ export default function MatchContender({
                         </div>
                     </div>
                     <div className={styles.contenderProps}>
-                        <button
+                        <Button
+                            size="mini"
                             type="button"
+                            label="+"
+                            customStyles={customStyles}
                             disabled={contender.vote >= 6}
                             onClick={() =>
                                 isReady &&
@@ -174,11 +179,12 @@ export default function MatchContender({
                                     contenderId: contender.id,
                                 })
                             }
-                        >
-                            +
-                        </button>
-                        <button
+                        />
+                        <Button
+                            size="mini"
                             type="button"
+                            label="-"
+                            customStyles={customStyles}
                             disabled={contender.vote <= -6}
                             onClick={() =>
                                 isReady &&
@@ -189,9 +195,7 @@ export default function MatchContender({
                                     contenderId: contender.id,
                                 })
                             }
-                        >
-                            -
-                        </button>
+                        />
                         <span className={styles.contenderVote}>
                             {getVoteEmoji(contender.vote)}
                         </span>

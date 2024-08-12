@@ -1,6 +1,8 @@
 import axiosAuthInstance from "@/src/application/utils/axiosAuthInstance";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import customStyles from "@/src/application/styles/Zephyrus.module.css";
+import { Button } from "zephyrus-components";
 
 // ELIMINARE!
 export default function DataMigration() {
@@ -36,9 +38,12 @@ export default function DataMigration() {
     return (
         <main>
             <h1>Data Migration</h1>
-            <button onClick={handleSubmit} className="button-standard">
-                Execute
-            </button>
+            <Button
+                size="medium"
+                label="Execute"
+                customStyles={customStyles}
+                onClick={handleSubmit}
+            />
         </main>
     );
 }

@@ -13,8 +13,8 @@ import {
 } from "@/src/application/redux/slices/formSlice";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
-import customStyles from "@/src/domains/_app/components/Inputs/InputsCustomStyles.module.css";
-import { InputText, InputImage, InputFake } from "zephyrus-components";
+import customStyles from "@/src/application/styles/Zephyrus.module.css";
+import { InputText, InputImage, InputFake, Button } from "zephyrus-components";
 import {
     createObjectURL,
     revokeObjectURL,
@@ -165,13 +165,13 @@ export default function StudioForm({ confirmChanges }) {
 
             <div className={styles.footer}>
                 <div className={styles["buttons-box"]}>
-                    <button
+                    <Button
+                        size="medium"
                         type="submit"
-                        disabled={isLoading || isFinish} // 🧠 isLoadingResponse ?? quale usare?? 🧠
-                        className="button-standard"
-                    >
-                        Confirm
-                    </button>
+                        disabled={isLoading || isFinish} // isLoadingResponse ?
+                        label="Confirm"
+                        customStyles={customStyles}
+                    />
                 </div>
             </div>
         </form>

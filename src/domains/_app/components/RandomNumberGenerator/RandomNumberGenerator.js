@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 import styles from "./RandomNumbersGenerator.module.css";
+import { Button } from "zephyrus-components";
+import customStyles from "@/src/application/styles/Zephyrus.module.css";
 
 export default function RandomNumberGenerator({ open, closeWidget }) {
     const [form, setForm] = useState({
@@ -136,9 +138,12 @@ export default function RandomNumberGenerator({ open, closeWidget }) {
                 </div>
 
                 <div className={styles["grid-column-1to5"]}>
-                    <button type="submit" className="button-standard">
-                        Generate
-                    </button>
+                    <Button
+                        size="medium"
+                        type="submit"
+                        label="Generate"
+                        customStyles={customStyles}
+                    />
                 </div>
             </form>
 
@@ -149,14 +154,13 @@ export default function RandomNumberGenerator({ open, closeWidget }) {
                             <h3>Your random numbers</h3>
                             <p>{result.map((el) => `${el} `)}</p>
                         </div>
-
-                        <button
+                        <Button
+                            size="small"
                             onClick={clearResults}
                             type="button"
-                            className="button-standard"
-                        >
-                            Clear Result
-                        </button>
+                            label="Clear Result"
+                            customStyles={customStyles}
+                        />
                     </div>
 
                     {lastResults.length >= 1 && (

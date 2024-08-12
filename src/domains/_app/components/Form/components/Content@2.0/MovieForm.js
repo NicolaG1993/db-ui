@@ -17,7 +17,7 @@ import {
     createObjectURL,
     revokeObjectURL,
 } from "@/src/domains/_app/actions/useLocalImages";
-import customStyles from "@/src/domains/_app/components/Inputs/InputsCustomStyles.module.css";
+import customStyles from "@/src/application/styles/Zephyrus.module.css";
 import {
     InputText,
     InputDate,
@@ -25,6 +25,7 @@ import {
     InputImage,
     InputRating,
     InputTextToArray,
+    Button,
 } from "zephyrus-components";
 
 export default function MovieForm({ confirmChanges }) {
@@ -268,13 +269,13 @@ export default function MovieForm({ confirmChanges }) {
             {/* Si puo fare component di footer, é sempre uguale */}
             <div className={styles.footer}>
                 <div className={styles["buttons-box"]}>
-                    <button
+                    <Button
+                        size="medium"
                         type="submit"
-                        disabled={isLoading || isFinish} //  🧠 isLoading o isLoadingResponse meglio?
-                        className="button-standard"
-                    >
-                        Confirm
-                    </button>
+                        disabled={isLoading || isFinish} // isLoadingResponse ?
+                        label="Confirm"
+                        customStyles={customStyles}
+                    />
                 </div>
             </div>
         </form>

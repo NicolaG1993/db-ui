@@ -7,6 +7,8 @@ import {
 } from "@/src/application/redux/slices/tournamentSlice";
 import { useEffect, useRef, useState } from "react";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
+import { Button } from "zephyrus-components";
+import customStyles from "@/src/application/styles/Zephyrus.module.css";
 
 export default function ContenderSelect({
     currentContender,
@@ -286,9 +288,11 @@ export default function ContenderSelect({
                         </select>
                     )}
                     {newContender && (
-                        <button
-                            className="button-standard"
+                        <Button
+                            size="medium"
                             type="button"
+                            label="Confirm"
+                            customStyles={customStyles}
                             onClick={() =>
                                 handleSwitch({
                                     currentContender,
@@ -306,9 +310,7 @@ export default function ContenderSelect({
                                     stageMatches,
                                 })
                             }
-                        >
-                            Confirm
-                        </button>
+                        />
                     )}
 
                     <span
@@ -372,9 +374,11 @@ export default function ContenderSelect({
                     >
                         Add
                     </span>
-                    <button
-                        className="button-standard"
+                    <Button
+                        size="medium"
                         type="button"
+                        label="Remove"
+                        customStyles={customStyles}
                         disabled={!currentContender} // not working 🔴
                         onClick={() =>
                             handleRemove({
@@ -384,9 +388,7 @@ export default function ContenderSelect({
                                 matchId: match.matchId,
                             })
                         }
-                    >
-                        Remove
-                    </button>
+                    />
                 </div>
             );
         }

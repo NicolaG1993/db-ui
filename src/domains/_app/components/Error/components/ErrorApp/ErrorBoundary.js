@@ -3,7 +3,8 @@
 
 import React from "react";
 import ErrorApp from "./ErrorApp";
-
+import { Button } from "zephyrus-components";
+import customStyles from "@/src/application/styles/Zephyrus.module.css";
 class ErrorBoundary extends React.Component {
     constructor(props) {
         super(props);
@@ -28,12 +29,13 @@ class ErrorBoundary extends React.Component {
             return (
                 <div>
                     <h2>Oops, there is an error!</h2>
-                    <button
-                        type="button"
-                        onClick={() => this.setState({ hasError: false })}
-                    >
-                        Try again?
-                    </button>
+                    <Button
+                    size="medium"
+                    type="button"
+                    label="Try again?"
+                    customStyles={customStyles}
+                    onClick={() => this.setState({ hasError: false })}
+                />            
                 </div>
             );
             */

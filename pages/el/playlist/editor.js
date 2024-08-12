@@ -17,6 +17,8 @@ import {
 } from "@/src/application/redux/slices/formSlice";
 import PlaylistEditor from "@/src/domains/playlists/components/PlaylistEditor/PlaylistEditor";
 import Modal from "@/src/domains/_app/components/Modal/Modal";
+import { Button, TrashIcon } from "zephyrus-components";
+import customStyles from "@/src/application/styles/Zephyrus.module.css";
 
 export default function EditorPlaylist() {
     const [saveModal, setSaveModal] = useState(false);
@@ -66,15 +68,14 @@ export default function EditorPlaylist() {
                 {/* <Link href={`/all/playlists`} title={"All playlists"}>
                     ← All playlists
                 </Link> */}
-                <button
-                    className={"button-standard button-with-icon"}
+
+                <Button
+                    size="large"
+                    label="All playlists"
+                    customStyles={customStyles}
                     onClick={() => router.push("/el/playlist/tournament")}
-                >
-                    <div>
-                        <span>◀</span>
-                    </div>
-                    <span>All playlists</span>
-                </button>
+                    icon={<TrashIcon />}
+                />
             </div>
 
             <PlaylistEditor

@@ -12,7 +12,7 @@ import { emailValidation } from "@/src/application/utils/validateForms.js";
 import loginUser from "@/src/domains/_app/components/Auth/actions/loginUser.js";
 
 import { Button, InputText } from "zephyrus-components";
-import customStyles from "@/src/domains/_app/components/Inputs/InputsCustomStyles.module.css";
+import customStyles from "@/src/application/styles/Zephyrus.module.css";
 
 export default function LoginForm({ handleTab }) {
     //================================================================================

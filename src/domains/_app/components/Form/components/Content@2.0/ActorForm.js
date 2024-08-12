@@ -17,8 +17,9 @@ import {
     revokeObjectURL,
 } from "@/src/domains/_app/actions/useLocalImages";
 import { useState } from "react";
-import customStyles from "@/src/domains/_app/components/Inputs/InputsCustomStyles.module.css";
+import customStyles from "@/src/application/styles/Zephyrus.module.css";
 import {
+    Button,
     InputText,
     InputSelect,
     InputDate,
@@ -293,13 +294,13 @@ export default function ActorForm({ confirmChanges }) {
 
             <div className={styles.footer}>
                 <div className={styles["buttons-box"]}>
-                    <button
+                    <Button
+                        size="medium"
                         type="submit"
                         disabled={isLoading || isFinish} // isLoadingResponse ?
-                        className="button-standard"
-                    >
-                        Confirm
-                    </button>
+                        label="Confirm"
+                        customStyles={customStyles}
+                    />
                 </div>
             </div>
         </form>

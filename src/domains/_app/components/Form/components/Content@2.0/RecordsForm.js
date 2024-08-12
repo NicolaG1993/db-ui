@@ -1,6 +1,8 @@
 import { selectFormIsFinish } from "@/src/application/redux/slices/formSlice";
 import styles from "@/src/domains/_app/components/Form/components/Form.module.css";
 import { shallowEqual, useSelector } from "react-redux";
+import { Button } from "zephyrus-components";
+import customStyles from "@/src/application/styles/Zephyrus.module.css";
 
 export default function RecordsForm({
     formState,
@@ -53,14 +55,21 @@ export default function RecordsForm({
             <div
                 className={`${styles["form-col-left"]} ${styles["buttons-box"]}`}
             >
-                <button
+                <Button
+                    size="medium"
                     type="submit"
-                    disabled={isLoading || isFinish}
-                    className="button-standard"
-                >
-                    Confirm
-                </button>
-                {/* <button onClick={distribute()}>Distribute all</button> */}
+                    disabled={isLoading || isFinish} // isLoadingResponse ?
+                    label="Confirm"
+                    customStyles={customStyles}
+                />
+                {/* <Button 
+                    size="medium"
+                    type="button"
+                     label="Distribute all"
+                     onClick={distribute()}
+                     customStyles={customStyles}
+                     />
+                 */}
             </div>
         </form>
     );

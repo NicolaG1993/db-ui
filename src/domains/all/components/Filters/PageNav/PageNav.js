@@ -1,4 +1,7 @@
 import styles from "@/src/domains/all/components/Filters/PageNav/PageNav.module.css";
+import { Button } from "zephyrus-components";
+import customStyles from "@/src/application/styles/Zephyrus.module.css";
+
 export default function PageNav({ totalCount, goToPage, step, selectedPage }) {
     if (totalCount) {
         const options = [...Array(Math.ceil(totalCount / step))].map(
@@ -12,15 +15,17 @@ export default function PageNav({ totalCount, goToPage, step, selectedPage }) {
 
         return (
             <div className={styles.wrap}>
-                <button
+                <Button
+                    size="mini"
+                    type="button"
+                    label="-1"
+                    customStyles={customStyles}
                     onClick={
                         (e) => goToPage(selectedPage - 1, "page") // passo page perché potrebbe servirmi x cookies in futuro
                     }
                     disabled={selectedPage <= 1}
-                    className="button-standard"
-                >
-                    -1
-                </button>
+                />
+
                 <select
                     name="page"
                     id="Page"
@@ -29,13 +34,16 @@ export default function PageNav({ totalCount, goToPage, step, selectedPage }) {
                 >
                     {options}
                 </select>
-                <button
-                    onClick={(e) => goToPage(selectedPage + 1, "page")}
+                <Button
+                    size="mini"
+                    type="button"
+                    label="+1"
+                    customStyles={customStyles}
+                    onClick={
+                        (e) => goToPage(selectedPage + 1, "page") // passo page perché potrebbe servirmi x cookies in futuro
+                    }
                     disabled={selectedPage === totalPages}
-                    className="button-standard"
-                >
-                    +1
-                </button>
+                />
             </div>
         );
     }

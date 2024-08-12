@@ -1,5 +1,7 @@
 import { useRouter } from "next/router";
 import styles from "./ErrorApp.module.css";
+import { Button } from "zephyrus-components";
+import customStyles from "@/src/application/styles/Zephyrus.module.css";
 
 export default function ErrorApp({ error, resetErrorBoundary }) {
     const router = useRouter();
@@ -41,12 +43,20 @@ export default function ErrorApp({ error, resetErrorBoundary }) {
             </div>
 
             <div className={styles["buttons-wrap"]}>
-                <button onClick={reloadPage} className="button-standard">
-                    Reload Page
-                </button>
-                <button onClick={goHome} className="button-standard">
-                    Return to the Home Page
-                </button>
+                <Button
+                    size="medium"
+                    type="button"
+                    label="Reload Page"
+                    customStyles={customStyles}
+                    onClick={reloadPage}
+                />
+                <Button
+                    size="medium"
+                    type="button"
+                    label="Return to the Home Page"
+                    customStyles={customStyles}
+                    onClick={goHome}
+                />
             </div>
         </div>
     );
