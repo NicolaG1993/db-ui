@@ -6,7 +6,7 @@ import {
     deleteSessionPlaylist,
     removeFromSessionPlaylist,
     shuffleSessionPlaylist,
-    addToSessionPlaylist,
+    // addToSessionPlaylist,
     updateSessionPlaylist,
 } from "@/src/application/redux/slices/sessionPlaylistSlice";
 import SavePlaylistForm from "@/src/domains/_app/constants/components/SessionPlaylist/components/SavePlaylistForm.js";
@@ -16,8 +16,7 @@ import {
     resetFormStore,
 } from "@/src/application/redux/slices/formSlice";
 import PlaylistEditor from "@/src/domains/playlists/components/PlaylistEditor/PlaylistEditor";
-import Modal from "@/src/domains/_app/components/Modal/Modal";
-import { Button, IconTrash } from "zephyrus-components";
+import { Button, IconTrash, Modal } from "zephyrus-components";
 import customStyles from "@/src/application/styles/Zephyrus.module.css";
 
 export default function EditorPlaylist() {
@@ -90,7 +89,11 @@ export default function EditorPlaylist() {
             />
 
             {/*  🧠 Maybe we should move this to Layout or something.. like Form */}
-            <Modal isOpen={saveModal} onClose={closeModal}>
+            <Modal
+                isOpen={saveModal}
+                onClose={closeModal}
+                customStyles={customStyles}
+            >
                 {saveModal && !!sessionPlaylist?.length && (
                     <div className={"modal-container"}>
                         <SavePlaylistForm

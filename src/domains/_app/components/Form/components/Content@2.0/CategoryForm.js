@@ -94,6 +94,7 @@ export default function CategoryForm({ confirmChanges }) {
                     <InputText
                         name="name"
                         id="Name"
+                        label={true}
                         isMandatory={true}
                         value={formState.name}
                         onChange={(e) =>
@@ -123,6 +124,7 @@ export default function CategoryForm({ confirmChanges }) {
                     <InputText
                         name="type"
                         id="Type"
+                        label={true}
                         // isMandatory={true}
                         value={formState.type}
                         onChange={(e) =>

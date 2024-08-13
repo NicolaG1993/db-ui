@@ -27,7 +27,6 @@ import AppBlur from "@/src/domains/_app/constants/components/AppBlur/AppBlur";
 import Tooltip from "@/src/domains/_app/constants/components/Tooltip/Tooltip";
 import SideNavMenu from "./components/SideNavMenu/SideNavMenu";
 // import { useErrorBoundary } from "react-error-boundary";
-import Modal from "@/src/domains/_app/components/Modal/Modal";
 import AddNewWrap from "@/src/domains/_app/constants/components/SideNavMenu/components/NewDataForm";
 import {
     closeForm,
@@ -35,7 +34,7 @@ import {
 } from "@/src/application/redux/slices/formSlice";
 import DataFormWrap from "./components/SideNavMenu/components/DataFormWrap";
 import customStyles from "@/src/application/styles/Zephyrus.module.css";
-import { Drawer } from "zephyrus-components";
+import { Drawer, Modal } from "zephyrus-components";
 
 export default function Layout({ children }) {
     //================================================================================
@@ -208,6 +207,7 @@ export default function Layout({ children }) {
                     <Modal
                         isOpen={isItemFormOpen}
                         onClose={() => dispatch(closeForm())}
+                        customStyles={customStyles}
                     >
                         <DataFormWrap />
                     </Modal>

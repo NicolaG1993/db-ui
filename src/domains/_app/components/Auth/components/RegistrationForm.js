@@ -121,6 +121,7 @@ export default function RegistrationForm({ handleTab }) {
                     <InputText
                         name="name"
                         id="Name"
+                        label={true}
                         isMandatory={true}
                         value={userName}
                         onChange={(e) => setUserName(e.target.value)}
@@ -134,6 +135,7 @@ export default function RegistrationForm({ handleTab }) {
                         type="email"
                         name="email"
                         id="Email"
+                        label={true}
                         isMandatory={true}
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
@@ -147,6 +149,7 @@ export default function RegistrationForm({ handleTab }) {
                         type="password"
                         name="password"
                         id="Password"
+                        label={true}
                         isMandatory={true}
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}

@@ -6,7 +6,6 @@ import { formatDateEU } from "@/src/application/utils/convertTimestamp";
 import RecordsCounter from "../RecordsCounter";
 import RelationsList from "../../RelationsList/RelationsList";
 import SessionPlaylistAddBtn from "../SessionPlaylistAddBtn";
-// import Modal from "@/src/domains/_app/components/Modal/Modal";
 import renderLinks from "@/src/domains/el/utils/renderLinks";
 import { parseTagsForUiList } from "@/src/domains/_app/utils/parsers";
 import { Button } from "zephyrus-components";
@@ -212,14 +211,6 @@ export default function Movie({
                     <RecordsCounter id={id} />
                 </div>
             </div>
-
-            {/* <Modal isOpen={openForm} onClose={() => setFormIsOpen(false)}>
-                <Form
-                    formLabel={label}
-                    propsData={item}
-                    handleEditsInParent={handleEdits}
-                />
-            </Modal> */}
         </div>
     );
 }

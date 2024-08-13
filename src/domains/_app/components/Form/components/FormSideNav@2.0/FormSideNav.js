@@ -175,7 +175,6 @@ export default function FormSideNav() {
                             currentSelection,
                         })
                     }
-                    disabled={isLoading || isFinish} // isLoadingResponse ?
                     label="Confirm √"
                     customStyles={customStyles}
                 />

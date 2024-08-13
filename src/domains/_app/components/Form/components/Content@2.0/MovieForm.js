@@ -107,6 +107,7 @@ export default function MovieForm({ confirmChanges }) {
                     <InputText
                         name="title"
                         id="Title"
+                        label={true}
                         isMandatory={true}
                         value={formState.title}
                         onChange={(e) =>
@@ -136,6 +137,7 @@ export default function MovieForm({ confirmChanges }) {
                     <InputTextToArray
                         name={"urls"}
                         id={"Urls"}
+                        label={true}
                         formState={formState}
                         onChange={(val, topic) =>
                             dispatch(
@@ -209,6 +211,7 @@ export default function MovieForm({ confirmChanges }) {
                     <InputFake
                         name={"actors"}
                         id={"Actors"}
+                        label={true}
                         selected={formState.actors?.length || 0}
                         onClick={() => {
                             dispatch(openSideNav("actors"));
@@ -221,6 +224,7 @@ export default function MovieForm({ confirmChanges }) {
                     <InputFake
                         name={"categories"}
                         id={"Categories"}
+                        label={true}
                         selected={formState.categories?.length || 0}
                         onClick={() => {
                             dispatch(openSideNav("categories"));
@@ -233,6 +237,7 @@ export default function MovieForm({ confirmChanges }) {
                     <InputFake
                         name={"tags"}
                         id={"Tags"}
+                        label={true}
                         selected={formState.tags?.length || 0}
                         onClick={() => {
                             dispatch(openSideNav("tags"));
@@ -245,6 +250,7 @@ export default function MovieForm({ confirmChanges }) {
                     <InputFake
                         name={"production"}
                         id={"Production"}
+                        label={true}
                         selected={formState.studios?.length || 0}
                         onClick={() => {
                             dispatch(openSideNav("studios"));
@@ -257,6 +263,7 @@ export default function MovieForm({ confirmChanges }) {
                     <InputFake
                         name={"distribution"}
                         id={"Distribution"}
+                        label={true}
                         selected={formState.distributions?.length || 0}
                         onClick={() => {
                             dispatch(openSideNav("distributions"));

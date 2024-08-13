@@ -7,7 +7,6 @@ import {
     selectTournamentIsLoaded,
     setupTournament,
 } from "@/src/application/redux/slices/tournamentSlice";
-import Modal from "@/src/domains/_app/components/Modal/Modal";
 import { extractIDs } from "@/src/domains/_app/utils/parsers";
 import fetchTournamentData from "@/src/domains/tournament/actions/fetchTournamentData";
 import styles from "@/src/domains/tournament/Tournament.module.css";

@@ -865,6 +865,15 @@ module.exports.getAllStudios = (client, str) => {
     const key = [str];
     return client.query(myQuery, key);
 };
+module.exports.searchStudios = (client, str, limit, offset) => {
+    const myQuery = `SELECT * 
+    FROM studio 
+    WHERE name ILIKE '%' || $1 || '%' OR website ILIKE '%' || $1 || '%'
+    ORDER BY name
+    LIMIT $2 OFFSET $3`;
+    const key = [str, limit, offset];
+    return client.query(myQuery, key);
+};
 
 module.exports.getStudioByID = (client, id) => {
     // const myQuery = `SELECT * FROM studio WHERE id = $1`;

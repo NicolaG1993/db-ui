@@ -3,7 +3,6 @@ import Link from "next/link";
 import Image from "next/image";
 // import Form from "@/src/domains/_app/components/Form/components/Form";
 import RelationsList from "@/src/domains/el/components/RelationsList/RelationsList";
-// import Modal from "@/src/domains/_app/components/Modal/Modal";
 import { Button } from "zephyrus-components";
 import customStyles from "@/src/application/styles/Zephyrus.module.css";
 
@@ -129,14 +128,6 @@ export default function Category({
                     />
                 </div>
             </div>
-
-            {/* <Modal isOpen={openForm} onClose={() => setFormIsOpen(false)}>
-                <Form
-                    formLabel={label}
-                    propsData={item}
-                    handleEditsInParent={handleEdits}
-                />
-            </Modal> */}
         </div>
     );
 }

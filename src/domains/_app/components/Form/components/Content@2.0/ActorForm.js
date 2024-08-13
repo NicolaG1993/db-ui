@@ -131,6 +131,7 @@ export default function ActorForm({ confirmChanges }) {
                     <InputText
                         name="name"
                         id="Name"
+                        label={true}
                         isMandatory={true}
                         value={formState.name}
                         onChange={(e) =>
@@ -160,6 +161,7 @@ export default function ActorForm({ confirmChanges }) {
                     <InputSelect
                         name={"genre"}
                         id={"Genre"}
+                        label={true}
                         options={[
                             { value: "female", name: "F" },
                             { value: "male", name: "M" },
@@ -188,6 +190,7 @@ export default function ActorForm({ confirmChanges }) {
                     <InputDate
                         name={"birthday"}
                         id={"Birthday"}
+                        label={true}
                         onChange={(e) =>
                             dispatch(
                                 updateFormState({
@@ -206,6 +209,7 @@ export default function ActorForm({ confirmChanges }) {
                     <InputRating
                         name={"rating"}
                         id={"Rating"}
+                        label={true}
                         step="0.01"
                         max="5"
                         onChange={(e) =>
@@ -239,6 +243,7 @@ export default function ActorForm({ confirmChanges }) {
                     <InputSocials
                         name={"socials"}
                         id={"Socials"}
+                        label={true}
                         options={[
                             { name: "-", value: null },
                             { name: "Instagram", value: "instagram" },
@@ -271,6 +276,7 @@ export default function ActorForm({ confirmChanges }) {
                     <InputFake
                         name={"tags"}
                         id={"Tags"}
+                        label={true}
                         selected={formState.tags?.length || 0}
                         onClick={() => {
                             dispatch(openSideNav("tags"));
@@ -283,6 +289,7 @@ export default function ActorForm({ confirmChanges }) {
                     <InputFake
                         name={"nationalities"}
                         id={"Nationalities"}
+                        label={true}
                         selected={formState.nationalities?.length || 0}
                         onClick={() => {
                             dispatch(openSideNav("nationalities"));

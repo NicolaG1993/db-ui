@@ -95,6 +95,7 @@ export default function StudioForm({ confirmChanges }) {
                     <InputText
                         name="name"
                         id="Name"
+                        label={true}
                         isMandatory={true}
                         value={formState.name}
                         onChange={(e) =>
@@ -124,6 +125,7 @@ export default function StudioForm({ confirmChanges }) {
                     <InputText
                         name="website"
                         id="Website"
+                        label={true}
                         isMandatory={false}
                         value={formState.website}
                         onChange={(e) =>
@@ -154,6 +156,7 @@ export default function StudioForm({ confirmChanges }) {
                     <InputFake
                         name={"nationalities"}
                         id={"Nationalities"}
+                        label={true}
                         selected={formState.nationalities?.length || 0}
                         onClick={() => {
                             dispatch(openSideNav("nationalities"));

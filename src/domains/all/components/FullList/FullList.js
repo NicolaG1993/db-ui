@@ -13,6 +13,8 @@ import FullListDisplayer from "./FullListDisplayer";
 import fetchAllData from "../../actions/fetchAllData";
 import fetchFilteredData from "../../actions/fetchFilteredData";
 import scrollToTop from "@/src/domains/_app/utils/scrollToTop";
+import { SearchBar } from "zephyrus-components";
+import customStyles from "@/src/application/styles/Zephyrus.module.css";
 
 export default function FullList({ tableName }) {
     //================================================================================
@@ -137,10 +139,14 @@ export default function FullList({ tableName }) {
         scrollToTop();
     };
 
-    const handleSearchBar = (e) => {
-        e.preventDefault();
-        setSearchBar(e.target.value);
+    const handleSearchBar = (str) => {
+        // console.log("handleSearchBar: ", str);
+        setSearchBar(str);
     };
+    // const handleSearchBar = (e) => {
+    //     e.preventDefault();
+    //     setSearchBar(e.target.value);
+    // };
 
     const handleSelect = (e) => {
         e.preventDefault();
@@ -170,11 +176,19 @@ export default function FullList({ tableName }) {
         <main className={styles.fullList}>
             <FullListHeading tableName={tableName} />
 
-            <FullListSearchBar
+            {/* <FullListSearchBar
                 filtersBar={filtersBar}
                 searchBar={searchBar}
                 handleSearchBar={handleSearchBar}
                 toggleFilters={toggleFiltersBar}
+            /> */}
+            <SearchBar
+                version="input-only"
+                value={searchBar}
+                onChange={handleSearchBar}
+                customStyles={customStyles}
+                // toggleFilters={toggleFiltersBar} // TODO? 🧠
+                // filtersBar={filtersBar} // TODO? 🧠
             />
 
             {filtersBar && (

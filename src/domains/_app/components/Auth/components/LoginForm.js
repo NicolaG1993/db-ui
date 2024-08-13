@@ -126,6 +126,7 @@ export default function LoginForm({ handleTab }) {
                         type="email"
                         name="email"
                         id="Email"
+                        label={true}
                         isMandatory={true}
                         value={email}
                         onChange={handleChange}
@@ -139,6 +140,7 @@ export default function LoginForm({ handleTab }) {
                         type="password"
                         name="password"
                         id="Password"
+                        label={true}
                         isMandatory={true}
                         value={password}
                         onChange={handleChange}

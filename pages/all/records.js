@@ -8,10 +8,10 @@ import styles from "@/src/application/styles/Records.module.css";
 import { formatDateEU } from "@/src/application/utils/convertTimestamp";
 import Form from "@/src/domains/_app/components/Form/components/Form";
 import ToggleSwitch from "@/src/domains/_app/components/ToggleSwitch/ToggleSwitch";
-import Modal from "@/src/domains/_app/components/Modal/Modal";
 import axiosAuthInstance from "@/src/application/utils/axiosAuthInstance";
 import { Button, IconTrash } from "zephyrus-components";
 import customStyles from "@/src/application/styles/Zephyrus.module.css";
+import { Modal } from "zephyrus-components";
 
 const fetchData = async () => {
     try {
@@ -378,7 +378,12 @@ export default function Records() {
             )}
 
             {/* 🔴 NOT WORKING: FIX 🔴 */}
-            <Modal isOpen={openForm} onClose={() => setOpenForm(false)}>
+            {/*  🧠 Maybe we should move this to Layout or something.. like Form */}
+            <Modal
+                isOpen={openForm}
+                onClose={() => setOpenForm(false)}
+                customStyles={customStyles}
+            >
                 <Form
                     formLabel={!multipleSelection ? "record" : "records"}
                     propsData={!multipleSelection ? rec : recs}

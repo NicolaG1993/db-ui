@@ -109,6 +109,7 @@ export default function EmailNotVerifiedForm({ handleTab }) {
                                         type="email"
                                         name="email"
                                         id="Email"
+                                        label={true}
                                         isMandatory={true}
                                         value={email}
                                         onChange={(e) =>

@@ -10,7 +10,6 @@ import {
 import { formatDateEU, getAge } from "@/src/application/utils/convertTimestamp";
 import IG_icon from "/public/IG_icon.svg";
 import X_icon from "/public/X_icon.svg";
-import Modal from "@/src/domains/_app/components/Modal/Modal";
 import renderLinks from "@/src/domains/el/utils/renderLinks";
 import extractItemInfo from "@/src/domains/el/utils/extractItemInfo";
 import { Button } from "zephyrus-components";
@@ -360,14 +359,6 @@ export default function Actor({
                     />
                 </div>
             </div>
-
-            {/* <Modal isOpen={openForm} onClose={() => setFormIsOpen(false)}>
-                <Form
-                    formLabel={label}
-                    propsData={item}
-                    handleEditsInParent={handleEdits}
-                />
-            </Modal> */}
         </div>
     );
 }
