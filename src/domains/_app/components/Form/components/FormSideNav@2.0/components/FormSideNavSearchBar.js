@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-// import SearchBarSmall from "@/src/domains/_app/components/SearchBar/SearchBarSmall.js";
 import { Button, SearchBar } from "zephyrus-components";
 import customStyles from "@/src/application/styles/Zephyrus.module.css";
 
@@ -8,7 +7,7 @@ export default function FormSideNavSearchBar({
     data,
     value,
     onChange,
-    onClear,
+    // onClear,
 }) {
     const [searchBar, setSearchBar] = useState(value);
 
@@ -17,19 +16,17 @@ export default function FormSideNavSearchBar({
     };
 
     const clearSearchBar = () => {
-        console.log("clearSearchBar invoked: ⭐");
         setSearchBar("");
     };
-    const handleFocus = (e) => {
-        //
-    };
-    const handleBlur = (e) => {
-        //
-    };
+    // const handleFocus = (e) => {
+    //     //
+    // };
+    // const handleBlur = (e) => {
+    //     //
+    // };
 
     useEffect(() => {
         onChange(searchBar);
-        console.log("searchBar changes: ⭐", searchBar);
     }, [searchBar]);
 
     useEffect(() => {

@@ -8,7 +8,6 @@ import { fetchDataForFilter } from "@/src/domains/_app/actions/customFetchers";
 import { getError } from "@/src/application/utils/error";
 
 import FullListHeading from "./FullListHeading";
-import FullListSearchBar from "./FullListSearchBar";
 import FullListDisplayer from "./FullListDisplayer";
 import fetchAllData from "../../actions/fetchAllData";
 import fetchFilteredData from "../../actions/fetchFilteredData";
@@ -176,20 +175,22 @@ export default function FullList({ tableName }) {
         <main className={styles.fullList}>
             <FullListHeading tableName={tableName} />
 
-            {/* <FullListSearchBar
-                filtersBar={filtersBar}
-                searchBar={searchBar}
-                handleSearchBar={handleSearchBar}
-                toggleFilters={toggleFiltersBar}
-            /> */}
-            <SearchBar
-                version="input-only"
-                value={searchBar}
-                onChange={handleSearchBar}
-                customStyles={customStyles}
-                // toggleFilters={toggleFiltersBar} // TODO? 🧠
-                // filtersBar={filtersBar} // TODO? 🧠
-            />
+            <div className={styles.searchBarWrap}>
+                <SearchBar
+                    version="input-only"
+                    value={searchBar}
+                    onChange={handleSearchBar}
+                    customStyles={customStyles}
+                    // toggleFilters={toggleFiltersBar} // TODO? 🧠
+                    // filtersBar={filtersBar} // TODO? 🧠
+                />
+                {/* <span
+                onClick={() => toggleFilters()}
+                className={styles.filtersToggle}
+            >
+                {filtersBar ? "Close" : "Filters"}
+            </span> */}
+            </div>
 
             {filtersBar && (
                 <FiltersBar

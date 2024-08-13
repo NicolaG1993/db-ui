@@ -18,11 +18,9 @@ export default function HomeSearchbar() {
     // Search Bar Functions
     //================================================================================
     const handleSearchBar = (str) => {
-        console.log("handleSearchBar: ", str);
         setSearchBar(str);
     };
     const handleSelect = (str) => {
-        console.log("handleSelect: ", str);
         setSelectedOption(str);
     };
     const handleClick = (id) => {
@@ -32,12 +30,10 @@ export default function HomeSearchbar() {
     };
 
     const fetchSearch = async () => {
-        console.log("fetchSearch invoked: ", { searchBar, selectedOption });
         const { data, error } = await getSearch({
             str: searchBar,
             group: selectedOption,
         });
-        console.log("fetchSearch result: ", data);
         setSearchResults(data);
         if (error) {
             console.error(error);
@@ -45,7 +41,6 @@ export default function HomeSearchbar() {
     };
 
     useEffect(() => {
-        console.log("searchBar changes: ", { searchBar, selectedOption });
         searchBar && selectedOption && fetchSearch();
     }, [searchBar]);
 
@@ -59,21 +54,6 @@ export default function HomeSearchbar() {
     //================================================================================
     return (
         <div className={styles.homesearchbarwrap}>
-            {/* <SearchBar
-                searchBar={searchBar}
-                setSearchBar={handleSearchBar}
-                handleFocus={handleFocus}
-                handleBlur={handleBlur}
-            />
-            {searchBar && resultsUI ? (
-                <SearchBarResults
-                    searchResults={searchResults}
-                    labelA={labelA}
-                    labelB={labelB}
-                />
-            ) : (
-                <></>
-            )} */}
             <SearchBar
                 version="input-select-table"
                 value={searchBar}
