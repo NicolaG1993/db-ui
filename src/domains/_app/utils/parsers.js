@@ -230,6 +230,8 @@ const anyExist = (arr, values) =>
         return arr.includes(Number(value));
     });
 
+// used on actor item when pic is missing - it check if there is one of its movies with a pic instead
+// penso che non la useremo piú a breve: 1. abbiamo spostato components in library esterna; 2. No facciamo piú fetch di actor e movies insieme.
 const detectImage = (obj) => {
     if (obj && obj.movies && obj.movies.length) {
         let validElements = obj.movies.filter((el) => el.pic);

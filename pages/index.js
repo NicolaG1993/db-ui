@@ -4,6 +4,13 @@ import HomeHeading from "@/src/domains/home/components/HomeHeading";
 import HomeSearchbar from "@/src/domains/home/components/HomeSearchBar";
 import { useErrorBoundary } from "react-error-boundary";
 import getHomeData from "@/src/domains/home/actions/getHomeData";
+import { useDispatch } from "react-redux";
+import { useRouter } from "next/router";
+import {
+    activateLoadingItem,
+    clearItem,
+} from "@/src/application/redux/slices/itemSlice";
+import { useAppContext } from "../../contexts/AppContext";
 
 export default function Home() {
     //================================================================================
@@ -37,6 +44,29 @@ export default function Home() {
         fetchData();
     }, []);
 
+    ////// CHANGES AFTER REFACTORING COMPONENTS LIBRARY
+    // they have to be passed down to ShortList then to Card
+    const router = useRouter();
+    const dispatch = useDispatch();
+    const { showTooltip, hideTooltip } = useAppContext();
+
+    const clearPreviousItem = () => {
+        dispatch(clearItem());
+        dispatch(activateLoadingItem());
+    };
+
+    const onCardClick = ({ id, label }) => {
+        clearPreviousItem();
+        router.push(`/el/${itemLabel}/${obj.id}`);
+    };
+
+    const onMouseOver = (title, description, e) => {
+        showTooltip(obj[nameType], "", e);
+    };
+    const onMouseOut = () => {
+        hideTooltip();
+    };
+
     //================================================================================
     // Render UI
     //================================================================================
@@ -44,7 +74,13 @@ export default function Home() {
         <main id={"HomeMain"}>
             <HomeHeading />
             <HomeSearchbar />
-            <ShortList data={groupA} tableName={"actors"} />
+            <ShortList
+                data={groupA}
+                tableName={"actors"}
+                onMouseOver={onMouseOver}
+                onMouseOut={onMouseOut}
+                onCardClick={onCardClick}
+            />
             <ShortList data={groupB} tableName={"movies"} />
         </main>
     );

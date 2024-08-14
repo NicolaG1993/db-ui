@@ -1,11 +1,12 @@
 import filterUniqueActors from "@/src/domains/el/utils/filterUniqueActors";
+import { createCastString } from "../../_app/utils/interpretateData";
 
 /* MOVIE */
 const mapMovieRawToMovie = (rawMovie) => {
     let movie = {
         id: rawMovie.movie_id,
         title: rawMovie.title,
-        pic: rawMovie.movie_pic,
+        pic: rawMovie.movie_pic || "/no-image.png",
         urls: rawMovie.movie_urls || [],
         rating: rawMovie.movie_rating,
         release: rawMovie.movie_release,
@@ -47,6 +48,8 @@ const mapMovieRawToMovie = (rawMovie) => {
             })) || [],
     };
 
+    movie.castString = createCastString(movie.actors);
+
     return movie;
 };
 
@@ -56,7 +59,7 @@ const mapActorRawToActor = (rawActor) => {
         id: rawActor.actor.id,
         createdAt: rawActor.actor.created_at,
         name: rawActor.actor.name,
-        pic: rawActor.actor.pic,
+        pic: rawActor.actor.pic || "/no-image.png",
         rating: rawActor.actor.rating,
         birthday: rawActor.actor.birthday,
         genre: rawActor.actor.genre,
@@ -111,7 +114,7 @@ const mapCategoryRawToCategory = (rawCategory) => {
         id: rawCategory.category_id,
         createdAt: rawCategory.category_created_at,
         name: rawCategory.category_name,
-        pic: rawCategory.category_pic,
+        pic: rawCategory.category_pic || "/no-image.png",
         type: rawCategory.category_type,
         totalMovies: rawCategory.total_movies,
         actors:
@@ -133,7 +136,7 @@ const mapTagRawToTag = (rawTag) => {
         id: rawTag.tag_id,
         createdAt: rawTag.tag_created_at,
         name: rawTag.tag_name,
-        pic: rawTag.tag_pic,
+        pic: rawTag.tag_pic || "/no-image.png",
         type: rawTag.tag_type,
         totalMovies: rawTag.total_movies,
         actors:
@@ -155,7 +158,7 @@ const mapStudioRawToStudio = (rawStudio) => {
         id: rawStudio.studio_id,
         createdAt: rawStudio.studio_created_at,
         name: rawStudio.studio_name,
-        pic: rawStudio.studio_pic,
+        pic: rawStudio.studio_pic || "/no-image.png",
         website: rawStudio.studio_website,
         totalMovies: rawStudio.total_movies,
         nationalities: rawStudio.studio_nationalities,
@@ -178,7 +181,7 @@ const mapDistributionRawToDistribution = (rawDistribution) => {
         id: rawDistribution.distribution_id,
         createdAt: rawDistribution.distribution_created_at,
         name: rawDistribution.distribution_name,
-        pic: rawDistribution.distribution_pic,
+        pic: rawDistribution.distribution_pic || "/no-image.png",
         website: rawDistribution.distribution_website,
         totalMovies: rawDistribution.total_movies,
         nationalities: rawDistribution.distribution_nationalities,
