@@ -24,7 +24,6 @@ import RandomNumberButton from "./components/Widgets/RandomNumberButton";
 import SessionPlaylistButton from "./components/Widgets/SessionPlaylistButton";
 import { selectItemIsLoading } from "@/src/application/redux/slices/itemSlice";
 import AppBlur from "@/src/domains/_app/constants/components/AppBlur/AppBlur";
-import Tooltip from "@/src/domains/_app/constants/components/Tooltip/Tooltip";
 import SideNavMenu from "./components/SideNavMenu/SideNavMenu";
 // import { useErrorBoundary } from "react-error-boundary";
 import AddNewWrap from "@/src/domains/_app/constants/components/SideNavMenu/components/NewDataForm";
@@ -34,7 +33,7 @@ import {
 } from "@/src/application/redux/slices/formSlice";
 import DataFormWrap from "./components/SideNavMenu/components/DataFormWrap";
 import customStyles from "@/src/application/styles/Zephyrus.module.css";
-import { Drawer, Modal } from "zephyrus-components";
+import { Drawer, Modal, Tooltip } from "zephyrus-components";
 
 export default function Layout({ children }) {
     //================================================================================
@@ -223,7 +222,11 @@ export default function Layout({ children }) {
                     {children({ showTooltip })}
                     <Footer />
 
-                    <Tooltip {...tooltipProps} visible={tooltipVisible} />
+                    <Tooltip
+                        {...tooltipProps}
+                        visible={tooltipVisible}
+                        customStyles={customStyles}
+                    />
                     <Widgets
                         showTooltip={showTooltip}
                         hideTooltip={hideTooltip}

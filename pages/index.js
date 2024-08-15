@@ -89,8 +89,6 @@ export default function Home() {
         dispatch(removeElementFromSessionPlaylist(obj));
     };
 
-    console.log("HOME PAGE: ", { groupA, groupB });
-
     //================================================================================
     // Render UI
     //================================================================================

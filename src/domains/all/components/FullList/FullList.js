@@ -23,13 +23,7 @@ import { useAppContext } from "@/src/domains/_app/contexts/AppContext";
 import { useRouter } from "next/router";
 
 /*
-TODO:
-
-🟨 Keep this component as wrap (handle data and declare dynamic functions here!)
-🟢 Create all the required components
-🟢 Move styles
-🟢 Adjust new components imports
-🟨 Delete old components from App
+TODO: Keep this component as wrap (handle data and declare dynamic functions here!)
 */
 
 export default function FullList({ tableName }) {
@@ -269,18 +263,6 @@ export default function FullList({ tableName }) {
                     onRemoveItem={removeFromPlaylist}
                     customStyles={customStyles}
                 />
-                // <FullListDisplayer
-                //     table={table}
-                //     tableName={tableName}
-                //     displayData={displayData}
-                //     goToPage={goToPage}
-                //     step={step}
-                //     selectedPage={selectedPage}
-                //     order={order}
-                //     totalCount={totalCount}
-                //     handleSorting={handleSorting}
-                //     isLoading={isLoading || !displayData}
-                // />
             )}
         </main>
     );
