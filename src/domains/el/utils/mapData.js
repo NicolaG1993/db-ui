@@ -1,6 +1,8 @@
 import filterUniqueActors from "@/src/domains/el/utils/filterUniqueActors";
 import { createCastString } from "../../_app/utils/interpretateData";
 
+// 🧠 TODO: Uniform raw objects response, that way we can reuse always the same function (just with or without mapping) - now we have different responses
+
 /* MOVIE */
 const mapMovieRawToMovie = (rawMovie) => {
     let movie = {
@@ -51,6 +53,62 @@ const mapMovieRawToMovie = (rawMovie) => {
     movie.castString = createCastString(movie.actors);
 
     return movie;
+};
+
+const mapMoviesRawToMovies = (rawArray) => {
+    const mappedArray = rawArray.map((rawMovie) => {
+        let movie = {
+            id: rawMovie.id,
+            title: rawMovie.title,
+            pic: rawMovie.pic || "/no-image.png",
+            urls: rawMovie.urls || [],
+            rating: rawMovie.rating,
+            release: rawMovie.release,
+            records: rawMovie.records,
+            totalActors: rawMovie.actors?.length || 0,
+
+            actors:
+                rawMovie.actors?.map((actor) => ({
+                    id: actor.id,
+                    name: actor.name,
+                })) || [],
+            tags:
+                rawMovie.tags?.map((tag) => ({
+                    id: tag.id,
+                    name: tag.name,
+                    type: tag.type,
+                    pic: tag.pic,
+                })) || [],
+            categories:
+                rawMovie.categories?.map((category) => ({
+                    id: category.id,
+                    name: category.name,
+                    type: category.type,
+                    pic: category.pic,
+                })) || [],
+
+            studios:
+                rawMovie.studios?.map((studio) => ({
+                    id: studio.id,
+                    name: studio.name,
+                    website: studio.website,
+                    pic: studio.pic,
+                })) || [],
+            distributions:
+                rawMovie.distributions?.map((distribution) => ({
+                    id: distribution.id,
+                    name: distribution.name,
+                    website: distribution.website,
+                    pic: distribution.pic,
+                })) || [],
+        };
+
+        movie.castString = createCastString(movie.actors);
+
+        return movie;
+    });
+
+    return mappedArray;
 };
 
 /* ACTOR */
@@ -106,6 +164,56 @@ const mapActorRawToActor = (rawActor) => {
     // actor.categories = filterUniqueCategories(actor.categories);
 
     return actor;
+};
+
+const mapActorsRawToActors = (rawArray) => {
+    const mappedArray = rawArray.map((rawActor) => ({
+        id: rawActor.id,
+        createdAt: rawActor.created_at,
+        name: rawActor.name,
+        pic: rawActor.pic || "/no-image.png",
+        rating: rawActor.rating,
+        birthday: rawActor.birthday,
+        genre: rawActor.genre,
+        twitter: rawActor.twitter,
+        instagram: rawActor.instagram,
+        moreUrls: rawActor.more_urls,
+        nationalities: rawActor.nationalities,
+        totalMovies: rawActor.total_movies,
+        tags:
+            rawActor.tags?.map((tag) => ({
+                id: tag.id,
+                name: tag.name,
+                type: tag.type,
+                pic: tag.pic,
+            })) || [],
+
+        categories:
+            rawActor.categories?.map((category) => ({
+                id: category.id,
+                name: category.name,
+                type: category.type,
+                pic: category.pic,
+            })) || [],
+
+        studios:
+            rawActor.studios?.map((studio) => ({
+                id: studio.id,
+                name: studio.name,
+                website: studio.website,
+                pic: studio.pic,
+            })) || [],
+
+        distributions:
+            rawActor.distributions?.map((distribution) => ({
+                id: distribution.id,
+                name: distribution.name,
+                website: distribution.website,
+                pic: distribution.pic,
+            })) || [],
+    }));
+
+    return mappedArray;
 };
 
 /* CATEGORY */
@@ -200,7 +308,9 @@ const mapDistributionRawToDistribution = (rawDistribution) => {
 
 export {
     mapMovieRawToMovie,
+    mapMoviesRawToMovies,
     mapActorRawToActor,
+    mapActorsRawToActors,
     mapCategoryRawToCategory,
     mapTagRawToTag,
     mapStudioRawToStudio,
