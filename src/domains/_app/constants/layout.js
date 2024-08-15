@@ -2,7 +2,7 @@ import Head from "next/head";
 import { useEffect, useState } from "react";
 
 import Footer from "@/src/domains/_app/constants/components/Footer/Footer";
-import Widgets from "@/src/domains/_app/constants/components/Widgets/Widgets";
+// import Widgets from "@/src/domains/_app/constants/components/Widgets/Widgets";
 // import SessionPlaylist from "@/src/domains/_app/constants/components/SessionPlaylist/SessionPlaylist";
 
 import { shallowEqual, useDispatch } from "react-redux";
@@ -35,7 +35,7 @@ import {
 } from "@/src/application/redux/slices/formSlice";
 import DataFormWrap from "./components/SideNavMenu/components/DataFormWrap";
 import customStyles from "@/src/application/styles/Zephyrus.module.css";
-import { Drawer, Header, Modal, Tooltip } from "zephyrus-components";
+import { Drawer, Header, Modal, Tooltip, WidgetsUI } from "zephyrus-components";
 import getRandomMovie from "@/src/domains/_app/actions/getRandomMovie";
 
 export default function Layout({ children }) {
@@ -177,6 +177,30 @@ export default function Layout({ children }) {
         router.push(url);
     };
 
+    // FIX: COMPLETARE 👇🔴 APPROCCIO CORRETTO 👍
+    const widgetsConfig = [
+        // 🧠 Creare dynamic button component
+        // 🧠🧠 credo che noi dovremmo passare a WidgetsUI solo la lista dei components (e forse height&width? + qualche info tipo label)
+        // 🧠🧠 Gli imports poi saranno gestiti dentro WidgetsUI xk sono disponibili solo i widget dentro library folder
+        {
+            type: "SessionPlaylist",
+            label: "Session Playlist",
+            maxHeight: "650px",
+        },
+        {
+            type: "RandomNumberGenerator",
+            label: "Roll the dice",
+            maxHeight: "100%",
+            minHeight: "570px",
+        },
+        {
+            type: "UserNotes",
+            label: "Notes",
+            maxHeight: "100%",
+            minHeight: "570px",
+        },
+    ];
+
     //================================================================================
     // Render UI
     //================================================================================
@@ -247,9 +271,11 @@ export default function Layout({ children }) {
                         visible={tooltipVisible}
                         customStyles={customStyles}
                     />
-                    <Widgets
-                        showTooltip={showTooltip}
-                        hideTooltip={hideTooltip}
+                    <WidgetsUI
+                        widgetsConfig={widgetsConfig}
+                        customStyles={customStyles}
+                        // showTooltip={showTooltip}
+                        // hideTooltip={hideTooltip}
                     />
                 </div>
             )}
