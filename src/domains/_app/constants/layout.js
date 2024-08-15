@@ -1,10 +1,9 @@
 import Head from "next/head";
 import { useEffect, useState } from "react";
 
-import Header from "@/src/domains/_app/constants/components/Header/Header";
 import Footer from "@/src/domains/_app/constants/components/Footer/Footer";
 import Widgets from "@/src/domains/_app/constants/components/Widgets/Widgets";
-import SessionPlaylist from "@/src/domains/_app/constants/components/SessionPlaylist/SessionPlaylist";
+// import SessionPlaylist from "@/src/domains/_app/constants/components/SessionPlaylist/SessionPlaylist";
 
 import { shallowEqual, useDispatch } from "react-redux";
 import fetchS3SettingsFile from "@/src/domains/_app/actions/fetchS3SettingsFile.js";
@@ -17,23 +16,27 @@ import AuthModal from "@/src/domains/_app/components/Auth/AuthModal.js";
 import { useSelector } from "react-redux";
 import {
     selectUserState,
-    userLogin,
+    // userLogin,
 } from "@/src/application/redux/slices/userSlice.js";
-import styles from "@/src/domains/_app/constants/Layout.module.css";
-import RandomNumberButton from "./components/Widgets/RandomNumberButton";
-import SessionPlaylistButton from "./components/Widgets/SessionPlaylistButton";
-import { selectItemIsLoading } from "@/src/application/redux/slices/itemSlice";
+// import styles from "@/src/domains/_app/constants/Layout.module.css";
+// import RandomNumberButton from "./components/Widgets/RandomNumberButton";
+// import SessionPlaylistButton from "./components/Widgets/SessionPlaylistButton";
+import {
+    activateLoadingItem,
+    selectItemIsLoading,
+} from "@/src/application/redux/slices/itemSlice";
 import AppBlur from "@/src/domains/_app/constants/components/AppBlur/AppBlur";
 import SideNavMenu from "./components/SideNavMenu/SideNavMenu";
 // import { useErrorBoundary } from "react-error-boundary";
-import AddNewWrap from "@/src/domains/_app/constants/components/SideNavMenu/components/NewDataForm";
+// import AddNewWrap from "@/src/domains/_app/constants/components/SideNavMenu/components/NewDataForm";
 import {
     closeForm,
     selectIsFormOpen,
 } from "@/src/application/redux/slices/formSlice";
 import DataFormWrap from "./components/SideNavMenu/components/DataFormWrap";
 import customStyles from "@/src/application/styles/Zephyrus.module.css";
-import { Drawer, Modal, Tooltip } from "zephyrus-components";
+import { Drawer, Header, Modal, Tooltip } from "zephyrus-components";
+import getRandomMovie from "@/src/domains/_app/actions/getRandomMovie";
 
 export default function Layout({ children }) {
     //================================================================================
@@ -156,9 +159,23 @@ export default function Layout({ children }) {
         }
     }, [process.env.CUSTOM_SETTINGS]);
 
-    useEffect(() => {
-        console.log("🔥 isDrawerOpen is changed: ", isDrawerOpen);
-    }, [isDrawerOpen]);
+    const setLoadingItem = () => {
+        dispatch(activateLoadingItem());
+    };
+
+    const handleRandomMovie = async () => {
+        setLoadingItem();
+        const res = await getRandomMovie();
+        if (res.status === 200 && res.data) {
+            router.push(`/el/movie/${res.data}`);
+        } else if (res.error) {
+            // TODO: error handling
+        }
+    };
+
+    const handleRouting = async (url) => {
+        router.push(url);
+    };
 
     //================================================================================
     // Render UI
@@ -200,8 +217,11 @@ export default function Layout({ children }) {
                         isDrawerOpen={isDrawerOpen}
                         openDrawer={openDrawer}
                         closeDrawer={closeDrawer}
-                        showTooltip={showTooltip}
-                        hideTooltip={hideTooltip}
+                        handleRandomMovie={handleRandomMovie}
+                        handleRouting={handleRouting}
+                        customStyles={customStyles}
+                        // showTooltip={showTooltip}
+                        // hideTooltip={hideTooltip}
                     />
                     <Modal
                         isOpen={isItemFormOpen}
