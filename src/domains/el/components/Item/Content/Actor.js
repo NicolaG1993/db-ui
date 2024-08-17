@@ -14,6 +14,8 @@ import renderLinks from "@/src/domains/el/utils/renderLinks";
 import extractItemInfo from "@/src/domains/el/utils/extractItemInfo";
 import { Button } from "zephyrus-components";
 import customStyles from "@/src/application/styles/Zephyrus.module.css";
+import dataStructureGroups from "@/src/application/settings/dataStructureGroups";
+import InfiteScrollingWrap from "../InfiteScrollingWrap";
 
 /*
 Form "open" and "close" should be handled in redux
@@ -326,13 +328,30 @@ export default function Actor({
                     )}
                 </div>
 
-                <RelationsList
-                    itemName={item[nameType]}
+                <InfiteScrollingWrap
                     itemId={id}
                     itemLabel={label}
-                    nameType={nameType}
-                    relationsLabel={"movie"} // fare dinamici ? no perche custom component
                     relationsGroup={"movies"}
+
+                    // itemSettings={dataStructureItems["movie"]}
+                    // tableSettings={dataStructureGroups["movies"]}
+                    /*
+                data={} // TODO: fetching has to be moved up here // otherwise we could create a custom wrapper for this
+                table={dataStructureGroups["movies"]}
+                hasMore={} // TODO: move up here
+                loading={} // TODO: move up here
+                filters={}  // TODO: move up here // not implemented yet!
+                onLoadMore={} // TODO: move up here
+                onUpdateFilters={} // TODO: move up here // not implemented yet!
+                customStyles={customStyles}
+                */
+
+                    //  itemName={item[nameType]}
+                    //  itemId={id}
+                    //  itemLabel={label}
+                    //  nameType={nameType}
+                    //  relationsLabel={"movie"} // fare dinamici ? no perche custom component
+                    //  relationsGroup={"movies"}
                 />
             </div>
 

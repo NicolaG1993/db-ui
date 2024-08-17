@@ -13,7 +13,7 @@ import {
 } from "@/src/application/redux/slices/userSlice";
 import LogoutButton from "../../../components/Auth/components/LogoutButton";
 import axiosAuthInstance from "@/src/application/utils/axiosAuthInstance";
-import { Button } from "zephyrus-components";
+import { Button, UserCard } from "zephyrus-components";
 import customStyles from "@/src/application/styles/Zephyrus.module.css";
 
 export default function SideNavMenu({ onClose }) {
@@ -56,7 +56,14 @@ export default function SideNavMenu({ onClose }) {
                     <p>Profile</p>
                 </div>
 
-                {dropDown === "profile" && <DropDownProfile />}
+                {dropDown === "profile" && (
+                    <UserCard
+                        user={userInfo}
+                        // onEditProfile={onEditProfile}
+                        customStyles={customStyles}
+                    />
+                )}
+                {/* {dropDown === "profile" && <DropDownProfile />} */}
 
                 <div
                     className={styles.dropdownHead}

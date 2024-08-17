@@ -37,21 +37,25 @@ import DataFormWrap from "./components/SideNavMenu/components/DataFormWrap";
 import customStyles from "@/src/application/styles/Zephyrus.module.css";
 import { Drawer, Header, Modal, Tooltip, WidgetsUI } from "zephyrus-components";
 import getRandomMovie from "@/src/domains/_app/actions/getRandomMovie";
+import { selectSessionPlaylist } from "@/src/application/redux/slices/sessionPlaylistSlice";
+import { useRouter } from "next/router";
 
 export default function Layout({ children }) {
     //================================================================================
     // State
     //================================================================================
     const dispatch = useDispatch();
+    const router = useRouter();
     // const { theme } = useAppContext();
     // const [user, setUser] = useState();
     let isItemFormOpen = useSelector(selectIsFormOpen, shallowEqual);
+    let sessionPlaylist = useSelector(selectSessionPlaylist, shallowEqual);
+    let userInfo = useSelector(selectUserState);
+    let itemIsLoading = useSelector(selectItemIsLoading, shallowEqual);
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);
     const [showLoadingScreen, setShowLoadingScreen] = useState(false);
     const [showAuthModal, setShowAuthModal] = useState(true);
     const [renderingApp, setRenderingApp] = useState(true); // forse si potrebbe spostare in redux
-    let userInfo = useSelector(selectUserState);
-    let itemIsLoading = useSelector(selectItemIsLoading, shallowEqual);
     // const { showBoundary } = useErrorBoundary();
     // const [appError, setAppError] = useState();
     // let itemStoreError = useSelector(selectItemStoreError, shallowEqual);
@@ -188,7 +192,7 @@ export default function Layout({ children }) {
             maxHeight: "650px",
         },
         {
-            type: "RandomNumberGenerator",
+            type: "RandomNumbersGenerator",
             label: "Roll the dice",
             maxHeight: "100%",
             minHeight: "570px",
@@ -273,6 +277,7 @@ export default function Layout({ children }) {
                     />
                     <WidgetsUI
                         widgetsConfig={widgetsConfig}
+                        playlistCounter={sessionPlaylist?.length}
                         customStyles={customStyles}
                         // showTooltip={showTooltip}
                         // hideTooltip={hideTooltip}

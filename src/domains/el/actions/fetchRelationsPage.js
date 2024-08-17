@@ -4,6 +4,7 @@ import { getError } from "@/src/application/utils/error";
 export default async function fetchRelationsPage({
     // relationsLabel,
     relationsGroup,
+    //itemGroup,
     itemLabel,
     itemId,
     filters,
@@ -38,7 +39,7 @@ export default async function fetchRelationsPage({
                     offset: page === 1 ? 0 : (page - 1) * limit,
                 },
             }
-        );
+        ); // 🟥🟥🟥 itemGroup -> "movies" ; relationsLabel -> "actor"
 
         // console.log("🍄🍄🍄 data: ", data);
         /* 

@@ -5,6 +5,7 @@ import Image from "next/image";
 import RelationsList from "@/src/domains/el/components/RelationsList/RelationsList";
 import { Button } from "zephyrus-components";
 import customStyles from "@/src/application/styles/Zephyrus.module.css";
+import InfiteScrollingWrap from "../InfiteScrollingWrap";
 
 export default function Studio({
     label,
@@ -132,14 +133,19 @@ export default function Studio({
                     )}
                 </div>
 
-                <RelationsList
+                <InfiteScrollingWrap
+                    itemId={id}
+                    itemLabel={label}
+                    relationsGroup={"movies"}
+                />
+                {/* <RelationsList
                     itemName={item[nameType]}
                     itemId={item.id}
                     itemLabel={label}
                     nameType={nameType}
                     relationsLabel={"movie"}
                     relationsGroup={"movies"}
-                />
+                /> */}
             </div>
 
             <div className={styles.infoWrap}>

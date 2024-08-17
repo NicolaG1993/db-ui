@@ -10,6 +10,7 @@ import renderLinks from "@/src/domains/el/utils/renderLinks";
 import { parseTagsForUiList } from "@/src/domains/_app/utils/parsers";
 import { Button } from "zephyrus-components";
 import customStyles from "@/src/application/styles/Zephyrus.module.css";
+import InfiteScrollingWrap from "../InfiteScrollingWrap";
 
 export default function Movie({
     label,
@@ -160,14 +161,19 @@ export default function Movie({
                     )}
                 </div>
 
-                <RelationsList
+                <InfiteScrollingWrap
+                    itemId={id}
+                    itemLabel={label}
+                    relationsGroup={"actors"}
+                />
+                {/* <RelationsList
                     itemName={item[nameType]}
                     itemId={item.id}
                     itemLabel={label}
                     nameType={nameType}
                     relationsLabel={"actor"} // fare dinamici ? no perche custom component ?
                     relationsGroup={"actors"}
-                />
+                /> */}
             </div>
 
             <div className={styles.infoWrap}>

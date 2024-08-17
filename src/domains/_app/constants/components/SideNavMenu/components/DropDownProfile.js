@@ -1,3 +1,4 @@
+/*
 import { useSelector } from "react-redux";
 import { selectUserState } from "@/src/application/redux/slices/userSlice";
 import styles from "@/src/domains/_app/constants/components/SideNavMenu/SideNavMenu.module.css";
@@ -13,20 +14,17 @@ export default function DropDownProfile() {
             <div className={styles.profilePic}></div>
             <div className={styles.profileInfo}>
                 <div>
-                    {/* <p>Name: {user.name}</p>
-                            <p>Email: {user.email}</p> */}
+                   
                     <p>Name: {userInfo.name}</p>
                     <p>Email: {userInfo.email}</p>
-                    {/* Add "is admin", only if admin */}
+
                 </div>
                 <div>
                     <p>Edit Profile</p>
                 </div>
-                {/* 
-                            • Database Seguiti
-                            • I miei Database 
-                */}
+                
             </div>
         </div>
     );
 }
+*/

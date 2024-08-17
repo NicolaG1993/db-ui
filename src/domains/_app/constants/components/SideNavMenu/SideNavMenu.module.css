@@ -29,44 +29,7 @@
     padding: 1.5rem 2.75rem;
     background: var(--bg200);
 }
-/* Profile */
-#Profile {
-    display: grid;
-    grid-template-columns: auto 1fr;
-    /* flex-direction: column; */
-}
-#Profile > .profilePic {
-    width: 75px;
-    height: 75px;
-    border-radius: 50%;
-    background: var(--bg900);
-    margin-right: 0.75rem;
-}
-#Profile > .profileInfo {
-    display: flex;
-    flex-direction: column;
-    padding-left: 0.75rem;
-    border-left: 1px solid var(--bg600);
-}
-#Profile > .profileInfo > div:first-child {
-    margin-bottom: 1.5rem;
-}
 
-#Profile > .profileInfo > div:nth-child(2) {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-}
-#Profile > .profileInfo > div:nth-child(2) > p:first-child {
-    cursor: pointer;
-    /* font-weight: bold; */
-    /* color: var(--bg900); */
-    color: var(--color000);
-}
-#Profile > .profileInfo > div:nth-child(2) > p:first-child:hover {
-    /* font-weight: bold; */
-    color: var(--text);
-}
 /* Settings */
 /* Preferences */
 #Preferences {

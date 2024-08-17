@@ -65,7 +65,6 @@ export default function RecordsCounter({ id }) {
                     label="+1"
                     customStyles={customStyles}
                     onClick={() => handleAddCounter()}
-                    disabled={selectedPage === totalPages}
                 />
             </div>
 

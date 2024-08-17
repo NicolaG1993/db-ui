@@ -18,7 +18,7 @@ import {
     removeElementFromSessionPlaylist,
     selectSessionPlaylist,
 } from "@/src/application/redux/slices/sessionPlaylistSlice";
-import { shallowEqual, useSelector } from "react-redux";
+import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import { useAppContext } from "@/src/domains/_app/contexts/AppContext";
 import { useRouter } from "next/router";
 
@@ -31,6 +31,7 @@ export default function FullList({ tableName }) {
     // Component State
     //================================================================================
     const router = useRouter();
+    const dispatch = useDispatch();
     const { showTooltip, hideTooltip } = useAppContext();
     let sessionPlaylist = useSelector(selectSessionPlaylist, shallowEqual);
     let table = dataStructureGroups[tableName];
