@@ -4,7 +4,7 @@ import Image from "next/image";
 // import Form from "@/src/domains/_app/components/Form/components/Form";
 import { formatDateEU } from "@/src/application/utils/convertTimestamp";
 import RecordsCounter from "../RecordsCounter";
-import RelationsList from "../../RelationsList/RelationsList";
+// import RelationsList from "../../RelationsList/RelationsList";
 import SessionPlaylistAddBtn from "../SessionPlaylistAddBtn";
 import renderLinks from "@/src/domains/el/utils/renderLinks";
 import { parseTagsForUiList } from "@/src/domains/_app/utils/parsers";

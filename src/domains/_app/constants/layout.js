@@ -23,6 +23,7 @@ import {
 // import SessionPlaylistButton from "./components/Widgets/SessionPlaylistButton";
 import {
     activateLoadingItem,
+    clearItem,
     selectItemIsLoading,
 } from "@/src/application/redux/slices/itemSlice";
 import AppBlur from "@/src/domains/_app/constants/components/AppBlur/AppBlur";
@@ -31,13 +32,22 @@ import SideNavMenu from "./components/SideNavMenu/SideNavMenu";
 // import AddNewWrap from "@/src/domains/_app/constants/components/SideNavMenu/components/NewDataForm";
 import {
     closeForm,
+    openForm,
+    resetFormStore,
     selectIsFormOpen,
 } from "@/src/application/redux/slices/formSlice";
 import DataFormWrap from "./components/SideNavMenu/components/DataFormWrap";
 import customStyles from "@/src/application/styles/Zephyrus.module.css";
 import { Drawer, Header, Modal, Tooltip, WidgetsUI } from "zephyrus-components";
 import getRandomMovie from "@/src/domains/_app/actions/getRandomMovie";
-import { selectSessionPlaylist } from "@/src/application/redux/slices/sessionPlaylistSlice";
+import {
+    deleteSessionPlaylist,
+    getSessionPlaylist,
+    removeFromSessionPlaylist,
+    selectSessionPlaylist,
+    shuffleSessionPlaylist,
+    updateSessionPlaylist,
+} from "@/src/application/redux/slices/sessionPlaylistSlice";
 import { useRouter } from "next/router";
 
 export default function Layout({ children }) {
@@ -177,7 +187,9 @@ export default function Layout({ children }) {
         }
     };
 
-    const handleRouting = async (url) => {
+    const handleRouting = async (url, id) => {
+        // id && clearPreviousItem(id);
+        clearPreviousItem();
         router.push(url);
     };
 
@@ -187,7 +199,7 @@ export default function Layout({ children }) {
         // 🧠🧠 credo che noi dovremmo passare a WidgetsUI solo la lista dei components (e forse height&width? + qualche info tipo label)
         // 🧠🧠 Gli imports poi saranno gestiti dentro WidgetsUI xk sono disponibili solo i widget dentro library folder
         {
-            type: "SessionPlaylist",
+            type: "Playlist", //"SessionPlaylist",
             label: "Session Playlist",
             maxHeight: "650px",
         },
@@ -204,6 +216,50 @@ export default function Layout({ children }) {
             minHeight: "570px",
         },
     ];
+
+    //================================================================================
+    // SessionPlaylist logic
+    //================================================================================
+    // useEffect(() => {
+    //     dispatch(getSessionPlaylist());
+    // }, [open]); // 🔴🔴🔴☝️ FIX: Needs to be triggered inside "WidgetsUI" 🔴🔴🔴
+
+    const getPlaylist = () => {
+        dispatch(getSessionPlaylist());
+    };
+
+    const openAddNew = () => {
+        dispatch(resetFormStore()); // cleanup formState
+        dispatch(openForm({ formLabel: "movie" })); // open Form UI
+    };
+
+    const removeFromPlaylist = (i) => {
+        dispatch(removeFromSessionPlaylist(i));
+    };
+    const overridePlaylist = (playlist) => {
+        dispatch(updateSessionPlaylist(playlist));
+    };
+    const clearPreviousItem = (id) => {
+        // if (id.toString() !== router.query.id) {
+        dispatch(clearItem());
+        dispatch(activateLoadingItem());
+        // }
+    };
+    const deletePlaylist = () => {
+        dispatch(deleteSessionPlaylist());
+    };
+    const shufflePlaylist = () => {
+        dispatch(shuffleSessionPlaylist());
+    };
+
+    // Maybe move this logic inside "WidgetsUI" to solve issue 👇🧠
+    const handleParentUI = (uiElement, status) => {
+        if (uiElement === "ADD_NEW") {
+            status && openAddNew();
+        } else if (uiElement === "WIDGET") {
+            !status && closeWidget(); // 🔴🔴🔴
+        }
+    };
 
     //================================================================================
     // Render UI
@@ -277,7 +333,17 @@ export default function Layout({ children }) {
                     />
                     <WidgetsUI
                         widgetsConfig={widgetsConfig}
+                        playlist={sessionPlaylist}
                         playlistCounter={sessionPlaylist?.length}
+                        handleParentUI={handleParentUI}
+                        openAppModal={openAddNew}
+                        getPlaylist={getPlaylist}
+                        removeFromPlaylist={removeFromPlaylist}
+                        overridePlaylist={overridePlaylist}
+                        deletePlaylist={deletePlaylist}
+                        shufflePlaylist={shufflePlaylist}
+                        handleRouting={handleRouting}
+                        hasPlaylistWidget={true}
                         customStyles={customStyles}
                         // showTooltip={showTooltip}
                         // hideTooltip={hideTooltip}
