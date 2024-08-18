@@ -6,9 +6,9 @@ import { formatDateEU } from "@/src/application/utils/convertTimestamp";
 import RecordsCounter from "../RecordsCounter";
 // import RelationsList from "../../RelationsList/RelationsList";
 import SessionPlaylistAddBtn from "../SessionPlaylistAddBtn";
-import renderLinks from "@/src/domains/el/utils/renderLinks";
+import renderLinks from "@/src/domains/el/components/Item/ParsedLinks";
 import { parseTagsForUiList } from "@/src/domains/_app/utils/parsers";
-import { Button } from "zephyrus-components";
+import { Button, ItemRow } from "zephyrus-components";
 import customStyles from "@/src/application/styles/Zephyrus.module.css";
 import InfiteScrollingWrap from "../InfiteScrollingWrap";
 
@@ -52,7 +52,11 @@ export default function Movie({
                     <h1>{item[nameType]}</h1>
                     <div className={styles.elRow}>
                         <span>Rating: </span>
-                        {rating ? <p>{rating}</p> : <p>Unrated</p>}
+                        <ItemRow
+                            label={"Rating"}
+                            value={rating ? rating : "Unrated"}
+                            customStyles={customStyles}
+                        />
                     </div>
                 </div>
             </div>
@@ -62,7 +66,50 @@ export default function Movie({
                     <h3>INFO</h3>
                 </div>
 
-                <div className={styles.elRow}>
+                <ItemRow
+                    label={"Links"}
+                    urls={urls}
+                    customStyles={customStyles}
+                />
+                <ItemRow
+                    label={"Release"}
+                    value={release ? formatDateEU(release) : "N/A"}
+                    customStyles={customStyles}
+                />
+                <ItemRow
+                    label={"Studio"}
+                    arr={studios}
+                    group={"studio"}
+                    onClick={handleRouting}
+                    customStyles={customStyles}
+                />
+                <ItemRow
+                    label={"Distribution"}
+                    arr={distributions}
+                    group={"distribution"}
+                    onClick={handleRouting}
+                    customStyles={customStyles}
+                />
+                <ItemRow
+                    label={"Categories"}
+                    parsedData={parseTagsForUiList(categories)}
+                    group={"category"}
+                    onClick={handleRouting}
+                    customStyles={customStyles}
+                />
+                <ItemRow
+                    label={"Tags"}
+                    parsedData={parseTagsForUiList(tags)}
+                    group={"tag"}
+                    onClick={handleRouting}
+                    customStyles={customStyles}
+                />
+                <ItemRow
+                    label={"Tot. Actors"}
+                    value={totalActors}
+                    customStyles={customStyles}
+                />
+                {/* <div className={styles.elRow}>
                     <span>Links: </span>
                     <div className={styles.tagsWrap}>
                         {urls && urls.length ? (
@@ -82,7 +129,7 @@ export default function Movie({
                             <p>N/A</p>
                         )}
                     </div>
-                </div>
+                </div> 
 
                 <div className={styles.elRow}>
                     <span>Release: </span>
@@ -150,6 +197,7 @@ export default function Movie({
                     <span>Tot. Actors: </span>
                     <p>{totalActors}</p>
                 </div>
+                */}
             </div>
 
             <div className={styles.infoWrap}>
@@ -181,7 +229,7 @@ export default function Movie({
                     <h3>ACTIONS</h3>
                 </div>
 
-                <div className={styles.buttonsWrap}>
+                <div className={styles.itemButtonsWrap}>
                     <SessionPlaylistAddBtn
                         el={{
                             id: item.id,

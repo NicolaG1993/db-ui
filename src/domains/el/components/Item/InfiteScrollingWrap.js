@@ -179,7 +179,7 @@ export default function InfiteScrollingWrap({
                 filters={filters} // TODO: move up here // not implemented yet!
                 // onLoadMore={loadMoreData} // TODO: move up here
                 // onUpdateFilters={updateFilters} // TODO: move up here // not implemented yet!
-                cardHasOverlay={relationsTableSettings.itemGroup === "actors"} // TODO: info come questa possono essere messe in tableSettings 🧠🧠🧠
+                cardHasOverlay={relationsTableSettings.itemGroup === "movies"} // TODO: info come questa possono essere messe in tableSettings 🧠🧠🧠
                 currentPlaylist={sessionPlaylist}
                 onMouseOver={onMouseOver}
                 onMouseOut={onMouseOut}

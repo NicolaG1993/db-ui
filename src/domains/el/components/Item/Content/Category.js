@@ -3,7 +3,7 @@ import Link from "next/link";
 import Image from "next/image";
 // import Form from "@/src/domains/_app/components/Form/components/Form";
 // import RelationsList from "@/src/domains/el/components/RelationsList/RelationsList";
-import { Button } from "zephyrus-components";
+import { Button, ItemRow } from "zephyrus-components";
 import customStyles from "@/src/application/styles/Zephyrus.module.css";
 import InfiteScrollingWrap from "../InfiteScrollingWrap";
 
@@ -46,22 +46,38 @@ export default function Category({
                     <h3>INFO</h3>
                 </div>
 
+                <ItemRow
+                    label={"Type"}
+                    value={type ? type : "N/A"}
+                    customStyles={customStyles}
+                />
+                <ItemRow
+                    label={"Tot. Movies"}
+                    value={totalMovies}
+                    customStyles={customStyles}
+                />
+                <ItemRow
+                    label={"Tot. Actors"}
+                    value={actors?.length || 0}
+                    customStyles={customStyles}
+                />
+                {/*
                 <div className={styles.elRow}>
                     <span>Type: </span>
                     <p>{type ? type : "N/A"}</p>
                 </div>
-
-                <div className={styles.elRow}>
+                 <div className={styles.elRow}>
                     <span>Tot. Movies: </span>
                     <p>{totalMovies}</p>
-                </div>
+                </div> 
 
                 <div className={styles.elRow}>
                     <span>Tot. Actors: </span>
                     <p>{actors?.length}</p>
                 </div>
-
+                */}
                 <div className={styles.elRowToScroll}>
+                    {/* TODO: New case for ItemRow component ? 👇🧠🧠🧠 */}
                     <span>Actors: </span>
                     <div className={styles.tagsWrap}>
                         {actors ? (

@@ -1,21 +1,16 @@
 import styles from "@/src/application/styles/Element.module.css";
 import Link from "next/link";
 import Image from "next/image";
-import Form from "@/src/domains/_app/components/Form/components/Form";
-// import RelationsList from "@/src/domains/el/components/RelationsList/RelationsList";
 import {
     detectImage,
     parseTagsForUiList,
 } from "@/src/domains/_app/utils/parsers";
 import { formatDateEU, getAge } from "@/src/application/utils/convertTimestamp";
-import IG_icon from "/public/IG_icon.svg";
-import X_icon from "/public/X_icon.svg";
-import renderLinks from "@/src/domains/el/utils/renderLinks";
 import extractItemInfo from "@/src/domains/el/utils/extractItemInfo";
-import { Button } from "zephyrus-components";
+import { Button, ItemRow } from "zephyrus-components";
 import customStyles from "@/src/application/styles/Zephyrus.module.css";
-import dataStructureGroups from "@/src/application/settings/dataStructureGroups";
 import InfiteScrollingWrap from "../InfiteScrollingWrap";
+import { useRouter } from "next/router";
 
 /*
 Form "open" and "close" should be handled in redux
@@ -48,7 +43,7 @@ export default function Actor({
         id,
         pic,
         rating,
-        movies,
+        // movies,
         nameType,
         twitter,
         instagram,
@@ -63,9 +58,14 @@ export default function Actor({
         totalMovies,
     } = item;
 
+    const router = useRouter();
     const itemInfo = extractItemInfo(tags || []);
-    console.log("Actor: ", { itemInfo });
+
     let {} = itemInfo;
+
+    const handleRouting = (url) => {
+        router.push(url);
+    };
 
     return (
         <div id={styles.Actor} className={styles.elWrap}>
@@ -81,10 +81,11 @@ export default function Actor({
 
                 <div className={styles.underPicWrap}>
                     <h1>{item[nameType]}</h1>
-                    <div className={styles.elRow}>
-                        <span>Rating: </span>
-                        {rating ? <p>{rating}</p> : <p>Unrated</p>}
-                    </div>
+                    <ItemRow
+                        label={"Rating"}
+                        value={rating ? rating : "Unrated"}
+                        customStyles={customStyles}
+                    />
                 </div>
             </div>
 
@@ -92,147 +93,60 @@ export default function Actor({
                 <div className={styles.infoHeadingWrap}>
                     <h3>PERSONAL INFO</h3>
                 </div>
-
-                <div className={styles.elRow}>
-                    <span>Birthday: </span>
-                    <p>{birthday ? formatDateEU(birthday) : "N/A"}</p>
-                </div>
-
-                <div className={styles.elRow}>
-                    <span>Age: </span>
-                    {birthday ? <p>{getAge(birthday)} y.o.</p> : <p>N/A</p>}
-                </div>
-
-                <div className={styles.elRow}>
-                    <span>Genre: </span>
-                    {genre ? <p>{genre}</p> : <p>N/A</p>}
-                </div>
-
-                <div className={styles.elRow}>
-                    <span>Nationality: </span>
-                    <div className={styles.tagsWrap}>
-                        {nationalities ? (
-                            nationalities.map((el) => (
-                                <Link
-                                    href={`/el/nationality/${el}`}
-                                    key={"nationality " + el}
-                                    className={styles.tagEl}
-                                >
-                                    {el}
-                                </Link>
-                            ))
-                        ) : (
-                            <p>N/A</p>
-                        )}
-                    </div>
-                </div>
-
-                <div className={styles.elRow}>
-                    <span>Hair: </span>
-                    <div className={styles.tagsWrap}>
-                        {itemInfo && itemInfo.Hair ? (
-                            itemInfo.Hair.map((el) => (
-                                <Link
-                                    href={`/el/tag/${el.id}`}
-                                    key={"hair " + el.id}
-                                    className={styles.tagEl}
-                                >
-                                    {el.name}
-                                </Link>
-                            ))
-                        ) : (
-                            <p>N/A</p>
-                        )}
-                    </div>
-                </div>
-
-                <div className={styles.elRow}>
-                    <span>Eyes color: </span>
-                    <p>{"N/A"}</p>
-                </div>
-
-                <div className={styles.elRow}>
-                    <span>Ethnicity: </span>
-                    <div className={styles.tagsWrap}>
-                        {itemInfo && itemInfo.Ethnicity ? (
-                            itemInfo.Ethnicity.map((el) => (
-                                <Link
-                                    href={`/el/tag/${el.id}`}
-                                    key={"ethnicity " + el.id}
-                                    className={styles.tagEl}
-                                >
-                                    {el.name}
-                                </Link>
-                            ))
-                        ) : (
-                            <p>N/A</p>
-                        )}
-                    </div>
-                </div>
-
-                <div className={styles.elRow}>
-                    <span>Body type: </span>
-                    <div className={styles.tagsWrap}>
-                        {itemInfo && itemInfo["Body Types"] ? (
-                            itemInfo["Body Types"].map((el) => (
-                                <Link
-                                    href={`/el/tag/${el.id}`}
-                                    key={"bodyType " + el.id}
-                                    className={styles.tagEl}
-                                >
-                                    {el.name}
-                                </Link>
-                            ))
-                        ) : (
-                            <p>N/A</p>
-                        )}
-                    </div>
-                </div>
-
-                <div className={styles.elRow}>
-                    <span>Social: </span>
-                    <div>
-                        {instagram && (
-                            <a
-                                href={instagram}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className={styles.iconLink}
-                            >
-                                <X_icon />
-                            </a>
-                        )}
-                        {twitter && (
-                            <a
-                                href={twitter}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className={styles.iconLink}
-                            >
-                                <IG_icon />
-                            </a>
-                        )}
-                    </div>
-                </div>
-
-                {!!moreUrls?.length && (
-                    <div className={styles.elRow}>
-                        <span>Links: </span>
-                        <div>
-                            {moreUrls.map((url, i) => (
-                                <a
-                                    href={url}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    key={`${url} ${i}`}
-                                    className={styles.linkEl}
-                                >
-                                    <p>{url}</p>
-                                </a>
-                            ))}
-                        </div>
-                    </div>
-                )}
+                <ItemRow
+                    label={"Birthday"}
+                    value={birthday && formatDateEU(birthday)}
+                    customStyles={customStyles}
+                />
+                <ItemRow
+                    label={"Age"}
+                    value={birthday && `${getAge(birthday)} y.o.`}
+                    customStyles={customStyles}
+                />
+                <ItemRow
+                    label={"Genre"}
+                    value={genre}
+                    customStyles={customStyles}
+                />
+                <ItemRow
+                    label={"Nationality"}
+                    group={"nationalities"}
+                    values={nationalities}
+                    onClick={handleRouting}
+                    customStyles={customStyles}
+                />
+                <ItemRow
+                    label={"Hair"}
+                    group={"tag"}
+                    arr={itemInfo?.Hair}
+                    onClick={handleRouting}
+                    customStyles={customStyles}
+                />
+                <ItemRow label={"Eyes color"} /> {/* TODO 🧠 */}
+                <ItemRow
+                    label={"Ethnicity"}
+                    group={"tag"}
+                    arr={itemInfo?.Ethnicity}
+                    onClick={handleRouting}
+                    customStyles={customStyles}
+                />
+                <ItemRow
+                    label={"Body type"}
+                    group={"tag"}
+                    arr={itemInfo?.["Body Types"]}
+                    onClick={handleRouting}
+                    customStyles={customStyles}
+                />
+                <ItemRow
+                    label={"Social"}
+                    socials={{ instagram, twitter }}
+                    customStyles={customStyles}
+                />
+                <ItemRow
+                    label={"Links"}
+                    urls={moreUrls}
+                    customStyles={customStyles}
+                />
             </div>
 
             <div className={styles.infoWrap}>
@@ -240,91 +154,51 @@ export default function Actor({
                     <h3>MISC. INFO</h3>
                 </div>
 
-                <div className={styles.elRowToScroll}>
-                    <span>Tags: </span>
-                    <div className={styles.tagLabelsWrap}>
-                        {tags && renderLinks(parseTagsForUiList(tags), "tag")}
-                    </div>
-                </div>
+                <ItemRow
+                    label={"Tags"}
+                    parsedData={parseTagsForUiList(tags)}
+                    group={"tag"}
+                    onClick={handleRouting}
+                    customStyles={customStyles}
+                />
 
-                <div className={styles.elRowToScroll}>
-                    <span>Categories: </span>
+                <ItemRow
+                    label={"Categories"}
+                    parsedData={parseTagsForUiList(categories)}
+                    group={"category"}
+                    onClick={handleRouting}
+                    customStyles={customStyles}
+                />
 
-                    <div className={styles.tagLabelsWrap}>
-                        {categories &&
-                            renderLinks(
-                                parseTagsForUiList(categories),
-                                "category"
-                            )}
-                    </div>
-                </div>
+                <ItemRow
+                    label={"Studios"}
+                    arr={studios}
+                    group={"studio"}
+                    onClick={handleRouting}
+                    customStyles={customStyles}
+                />
 
-                <div className={styles.elRow}>
-                    <span>Studios: </span>
-                    <div className={styles.tagsWrap}>
-                        {studios && studios.length ? (
-                            studios.map((el) => (
-                                <Link
-                                    href={`/el/studio/${el.id}`}
-                                    key={"studio" + el.id}
-                                    className={styles.tagEl}
-                                >
-                                    {el.name}
-                                </Link>
-                            ))
-                        ) : (
-                            <p>N/A</p>
-                        )}
-                    </div>
-                </div>
+                <ItemRow
+                    label={"Distribution"}
+                    arr={distributions}
+                    group={"distribution"}
+                    onClick={handleRouting}
+                    customStyles={customStyles}
+                />
 
-                <div className={styles.elRow}>
-                    <span>Distribution: </span>
-                    <div className={styles.tagsWrap}>
-                        {distributions && distributions.length ? (
-                            distributions.map((el) => (
-                                <Link
-                                    href={`/el/distribution/${el.id}`}
-                                    key={"distribution" + el.id}
-                                    className={styles.tagEl}
-                                >
-                                    {el.name}
-                                </Link>
-                            ))
-                        ) : (
-                            <p>N/A</p>
-                        )}
-                    </div>
-                </div>
-
-                <div className={styles.elRow}>
-                    <span>Tot. Clips: </span>
-                    <p>{totalMovies}</p>
-                </div>
+                <ItemRow
+                    label={"Tot. Clips"}
+                    value={totalMovies}
+                    customStyles={customStyles}
+                />
             </div>
 
-            {/* FIX THIS 👇⚠️🧠
-            
-                • Infinite scrolling for data
-                • Improve UI (window is too small and should be attached to bottom of the page - no extra scrolling, is annoying)
-                • We could rework the list design
-                • We should add sorting
-
-                TODO:
-
-                🧠 "movies" should be a separate API request, that works with pagination
-                • "Tot Movies" dobbiamo averlo giá dall'inizio
-                • Le nuove pagine di "movies" vengo aggiunte a quelle gia ottenute, non sostituite
-                • Pagination dev'essere triggered quando user é in fondo alla lista + animazione caricamento
-                • Dobbiamo avere sorting 
-                
-            */}
             <div className={styles.infoWrap}>
                 <div className={styles.infoHeadingWrap}>
                     <h3>MOVIES</h3>
 
                     {totalMovies > 0 && (
-                        <Link href="/search">see all ({totalMovies})</Link>
+                        <Link href="/search">see all ({totalMovies})</Link> // 🧠 TODO: Landing page for this link - or just remove it!
                     )}
                 </div>
 
@@ -332,26 +206,6 @@ export default function Actor({
                     itemId={id}
                     itemLabel={label}
                     relationsGroup={"movies"}
-
-                    // itemSettings={dataStructureItems["movie"]}
-                    // tableSettings={dataStructureGroups["movies"]}
-                    /*
-                data={} // TODO: fetching has to be moved up here // otherwise we could create a custom wrapper for this
-                table={dataStructureGroups["movies"]}
-                hasMore={} // TODO: move up here
-                loading={} // TODO: move up here
-                filters={}  // TODO: move up here // not implemented yet!
-                onLoadMore={} // TODO: move up here
-                onUpdateFilters={} // TODO: move up here // not implemented yet!
-                customStyles={customStyles}
-                */
-
-                    //  itemName={item[nameType]}
-                    //  itemId={id}
-                    //  itemLabel={label}
-                    //  nameType={nameType}
-                    //  relationsLabel={"movie"} // fare dinamici ? no perche custom component
-                    //  relationsGroup={"movies"}
                 />
             </div>
 
@@ -360,7 +214,7 @@ export default function Actor({
                     <h3>ACTIONS</h3>
                 </div>
 
-                <div className={styles.buttonsWrap}>
+                <div className={styles.itemButtonsWrap}>
                     <Button
                         size="medium"
                         type="button"

@@ -3,7 +3,7 @@ import Link from "next/link";
 import Image from "next/image";
 // import Form from "@/src/domains/_app/components/Form/components/Form";
 // import RelationsList from "@/src/domains/el/components/RelationsList/RelationsList";
-import { Button } from "zephyrus-components";
+import { Button, ItemRow } from "zephyrus-components";
 import customStyles from "@/src/application/styles/Zephyrus.module.css";
 import InfiteScrollingWrap from "../InfiteScrollingWrap";
 
@@ -51,7 +51,7 @@ export default function Studio({
                 <div className={styles.infoHeadingWrap}>
                     <h3>INFO</h3>
                 </div>
-
+                {/*
                 <div className={styles.elRow}>
                     <span>Website: </span>
                     <p>
@@ -68,7 +68,7 @@ export default function Studio({
                         )}
                     </p>
                 </div>
-
+             
                 <div className={styles.elRow}>
                     <span>Nationality: </span>
                     <div className={styles.tagsWrap}>
@@ -89,7 +89,7 @@ export default function Studio({
                     </div>
                 </div>
 
-                <div className={styles.elRow}>
+               <div className={styles.elRow}>
                     <span>Tot. Movies: </span>
                     <p>{totalMovies}</p>
                 </div>
@@ -97,8 +97,31 @@ export default function Studio({
                 <div className={styles.elRow}>
                     <span>Tot. Actors: </span>
                     <p>{actors?.length}</p>
-                </div>
+                </div> */}
+                <ItemRow
+                    label={"Website"}
+                    urls={website ? [website] : null}
+                    customStyles={customStyles}
+                />
+                <ItemRow
+                    label={"Nationality"}
+                    group={"nationalities"}
+                    values={nationalities}
+                    onClick={handleRouting}
+                    customStyles={customStyles}
+                />
+                <ItemRow
+                    label={"Tot. Movies"}
+                    value={totalMovies}
+                    customStyles={customStyles}
+                />
+                <ItemRow
+                    label={"Tot. Actors"}
+                    value={actors?.length || 0}
+                    customStyles={customStyles}
+                />
 
+                {/* TODO: New case for ItemRow component ? 👇🧠🧠🧠 */}
                 <div className={styles.elRowToScroll}>
                     <span>Actors: </span>
                     <div className={styles.tagsWrap}>

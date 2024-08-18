@@ -187,7 +187,7 @@ export default function Layout({ children }) {
         }
     };
 
-    const handleRouting = async (url, id) => {
+    const handleRouting = async (url) => {
         // id && clearPreviousItem(id);
         clearPreviousItem();
         router.push(url);
@@ -239,7 +239,7 @@ export default function Layout({ children }) {
     const overridePlaylist = (playlist) => {
         dispatch(updateSessionPlaylist(playlist));
     };
-    const clearPreviousItem = (id) => {
+    const clearPreviousItem = () => {
         // if (id.toString() !== router.query.id) {
         dispatch(clearItem());
         dispatch(activateLoadingItem());

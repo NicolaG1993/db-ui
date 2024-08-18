@@ -21,6 +21,10 @@ import {
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import { useAppContext } from "@/src/domains/_app/contexts/AppContext";
 import { useRouter } from "next/router";
+import {
+    activateLoadingItem,
+    clearItem,
+} from "@/src/application/redux/slices/itemSlice";
 
 /*
 TODO: Keep this component as wrap (handle data and declare dynamic functions here!)

@@ -48,6 +48,7 @@ function parseTagsByType(obj, TAGS_OBJ) {
 // } // SPOSTARE
 
 function parseTagsForUiList(arr) {
+    console.log("parseTagsForUiList START 🟢: ", { arr });
     let parsedObj = {};
 
     arr.map((el) => {
@@ -71,6 +72,7 @@ function parseTagsForUiList(arr) {
         parsedObj["No Type"] = noTypeData;
     }
 
+    console.log("parseTagsForUiList END 🟢: ", { parsedObj });
     return parsedObj;
 }
 

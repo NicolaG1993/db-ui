@@ -15,8 +15,8 @@ import {
     openForm,
     resetFormStore,
 } from "@/src/application/redux/slices/formSlice";
-import PlaylistEditor from "@/src/domains/playlists/components/PlaylistEditor/PlaylistEditor";
-import { Button, IconTrash, Modal } from "zephyrus-components";
+// import PlaylistEditor from "@/src/domains/playlists/components/PlaylistEditor/PlaylistEditor";
+import { Button, IconTrash, Modal, Playlist } from "zephyrus-components";
 import customStyles from "@/src/application/styles/Zephyrus.module.css";
 
 export default function EditorPlaylist() {
@@ -32,11 +32,9 @@ export default function EditorPlaylist() {
     const overridePlaylist = (playlist) => {
         dispatch(updateSessionPlaylist(playlist));
     };
-    const clearPreviousItem = (id) => {
-        if (id.toString() !== router.query.id) {
-            dispatch(clearItem());
-            dispatch(activateLoadingItem());
-        }
+    const clearPreviousItem = () => {
+        dispatch(clearItem());
+        dispatch(activateLoadingItem());
     };
 
     const removeFromPlaylist = (i) => {
@@ -56,6 +54,11 @@ export default function EditorPlaylist() {
         }
     };
 
+    const handleRouting = async (url) => {
+        clearPreviousItem();
+        router.push(url);
+    };
+
     const closeModal = () => {
         setSaveModal(false);
     };
@@ -64,9 +67,6 @@ export default function EditorPlaylist() {
         <main>
             <div className={"heading"}>
                 <h1>PLAYLISTS EDITOR</h1>
-                {/* <Link href={`/all/playlists`} title={"All playlists"}>
-                    ← All playlists
-                </Link> */}
 
                 <Button
                     size="large"
@@ -77,7 +77,18 @@ export default function EditorPlaylist() {
                 />
             </div>
 
-            <PlaylistEditor
+            <Playlist
+                playlist={sessionPlaylist}
+                removeFromPlaylist={removeFromPlaylist}
+                overridePlaylist={overridePlaylist}
+                deletePlaylist={deletePlaylist}
+                shufflePlaylist={shufflePlaylist}
+                size={"page"}
+                handleParentUI={handleParentUI}
+                handleRouting={handleRouting}
+                customStyles={customStyles}
+            />
+            {/* <PlaylistEditor
                 playlist={sessionPlaylist} // 🧠 We should be able to choose any playlist (or sessionPlaylist) in this case 🧠
                 removeFromPlaylist={removeFromPlaylist}
                 clearPreviousItem={clearPreviousItem}
@@ -86,9 +97,9 @@ export default function EditorPlaylist() {
                 shufflePlaylist={shufflePlaylist}
                 size={"page"}
                 handleParentUI={handleParentUI}
-            />
+            /> */}
 
-            {/*  🧠 Maybe we should move this to Layout or something.. like Form */}
+            {/*  👇👇🧠🧠 Maybe we should move this to Layout or something.. like Form */}
             <Modal
                 isOpen={saveModal}
                 onClose={closeModal}
