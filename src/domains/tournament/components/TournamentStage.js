@@ -1,7 +1,9 @@
 import filterKeys from "../utils/filterKeys";
 import styles from "@/src/domains/tournament/Tournament.module.css";
 import renderStageMatches from "../utils/renderStageMatches";
+import TournamentStageMatches from "./TournamentStageMatches";
 
+// make util 🧠👇
 const extractSequence = (tableRowsSequences, stage, totStages) => {
     return tableRowsSequences[Number(stage - 1)];
 };
@@ -18,21 +20,14 @@ export default function TournamentStage({
     isThirdPlace,
     tableRowsSequences,
     isError,
+    setup,
+    notSelectedData,
+    handleUpdateSelected,
+    handleUpdateUnselected,
+    handleMatchResult,
+    handleVote,
+    customStyles,
 }) {
-    // console.log("TournamentStage: ", {
-    //     stage,
-    //     stageKey,
-    //     tableRows,
-    //     tableColumns,
-    //     totStages,
-    //     isStarted,
-    //     isFirstStage,
-    //     isFinal,
-    //     isThirdPlace,
-    //     tableRowsSequences,
-    //     isError,
-    // });
-
     if (isFinal || isThirdPlace) {
         let stageAreaFinal = {
             gridColumnStart: totStages,
@@ -47,7 +42,20 @@ export default function TournamentStage({
             <div className={styles.tableColumn} style={stageAreaFinal}>
                 <p>{stage.stageName}</p>
                 <div className={styles.stage}>
-                    {renderStageMatches({
+                    <TournamentStageMatches
+                        matches={stage.stageMatches}
+                        tableRows={tableRows}
+                        isError={isError}
+                        stage={stage}
+                        setup={setup}
+                        notSelectedData={notSelectedData}
+                        handleUpdateSelected={handleUpdateSelected}
+                        handleUpdateUnselected={handleUpdateUnselected}
+                        handleMatchResult={handleMatchResult}
+                        handleVote={handleVote}
+                        customStyles={customStyles}
+                    />
+                    {/* {renderStageMatches({
                         matches: stage.stageMatches,
                         tableRows,
                         isError,
@@ -55,7 +63,7 @@ export default function TournamentStage({
                         // rowSequence: isThirdPlace
                         //     ? tableRowsSequences[totStages - 1]
                         //     : tableRowsSequences[totStages - 1],
-                    })}
+                    })} */}
                     {/* {renderStageMatches({
                     // matches: Object.entries(stage.stageMatches).map(
                     //     ([matchKey, match]) => ({ ...match, matchKey })
@@ -106,7 +114,28 @@ export default function TournamentStage({
                             gridTemplateRows: `repeat(${tableRows}, 1fr)`,
                         }}
                     >
-                        {renderStageMatches({
+                        <TournamentStageMatches
+                            matches={oddKeys}
+                            tableRows={tableRows}
+                            rowSequence={extractSequence(
+                                tableRowsSequences,
+                                tableColumns - (tableColumns - stageKey)
+                            )}
+                            isStarted={isStarted}
+                            isFirstStage={isFirstStage}
+                            isRightSide={false}
+                            isError={isError}
+                            stage={stage}
+                            setup={setup}
+                            notSelectedData={notSelectedData}
+                            handleUpdateSelected={handleUpdateSelected}
+                            handleUpdateUnselected={handleUpdateUnselected}
+                            handleMatchResult={handleMatchResult}
+                            handleVote={handleVote}
+                            customStyles={customStyles}
+                        />
+
+                        {/* {renderStageMatches({
                             matches: oddKeys,
                             tableRows,
                             rowSequence: extractSequence(
@@ -118,7 +147,7 @@ export default function TournamentStage({
                             isRightSide: false,
                             isError,
                             stage,
-                        })}
+                        })} */}
                     </div>
                 </div>
                 <div className={styles.tableColumn} style={stageAreaRight}>
@@ -129,7 +158,27 @@ export default function TournamentStage({
                             gridTemplateRows: `repeat(${tableRows}, 1fr)`,
                         }}
                     >
-                        {renderStageMatches({
+                        <TournamentStageMatches
+                            matches={evenKeys}
+                            tableRows={tableRows}
+                            rowSequence={extractSequence(
+                                tableRowsSequences,
+                                tableColumns - (tableColumns - stageKey)
+                            )}
+                            isStarted={isStarted}
+                            isFirstStage={isFirstStage}
+                            isRightSide={true}
+                            isError={isError}
+                            stage={stage}
+                            setup={setup}
+                            notSelectedData={notSelectedData}
+                            handleUpdateSelected={handleUpdateSelected}
+                            handleUpdateUnselected={handleUpdateUnselected}
+                            handleMatchResult={handleMatchResult}
+                            handleVote={handleVote}
+                            customStyles={customStyles}
+                        />
+                        {/* {renderStageMatches({
                             matches: evenKeys,
                             tableRows,
                             rowSequence: extractSequence(
@@ -141,7 +190,7 @@ export default function TournamentStage({
                             isRightSide: true,
                             isError,
                             stage,
-                        })}
+                        })} */}
                     </div>
                 </div>
             </>

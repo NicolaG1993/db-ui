@@ -1,12 +1,12 @@
 import styles from "@/src/domains/tournament/Tournament.module.css";
-import {
-    selectTournamentSetup,
-    updateFirstStage,
-    selectNotSelectedData,
-    updateNotSelectedData,
-} from "@/src/application/redux/slices/tournamentSlice";
-import { useEffect, useRef, useState } from "react";
-import { shallowEqual, useDispatch, useSelector } from "react-redux";
+// import {
+//     selectTournamentSetup,
+//     updateFirstStage,
+//     selectNotSelectedData,
+//     updateNotSelectedData,
+// } from "@/src/application/redux/slices/tournamentSlice";
+import { useState } from "react";
+// import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import { Button } from "zephyrus-components";
 import customStyles from "@/src/application/styles/Zephyrus.module.css";
 
@@ -18,15 +18,20 @@ export default function ContenderSelect({
     refreshSelectNav,
     closeSelectNav,
     isRightSide,
+    setup,
+    notSelectedData,
+    handleUpdateSelected,
+    handleUpdateUnselected,
+    customStyles,
 }) {
-    const dispatch = useDispatch();
+    // const dispatch = useDispatch();
     // DATA:
     // SessionUiElements
     // SessionUiElementsAvailable
     //
     const [ui, setUI] = useState();
-    const setup = useSelector(selectTournamentSetup, shallowEqual);
-    const notSelectedData = useSelector(selectNotSelectedData, shallowEqual);
+    // const setup = useSelector(selectTournamentSetup, shallowEqual);
+    // const notSelectedData = useSelector(selectNotSelectedData, shallowEqual);
     const { firstStageTotMatches } = setup;
     const [optionSelected, setOptionSelected] = useState();
     const [newContender, setNewContender] = useState();
@@ -56,17 +61,19 @@ export default function ContenderSelect({
         // cont.id === currentContender.id ? null : cont
         const newCurrentMatch = { ...match, contenders: newMatchContenders };
 
-        dispatch(
-            updateFirstStage({
-                newCurrentMatch,
-            })
-        );
+        handleUpdateSelected({ newCurrentMatch });
+        handleUpdateUnselected(currentContender);
+        // dispatch(
+        //     updateFirstStage({
+        //         newCurrentMatch,
+        //     })
+        // );
 
-        dispatch(
-            updateNotSelectedData({
-                toAdd: currentContender,
-            })
-        );
+        // dispatch(
+        //     updateNotSelectedData({
+        //         toAdd: currentContender,
+        //     })
+        // );
 
         closeSelectNav();
         // refreshSelectNav({ contender: null });
@@ -80,13 +87,14 @@ export default function ContenderSelect({
         currentIndex,
     }) => {
         // create new match
-        console.log("handleAddNew: ", {
-            currentContender,
-            currentContenderIndex,
-            newContender,
-            match,
-            currentIndex,
-        });
+        // console.log("handleAddNew: ", {
+        //     currentContender,
+        //     currentContenderIndex,
+        //     newContender,
+        //     match,
+        //     currentIndex,
+        // });
+
         // DATA:
         // CURRENT MATCH
         // MATCH CONTENDER INDEX
@@ -117,18 +125,21 @@ export default function ContenderSelect({
         const newCurrentMatch = { ...match, contenders: newMatchContenders };
 
         // update first stage
-        dispatch(
-            updateFirstStage({
-                newCurrentMatch,
-            })
-        );
-
+        handleUpdateSelected({ newCurrentMatch });
         // ✅ update notSelectedData
-        dispatch(
-            updateNotSelectedData({
-                toRemove: newContender,
-            })
-        );
+        handleUpdateUnselected(newContender);
+
+        // dispatch(
+        //     updateFirstStage({
+        //         newCurrentMatch,
+        //     })
+        // );
+
+        // dispatch(
+        //     updateNotSelectedData({
+        //         toRemove: newContender,
+        //     })
+        // );
 
         closeSelectNav();
         // refreshSelectNav({ contender: newContender });
@@ -139,12 +150,10 @@ export default function ContenderSelect({
         matchId,
         currentContender,
         firstIndex,
-
         selectedMatch,
         selectedMatchId,
         newContender,
         secondIndex,
-
         stageMatches,
     }) => {
         // TODO:
@@ -171,21 +180,22 @@ export default function ContenderSelect({
             cont && cont.id === newContender.id ? currentContender : cont
         );
         */
-        console.log("handleSwitch: ", {
-            current: {
-                match,
-                matchId,
-                currentContender,
-                firstIndex,
-            },
-            selected: {
-                selectedMatch,
-                selectedMatchId,
-                newContender,
-                secondIndex,
-            },
-            stageMatches,
-        });
+
+        // console.log("handleSwitch: ", {
+        //     current: {
+        //         match,
+        //         matchId,
+        //         currentContender,
+        //         firstIndex,
+        //     },
+        //     selected: {
+        //         selectedMatch,
+        //         selectedMatchId,
+        //         newContender,
+        //         secondIndex,
+        //     },
+        //     stageMatches,
+        // });
 
         // let newMatch = { ...match };
         let newMatchContenders = [...match.contenders];
@@ -210,15 +220,23 @@ export default function ContenderSelect({
         const newFirstStage = {};
         // dispatch update first matches
         // update matches in UI
-        dispatch(
-            updateFirstStage({
-                newCurrentMatch: { ...match, contenders: newMatchContenders },
-                newSelectedMatch: {
-                    ...selectedMatch,
-                    contenders: newSelectedContenders,
-                },
-            })
-        );
+        handleUpdateSelected({
+            newCurrentMatch: { ...match, contenders: newMatchContenders },
+            newSelectedMatch: {
+                ...selectedMatch,
+                contenders: newSelectedContenders,
+            },
+        });
+        // dispatch(
+        //     updateFirstStage({
+        //         newCurrentMatch: { ...match, contenders: newMatchContenders },
+        //         newSelectedMatch: {
+        //             ...selectedMatch,
+        //             contenders: newSelectedContenders,
+        //         },
+        //     })
+        // );
+
         // close or update nav
         // refreshSelectNav({ contender: currentContender });
         closeSelectNav();

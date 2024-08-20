@@ -1,30 +1,13 @@
 import styles from "@/src/application/styles/Element.module.css";
 import Link from "next/link";
 import Image from "next/image";
-// import Form from "@/src/domains/_app/components/Form/components/Form";
-// import RelationsList from "@/src/domains/el/components/RelationsList/RelationsList";
 import { Button, ItemRow } from "zephyrus-components";
 import customStyles from "@/src/application/styles/Zephyrus.module.css";
 import InfiteScrollingWrap from "../InfiteScrollingWrap";
 
-export default function Studio({
-    label,
-    item,
-    handleDelete,
-    // handleEdits,
-    // openForm,
-    setFormIsOpen,
-}) {
-    let {
-        pic,
-        id,
-        // rating,
-        nameType,
-        actors,
-        website,
-        nationalities,
-        totalMovies,
-    } = item;
+export default function Studio({ label, item, handleDelete, setFormIsOpen }) {
+    let { pic, id, nameType, actors, website, nationalities, totalMovies } =
+        item;
 
     return (
         <div id={styles.Category} className={styles.elWrap}>
@@ -40,10 +23,7 @@ export default function Studio({
 
                 <div className={styles.underPicWrap}>
                     <h1>{item[nameType]}</h1>
-                    <div className={styles.elRow}>
-                        {/* <span>Rating: </span>
-                        {rating ? <p>{rating}</p> : <p>Unrated</p>} */}
-                    </div>
+                    <div className={styles.elRow}></div>
                 </div>
             </div>
 
@@ -51,53 +31,6 @@ export default function Studio({
                 <div className={styles.infoHeadingWrap}>
                     <h3>INFO</h3>
                 </div>
-                {/*
-                <div className={styles.elRow}>
-                    <span>Website: </span>
-                    <p>
-                        {website ? (
-                            <a
-                                href={website}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                            >
-                                {website}
-                            </a>
-                        ) : (
-                            "N/A"
-                        )}
-                    </p>
-                </div>
-             
-                <div className={styles.elRow}>
-                    <span>Nationality: </span>
-                    <div className={styles.tagsWrap}>
-                        {nationalities ? (
-                            nationalities.map((el) => (
-                                <div
-                                    key={"nationality " + el}
-                                    className={styles.tagEl}
-                                >
-                                    <Link href={`/el/nationality/${el}`}>
-                                        {el}
-                                    </Link>
-                                </div>
-                            ))
-                        ) : (
-                            <p>N/A</p>
-                        )}
-                    </div>
-                </div>
-
-               <div className={styles.elRow}>
-                    <span>Tot. Movies: </span>
-                    <p>{totalMovies}</p>
-                </div>
-
-                <div className={styles.elRow}>
-                    <span>Tot. Actors: </span>
-                    <p>{actors?.length}</p>
-                </div> */}
                 <ItemRow
                     label={"Website"}
                     urls={website ? [website] : null}
@@ -161,14 +94,6 @@ export default function Studio({
                     itemLabel={label}
                     relationsGroup={"movies"}
                 />
-                {/* <RelationsList
-                    itemName={item[nameType]}
-                    itemId={item.id}
-                    itemLabel={label}
-                    nameType={nameType}
-                    relationsLabel={"movie"}
-                    relationsGroup={"movies"}
-                /> */}
             </div>
 
             <div className={styles.infoWrap}>

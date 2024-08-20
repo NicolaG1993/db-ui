@@ -1,12 +1,9 @@
 import styles from "@/src/application/styles/Element.module.css";
 import Link from "next/link";
 import Image from "next/image";
-// import Form from "@/src/domains/_app/components/Form/components/Form";
 import { formatDateEU } from "@/src/application/utils/convertTimestamp";
 import RecordsCounter from "../RecordsCounter";
-// import RelationsList from "../../RelationsList/RelationsList";
 import SessionPlaylistAddBtn from "../SessionPlaylistAddBtn";
-import renderLinks from "@/src/domains/el/components/Item/ParsedLinks";
 import { parseTagsForUiList } from "@/src/domains/_app/utils/parsers";
 import { Button, ItemRow } from "zephyrus-components";
 import customStyles from "@/src/application/styles/Zephyrus.module.css";
@@ -109,95 +106,6 @@ export default function Movie({
                     value={totalActors}
                     customStyles={customStyles}
                 />
-                {/* <div className={styles.elRow}>
-                    <span>Links: </span>
-                    <div className={styles.tagsWrap}>
-                        {urls && urls.length ? (
-                            urls.map((el, i) => (
-                                <a
-                                    // key={"url" + i}
-                                    href={el}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    key={"url " + el}
-                                    className={styles.linkEl}
-                                >
-                                    <p>{el}</p>
-                                </a>
-                            ))
-                        ) : (
-                            <p>N/A</p>
-                        )}
-                    </div>
-                </div> 
-
-                <div className={styles.elRow}>
-                    <span>Release: </span>
-                    <p>{release ? formatDateEU(release) : "N/A"}</p>
-                </div>
-
-                <div className={styles.elRow}>
-                    <span>Studio: </span>
-                    <div className={styles.tagsWrap}>
-                        {studios && studios.length ? (
-                            studios.map((el) => (
-                                <Link
-                                    href={`/el/studio/${el.id}`}
-                                    key={"studio" + el.id}
-                                    className={styles.tagEl}
-                                >
-                                    {el.name}
-                                </Link>
-                            ))
-                        ) : (
-                            <p>N/A</p>
-                        )}
-                    </div>
-                </div>
-
-                <div className={styles.elRow}>
-                    <span>Distribution: </span>
-                    <div className={styles.tagsWrap}>
-                        {distributions && distributions.length ? (
-                            distributions.map((el) => (
-                                <div
-                                    key={"distribution" + el.id}
-                                    className={styles.tagEl}
-                                >
-                                    <Link href={`/el/distribution/${el.id}`}>
-                                        {el.name}
-                                    </Link>
-                                </div>
-                            ))
-                        ) : (
-                            <p>N/A</p>
-                        )}
-                    </div>
-                </div>
-
-                <div className={styles.elRowToScroll}>
-                    <span>Categories: </span>
-
-                    <div className={styles.tagLabelsWrap}>
-                        {renderLinks(
-                            parseTagsForUiList(categories),
-                            "category"
-                        )}
-                    </div>
-                </div>
-
-                <div className={styles.elRowToScroll}>
-                    <span>Tags: </span>
-                    <div className={styles.tagLabelsWrap}>
-                        {renderLinks(parseTagsForUiList(tags), "tag")}
-                    </div>
-                </div>
-
-                <div className={styles.elRow}>
-                    <span>Tot. Actors: </span>
-                    <p>{totalActors}</p>
-                </div>
-                */}
             </div>
 
             <div className={styles.infoWrap}>
@@ -214,14 +122,6 @@ export default function Movie({
                     itemLabel={label}
                     relationsGroup={"actors"}
                 />
-                {/* <RelationsList
-                    itemName={item[nameType]}
-                    itemId={item.id}
-                    itemLabel={label}
-                    nameType={nameType}
-                    relationsLabel={"actor"} // fare dinamici ? no perche custom component ?
-                    relationsGroup={"actors"}
-                /> */}
             </div>
 
             <div className={styles.infoWrap}>

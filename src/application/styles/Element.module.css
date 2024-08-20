@@ -212,6 +212,111 @@
     /* background-color: var(--bg700); */
 }
 
+/* RECORDS ROW */
+.recordsRow {
+    /* width: 100%; */
+    padding: 0.5rem 0.75rem 0.5rem 0.75rem;
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+    /* margin-bottom: 0.5em; */
+    border-bottom: 1px solid var(--bg600);
+}
+.recordsRow > div:nth-child(1) {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    /* width: 100%; */
+    margin-bottom: 0.5rem;
+}
+.recordsRow > div:nth-child(1) > span:nth-child(1) {
+    margin-right: 1.2rem;
+    font-weight: bold;
+    color: var(--color000);
+    /* align-self: flex-start; */
+    font-size: 0.8rem;
+    width: 75px;
+}
+.recordsRow > div:nth-child(1) > span:nth-child(2) {
+    margin-right: 2rem;
+}
+.recordsRow > div:nth-child(1) > button:nth-child(3) {
+    margin: 0;
+    cursor: pointer;
+    border-radius: 20px;
+    font-weight: bold;
+    width: 24px;
+    height: 24px;
+    border: none;
+    font-size: 0.8rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color000);
+}
+.recordsRow > div:nth-child(1) > button:nth-child(3):hover {
+    color: var(--bg600);
+    background-color: var(--color000);
+}
+.recordsRow p {
+    margin: 0;
+    font-size: 0.8rem;
+}
+
+.recordsWrap {
+    /* width: 100%; */
+    border-top: 1px solid var(--bg600);
+}
+.recordsWrap span {
+    font-size: 0.7rem;
+    cursor: pointer;
+}
+.recordsWrap > span:hover {
+    text-decoration: underline;
+}
+
+/* .recordsUI {
+    padding: 0.8em;
+    border: 1px solid var(--text);
+    border-radius: 15px;
+}
+.recordsUI > div > span:nth-child(1) {
+    margin-right: 0.8em;
+}
+.recordsUI > div > span:nth-child(2) {
+    cursor: pointer;
+    font-weight: bold;
+    color: red;
+} */
+
+.recordsUI {
+    display: flex;
+    flex-direction: column;
+    /* align-items: center; */
+    /* justify-content: center; */
+    overflow-y: auto;
+    max-height: 200px;
+}
+.record {
+    display: flex;
+    align-items: center;
+    padding: 0.5em;
+    border: 1px solid var(--text);
+    border-radius: 15px;
+    margin-top: 0.5em;
+    margin-right: 0.5em;
+}
+.record > span:nth-child(1) {
+    margin-right: 0.8em;
+    line-height: 0.8rem;
+}
+.record > span:nth-child(2) {
+    cursor: pointer;
+    font-weight: bold;
+    color: red;
+    line-height: 0.8rem;
+}
+
 /* 👇🔴🧠 DELETE ? 👇🔴🧠 */
 /* ROW */
 .row {
@@ -380,109 +485,3 @@
 }
 
 /* ☝️🔴🧠 DELETE ? ☝️🔴🧠 */
-/* RE-STYLE */
-
-/* RECORDS ROW */
-.recordsRow {
-    /* width: 100%; */
-    padding: 0.5rem 0.75rem 0.5rem 0.75rem;
-    display: flex;
-    align-items: flex-start;
-    flex-direction: column;
-    /* margin-bottom: 0.5em; */
-    border-bottom: 1px solid var(--bg600);
-}
-.recordsRow > div:nth-child(1) {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    /* width: 100%; */
-    margin-bottom: 0.5rem;
-}
-.recordsRow > div:nth-child(1) > span:nth-child(1) {
-    margin-right: 1.2rem;
-    font-weight: bold;
-    color: var(--color000);
-    /* align-self: flex-start; */
-    font-size: 0.8rem;
-    width: 75px;
-}
-.recordsRow > div:nth-child(1) > span:nth-child(2) {
-    margin-right: 2rem;
-}
-.recordsRow > div:nth-child(1) > button:nth-child(3) {
-    margin: 0;
-    cursor: pointer;
-    border-radius: 20px;
-    font-weight: bold;
-    width: 24px;
-    height: 24px;
-    border: none;
-    font-size: 0.8rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--color000);
-}
-.recordsRow > div:nth-child(1) > button:nth-child(3):hover {
-    color: var(--bg600);
-    background-color: var(--color000);
-}
-.recordsRow p {
-    margin: 0;
-    font-size: 0.8rem;
-}
-
-.recordsWrap {
-    /* width: 100%; */
-    border-top: 1px solid var(--bg600);
-}
-.recordsWrap span {
-    font-size: 0.7rem;
-    cursor: pointer;
-}
-.recordsWrap > span:hover {
-    text-decoration: underline;
-}
-
-/* .recordsUI {
-    padding: 0.8em;
-    border: 1px solid var(--text);
-    border-radius: 15px;
-}
-.recordsUI > div > span:nth-child(1) {
-    margin-right: 0.8em;
-}
-.recordsUI > div > span:nth-child(2) {
-    cursor: pointer;
-    font-weight: bold;
-    color: red;
-} */
-
-.recordsUI {
-    display: flex;
-    flex-direction: column;
-    /* align-items: center; */
-    /* justify-content: center; */
-    overflow-y: auto;
-    max-height: 200px;
-}
-.record {
-    display: flex;
-    align-items: center;
-    padding: 0.5em;
-    border: 1px solid var(--text);
-    border-radius: 15px;
-    margin-top: 0.5em;
-    margin-right: 0.5em;
-}
-.record > span:nth-child(1) {
-    margin-right: 0.8em;
-    line-height: 0.8rem;
-}
-.record > span:nth-child(2) {
-    cursor: pointer;
-    font-weight: bold;
-    color: red;
-    line-height: 0.8rem;
-}

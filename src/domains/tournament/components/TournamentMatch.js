@@ -1,27 +1,34 @@
-import styles from "@/src/domains/tournament/Tournament.module.css";
-import MatchContender from "./MatchContender";
-import generateTableSequences from "../utils/generateTableSequences";
 import { useEffect, useRef, useState } from "react";
-import {
-    selectTournamentSetup,
-    setMatchWinner,
-    updateVote,
-} from "@/src/application/redux/slices/tournamentSlice";
-import { shallowEqual, useDispatch, useSelector } from "react-redux";
+import styles from "@/src/domains/tournament/Tournament.module.css";
 import ContenderSelect from "./ContenderSelect";
+import MatchContender from "./MatchContender";
+// import generateTableSequences from "../utils/generateTableSequences";
+// import {
+//     selectTournamentSetup,
+//     setMatchWinner,
+//     updateVote,
+// } from "@/src/application/redux/slices/tournamentSlice";
+// import { shallowEqual, useDispatch, useSelector } from "react-redux";
 
 export default function TournamentMatch({
     match,
-    matchKey,
-    tableRows,
+    // matchKey,
+    // tableRows,
     index,
-    matchesLength,
+    // matchesLength,
     rowSequence,
     isFirstStage,
     isStarted,
     isRightSide,
     stageMatches,
     stage,
+    setup,
+    notSelectedData,
+    handleUpdateSelected,
+    handleUpdateUnselected,
+    handleMatchResult,
+    handleVote,
+    customStyles,
 }) {
     // generateTableSequences(tableRows);
     // 🔴🧠🔴🧠 Usare e abbinare a stages - ma non so dove
@@ -52,7 +59,7 @@ export default function TournamentMatch({
     Uguali, meta, etcc ? di totRows ?
     crea fn
     */
-    const dispatch = useDispatch();
+    // const dispatch = useDispatch();
     const [isSelectNavOpen, setIsSelectNavOpen] = useState(false);
     const dropdownRef = useRef(null);
     const [selectedContender, setSelectedContender] = useState(false);
@@ -68,18 +75,18 @@ export default function TournamentMatch({
         setSelectedContender();
         setSelectedContenderIndex();
     };
-    const handleMatchResult = ({ winner }) => {
-        dispatch(
-            setMatchWinner({
-                stage,
-                match,
-                winner,
-            })
-        );
-    };
-    const handleVote = (payload) => {
-        dispatch(updateVote(payload));
-    };
+    // const handleMatchResult = ({ winner }) => {
+    //     dispatch(
+    //         setMatchWinner({
+    //             stage,
+    //             match,
+    //             winner,
+    //         })
+    //     );
+    // };
+    // const handleVote = (payload) => {
+    //     dispatch(updateVote(payload));
+    // };
 
     useEffect(() => {
         // only add the event listener when the dropdown is opened
@@ -128,6 +135,7 @@ export default function TournamentMatch({
                         match.winner && match.winner.id !== contender.id
                     }
                     handleVote={handleVote}
+                    customStyles={customStyles}
                 />
             ))}
             {isSelectNavOpen && (
@@ -136,9 +144,14 @@ export default function TournamentMatch({
                     currentContenderIndex={selectedContenderIndex}
                     match={match}
                     stageMatches={stageMatches}
-                    refreshSelectNav={openSelectNav}
+                    // refreshSelectNav={openSelectNav}
                     closeSelectNav={closeSelectNav}
                     isRightSide={isRightSide}
+                    setup={setup}
+                    notSelectedData={notSelectedData}
+                    handleUpdateSelected={handleUpdateSelected}
+                    handleUpdateUnselected={handleUpdateUnselected}
+                    customStyles={customStyles}
                 />
             )}
         </div>

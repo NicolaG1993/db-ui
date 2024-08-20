@@ -1,8 +1,6 @@
 import styles from "@/src/application/styles/Element.module.css";
 import Link from "next/link";
 import Image from "next/image";
-// import Form from "@/src/domains/_app/components/Form/components/Form";
-// import RelationsList from "@/src/domains/el/components/RelationsList/RelationsList";
 import { Button, ItemRow } from "zephyrus-components";
 import customStyles from "@/src/application/styles/Zephyrus.module.css";
 import InfiteScrollingWrap from "../InfiteScrollingWrap";
@@ -11,14 +9,11 @@ export default function Category({
     label,
     item,
     handleDelete,
-    // handleEdits,
-    // openForm,
+
     setFormIsOpen,
 }) {
-    // let { pic, id, rating, nameType, actors, movies, type } = item;
     let { id, createdAt, name, pic, type, totalMovies, actors, nameType } =
         item;
-    console.log("item: ", item);
 
     return (
         <div id={styles.Category} className={styles.elWrap}>
@@ -32,13 +27,7 @@ export default function Category({
                     />
                 </div>
 
-                <div className={styles.underPicWrap}>
-                    {/* <h1>{item[nameType]}</h1>
-                    <div className={styles.elRow}>
-                        <span>Rating: </span>
-                        {rating ? <p>{rating}</p> : <p>Unrated</p>}
-                    </div> */}
-                </div>
+                <div className={styles.underPicWrap}></div>
             </div>
 
             <div className={styles.infoWrap}>
@@ -61,21 +50,7 @@ export default function Category({
                     value={actors?.length || 0}
                     customStyles={customStyles}
                 />
-                {/*
-                <div className={styles.elRow}>
-                    <span>Type: </span>
-                    <p>{type ? type : "N/A"}</p>
-                </div>
-                 <div className={styles.elRow}>
-                    <span>Tot. Movies: </span>
-                    <p>{totalMovies}</p>
-                </div> 
 
-                <div className={styles.elRow}>
-                    <span>Tot. Actors: </span>
-                    <p>{actors?.length}</p>
-                </div>
-                */}
                 <div className={styles.elRowToScroll}>
                     {/* TODO: New case for ItemRow component ? 👇🧠🧠🧠 */}
                     <span>Actors: </span>
@@ -116,15 +91,6 @@ export default function Category({
                     itemLabel={label}
                     relationsGroup={"movies"}
                 />
-                {/* <RelationsList
-                    itemName={item[nameType]}
-                    itemId={item.id}
-                    itemLabel={label}
-                    nameType={nameType}
-                    // data={movies}
-                    relationsLabel={"movie"}
-                    relationsGroup={"movies"}
-                /> */}
             </div>
 
             <div className={styles.infoWrap}>
