@@ -30,8 +30,6 @@ export default function ContenderSelect({
     // SessionUiElementsAvailable
     //
     const [ui, setUI] = useState();
-    // const setup = useSelector(selectTournamentSetup, shallowEqual);
-    // const notSelectedData = useSelector(selectNotSelectedData, shallowEqual);
     const { firstStageTotMatches } = setup;
     const [optionSelected, setOptionSelected] = useState();
     const [newContender, setNewContender] = useState();
@@ -63,17 +61,6 @@ export default function ContenderSelect({
 
         handleUpdateSelected({ newCurrentMatch });
         handleUpdateUnselected(currentContender);
-        // dispatch(
-        //     updateFirstStage({
-        //         newCurrentMatch,
-        //     })
-        // );
-
-        // dispatch(
-        //     updateNotSelectedData({
-        //         toAdd: currentContender,
-        //     })
-        // );
 
         closeSelectNav();
         // refreshSelectNav({ contender: null });
@@ -86,40 +73,6 @@ export default function ContenderSelect({
         match,
         currentIndex,
     }) => {
-        // create new match
-        // console.log("handleAddNew: ", {
-        //     currentContender,
-        //     currentContenderIndex,
-        //     newContender,
-        //     match,
-        //     currentIndex,
-        // });
-
-        // DATA:
-        // CURRENT MATCH
-        // MATCH CONTENDER INDEX
-        // NEW CONTENDER
-        // -> Replace currentMatch[index] con newContender
-
-        // FIX or CHANGE: 👇🔴👇🔴👇🔴
-        /*
-        const newMatchContenders = [...match.contenders].map((cont, i) => {
-            if (!cont) {
-                // ... test
-                if (i === currentContenderIndex) {
-                    return newContender; // ... test
-                } else {
-                    return null; // ... test
-                }
-            } else {
-                if (cont.id === currentContender.id) {
-                    return newContender;
-                } else {
-                    return cont;
-                }
-            }
-        });
-        */
         let newMatchContenders = [...match.contenders];
         newMatchContenders[currentContenderIndex] = newContender;
         const newCurrentMatch = { ...match, contenders: newMatchContenders };
@@ -156,60 +109,11 @@ export default function ContenderSelect({
         secondIndex,
         stageMatches,
     }) => {
-        // TODO:
-        // if selected slot is empty, just move there the current contender
-        // manca caso per empty slot // in entrambi i casi
-        /*
-        let newCurrentMatch = selectedMatch.contenders.map(
-            (cont) =>
-                // {if() {} else if () {} else {}}
-
-                {
-                    if (cont) {
-                        if (cont.id === newContender.id) {
-                            return ;
-                        } else {
-                        }
-                    } else {
-                    }
-                }
-
-            // cont && cont.id === currentContender.id ? newContender : cont
-        );
-        let newSelectedMatch = selectedMatch.contenders.map((cont) =>
-            cont && cont.id === newContender.id ? currentContender : cont
-        );
-        */
-
-        // console.log("handleSwitch: ", {
-        //     current: {
-        //         match,
-        //         matchId,
-        //         currentContender,
-        //         firstIndex,
-        //     },
-        //     selected: {
-        //         selectedMatch,
-        //         selectedMatchId,
-        //         newContender,
-        //         secondIndex,
-        //     },
-        //     stageMatches,
-        // });
-
-        // let newMatch = { ...match };
         let newMatchContenders = [...match.contenders];
         newMatchContenders[firstIndex] = selectedMatch.contenders[secondIndex];
-        // newMatch.contenders[firstIndex] = [...selectedMatch.contenders][
-        //     secondIndex
-        // ];
 
-        // let newSelectedMatch = { ...selectedMatch };
         let newSelectedContenders = [...selectedMatch.contenders];
         newSelectedContenders[secondIndex] = match.contenders[firstIndex];
-        // newSelectedMatch.contenders[secondIndex] = [...match.contenders][
-        //     firstIndex
-        // ];
 
         console.log("handleSwitch END: ", {
             current: { ...match, contenders: newMatchContenders },
@@ -227,18 +131,7 @@ export default function ContenderSelect({
                 contenders: newSelectedContenders,
             },
         });
-        // dispatch(
-        //     updateFirstStage({
-        //         newCurrentMatch: { ...match, contenders: newMatchContenders },
-        //         newSelectedMatch: {
-        //             ...selectedMatch,
-        //             contenders: newSelectedContenders,
-        //         },
-        //     })
-        // );
 
-        // close or update nav
-        // refreshSelectNav({ contender: currentContender });
         closeSelectNav();
     };
 

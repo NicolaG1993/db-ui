@@ -65,7 +65,7 @@ export default function Actor({
 
     const handleRouting = (url) => {
         router.push(url);
-    };
+    }; // 🧠 Should move to Item component and pass as prop (?)
 
     return (
         <div id={styles.Actor} className={styles.elWrap}>

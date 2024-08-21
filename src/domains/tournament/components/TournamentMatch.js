@@ -30,36 +30,13 @@ export default function TournamentMatch({
     handleVote,
     customStyles,
 }) {
-    // generateTableSequences(tableRows);
-    // 🔴🧠🔴🧠 Usare e abbinare a stages - ma non so dove
-
     let stageArea = {};
-
-    /*
-    if (tableRows / 2 === matchesLength) {
-        stageArea = {
-            gridRowStart: (tableRows / matchesLength) * index - 1,
-            gridRowEnd: (tableRows / matchesLength) * index + 1,
-        };
-    } else {
-        stageArea = {
-            gridRowStart: (tableRows / matchesLength) * index - 2,
-            gridRowEnd: (tableRows / matchesLength) * index,
-        };
-    }
-    */
 
     stageArea = {
         gridRowStart: rowSequence ? rowSequence[index - 1] : "unset",
         gridRowEnd: rowSequence ? rowSequence[index - 1] + 2 : "unset",
     };
 
-    /*
-    Quanti match abbiamo? -> matchesLength
-    Uguali, meta, etcc ? di totRows ?
-    crea fn
-    */
-    // const dispatch = useDispatch();
     const [isSelectNavOpen, setIsSelectNavOpen] = useState(false);
     const dropdownRef = useRef(null);
     const [selectedContender, setSelectedContender] = useState(false);
@@ -75,18 +52,6 @@ export default function TournamentMatch({
         setSelectedContender();
         setSelectedContenderIndex();
     };
-    // const handleMatchResult = ({ winner }) => {
-    //     dispatch(
-    //         setMatchWinner({
-    //             stage,
-    //             match,
-    //             winner,
-    //         })
-    //     );
-    // };
-    // const handleVote = (payload) => {
-    //     dispatch(updateVote(payload));
-    // };
 
     useEffect(() => {
         // only add the event listener when the dropdown is opened
@@ -129,7 +94,13 @@ export default function TournamentMatch({
                     isFirstStage={isFirstStage}
                     openSelectNav={openSelectNav}
                     closeSelectNav={closeSelectNav}
-                    onClickContender={handleMatchResult}
+                    onClickContender={() =>
+                        handleMatchResult({
+                            stage,
+                            match,
+                            winner: contender,
+                        })
+                    }
                     isWinner={match.winner && match.winner.id === contender.id}
                     isEliminated={
                         match.winner && match.winner.id !== contender.id

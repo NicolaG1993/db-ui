@@ -1,15 +1,8 @@
-import { selectTournamentFinalOverview } from "@/src/application/redux/slices/tournamentSlice";
-import { shallowEqual, useSelector } from "react-redux";
 import styles from "@/src/domains/tournament/Tournament.module.css";
 import Podium from "./Podium/Podium";
 import PointsTable from "./PointsTable/PointsTable";
 
-export default function FinalOverview() {
-    const finalOverview = useSelector(
-        selectTournamentFinalOverview,
-        shallowEqual
-    );
-
+export default function FinalOverview({ finalOverview }) {
     return (
         <div className={styles.finalOverviewWrap}>
             <div className={styles.finalOverviewHeading}>

@@ -1,4 +1,5 @@
 import axiosAuthInstance from "@/src/application/utils/axiosAuthInstance";
+import { mapMoviesRawToMovies } from "@/src/domains/el/utils/mapData";
 
 export default async function fetchTournamentData(ids) {
     // console.log("fetchTournamentData: ", { ids });
@@ -8,9 +9,8 @@ export default async function fetchTournamentData(ids) {
                 ids: JSON.stringify(ids),
             },
         });
-        // console.log("fetchTournamentData data: ", { data });
-        // parsing todo here? non credo
-        return data;
+        const mappedData = mapMoviesRawToMovies(data);
+        return mappedData;
     } catch (error) {
         console.log("ERROR: fetchTournamentData", error);
         return [];

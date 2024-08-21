@@ -3,30 +3,24 @@ import {
     selectTournamentSetup,
     selectMatchError,
     selectTournamentIsStarted,
-    // initNextMatch,
     startTournament,
     quitTournament,
     selectTournamentData,
     selectNotSelectedData,
-    // selectTournamentIsLoaded,
-    // resetTournament,
     setupTournament,
     resetTournamentStore,
     selectTournamentIsFinished,
-    // selectTournamentFinalOverview,
     shuffleTournamentData,
     updateFirstStage,
     updateNotSelectedData,
     setMatchWinner,
+    updateVote,
+    selectTournamentFinalOverview,
 } from "@/src/application/redux/slices/tournamentSlice";
-// import FinalOverview from "@/src/domains/tournament/components/FinalOverview/FinalOverview";
-// import TournamentStage from "@/src/domains/tournament/components/TournamentStage";
-// import styles from "@/src/domains/tournament/Tournament.module.css";
 import { useEffect } from "react";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
-// import { Button } from "zephyrus-components";
 import customStyles from "@/src/application/styles/Zephyrus.module.css";
-import TournamentTable from "@/src/domains/tournament/components/TournamentTable";
+import { Tournament } from "zephyrus-components";
 
 export default function TournamentPage() {
     const tournamentData = useSelector(selectTournamentData, shallowEqual);
@@ -37,23 +31,22 @@ export default function TournamentPage() {
     const setup = useSelector(selectTournamentSetup, shallowEqual);
     const matchError = useSelector(selectMatchError, shallowEqual);
     const isStarted = useSelector(selectTournamentIsStarted, shallowEqual);
-    // const isLoaded = useSelector(selectTournamentIsLoaded, shallowEqual);
     const isFinished = useSelector(selectTournamentIsFinished, shallowEqual);
     const notSelectedData = useSelector(selectNotSelectedData, shallowEqual);
-    const dispatch = useDispatch();
+    const finalOverview = useSelector(
+        selectTournamentFinalOverview,
+        shallowEqual
+    );
 
+    const dispatch = useDispatch();
     const handleStart = () => dispatch(startTournament());
     const handleQuit = () => dispatch(quitTournament());
-    // const handleReset = () => dispatch(resetTournament());
     const handleReset = () => dispatch(resetTournamentStore());
-    // const setupNextMatch = () => dispatch(initNextMatch());
     const handleShuffle = () => dispatch(shuffleTournamentData());
-
     const handleSetup = () => {
         // dispatch tournament settings and create first table (to edit)
         !isStarted && !isFinished && dispatch(setupTournament());
     };
-
     const handleUpdateSelected = ({ newCurrentMatch, newSelectedMatch }) =>
         dispatch(updateFirstStage({ newCurrentMatch, newSelectedMatch }));
     const handleUpdateUnselected = (contender) =>
@@ -62,7 +55,7 @@ export default function TournamentPage() {
                 toAdd: contender,
             })
         );
-    const handleMatchResult = ({ winner }) =>
+    const handleMatchResult = ({ stage, match, winner }) =>
         dispatch(
             setMatchWinner({
                 stage,
@@ -84,11 +77,9 @@ export default function TournamentPage() {
         }
     }, [tournamentStructure]);
 
-    // console.log("TournamentTable: ", { tournamentStructure, setup });
-
     return (
         <main>
-            <TournamentTable
+            <Tournament
                 isStarted={isStarted}
                 isFinished={isFinished}
                 handleStart={handleStart}
@@ -103,6 +94,7 @@ export default function TournamentPage() {
                 tournamentStructure={tournamentStructure}
                 tournamentData={tournamentData}
                 notSelectedData={notSelectedData}
+                finalOverview={finalOverview}
                 matchError={matchError}
                 customStyles={customStyles}
             />

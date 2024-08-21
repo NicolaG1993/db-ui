@@ -1,3 +1,4 @@
+import styles from "@/src/domains/tournament/Tournament.module.css";
 import { Button } from "zephyrus-components";
 
 export default function TournamentHeading({

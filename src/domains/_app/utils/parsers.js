@@ -13,7 +13,7 @@ import {
 // import { onlyUnique } from "@/src/application/utils/parsers";
 
 function parseTagsByType(obj, TAGS_OBJ) {
-    console.log("parseTagsByType: ", { obj, TAGS_OBJ });
+    // console.log("parseTagsByType: ", { obj, TAGS_OBJ });
 
     // using TAGS_OBJ to create parsedObj
     const parsedObj = {};
@@ -48,7 +48,7 @@ function parseTagsByType(obj, TAGS_OBJ) {
 // } // SPOSTARE
 
 function parseTagsForUiList(arr) {
-    console.log("parseTagsForUiList START 🟢: ", { arr });
+    // console.log("parseTagsForUiList START 🟢: ", { arr });
     let parsedObj = {};
 
     arr.map((el) => {
@@ -72,7 +72,7 @@ function parseTagsForUiList(arr) {
         parsedObj["No Type"] = noTypeData;
     }
 
-    console.log("parseTagsForUiList END 🟢: ", { parsedObj });
+    // console.log("parseTagsForUiList END 🟢: ", { parsedObj });
     return parsedObj;
 }
 

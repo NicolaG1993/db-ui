@@ -51,16 +51,6 @@ export default function MatchContender({
     isEliminated,
     handleVote,
 }) {
-    // const [vote, setVote] = useState(0); // move in store inside match contender ? 🧠
-
-    // const handleUpVote = () => {
-    //     setVote((prev) => prev + 1);
-    // };
-    // const handleDownVote = () => {
-    //     setVote((prev) => prev - 1);
-    // };
-
-    // console.log("➡️➡️➡️➡️ contender: ", contender);
     if (contender?.id) {
         if (!isStarted && isFirstStage) {
             return (
@@ -117,9 +107,7 @@ export default function MatchContender({
                                 ? styles.eliminated
                                 : ""
                         }`}
-                        onClick={() =>
-                            isReady && onClickContender({ winner: contender })
-                        }
+                        onClick={() => isReady && onClickContender()}
                     >
                         {/* 🔴🧠 <span>Contender: {matchId * (index + 1)}</span>
                         🧠 maybe add index to every contender on initTournament */}

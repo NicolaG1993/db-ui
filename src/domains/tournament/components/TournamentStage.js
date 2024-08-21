@@ -1,6 +1,6 @@
 import filterKeys from "../utils/filterKeys";
 import styles from "@/src/domains/tournament/Tournament.module.css";
-import renderStageMatches from "../utils/renderStageMatches";
+// import renderStageMatches from "../utils/renderStageMatches";
 import TournamentStageMatches from "./TournamentStageMatches";
 
 // make util 🧠👇
@@ -55,23 +55,6 @@ export default function TournamentStage({
                         handleVote={handleVote}
                         customStyles={customStyles}
                     />
-                    {/* {renderStageMatches({
-                        matches: stage.stageMatches,
-                        tableRows,
-                        isError,
-                        stage,
-                        // rowSequence: isThirdPlace
-                        //     ? tableRowsSequences[totStages - 1]
-                        //     : tableRowsSequences[totStages - 1],
-                    })} */}
-                    {/* {renderStageMatches({
-                    // matches: Object.entries(stage.stageMatches).map(
-                    //     ([matchKey, match]) => ({ ...match, matchKey })
-                    // ),
-                    matches: stage.stageMatches,
-                    tableRows,
-                    rowSequence: tableRowsSequences[-1],
-                })} */}
                 </div>
             </div>
         );
@@ -80,12 +63,6 @@ export default function TournamentStage({
             gridRowStart: 1,
             gridRowEnd: -1,
         };
-        /*
-         let stageArea = {
-            gridRowStart: tableRows - (tableRows - stageKey),
-            gridRowEnd: tableRows - stageKey + 1,
-        };
-        */
 
         let stageAreaLeft = {
             ...stageArea,
@@ -134,20 +111,6 @@ export default function TournamentStage({
                             handleVote={handleVote}
                             customStyles={customStyles}
                         />
-
-                        {/* {renderStageMatches({
-                            matches: oddKeys,
-                            tableRows,
-                            rowSequence: extractSequence(
-                                tableRowsSequences,
-                                tableColumns - (tableColumns - stageKey)
-                            ),
-                            isStarted,
-                            isFirstStage,
-                            isRightSide: false,
-                            isError,
-                            stage,
-                        })} */}
                     </div>
                 </div>
                 <div className={styles.tableColumn} style={stageAreaRight}>
@@ -178,19 +141,6 @@ export default function TournamentStage({
                             handleVote={handleVote}
                             customStyles={customStyles}
                         />
-                        {/* {renderStageMatches({
-                            matches: evenKeys,
-                            tableRows,
-                            rowSequence: extractSequence(
-                                tableRowsSequences,
-                                tableColumns - (tableColumns - stageKey)
-                            ),
-                            isStarted,
-                            isFirstStage,
-                            isRightSide: true,
-                            isError,
-                            stage,
-                        })} */}
                     </div>
                 </div>
             </>
