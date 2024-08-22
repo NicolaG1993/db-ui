@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import { useErrorBoundary } from "react-error-boundary";
@@ -8,10 +8,10 @@ import FormDrawerContent from "./FormDrawer@2.0/FormDrawerContent";
 import { selectAppSettings } from "@/src/application/redux/slices/appSettingsSlice";
 import {
     loadNewActiveForm,
-    // selectFormState,
+    selectFormState,
     selectFormStoreErrors,
     selectFormStoreHints,
-    // selectFormStoreNewImage,
+    selectFormStoreNewImage,
     selectFormStoreSettings,
     selectFormStoreUI,
     startLoading,
@@ -23,6 +23,7 @@ import {
     selectFormSideNavData,
     selectFormStoreLabel,
     selectFormIsFinish,
+    updateFormState,
 } from "@/src/application/redux/slices/formSlice";
 import dataStructureForms from "@/src/application/settings/dataStructureForms";
 import { fetchDataForSideNav } from "@/src/domains/_app/actions/formFetchers";
@@ -34,8 +35,15 @@ import {
     activateLoadingItem,
     clearItem,
 } from "@/src/application/redux/slices/itemSlice";
+import { Form } from "zephyrus-components";
+// import {
+//     createObjectURL,
+//     revokeObjectURL,
+// } from "../../../actions/useLocalImages";
 
-export default function Form({
+// TODO 🧠🔴 Questo file potrebbe diventare AppForm.js (Wrapper per Form per contenere tutte le fn senza ripeterle - vedere prima se é necessario peró)
+
+export default function FormWrap({
     formLabel,
     propsData,
     setOpenForm,
@@ -51,16 +59,17 @@ export default function Form({
     // The rest will be setup and stored in store // also we cannot store formComponent in store
     // 🧠 I need to test this by switching form tabs and loading new form when one is alredy open
 
-    const form = useSelector(selectFormStoreSettings, shallowEqual);
+    const formSettings = useSelector(selectFormStoreSettings, shallowEqual);
     const uiState = useSelector(selectFormStoreUI, shallowEqual);
     const hints = useSelector(selectFormStoreHints, shallowEqual);
-    // const formState = useSelector(selectFormState, shallowEqual);
+    const formState = useSelector(selectFormState, shallowEqual);
     // const newImage = useSelector(selectFormStoreNewImage, shallowEqual);
     const formErrors = useSelector(selectFormStoreErrors, shallowEqual);
     const isLoading = useSelector(selectFormIsLoading, shallowEqual);
     const isFinish = useSelector(selectFormIsFinish, shallowEqual);
     const sideNavData = useSelector(selectFormSideNavData, shallowEqual);
     const storedFormLabel = useSelector(selectFormStoreLabel, shallowEqual);
+    const { sideNavTopic, hintsIsOpen } = uiState;
 
     const formObj = dataStructureForms[formLabel];
     const FormComponent = dataStructureForms[formLabel]?.formComponent;
@@ -113,11 +122,11 @@ export default function Form({
     }, [hints]);
 
     // 🧠 There must be a way to transform this into a store action
-    const confirmChanges = async ({
+    const onSubmit = async ({
         e,
         formState,
         newImage,
-        form,
+        formSettings,
         propsData,
         formLabel,
     }) => {
@@ -131,7 +140,7 @@ export default function Form({
             submitForm({
                 formState,
                 newImage,
-                form,
+                formSettings,
                 propsData,
             })
                 .then(({ data }) => {
@@ -161,33 +170,110 @@ export default function Form({
         }
     };
 
+    /* NEW AFTER REFACTOR 👇 */
+    let formTitle = "";
+    if (propsData) {
+        formTitle = `Edit: ${propsData.name || propsData.title}`;
+    } else {
+        formTitle = `Create ${
+            formLabel.charAt(0).toUpperCase() + formLabel.slice(1)
+        }`;
+    }
+
+    // TODO: we can use only updateFormState? 🧠🧠🧠 and bring back the pic logic inside the custom component
+    // const [newImage, setNewImage] = useState();
+    // const handleAddImage = (e) => {
+    //     const imgFile = e.target.files["0"];
+    //     const file = {
+    //         location: createObjectURL(imgFile),
+    //         key: imgFile.name,
+    //         file: imgFile,
+    //     };
+    //     setNewImage(file);
+    //     dispatch(updateFormState({ val: file.location, topic: "pic" }));
+    // };
+    // const handleRemoveImage = (imgFile) => {
+    //     if (imgFile) {
+    //         revokeObjectURL(imgFile);
+    //         setNewImage();
+    //     }
+    //     if (formState.pic) {
+    //         dispatch(updateFormState({ val: "", topic: "pic" }));
+    //     }
+    // };
+
+    const onFormChange = ({ val, topic }) => {
+        dispatch(
+            updateFormState({
+                val,
+                topic,
+            })
+        );
+    };
+
+    const onFormValidate = ({ name, value, id }) => {
+        dispatch(
+            validateForm({
+                name,
+                value,
+                id,
+            })
+        );
+    };
+
+    const handleDrawer = (val) => {
+        dispatch(handleDrawer(val ? val : false));
+    };
+
     return (
-        <div className={styles.formWrapContainer}>
-            <div className={styles.formWrap}>
-                {/* 🧠 Header potrebbe essere uno :slot stile svelte - vedere se é possibile in next 🧠 */}
-                <FormHeader formLabel={formLabel} propsData={propsData} />
-
-                <div className={styles.formBox}>
-                    {!isLoading &&
-                    !isFinish &&
-                    FormComponent &&
-                    formLabel === form.key ? (
-                        <FormComponent confirmChanges={confirmChanges} />
-                    ) : (
-                        // 🧠 Fare loader migliore
-                        <p>Loading form...</p>
-                    )}
-                </div>
-            </div>
-
-            <FormDrawer
-                isOpen={uiState.drawerIsOpen}
-                closeDrawer={() => handleDrawer(false)}
-            >
-                <FormDrawerContent />
-            </FormDrawer>
-        </div>
+        <Form
+            formSettings={formSettings}
+            formState={formState}
+            formTitle={formTitle}
+            formErrors={formErrors}
+            FormComponent={FormComponent}
+            FormDrawerContent={FormDrawerContent}
+            propsData={propsData}
+            isLoading={isLoading}
+            isFinish={isFinish}
+            drawerIsOpen={uiState.drawerIsOpen}
+            onFormChange={onFormChange}
+            onFormValidate={onFormValidate}
+            onSubmit={onSubmit}
+            handleDrawer={handleDrawer}
+            sideNavTopic={sideNavTopic}
+            hintsIsOpen={hintsIsOpen}
+            customStyles={customStyles}
+        />
     );
+
+    // return (
+    //     <div className={styles.formWrapContainer}>
+    //         <div className={styles.formWrap}>
+    //             {/* 🧠 Header potrebbe essere uno :slot stile svelte - vedere se é possibile in next 🧠 */}
+    //             <FormHeader formTitle={formTitle} />
+
+    //             <div className={styles.formBox}>
+    //                 {!isLoading &&
+    //                 !isFinish &&
+    //                 FormComponent &&
+    //                 formLabel === formSettings.key ? (
+    //                     <FormComponent onSubmit={onSubmit} />
+    //                 ) : (
+    //                     // 🧠 Fare loader migliore
+    //                     <p>Loading form...</p>
+    //                 )}
+    //             </div>
+    //         </div>
+
+    //         <FormDrawer
+    //             isOpen={drawerIsOpen}
+    //             closeDrawer={() => handleDrawer(false)}
+    //         >
+    //             <FormDrawerContent />
+    //         </FormDrawer>
+    //     </div>
+    // );
 }
 
 /*
@@ -212,9 +298,9 @@ export default function Form({
         7. 🟢 Deploy
         7.1 🟢 PROD Testing
         8. 🟢 Eliminare old Form 1.0 version + components
-        8.1 🟡 Cleanup comments and console.logs
+        8.1 🟢 Cleanup comments and console.logs
 
-        BONUS:
+        BONUS: 🧠
         6.2 Extract action and selector from input components - pass them as props (forse fare quando creo library - annotare in ticket peró)
         9. On every SideNav fetch: store fetched data in another store by key
         9.1 Implement refresh data button inside SideNav

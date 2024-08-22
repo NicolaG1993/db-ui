@@ -1,60 +1,74 @@
 import styles from "@/src/domains/_app/components/Form/components/Form.module.css";
-import {
-    selectFormPropsData,
-    selectFormState,
-    selectFormStoreSettings,
-    selectFormStoreErrors,
-    selectFormIsLoading,
-    validateForm,
-    updateFormState,
-    selectFormIsLoadingResponse,
-    selectFormIsFinish,
-} from "@/src/application/redux/slices/formSlice";
-import { shallowEqual, useDispatch, useSelector } from "react-redux";
-import { useState } from "react";
+// import {
+//     selectFormPropsData,
+//     selectFormState,
+//     selectFormStoreSettings,
+//     selectFormStoreErrors,
+//     selectFormIsLoading,
+//     validateForm,
+//     updateFormState,
+//     selectFormIsLoadingResponse,
+//     selectFormIsFinish,
+// } from "@/src/application/redux/slices/formSlice";
+// import { shallowEqual, useDispatch, useSelector } from "react-redux";
+// import { useState } from "react";
 import { InputText, InputImage, Button } from "zephyrus-components";
 import customStyles from "@/src/application/styles/Zephyrus.module.css";
-import {
-    createObjectURL,
-    revokeObjectURL,
-} from "@/src/domains/_app/actions/useLocalImages";
+// import {
+//     createObjectURL,
+//     revokeObjectURL,
+// } from "@/src/domains/_app/actions/useLocalImages";
 
-export default function CategoryForm({ confirmChanges }) {
-    const formState = useSelector(selectFormState, shallowEqual);
-    const propsData = useSelector(selectFormPropsData, shallowEqual);
-    const form = useSelector(selectFormStoreSettings, shallowEqual);
-    const errors = useSelector(selectFormStoreErrors, shallowEqual);
-    const isLoading = useSelector(selectFormIsLoading, shallowEqual);
-    const isLoadingResponse = useSelector(
-        selectFormIsLoadingResponse,
-        shallowEqual
-    );
-    const isFinish = useSelector(selectFormIsFinish, shallowEqual);
+export default function CategoryForm({
+    formState,
+    formSettings,
+    formErrors,
+    propsData,
+    isLoading,
+    // isLoadingResponse,
+    isFinish,
+    handleAddImage,
+    handleRemoveImage,
+    handleDrawer,
+    onFormChange,
+    onFormValidate,
+    onSubmit,
+}) {
+    // const formState = useSelector(selectFormState, shallowEqual);
+    // const propsData = useSelector(selectFormPropsData, shallowEqual);
+    // const form = useSelector(selectFormStoreSettings, shallowEqual);
+    // const errors = useSelector(selectFormStoreErrors, shallowEqual);
+    // const isLoading = useSelector(selectFormIsLoading, shallowEqual);
+    // const isLoadingResponse = useSelector(
+    //     selectFormIsLoadingResponse,
+    //     shallowEqual
+    // );
+    // const isFinish = useSelector(selectFormIsFinish, shallowEqual);
 
-    const dispatch = useDispatch();
+    // const dispatch = useDispatch();
 
-    const [newImage, setNewImage] = useState();
+    // const [newImage, setNewImage] = useState();
 
-    const handleNewImage = (e) => {
-        const imgFile = e.target.files["0"];
-        const file = {
-            location: createObjectURL(imgFile),
-            key: imgFile.name,
-            file: imgFile,
-        };
-        setNewImage(file);
-        dispatch(updateFormState({ val: file.location, topic: "pic" }));
-    };
+    // const handleNewImage = (e) => {
+    //     const imgFile = e.target.files["0"];
+    //     const file = {
+    //         location: createObjectURL(imgFile),
+    //         key: imgFile.name,
+    //         file: imgFile,
+    //     };
+    //     setNewImage(file);
+    //     dispatch(updateFormState({ val: file.location, topic: "pic" }));
+    // };
 
-    const handleRemoveImage = (imgFile) => {
-        if (imgFile) {
-            revokeObjectURL(imgFile);
-            setNewImage();
-        }
-        if (formState.pic) {
-            dispatch(updateFormState({ val: "", topic: "pic" }));
-        }
-    };
+    // const handleRemoveImage = (imgFile) => {
+    //     if (imgFile) {
+    //         revokeObjectURL(imgFile);
+    //         setNewImage();
+    //     }
+    //     if (formState.pic) {
+    //         dispatch(updateFormState({ val: "", topic: "pic" }));
+    //     }
+    // };
 
     //================================================================================
     // Render UI
@@ -62,13 +76,13 @@ export default function CategoryForm({ confirmChanges }) {
     return (
         <form
             onSubmit={(e) =>
-                confirmChanges({
+                onSubmit({
                     e,
                     formState,
                     newImage,
-                    form,
+                    formSettings,
                     propsData,
-                    formLabel: form.key,
+                    formLabel: formSettings.key,
                 })
             }
             className={styles.form}
@@ -77,15 +91,11 @@ export default function CategoryForm({ confirmChanges }) {
                 <div className={styles["form-row"]}>
                     <InputImage
                         file={formState.pic}
-                        onAddFile={(e) => handleNewImage(e)}
-                        onDeleteFile={() =>
-                            handleRemoveImage({
-                                imgFile: newImage,
-                            })
-                        }
+                        onAddFile={(e) => handleAddImage(e)}
+                        onDeleteFile={handleRemoveImage}
                         // height={200}
                         // width={250}
-                        error={errors.pic}
+                        error={formErrors.pic}
                         customStyles={customStyles}
                     />
                 </div>
@@ -97,25 +107,10 @@ export default function CategoryForm({ confirmChanges }) {
                         label={true}
                         isMandatory={true}
                         value={formState.name}
-                        onChange={(e) =>
-                            dispatch(
-                                updateFormState({
-                                    val: e.target.value,
-                                    topic: e.target.name,
-                                })
-                            )
-                        }
-                        onBlur={(e) =>
-                            dispatch(
-                                validateForm({
-                                    name: e.target.name,
-                                    value: e.target.value,
-                                    id: e.target.id,
-                                })
-                            )
-                        }
+                        onChange={(e) => onFormChange(e)}
+                        onBlur={(e) => onFormValidate(e)}
                         placeholder="Type the name here..."
-                        error={errors.name}
+                        error={formErrors.name}
                         customStyles={customStyles}
                     />
                 </div>
@@ -127,25 +122,10 @@ export default function CategoryForm({ confirmChanges }) {
                         label={true}
                         // isMandatory={true}
                         value={formState.type}
-                        onChange={(e) =>
-                            dispatch(
-                                updateFormState({
-                                    val: e.target.value,
-                                    topic: e.target.name,
-                                })
-                            )
-                        }
-                        onBlur={(e) =>
-                            dispatch(
-                                validateForm({
-                                    name: e.target.name,
-                                    value: e.target.value,
-                                    id: e.target.id,
-                                })
-                            )
-                        }
+                        onChange={(e) => onFormChange(e)}
+                        onBlur={(e) => onFormValidate(e)}
                         placeholder="Type the type name here..."
-                        error={errors.type}
+                        error={formErrors.type}
                         customStyles={customStyles}
                     />
                 </div>

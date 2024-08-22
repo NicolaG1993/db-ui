@@ -29,65 +29,79 @@ import {
     InputSocials,
 } from "zephyrus-components";
 
-export default function ActorForm({ confirmChanges }) {
-    const formState = useSelector(selectFormState, shallowEqual);
-    const propsData = useSelector(selectFormPropsData, shallowEqual);
-    const form = useSelector(selectFormStoreSettings, shallowEqual);
-    const errors = useSelector(selectFormStoreErrors, shallowEqual);
-    const isLoading = useSelector(selectFormIsLoading, shallowEqual);
+export default function ActorForm({
+    formState,
+    formSettings,
+    formErrors,
+    propsData,
+    isLoading,
+    // isLoadingResponse,
+    isFinish,
+    handleAddImage,
+    handleRemoveImage,
+    handleDrawer,
+    onFormChange,
+    onFormValidate,
+    onSubmit,
+}) {
+    // const formState = useSelector(selectFormState, shallowEqual);
+    // const propsData = useSelector(selectFormPropsData, shallowEqual);
+    // const form = useSelector(selectFormStoreSettings, shallowEqual);
+    // const errors = useSelector(selectFormStoreErrors, shallowEqual);
+    // const isLoading = useSelector(selectFormIsLoading, shallowEqual);
     // const isLoadingResponse = useSelector(
     //     selectFormIsLoadingResponse,
     //     shallowEqual
     // );
-    const isFinish = useSelector(selectFormIsFinish, shallowEqual);
+    // const isFinish = useSelector(selectFormIsFinish, shallowEqual);
 
-    const dispatch = useDispatch();
+    // const dispatch = useDispatch();
 
-    const [newImage, setNewImage] = useState();
+    // const [newImage, setNewImage] = useState();
 
-    const handleNewImage = (e) => {
-        const imgFile = e.target.files["0"];
-        const file = {
-            location: createObjectURL(imgFile),
-            key: imgFile.name,
-            file: imgFile, // non-serializable data 🧠
-        };
+    // const handleNewImage = (e) => {
+    //     const imgFile = e.target.files["0"];
+    //     const file = {
+    //         location: createObjectURL(imgFile),
+    //         key: imgFile.name,
+    //         file: imgFile, // non-serializable data 🧠
+    //     };
 
-        /*
-        🧠🧠🧠🧠🧠
-        Potrei salvare le immagini nel component invece di redux store
-        e poi passarle a confirmChanges on submit
-        PS. inoltre va bene se non sono salvate in memorized state, no problem
-        🧠🧠🧠🧠🧠
-        BIG BRAIN
+    //     /*
+    //     🧠🧠🧠🧠🧠
+    //     Potrei salvare le immagini nel component invece di redux store
+    //     e poi passarle a confirmChanges on submit
+    //     PS. inoltre va bene se non sono salvate in memorized state, no problem
+    //     🧠🧠🧠🧠🧠
+    //     BIG BRAIN
 
-        Dobbiamo vedere in parent come gestire file nuovi o file da props 
-        il primo bisogna fare upload
-        il secondo bisogna saltarlo
-        -- mi sa che il primo é file obj, il secondo é solo str url
+    //     Dobbiamo vedere in parent come gestire file nuovi o file da props
+    //     il primo bisogna fare upload
+    //     il secondo bisogna saltarlo
+    //     -- mi sa che il primo é file obj, il secondo é solo str url
 
-        ho aggiornato store, ora salva sempre e solo url di picture, 
-        cosí faccio render sempre di questo valore.
-        Vedere quando il valore viene usato in Form
-        prima poteva esserci un check (da qualche parte, forse) che ora sarebbe inutile, controllare
-       
-        Ultimo bug:
-        • handleRemoveImage -> formState "not working" 🟢
-        */
+    //     ho aggiornato store, ora salva sempre e solo url di picture,
+    //     cosí faccio render sempre di questo valore.
+    //     Vedere quando il valore viene usato in Form
+    //     prima poteva esserci un check (da qualche parte, forse) che ora sarebbe inutile, controllare
 
-        setNewImage(file);
-        dispatch(updateFormState({ val: file.location, topic: "pic" }));
-    };
+    //     Ultimo bug:
+    //     • handleRemoveImage -> formState "not working" 🟢
+    //     */
 
-    const handleRemoveImage = (imgFile) => {
-        if (imgFile) {
-            revokeObjectURL(imgFile);
-            setNewImage();
-        }
-        if (formState.pic) {
-            dispatch(updateFormState({ val: "", topic: "pic" }));
-        }
-    };
+    //     setNewImage(file);
+    //     dispatch(updateFormState({ val: file.location, topic: "pic" }));
+    // };
+
+    // const handleRemoveImage = (imgFile) => {
+    //     if (imgFile) {
+    //         revokeObjectURL(imgFile);
+    //         setNewImage();
+    //     }
+    //     if (formState.pic) {
+    //         dispatch(updateFormState({ val: "", topic: "pic" }));
+    //     }
+    // };
     //================================================================================
     // Render UI
     //================================================================================
@@ -95,13 +109,13 @@ export default function ActorForm({ confirmChanges }) {
     return (
         <form
             onSubmit={(e) =>
-                confirmChanges({
+                onSubmit({
                     e,
                     formState,
                     newImage,
-                    form,
+                    formSettings,
                     propsData,
-                    formLabel: form.key,
+                    formLabel: formSettings.key,
                 })
             }
             className={styles.form}
@@ -114,15 +128,11 @@ export default function ActorForm({ confirmChanges }) {
                 <div className={styles["form-row"]}>
                     <InputImage
                         file={formState.pic}
-                        onAddFile={(e) => handleNewImage(e)}
-                        onDeleteFile={() =>
-                            handleRemoveImage({
-                                imgFile: newImage,
-                            })
-                        }
+                        onAddFile={(e) => handleAddImage(e)}
+                        onDeleteFile={handleRemoveImage}
                         // height={200}
                         // width={250}
-                        error={errors.pic}
+                        error={formErrors.pic}
                         customStyles={customStyles}
                     />
                 </div>
@@ -134,25 +144,10 @@ export default function ActorForm({ confirmChanges }) {
                         label={true}
                         isMandatory={true}
                         value={formState.name}
-                        onChange={(e) =>
-                            dispatch(
-                                updateFormState({
-                                    val: e.target.value,
-                                    topic: e.target.name,
-                                })
-                            )
-                        }
-                        onBlur={(e) =>
-                            dispatch(
-                                validateForm({
-                                    name: e.target.name,
-                                    value: e.target.value,
-                                    id: e.target.id,
-                                })
-                            )
-                        }
+                        onChange={(e) => onFormChange(e)}
+                        onBlur={(e) => onFormValidate(e)}
                         placeholder="Type the name here..."
-                        error={errors.name}
+                        error={formErrors.name}
                         customStyles={customStyles}
                     />
                 </div>
@@ -168,20 +163,12 @@ export default function ActorForm({ confirmChanges }) {
                             { value: "trans", name: "T" },
                         ]}
                         value={formState.genre}
-                        onChange={(e) =>
-                            dispatch(
-                                updateFormState({
-                                    val: e.target.value,
-                                    topic: e.target.name,
-                                    log: "genre",
-                                })
-                            )
-                        }
+                        onChange={(e) => onFormChange(e)}
                         multipleSelection={false}
                         includeParents={false}
                         placeholder={""}
                         isMandatory={true}
-                        error={errors.genre}
+                        error={formErrors.genre}
                         customStyles={customStyles}
                     />
                 </div>
@@ -191,16 +178,9 @@ export default function ActorForm({ confirmChanges }) {
                         name={"birthday"}
                         id={"Birthday"}
                         label={true}
-                        onChange={(e) =>
-                            dispatch(
-                                updateFormState({
-                                    val: e.target.value,
-                                    topic: e.target.name,
-                                })
-                            )
-                        }
+                        onChange={(e) => onFormChange(e)}
                         value={formState.birthday}
-                        error={errors.birthday}
+                        error={formErrors.birthday}
                         customStyles={customStyles}
                     />
                 </div>
@@ -212,29 +192,12 @@ export default function ActorForm({ confirmChanges }) {
                         label={true}
                         step="0.01"
                         max="5"
-                        onChange={(e) =>
-                            dispatch(
-                                updateFormState({
-                                    val: Number(
-                                        parseFloat(e.target.value).toFixed(2)
-                                    ),
-                                    topic: e.target.name,
-                                })
-                            )
-                        }
-                        onBlur={(e) =>
-                            dispatch(
-                                validateForm({
-                                    name: e.target.name,
-                                    value: e.target.value,
-                                    id: e.target.id,
-                                })
-                            )
-                        }
+                        onChange={(e) => onFormChange(e)}
+                        onBlur={(e) => onFormValidate(e)}
                         value={formState.rating}
                         placeholder="Type your rating (max 5.00)"
                         isMandatory={true}
-                        error={errors.rating}
+                        error={formErrors.rating}
                         customStyles={customStyles}
                     />
                 </div>
@@ -252,18 +215,20 @@ export default function ActorForm({ confirmChanges }) {
                         // selected={} // TODO: passare valore di selezionato?
                         formState={formState} // 🧠 sostituire con values={} - non passare tutto il form se vogliamo usare il component x library
                         // values={{ formState }} // 🧠🧠🧠🧠
-                        onChange={(val, topic) =>
-                            dispatch(
-                                updateFormState({
-                                    val,
-                                    topic,
-                                })
-                            )
-                        }
-                        error={errors.socials}
+                        // onChange={(val, topic) =>
+                        //     dispatch(
+                        //         updateFormState({
+                        //             val,
+                        //             topic,
+                        //         })
+                        //     )
+                        // }
+                        onChange={(e) => onFormChange(e)} // qui non usiamo event! 🔴🔴🔴 FIX
+                        // onBlur={(e) => onFormValidate(e)}
+                        error={formErrors.socials}
                         placeholder={"Insert social link here..."}
-                        // 🧠 anche per error dobbiamo creare un oggetto a parte, oppure avere errors.socials
-                        // 🧠 FIX: NON ABBIAMO errors.socials 🧠
+                        // 🧠 anche per error dobbiamo creare un oggetto a parte, oppure avere formErrors.socials
+                        // 🧠 FIX: NON ABBIAMO formErrors.socials 🧠
                         customStyles={customStyles}
                     />
                 </div>
@@ -279,7 +244,7 @@ export default function ActorForm({ confirmChanges }) {
                         label={true}
                         selected={formState.tags?.length || 0}
                         onClick={() => {
-                            dispatch(openSideNav("tags"));
+                            handleDrawer("tags");
                         }}
                         customStyles={customStyles}
                     />
@@ -292,7 +257,7 @@ export default function ActorForm({ confirmChanges }) {
                         label={true}
                         selected={formState.nationalities?.length || 0}
                         onClick={() => {
-                            dispatch(openSideNav("nationalities"));
+                            handleDrawer("nationalities");
                         }}
                         customStyles={customStyles}
                     />

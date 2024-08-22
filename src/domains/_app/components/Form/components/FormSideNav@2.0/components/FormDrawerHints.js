@@ -32,7 +32,7 @@ const extractFormData = (formData) => {
     return parsedForm;
 };
 
-export default function FormSideHints() {
+export default function FormDrawerHints() {
     const dispatch = useDispatch();
     //  let uiState = useAppSelector(selectFormStoreUI, shallowEqual);
     let hints = useAppSelector(selectFormStoreHints, shallowEqual);

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import styles from "@/src/application/styles/AdminDashboard.module.css";
-import Form from "@/src/domains/_app/components/Form/components/Form";
+import Form from "@/src/domains/_app/components/Form/components/FormWrap";
 import Cookies from "js-cookie";
 import { selectFormStoreUI } from "@/src/application/redux/slices/formSlice";
 import { shallowEqual, useSelector } from "react-redux";

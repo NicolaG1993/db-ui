@@ -1,2 +1,2 @@
-const loopObject = (object) => Object.entries(object);
-export default loopObject;
+// const loopObject = (object) => Object.entries(object);
+// export default loopObject;

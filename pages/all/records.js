@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import Graph from "@/src/domains/records/components/Graphs/Graph";
 import styles from "@/src/application/styles/Records.module.css";
 import { formatDateEU } from "@/src/application/utils/convertTimestamp";
-import Form from "@/src/domains/_app/components/Form/components/Form";
+import Form from "@/src/domains/_app/components/Form/components/FormWrap";
 import ToggleSwitch from "@/src/domains/_app/components/ToggleSwitch/ToggleSwitch";
 import axiosAuthInstance from "@/src/application/utils/axiosAuthInstance";
 import { Button, IconTrash } from "zephyrus-components";

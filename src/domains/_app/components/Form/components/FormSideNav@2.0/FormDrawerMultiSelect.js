@@ -1,8 +1,8 @@
 import styles from "@/src/domains/_app/components/Form/components/Form.module.css";
-import ActiveElements from "@/src/domains/all/components/Filters/ActiveElements/ActiveElements";
-import DropdownMenusByLevel from "@/src/domains/all/components/Filters/DropdownMenusByLevel/DropdownMenusByLevel";
-import InputsSelector from "@/src/domains/all/components/Filters/InputsSelector/InputsSelector";
-import NationalitiesSelector from "@/src/domains/all/components/Filters/NationalitiesSelector/NationalitiesSelector";
+// import ActiveElements from "@/src/domains/all/components/Filters/ActiveElements/ActiveElements";
+// import DropdownMenusByLevel from "@/src/domains/all/components/Filters/DropdownMenusByLevel/DropdownMenusByLevel";
+// import InputsSelector from "@/src/domains/all/components/Filters/InputsSelector/InputsSelector";
+// import NationalitiesSelector from "@/src/domains/all/components/Filters/NationalitiesSelector/NationalitiesSelector";
 import checkHints from "@/src/domains/_app/components/Form/actions/checkHints";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import {
@@ -20,15 +20,23 @@ import {
     concludeDrawer,
     selectFormStoreLabel,
     selectFormSideNavFilters,
+    selectFormSideNavRenderReady,
+    selectFormSideDropdownsState,
+    updateSideNavDropdownsState,
 } from "@/src/application/redux/slices/formSlice";
 import { useAppSelector } from "@/src/application/redux/lib/hooks";
 import { selectAppSettings } from "@/src/application/redux/slices/appSettingsSlice";
-import FormSideNavSearchBar from "@/src/domains/_app/components/Form/components/FormSideNav@2.0/components/FormSideNavSearchBar";
+import MultiSelectSearchBar from "@/src/domains/_app/components/Form/components/FormSideNav@2.0/components/MultiSelectSearchBar";
 import extractAllTags from "../../utils/extractAllTags";
-import { Button } from "zephyrus-components";
+import {
+    Button,
+    InputItemsDropdown,
+    InputItemsList,
+} from "zephyrus-components";
 import customStyles from "@/src/application/styles/Zephyrus.module.css";
+import createNewMenus from "@/src/domains/all/components/Filters/DropdownMenusByLevel/utils/createNewMenus";
 
-export default function FormSideNav() {
+export default function FormDrawerMultiSelect() {
     const dispatch = useDispatch();
 
     const appSettings = useSelector(selectAppSettings);
@@ -108,7 +116,7 @@ export default function FormSideNav() {
          * * then call the search action from component with useEffect
          * or we could set filter.search inside searchNavData() action
          * * and run search only if it's different from prev value
-         * * * in this case i think we can restore FormSideNavSearchBar
+         * * * in this case i think we can restore MultiSelectSearchBar
          */
 
         console.log("💚 handleSearch invoked: ", {
@@ -145,6 +153,42 @@ export default function FormSideNav() {
                 :type Array (always)
 
      */
+
+    /* NEW AFTER REFACTOR 👇👇 */
+    const renderReady = useAppSelector(
+        selectFormSideNavRenderReady,
+        shallowEqual
+    );
+    const menuStructure = useAppSelector(
+        selectFormSideNavFilteredData,
+        shallowEqual
+    );
+    const dropdownsState = useSelector(
+        selectFormSideDropdownsState,
+        shallowEqual
+    );
+
+    const handleClickEl = (it, userAction) => {
+        dispatch(
+            updateSideNavSelected({
+                value: it,
+                userAction,
+                // userAction: isSelected ? "remove" : "add",
+                // log: "Element",
+            })
+        );
+    };
+
+    const handleDropdowns = ({ dropdownsState, index, groupKey }) => {
+        // this process may differ for other components, that's why we handle this part here and not in action
+        // change if we see it doesn't change 🧠👇
+        const newState = createNewMenus({ dropdownsState, index, groupKey });
+        dispatch(
+            updateSideNavDropdownsState({
+                newState,
+            })
+        );
+    };
 
     return (
         <div id={styles.FormSideNav} className={styles.sidewrap}>
@@ -183,7 +227,7 @@ export default function FormSideNav() {
             <div className={styles.sidewrapContent}>
                 <div className={styles.sidewrapHeader}>
                     <div className={styles.wrapper}>
-                        <FormSideNavSearchBar
+                        <MultiSelectSearchBar
                             topic={uiState.sideNavTopic}
                             data={sourceData}
                             value={filters.search}
@@ -233,33 +277,71 @@ export default function FormSideNav() {
                             filteredData &&
                             (uiState.sideNavTopic === "tags" ? (
                                 filters.search ? (
-                                    <InputsSelector
+                                    // <InputsSelector
+                                    <InputItemsList
                                         // data={filteredData.map((el) => el)}
                                         data={extractAllTags(filteredData)}
                                         topic={uiState.sideNavTopic}
+                                        onClick={handleClickEl}
+                                        isLoaded={renderReady}
+                                        currentSelection={currentSelection}
+                                        customStyles={customStyles}
                                     />
                                 ) : (
-                                    <DropdownMenusByLevel
+                                    <InputItemsDropdown
+                                        // data={extractAllTags(filteredData)}
                                         topic={uiState.sideNavTopic}
-                                        userStyles={styles}
+                                        onClick={handleClickEl}
+                                        isLoaded={renderReady}
+                                        currentSelection={currentSelection}
+                                        dropdownsState={dropdownsState}
+                                        handleDropdowns={handleDropdowns}
+                                        menuStructure={menuStructure}
+                                        customStyles={customStyles}
                                     />
+                                    // <DropdownMenusByLevel
+                                    //     topic={uiState.sideNavTopic}
+                                    //     userStyles={styles}
+                                    // />
                                 )
                             ) : filteredData.length &&
                               uiState.sideNavTopic !== "nationalities" ? (
-                                <InputsSelector
+                                // <InputsSelector
+                                //     data={filteredData.map((el) => el)}
+                                //     topic={uiState.sideNavTopic}
+                                // />
+                                <InputItemsList
                                     data={filteredData.map((el) => el)}
                                     topic={uiState.sideNavTopic}
+                                    onClick={handleClickEl}
+                                    isLoaded={renderReady}
+                                    currentSelection={currentSelection}
+                                    customStyles={customStyles}
                                 />
                             ) : (
                                 uiState.sideNavTopic === "nationalities" && (
-                                    <NationalitiesSelector
+                                    // <NationalitiesSelector
+                                    //     data={filteredData.map(
+                                    //         ({ name }) => name
+                                    //     )}
+                                    //     filters={
+                                    //         formState[uiState.sideNavTopic]
+                                    //     }
+                                    //     topic={uiState.sideNavTopic}
+                                    // />
+                                    <InputItemsList
+                                        // data={filteredData.map((el) => el)}
                                         data={filteredData.map(
                                             ({ name }) => name
                                         )}
-                                        filters={
+                                        currentSelection={
                                             formState[uiState.sideNavTopic]
                                         }
+                                        // currentSelection={currentSelection}
                                         topic={uiState.sideNavTopic}
+                                        onClick={handleClickEl}
+                                        isLoaded={renderReady}
+                                        customStyles={customStyles}
                                     />
                                 )
                             ))
@@ -274,18 +356,24 @@ export default function FormSideNav() {
                     🔴 Inside here (and childs) we use formState only as ref 
                     */}
                     <div className={styles.wrapper}>
-                        <ActiveElements
+                        {/* 🧠👇🧠👇 Use InputItemsList.tsx ??? 🧠👇🧠👇 */}
+                        {/* <ActiveElements */}
+                        <InputItemsList
+                            data={currentSelection}
                             topic={uiState.sideNavTopic}
-                            selected={currentSelection}
-                            onChange={({ val, userAction }) =>
-                                dispatch(
-                                    updateSideNavSelected({
-                                        value: val,
-                                        userAction,
-                                        log: "ActiveElements",
-                                    })
-                                )
-                            }
+                            onClick={handleClickEl}
+                            isLoaded={renderReady}
+                            isOnlyActives={true}
+                            // onClick={({ val, userAction }) =>
+                            //     dispatch(
+                            //         updateSideNavSelected({
+                            //             value: val,
+                            //             userAction,
+                            //             log: "ActiveElements",
+                            //         })
+                            //     )
+                            // }
+                            customStyles={customStyles}
                         />
                     </div>
                 </div>

@@ -28,42 +28,56 @@ import {
     Button,
 } from "zephyrus-components";
 
-export default function MovieForm({ confirmChanges }) {
-    const formState = useSelector(selectFormState, shallowEqual);
-    const propsData = useSelector(selectFormPropsData, shallowEqual);
-    const form = useSelector(selectFormStoreSettings, shallowEqual);
-    const errors = useSelector(selectFormStoreErrors, shallowEqual);
-    let isLoading = useSelector(selectFormIsLoading, shallowEqual);
+export default function MovieForm({
+    formState,
+    formSettings,
+    formErrors,
+    propsData,
+    isLoading,
+    // isLoadingResponse,
+    isFinish,
+    handleAddImage,
+    handleRemoveImage,
+    handleDrawer,
+    onFormChange,
+    onFormValidate,
+    onSubmit,
+}) {
+    // const formState = useSelector(selectFormState, shallowEqual);
+    // const propsData = useSelector(selectFormPropsData, shallowEqual);
+    // const form = useSelector(selectFormStoreSettings, shallowEqual);
+    // const errors = useSelector(selectFormStoreErrors, shallowEqual);
+    // let isLoading = useSelector(selectFormIsLoading, shallowEqual);
     // const isLoadingResponse = useSelector(
     //     selectFormIsLoadingResponse,
     //     shallowEqual
     // );
-    const isFinish = useSelector(selectFormIsFinish, shallowEqual);
+    // const isFinish = useSelector(selectFormIsFinish, shallowEqual);
 
-    const dispatch = useDispatch();
+    // const dispatch = useDispatch();
 
-    const [newImage, setNewImage] = useState();
+    // const [newImage, setNewImage] = useState();
 
-    const handleNewImage = (e) => {
-        const imgFile = e.target.files["0"];
-        const file = {
-            location: createObjectURL(imgFile),
-            key: imgFile.name,
-            file: imgFile,
-        };
-        setNewImage(file);
-        dispatch(updateFormState({ val: file.location, topic: "pic" }));
-    };
+    // const handleNewImage = (e) => {
+    //     const imgFile = e.target.files["0"];
+    //     const file = {
+    //         location: createObjectURL(imgFile),
+    //         key: imgFile.name,
+    //         file: imgFile,
+    //     };
+    //     setNewImage(file);
+    //     dispatch(updateFormState({ val: file.location, topic: "pic" }));
+    // };
 
-    const handleRemoveImage = (imgFile) => {
-        if (imgFile) {
-            revokeObjectURL(imgFile);
-            setNewImage();
-        }
-        if (formState.pic) {
-            dispatch(updateFormState({ val: "", topic: "pic" }));
-        }
-    };
+    // const handleRemoveImage = (imgFile) => {
+    //     if (imgFile) {
+    //         revokeObjectURL(imgFile);
+    //         setNewImage();
+    //     }
+    //     if (formState.pic) {
+    //         dispatch(updateFormState({ val: "", topic: "pic" }));
+    //     }
+    // };
 
     //================================================================================
     // Render UI
@@ -71,13 +85,13 @@ export default function MovieForm({ confirmChanges }) {
     return (
         <form
             onSubmit={(e) =>
-                confirmChanges({
+                onSubmit({
                     e,
                     formState,
                     newImage,
-                    form,
+                    formSettings,
                     propsData,
-                    formLabel: form.key,
+                    formLabel: formSettings.key,
                 })
             }
             className={styles.form}
@@ -90,15 +104,11 @@ export default function MovieForm({ confirmChanges }) {
                 <div className={styles["form-row"]}>
                     <InputImage
                         file={formState.pic}
-                        onAddFile={(e) => handleNewImage(e)}
-                        onDeleteFile={() =>
-                            handleRemoveImage({
-                                imgFile: newImage,
-                            })
-                        }
+                        onAddFile={(e) => handleAddImage(e)}
+                        onDeleteFile={handleRemoveImage}
                         height={200}
                         width={250}
-                        error={errors.pic}
+                        error={formErrors.pic}
                         customStyles={customStyles}
                     />
                 </div>
@@ -110,25 +120,10 @@ export default function MovieForm({ confirmChanges }) {
                         label={true}
                         isMandatory={true}
                         value={formState.title}
-                        onChange={(e) =>
-                            dispatch(
-                                updateFormState({
-                                    val: e.target.value,
-                                    topic: e.target.name,
-                                })
-                            )
-                        }
-                        onBlur={(e) =>
-                            dispatch(
-                                validateForm({
-                                    name: e.target.name,
-                                    value: e.target.value,
-                                    id: e.target.id,
-                                })
-                            )
-                        }
+                        onChange={(e) => onFormChange(e)}
+                        onBlur={(e) => onFormValidate(e)}
                         placeholder="Type the title here..."
-                        error={errors.title}
+                        error={formErrors.title}
                         customStyles={customStyles}
                     />
                 </div>
@@ -139,14 +134,7 @@ export default function MovieForm({ confirmChanges }) {
                         id={"Urls"}
                         label={true}
                         formState={formState}
-                        onChange={(val, topic) =>
-                            dispatch(
-                                updateFormState({
-                                    val,
-                                    topic,
-                                })
-                            )
-                        }
+                        onChange={(e) => onFormChange(e)}
                         placeholder="Type URL here...   "
                         customStyles={customStyles}
                     />
@@ -158,29 +146,12 @@ export default function MovieForm({ confirmChanges }) {
                         id={"Rating"}
                         step="0.01"
                         max="5"
-                        onChange={(e) =>
-                            dispatch(
-                                updateFormState({
-                                    val: Number(
-                                        parseFloat(e.target.value).toFixed(2)
-                                    ),
-                                    topic: e.target.name,
-                                })
-                            )
-                        }
-                        onBlur={(e) =>
-                            dispatch(
-                                validateForm({
-                                    name: e.target.name,
-                                    value: e.target.value,
-                                    id: e.target.id,
-                                })
-                            )
-                        }
+                        onChange={(e) => onFormChange(e)}
+                        onBlur={(e) => onFormValidate(e)}
                         value={formState.rating}
                         placeholder="Type your rating (max 5.00)"
                         isMandatory={true}
-                        error={errors.rating}
+                        error={formErrors.rating}
                         customStyles={customStyles}
                     />
                 </div>
@@ -189,16 +160,10 @@ export default function MovieForm({ confirmChanges }) {
                     <InputDate
                         name={"release"}
                         id={"Release"}
-                        onChange={(e) =>
-                            dispatch(
-                                updateFormState({
-                                    val: e.target.value,
-                                    topic: e.target.name,
-                                })
-                            )
-                        }
+                        onChange={(e) => onFormChange(e)}
+                        // onBlur={(e) => onFormValidate(e)}
                         value={formState.release ? formState.release : ""}
-                        error={errors.birthday}
+                        error={formErrors.birthday}
                         customStyles={customStyles}
                     />
                 </div>
@@ -214,7 +179,7 @@ export default function MovieForm({ confirmChanges }) {
                         label={true}
                         selected={formState.actors?.length || 0}
                         onClick={() => {
-                            dispatch(openSideNav("actors"));
+                            handleDrawer("actors");
                         }}
                         customStyles={customStyles}
                     />
@@ -227,7 +192,7 @@ export default function MovieForm({ confirmChanges }) {
                         label={true}
                         selected={formState.categories?.length || 0}
                         onClick={() => {
-                            dispatch(openSideNav("categories"));
+                            handleDrawer("categories");
                         }}
                         customStyles={customStyles}
                     />
@@ -240,7 +205,7 @@ export default function MovieForm({ confirmChanges }) {
                         label={true}
                         selected={formState.tags?.length || 0}
                         onClick={() => {
-                            dispatch(openSideNav("tags"));
+                            handleDrawer("tags");
                         }}
                         customStyles={customStyles}
                     />
@@ -253,7 +218,7 @@ export default function MovieForm({ confirmChanges }) {
                         label={true}
                         selected={formState.studios?.length || 0}
                         onClick={() => {
-                            dispatch(openSideNav("studios"));
+                            handleDrawer("studios");
                         }}
                         customStyles={customStyles}
                     />
@@ -266,7 +231,7 @@ export default function MovieForm({ confirmChanges }) {
                         label={true}
                         selected={formState.distributions?.length || 0}
                         onClick={() => {
-                            dispatch(openSideNav("distributions"));
+                            handleDrawer("distributions");
                         }}
                         customStyles={customStyles}
                     />
