@@ -1,6 +1,6 @@
 import { useState } from "react";
 import styles from "@/src/application/styles/AdminDashboard.module.css";
-import Form from "@/src/domains/_app/components/Form/components/FormWrap";
+import FormWrap from "@/src/domains/_app/components/Form/components/FormWrap";
 import Cookies from "js-cookie";
 import { selectFormStoreUI } from "@/src/application/redux/slices/formSlice";
 import { shallowEqual, useSelector } from "react-redux";
@@ -93,7 +93,7 @@ export default function NewDataForm({ formLabel }) {
                 </div>
             )}
 
-            <Form
+            <FormWrap
                 formLabel={UI}
                 // handleEditsInParent={addNewToPlaylist}
                 // parentIsWaiting={true}

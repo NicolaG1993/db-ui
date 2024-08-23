@@ -11,7 +11,7 @@ async function handler(req, res) {
     if (req.method === "PUT") {
         let { id, ids, date } = req.body;
 
-        console.log("💛💛💛 modify record", id, ids, date);
+        // console.log("💛💛💛 modify record", id, ids, date);
 
         if (!date) {
             return res
@@ -65,13 +65,13 @@ async function handler(req, res) {
                 /* MULTIPLE RECORDS */
                 const records = await editRecords(client, ids, date);
                 await commit(client);
-                console.log("COMPLETED!!", records.rows);
+                // console.log("COMPLETED!!", records.rows);
                 res.status(200).json(records.rows);
             } else {
                 /* SINGLE RECORD */
                 const record = await editRecord(client, id, date);
                 await commit(client);
-                console.log("COMPLETED!!", record.rows[0]);
+                // console.log("COMPLETED!!", record.rows[0]);
                 res.status(200).json(record.rows[0]);
             }
         } catch (err) {

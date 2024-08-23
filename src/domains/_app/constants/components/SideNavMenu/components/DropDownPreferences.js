@@ -7,7 +7,7 @@ import adminDashboardtyles from "@/src/application/styles/AdminDashboard.module.
 import allThemes from "@/src/application/settings/allThemes";
 // import CustomDropdown from "@/src/domains/_app/components/Inputs/CustomDropdown/CustomDropdown";
 import { useAppContext } from "@/src/domains/_app/contexts/AppContext";
-import { InputSelectCustom } from "zephyrus-components";
+import { InputCheckbox, InputSelectCustom } from "zephyrus-components";
 import customStyles from "@/src/application/styles/Zephyrus.module.css";
 
 const extractThemeName = (allThemes, themeTag) => {
@@ -30,7 +30,19 @@ export default function DropDownPreferences({ userId }) {
                 <p>{"Interface: "}</p>
             </div>
             <div className={styles.preferencesBody}>
-                <label>
+                <InputCheckbox
+                    id={"ShowScrollbars"}
+                    name={"showScrollbars"}
+                    label={"Show Scrollbars"}
+                    value={JSON.stringify(el)}
+                    checked={showScrollbars}
+                    onChange={(e) =>
+                        handleSettingChange("showScrollbars", e.target.checked)
+                    }
+                    // defaultChecked={false}
+                    customStyles={customStyles}
+                />
+                {/* <label>
                     <span className={styles.label}>Show Scrollbars:</span>
                     <input
                         type="checkbox"
@@ -46,7 +58,7 @@ export default function DropDownPreferences({ userId }) {
                             );
                         }}
                     />
-                </label>
+                </label> */}
                 <label>
                     <span className={styles.label}>Theme:</span>
                     <InputSelectCustom

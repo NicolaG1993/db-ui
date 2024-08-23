@@ -32,47 +32,8 @@ export default function CategoryForm({
     // handleDrawer,
     onFormChange,
     onFormValidate,
-    onSubmit,
+    // onSubmit,
 }) {
-    // const formState = useSelector(selectFormState, shallowEqual);
-    // const propsData = useSelector(selectFormPropsData, shallowEqual);
-    // const form = useSelector(selectFormStoreSettings, shallowEqual);
-    // const errors = useSelector(selectFormStoreErrors, shallowEqual);
-    // const isLoading = useSelector(selectFormIsLoading, shallowEqual);
-    // const isLoadingResponse = useSelector(
-    //     selectFormIsLoadingResponse,
-    //     shallowEqual
-    // );
-    // const isFinish = useSelector(selectFormIsFinish, shallowEqual);
-
-    // const dispatch = useDispatch();
-
-    // const [newImage, setNewImage] = useState();
-
-    // const handleNewImage = (e) => {
-    //     const imgFile = e.target.files["0"];
-    //     const file = {
-    //         location: createObjectURL(imgFile),
-    //         key: imgFile.name,
-    //         file: imgFile,
-    //     };
-    //     setNewImage(file);
-    //     dispatch(updateFormState({ val: file.location, topic: "pic" }));
-    // };
-
-    // const handleRemoveImage = (imgFile) => {
-    //     if (imgFile) {
-    //         revokeObjectURL(imgFile);
-    //         setNewImage();
-    //     }
-    //     if (formState.pic) {
-    //         dispatch(updateFormState({ val: "", topic: "pic" }));
-    //     }
-    // };
-
-    //================================================================================
-    // Render UI
-    //================================================================================
     return (
         <>
             <div className={styles.body}>

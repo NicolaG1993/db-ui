@@ -3,24 +3,23 @@ import {
     acceptMissingHints,
     acceptRemovedHints,
     selectFormStoreHints,
-    selectFormStoreUI,
-    closeHintsNav,
+    // selectFormStoreUI,
+    // closeHintsNav,
     selectFormState,
     skipMissingHints,
     skipRemovedHints,
-    concludeDrawer,
+    // concludeDrawer,
     selectFormSideNavSelected,
-    closeDrawer,
+    // closeDrawer,
     concludeDrawerAfterHints,
     selectMissingIsFinish,
     selectRemovedIsFinish,
     selectFormSideNavTopic,
 } from "@/src/application/redux/slices/formSlice";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { shallowEqual, useDispatch } from "react-redux";
 import styles from "@/src/domains/_app/components/Form/components/Form.module.css";
-// import Element from "@/src/domains/all/components/Filters/InputsSelector/components/Element";
-import { Button } from "zephyrus-components";
+import { Button, InputCheckbox } from "zephyrus-components";
 import customStyles from "@/src/application/styles/Zephyrus.module.css";
 
 // fare util 🧠
@@ -42,7 +41,7 @@ export default function FormDrawerHints() {
         selectFormSideNavSelected,
         shallowEqual
     );
-    const currentSelection = useAppSelector(selectFormSideNavSelected);
+    // const currentSelection = useAppSelector(selectFormSideNavSelected);
     const missingIsFinish = useAppSelector(selectMissingIsFinish);
     const removedIsFinish = useAppSelector(selectRemovedIsFinish);
 
@@ -58,11 +57,6 @@ export default function FormDrawerHints() {
 
     const removedHintsIDs = hintsFormsSelected.removed.map(({ id }) => id);
 
-    // console.log("⬜ FormSideHints: ", {
-    //     hints,
-    //     formState: formState.tags, // used as original ref for removed tags
-    //     currentSelection, // used as original ref for missing tags
-    // });
     // potremmo aggiungere anche un'altra lista: "Suggested tags"
 
     const handleSubmitMissingHints = (e) => {
@@ -73,7 +67,6 @@ export default function FormDrawerHints() {
         for (const field of formData) {
             let name = field[0];
             let value = field[1];
-            console.log("🌻 field: ", { name, value });
             // ...
         }
         */
@@ -126,15 +119,7 @@ export default function FormDrawerHints() {
     };
 
     const handleSelectHintsChange = (eventTarget, label) => {
-        // e.preventDefault();
         const value = JSON.parse(eventTarget.value);
-
-        // console.log("e.target: ", {
-        //     eventTarget: eventTarget,
-        //     "eventTarget.value": value,
-        //     "eventTarget.checked": eventTarget.checked,
-        //     hintsFormsSelected,
-        // });
 
         let result = [];
         if (eventTarget.checked) {
@@ -171,8 +156,6 @@ export default function FormDrawerHints() {
     • NB che peró concludeDrawer() funziona giá con skipHints (nn sn sicuro! testare)
     🔴🔴🔴 */
 
-    // console.log("🎸 removedHintsIDs: ", removedHintsIDs);
-
     return (
         <div id={styles.FormSideHints} className={styles.formDrawerWrap}>
             <div className={styles.formDrawerTopBar}>
@@ -204,18 +187,27 @@ export default function FormDrawerHints() {
                                     <div className={styles.hintsWrap}>
                                         {/* TODO: 🧠👇🔴 Make input component */}
                                         {hints.missing.map((el) => (
-                                            <div key={`hint missing ` + el.id}>
-                                                <input
-                                                    type="checkbox"
-                                                    id={el.id}
-                                                    name={el.name}
-                                                    value={JSON.stringify(el)}
-                                                    defaultChecked
-                                                />
-                                                <label htmlFor={el.name}>
-                                                    {el.name}
-                                                </label>
-                                            </div>
+                                            <InputCheckbox
+                                                key={`hint missing ` + el.id}
+                                                id={el.id}
+                                                name={el.name}
+                                                label={el.name}
+                                                value={JSON.stringify(el)}
+                                                // defaultChecked
+                                                customStyles={customStyles}
+                                            />
+                                            // <div key={`hint missing ` + el.id}>
+                                            //     <input
+                                            //         type="checkbox"
+                                            //         id={el.id}
+                                            //         name={el.name}
+                                            //         value={JSON.stringify(el)}
+                                            //         defaultChecked
+                                            //     />
+                                            //     <label htmlFor={el.name}>
+                                            //         {el.name}
+                                            //     </label>
+                                            // </div>
                                         ))}
                                     </div>
                                     {/* 🧠 SKIP POTREBBE SEMPLICEMENTE ELIMINARE HINTS 🧠 */}
@@ -245,9 +237,9 @@ export default function FormDrawerHints() {
                                             size="small"
                                             type="submit"
                                             label="Confirm your choice"
-                                            customStyles={customStyles}
                                             form="missingHintsForm"
                                             disabled={hints.missingIsFinish}
+                                            customStyles={customStyles}
                                         />
                                     </div>
                                 </form>
@@ -286,18 +278,27 @@ export default function FormDrawerHints() {
                                     {/* TODO: 🧠👇🔴 Make input component */}
                                     <div className={styles.hintsWrap}>
                                         {hints.removed.map((el) => (
-                                            <div key={`hint removed ` + el.id}>
-                                                <input
-                                                    type="checkbox"
-                                                    id={el.id}
-                                                    name={el.name}
-                                                    value={JSON.stringify(el)}
-                                                    // defaultChecked
-                                                />
-                                                <label htmlFor={el.name}>
-                                                    {el.name}
-                                                </label>
-                                            </div>
+                                            <InputCheckbox
+                                                key={`hint removed ` + el.id}
+                                                id={el.id}
+                                                name={el.name}
+                                                label={el.name}
+                                                value={JSON.stringify(el)}
+                                                defaultChecked={false}
+                                                customStyles={customStyles}
+                                            />
+                                            // <div key={`hint removed ` + el.id}>
+                                            //     <input
+                                            //         type="checkbox"
+                                            //         id={el.id}
+                                            //         name={el.name}
+                                            //         value={JSON.stringify(el)}
+                                            //         // defaultChecked
+                                            //     />
+                                            //     <label htmlFor={el.name}>
+                                            //         {el.name}
+                                            //     </label>
+                                            // </div>
                                         ))}
                                     </div>
                                     <div className={styles.buttonsWrap}>

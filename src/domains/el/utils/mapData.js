@@ -1,5 +1,6 @@
 import filterUniqueActors from "@/src/domains/el/utils/filterUniqueActors";
 import { createCastString } from "../../_app/utils/interpretateData";
+import { formatDateEU } from "@/src/application/utils/convertTimestamp";
 
 // 🧠 TODO: Uniform raw objects response, that way we can reuse always the same function (just with or without mapping) - now we have different responses
 
@@ -306,6 +307,30 @@ const mapDistributionRawToDistribution = (rawDistribution) => {
     return distribution;
 };
 
+/* RECORD */
+const mapRecordRawToRecord = (rawRecord) => {
+    return {};
+};
+const mapRecordsRawToRecords = (rawRecords) => {
+    console.log("🟦 rawRecords: ", rawRecords);
+    // for now here we are mapping only rawRecords.records and rawRecords.movieRecords
+    // the other records dont need a mapping for now
+    return {
+        ...rawRecords,
+        records: rawRecords.records.map((rawRec) => ({
+            id: rawRec.id,
+            createdAt: rawRec.created_at,
+            date: formatDateEU(rawRec.created_at),
+            movie: rawRec.movie,
+            movieid: rawRec.movieid,
+        })),
+        moviesRecords: rawRecords.moviesRecords.map((rawRec) => ({
+            ...rawRec,
+            cast: createCastString(rawRec.actors || []),
+        })),
+    };
+};
+
 export {
     mapMovieRawToMovie,
     mapMoviesRawToMovies,
@@ -315,4 +340,6 @@ export {
     mapTagRawToTag,
     mapStudioRawToStudio,
     mapDistributionRawToDistribution,
+    mapRecordRawToRecord,
+    mapRecordsRawToRecords,
 };

@@ -1,30 +1,47 @@
-import Link from "next/link";
+// import Link from "next/link";
 import { useEffect, useState } from "react";
 
 // import RecordForm from "@/components/Forms/RecordForm";
 import Graph from "@/src/domains/records/components/Graphs/Graph";
 import styles from "@/src/application/styles/Records.module.css";
 import { formatDateEU } from "@/src/application/utils/convertTimestamp";
-import Form from "@/src/domains/_app/components/Form/components/FormWrap";
-import ToggleSwitch from "@/src/domains/_app/components/ToggleSwitch/ToggleSwitch";
+// import FormWrap from "@/src/domains/_app/components/Form/components/FormWrap";
+// import ToggleSwitch from "@/src/domains/_app/components/ToggleSwitch/ToggleSwitch";
 import axiosAuthInstance from "@/src/application/utils/axiosAuthInstance";
-import { Button, IconTrash } from "zephyrus-components";
+import {
+    // Button,
+    // IconAdd,
+    // IconTrash,
+    // InputCheckbox,
+    // InputToggleSwitch,
+    List,
+} from "zephyrus-components";
 import customStyles from "@/src/application/styles/Zephyrus.module.css";
-import { Modal } from "zephyrus-components";
+import { useDispatch } from "react-redux";
+import {
+    openForm,
+    resetFormStore,
+} from "@/src/application/redux/slices/formSlice";
+import { mapRecordsRawToRecords } from "@/src/domains/el/utils/mapData";
+// import { Modal } from "zephyrus-components";
 
+// Create action for this 👇🧠
 const fetchData = async () => {
     try {
         const res = await axiosAuthInstance.get("/api/record/all");
-        // console.log("fetchData activated: ", res);
-        return res.data;
+        console.log("fetchData activated: ", res);
+        const mappedData = mapRecordsRawToRecords(res.data);
+        return mappedData;
     } catch (error) {
         console.error(error);
     }
 };
 
 export default function Records() {
+    const label = "records";
+    const dispatch = useDispatch();
     const [allRecords, setAllRecords] = useState(null);
-    const [openForm, setOpenForm] = useState(false);
+    // const [openForm, setOpenForm] = useState(false);
     const [rec, setRec] = useState(null);
     const [recs, setRecs] = useState();
     const [multipleSelection, setMultipleSelection] = useState(false);
@@ -48,6 +65,23 @@ export default function Records() {
               setRecs((prev) => prev.filter((el) => el !== id));
     };
 
+    const handleOpenRecordsForm = () => {
+        setRecs(recs);
+        dispatch(resetFormStore());
+        dispatch(openForm({ propsData: recs, formLabel: label }));
+    };
+    const handleOpenRecordForm = (el) => {
+        setRec(el);
+        dispatch(resetFormStore());
+        dispatch(openForm({ propsData: el, formLabel: "record" }));
+    };
+    const handleDeleteRecordForm = (el) => {
+        setRec(el);
+        handleDelete(el.id);
+        // dispatch(resetFormStore());
+        // dispatch(openForm({ propsData, formLabel: "record" }));
+    };
+
     const handleEdits = () => {
         storeData();
     };
@@ -60,13 +94,13 @@ export default function Records() {
         multipleSelection ? setRec() : setRecs();
     }, [multipleSelection]);
 
-    useEffect(() => {
-        // force fetch when openForm closes to update UI
-        // there may be a better way to do this
-        if (!openForm && rec) {
-            storeData();
-        }
-    }, [openForm]);
+    // useEffect(() => {
+    //     // force fetch when openForm closes to update UI
+    //     // there may be a better way to do this
+    //     if (!openForm && rec) {
+    //         storeData();
+    //     }
+    // }, [openForm]);
 
     useEffect(() => {
         console.log("recs: ", recs);
@@ -75,6 +109,10 @@ export default function Records() {
             // console.log("recs: ", recs);
         }
     }, [recs]);
+
+    const handleRouting = (url) => {
+        router.push(url);
+    };
 
     return (
         <main>
@@ -87,37 +125,48 @@ export default function Records() {
                     <section
                         className={`${styles.section} ${styles.recordsGrid}`}
                     >
-                        <div className={styles.infoWrap}>
+                        <List
+                            listTitle={"RECORDS"}
+                            listLength={allRecords.records.length}
+                            data={allRecords.records}
+                            rowType={"complex"}
+                            // rowSize={rowSize}
+                            handleRouting={handleRouting}
+                            handleOpenRecordsForm={handleOpenRecordsForm}
+                            handleOpenRecordForm={handleOpenRecordForm}
+                            handleDeleteRecordForm={handleDeleteRecordForm}
+                            updateMultipleSelection={updateMultipleSelection}
+                            multipleSelection={multipleSelection}
+                            onChange={updateRecs}
+                        />
+                        {/* <div className={styles.infoWrap}>
                             <div className={styles.infoHeadingWrap}>
                                 <div className={"subBox"}>
                                     <h3>RECORDS</h3>
                                     <span>{`(${allRecords.records.length})`}</span>
                                 </div>
                                 <div className={"subBox"}>
-                                    <ToggleSwitch
-                                        updateState={updateMultipleSelection}
+                                    <InputToggleSwitch 
+                                        onChange={updateMultipleSelection}
+                                        customStyles={customStyles}
                                     />
                                     {multipleSelection && (
                                         <>
                                             <Button
-                                                onClick={() => (
-                                                    setRecs(recs),
-                                                    setOpenForm(true)
-                                                )}
+                                                onClick={() =>
+                                                    handleOpenRecordsForm(recs)
+                                                }
                                                 size="x-small"
                                                 icon={<IconTrash />}
-                                                // label={"X"}
                                                 customStyles={customStyles}
                                             />
 
                                             <Button
-                                                onClick={() => (
-                                                    setRecs(recs),
-                                                    setOpenForm(true)
-                                                )}
+                                                onClick={() =>
+                                                    handleOpenRecordsForm(recs)
+                                                }
                                                 size="x-small"
                                                 icon={<IconTrash />}
-                                                // label={"Edit"}
                                                 customStyles={customStyles}
                                             />
                                         </>
@@ -129,7 +178,7 @@ export default function Records() {
                                 {allRecords.records.map((el, i) => (
                                     <div
                                         key={el.id}
-                                        className={styles.recordRow}
+                                        className={styles.recordRowComplex}
                                     >
                                         <Link
                                             href={`/el/movie/${el.movie.id}`}
@@ -148,39 +197,45 @@ export default function Records() {
 
                                         {multipleSelection ? (
                                             <div className={styles.btnWrap}>
-                                                <input
-                                                    type="checkbox"
+                                                <InputCheckbox
+                                                    key={
+                                                        `records selection ` +
+                                                        el.id
+                                                    }
                                                     id="checkbox"
                                                     checked={
                                                         recs &&
                                                         recs.includes(el.id)
                                                     }
+                                                    value={JSON.stringify(el)}
                                                     onChange={(e) =>
                                                         updateRecs(
                                                             el.id,
                                                             e.target.checked
                                                         )
                                                     }
+                                                    defaultChecked={false}
+                                                    customStyles={customStyles}
                                                 />
                                             </div>
                                         ) : (
                                             <div className={styles.btnWrap}>
                                                 <Button
-                                                    onClick={() => (
-                                                        setRec(el),
-                                                        setOpenForm(true)
-                                                    )}
+                                                    onClick={() =>
+                                                        handleOpenRecordForm(el)
+                                                    }
                                                     size="x-small"
-                                                    icon={<IconTrash />}
+                                                    icon={<IconAdd />}
                                                     // label={"Edit"}
                                                     customStyles={customStyles}
                                                 />
 
                                                 <Button
-                                                    onClick={() => (
-                                                        setRec(el),
-                                                        handleDelete(el.id)
-                                                    )}
+                                                    onClick={() =>
+                                                        handleDeleteRecordForm(
+                                                            el
+                                                        )
+                                                    }
                                                     size="x-small"
                                                     icon={<IconTrash />}
                                                     // label={"X"}
@@ -191,14 +246,17 @@ export default function Records() {
                                     </div>
                                 ))}
                             </div>
+                        </div> */}
 
-                            {/* <p>count</p>
-                        <p>Order by: last, first</p>
-                        <p>Edit date option</p>
-                        <p>Delete option</p> */}
-                        </div>
-
-                        <div className={styles.infoWrap}>
+                        <List
+                            listTitle={"MOVIES"}
+                            listLength={allRecords.moviesRecords.length}
+                            data={allRecords.moviesRecords}
+                            rowSize={"large"}
+                            handleRouting={handleRouting}
+                            customStyles={customStyles}
+                        />
+                        {/* <div className={styles.infoWrap}>
                             <div className={styles.infoHeadingWrap}>
                                 <h3>MOVIES</h3>
                                 <span>{`(${allRecords.moviesRecords.length})`}</span>
@@ -250,11 +308,18 @@ export default function Records() {
                                 ))}
                             </div>
 
-                            {/* <p>count</p>
-                        <p>Order by: last, first, higher count, lower count</p> */}
-                        </div>
+                         
+                        </div> */}
 
-                        <div className={styles.infoWrap}>
+                        <List
+                            listTitle={"ACTORS"}
+                            listLength={allRecords.actorsRecords.length}
+                            data={allRecords.actorsRecords}
+                            handleRouting={handleRouting}
+                            customStyles={customStyles}
+                        />
+
+                        {/* <div className={styles.infoWrap}>
                             <div className={styles.infoHeadingWrap}>
                                 <h3>ACTORS</h3>
                             </div>
@@ -284,10 +349,16 @@ export default function Records() {
                                     </div>
                                 ))}
                             </div>
-                            {/* <p>Order by: last, first, higher count, lower count</p> */}
-                        </div>
+                        </div> */}
 
-                        <div className={styles.infoWrap}>
+                        <List
+                            listTitle={"TAGS"}
+                            listLength={allRecords.tagsRecords.length}
+                            data={allRecords.tagsRecords}
+                            handleRouting={handleRouting}
+                            customStyles={customStyles}
+                        />
+                        {/* <div className={styles.infoWrap}>
                             <div className={styles.infoHeadingWrap}>
                                 <h3>TAGS</h3>
                             </div>
@@ -317,10 +388,16 @@ export default function Records() {
                                     </div>
                                 ))}
                             </div>
-                            {/* <p>Order by: last, first, higher count, lower count</p> */}
-                        </div>
+                        </div> */}
 
-                        <div className={styles.infoWrap}>
+                        <List
+                            listTitle={"CATEGORIES"}
+                            listLength={allRecords.categoriesRecords.length}
+                            data={allRecords.categoriesRecords}
+                            handleRouting={handleRouting}
+                            customStyles={customStyles}
+                        />
+                        {/* <div className={styles.infoWrap}>
                             <div className={styles.infoHeadingWrap}>
                                 <h3>CATEGORIES</h3>
                             </div>
@@ -350,8 +427,7 @@ export default function Records() {
                                     </div>
                                 ))}
                             </div>
-                            {/* <p>Order by: last, first, higher count, lower count</p> */}
-                        </div>
+                        </div> */}
                     </section>
 
                     <section
@@ -378,7 +454,7 @@ export default function Records() {
 
             {/* 🔴 NOT WORKING: FIX 🔴 */}
             {/*  🧠 Maybe we should move this to Layout or something.. like Form */}
-            <Modal
+            {/* <Modal
                 isOpen={openForm}
                 onClose={() => setOpenForm(false)}
                 customStyles={customStyles}
@@ -389,7 +465,7 @@ export default function Records() {
                     handleEditsInParent={handleEdits}
                     setOpenForm={setOpenForm}
                 />
-            </Modal>
+            </Modal> */}
 
             {/* {openForm && (
                 <div className={styles.overlay}>

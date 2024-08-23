@@ -15,7 +15,7 @@ export default async function handler(req, res) {
             await begin(client);
             let { rows } = await getRecordByID(client, Number(id));
             await commit(client);
-            console.log("ROWS!", rows);
+            // console.log("ROWS!", rows);
             res.status(200).json(rows);
         } catch (err) {
             await rollback(client);

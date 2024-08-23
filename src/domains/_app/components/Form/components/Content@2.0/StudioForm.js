@@ -4,9 +4,9 @@ import { InputText, InputImage, InputFake, Button } from "zephyrus-components";
 
 export default function StudioForm({
     formState,
-    formSettings,
+    // formSettings,
     formErrors,
-    propsData,
+    // propsData,
     isLoading,
     // isLoadingResponse,
     isFinish,
@@ -15,11 +15,7 @@ export default function StudioForm({
     handleDrawer,
     onFormChange,
     onFormValidate,
-    onSubmit,
 }) {
-    //================================================================================
-    // Render UI
-    //================================================================================
     return (
         <>
             <div className={styles.body}>
