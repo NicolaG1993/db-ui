@@ -19,7 +19,7 @@ import {
 import { useEffect, useState } from "react";
 import { shallowEqual, useDispatch } from "react-redux";
 import styles from "@/src/domains/_app/components/Form/components/Form.module.css";
-import Element from "@/src/domains/all/components/Filters/InputsSelector/components/Element";
+// import Element from "@/src/domains/all/components/Filters/InputsSelector/components/Element";
 import { Button } from "zephyrus-components";
 import customStyles from "@/src/application/styles/Zephyrus.module.css";
 

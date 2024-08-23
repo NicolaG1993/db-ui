@@ -37,7 +37,6 @@ import {
 } from "zephyrus-components";
 import customStyles from "@/src/application/styles/Zephyrus.module.css";
 import createNewMenus from "@/src/domains/all/components/Filters/DropdownMenusByLevel/utils/createNewMenus";
-import { useEffect } from "react";
 
 export default function FormDrawerMultiSelect() {
     const dispatch = useDispatch();
@@ -122,13 +121,6 @@ export default function FormDrawerMultiSelect() {
          * * * in this case i think we can restore MultiSelectSearchBar
          */
 
-        // console.log("💚 handleSearch invoked: ", {
-        //     str,
-        //     searchBar,
-        //     sideNavRawData,
-        //     filteredData,
-        //     "filters.search": filters.search,
-        // });
         if (sideNavRawData && filteredData) {
             // console.log("💚 filteredData: ", filteredData);
             dispatch(
@@ -192,14 +184,6 @@ export default function FormDrawerMultiSelect() {
             })
         );
     };
-
-    // useEffect(() => {
-    //     uiState.sideNavTopic === "tags" && dispatch(hydrateSideNavDropdowns());
-    // }, [uiState.sideNavTopic]);
-
-    // useEffect(() => {
-    //     dispatch(handleSideNavRenderReady(true));
-    // }, []);
 
     return (
         <div id={styles.FormSideNav} className={styles.formDrawerWrap}>

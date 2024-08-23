@@ -4,52 +4,12 @@ import checkLevelValuesError from "@/src/domains/all/components/Filters/Dropdown
 // SO THE LEVELS ARE STORED SEPARETELY: BY LEVEL - NOT NESTED INSIDE EACHOTHERS es. {1:{}, 2: {}}
 
 const getDropdownsState = ({ stateObj, propsObj, dropdownsState }) => {
-    console.log("getDropdownsState: ", { stateObj, propsObj, dropdownsState });
-    // not sure if propsobj is parsedData o filteredData
-    /*
-    propsObj = [
-        {
-            id: string,
-            name: string,
-            type: string
-        },
-        ...
-    ]
-
-    objectEntries = [ ['foo', 'bar'], ['baz', 42] ]
-
-   🟢🟢🟢 dropdownsState = {
-        1: {
-            Actions: bool,
-            Body: bool,
-            Outfit: bool,
-            No Type: bool
-        },
-        2: {
-            Roles: bool,
-            ...,
-            Hair: bool,
-            ...,
-            Clothing: bool,
-            ...
-        }
-    }
-    
-    */
-
     // PARSE AND SET DROPDOWN MENUS STATE 1st
     let firstLevelObj = {};
     let objectEntries = Object.entries(propsObj);
     let error;
 
     const index = 1;
-
-    console.log("🧠 getDropdownsState: ", {
-        stateObj,
-        propsObj,
-        dropdownsState,
-        objectEntries: [...objectEntries],
-    });
 
     objectEntries.map(([key, val], i) => {
         firstLevelObj[key] = false;

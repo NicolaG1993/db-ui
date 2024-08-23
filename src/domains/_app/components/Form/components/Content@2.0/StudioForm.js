@@ -1,24 +1,6 @@
 import styles from "@/src/domains/_app/components/Form/components/Form.module.css";
-// import {
-//     selectFormPropsData,
-//     selectFormState,
-//     selectFormStoreSettings,
-//     selectFormStoreErrors,
-//     selectFormIsLoading,
-//     validateForm,
-//     updateFormState,
-//     openSideNav,
-//     selectFormIsLoadingResponse,
-//     selectFormIsFinish,
-// } from "@/src/application/redux/slices/formSlice";
-// import { shallowEqual, useDispatch, useSelector } from "react-redux";
-// import { useState } from "react";
 import customStyles from "@/src/application/styles/Zephyrus.module.css";
 import { InputText, InputImage, InputFake, Button } from "zephyrus-components";
-// import {
-//     createObjectURL,
-//     revokeObjectURL,
-// } from "@/src/domains/_app/actions/useLocalImages";
 
 export default function StudioForm({
     formState,
@@ -35,42 +17,6 @@ export default function StudioForm({
     onFormValidate,
     onSubmit,
 }) {
-    // const formState = useSelector(selectFormState, shallowEqual);
-    // const propsData = useSelector(selectFormPropsData, shallowEqual);
-    // const formSettings = useSelector(selectFormStoreSettings, shallowEqual);
-    // const errors = useSelector(selectFormStoreErrors, shallowEqual);
-    // const isLoading = useSelector(selectFormIsLoading, shallowEqual);
-    // const isLoadingResponse = useSelector(
-    //     selectFormIsLoadingResponse,
-    //     shallowEqual
-    // );
-    // const isFinish = useSelector(selectFormIsFinish, shallowEqual);
-
-    // const dispatch = useDispatch();
-
-    // const [newImage, setNewImage] = useState();
-
-    // const handleNewImage = (e) => {
-    //     const imgFile = e.target.files["0"];
-    //     const file = {
-    //         location: createObjectURL(imgFile),
-    //         key: imgFile.name,
-    //         file: imgFile,
-    //     };
-    //     setNewImage(file);
-    //     dispatch(updateFormState({ val: file.location, topic: "pic" }));
-    // };
-
-    // const handleRemoveImage = (imgFile) => {
-    //     if (imgFile) {
-    //         revokeObjectURL(imgFile);
-    //         setNewImage();
-    //     }
-    //     if (formState.pic) {
-    //         dispatch(updateFormState({ val: "", topic: "pic" }));
-    //     }
-    // };
-
     //================================================================================
     // Render UI
     //================================================================================
@@ -82,12 +28,6 @@ export default function StudioForm({
                         file={formState.pic}
                         onAddFile={(e) => handleAddImage(e)}
                         onDeleteFile={handleRemoveImage}
-                        // onAddFile={(e) => handleNewImage(e)}
-                        // onDeleteFile={() =>
-                        //     handleRemoveImage({
-                        //         imgFile: newImage,
-                        //     })
-                        // }
                         height={200}
                         width={250}
                         error={formErrors.pic}
@@ -102,23 +42,6 @@ export default function StudioForm({
                         label={true}
                         isMandatory={true}
                         value={formState.name}
-                        // onChange={(e) =>
-                        //     dispatch(
-                        //         updateFormState({
-                        //             val: e.target.value,
-                        //             topic: e.target.name,
-                        //         })
-                        //     )
-                        // }
-                        // onBlur={(e) =>
-                        //     dispatch(
-                        //         validateForm({
-                        //             name: e.target.name,
-                        //             value: e.target.value,
-                        //             id: e.target.id,
-                        //         })
-                        //     )
-                        // }
                         onChange={(e) => onFormChange(e)}
                         onBlur={(e) => onFormValidate(e)}
                         placeholder="Type the name here..."

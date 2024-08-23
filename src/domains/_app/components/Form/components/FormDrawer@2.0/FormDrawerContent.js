@@ -1,5 +1,5 @@
 import FormDrawerMultiSelect from "@/src/domains/_app/components/Form/components/FormSideNav@2.0/FormDrawerMultiSelect.js";
-import FormDrawerHints from "../FormSideNav@2.0/components/FormDrawerHints";
+import FormDrawerHints from "@/src/domains/_app/components/Form/components/FormSideNav@2.0/FormDrawerHints";
 
 export default function FormDrawerContent({ sideNavTopic, hintsIsOpen }) {
     if (sideNavTopic && !hintsIsOpen) {

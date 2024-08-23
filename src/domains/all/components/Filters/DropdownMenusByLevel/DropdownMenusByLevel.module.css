@@ -1,3 +1,5 @@
+/*🔴🔴🔴👇👇 PENSO CHE POSSO ELIMINARE FILE 🧠🧠🧠🧠*/
+
 /* .wrapper {
     padding: 1rem;
     border-radius: 4px;
@@ -17,37 +19,6 @@
     /* align-items: flex-end; */
 }
 
-/* CATEGORY  */
-.levelWrap {
-    /* padding: 0.5rem 0.3rem; */
-    width: 100%;
-}
-.levelWrap > .level {
-    background: var(--bg300);
-    border-bottom: 1px solid var(--bg800);
-    font-size: 12px;
-    padding: 0.5rem 0.3rem;
-    /* padding: 0.2rem 0.6rem; */
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-}
-.levelWrap > .level:hover {
-    background: var(--bg500);
-}
-.levelWrap > .level > p {
-    margin: 0;
-    font-weight: bold;
-}
-.levelWrap > .level > span {
-    font-size: 10px;
-    margin-left: 0.6rem;
-}
-
-.levelDropdown {
-    /* transition: height 0.5s ease; */
-    padding: 0.2rem 0.6rem;
-}
 /* SELECTED ELEMENT  */
 .unselectedEl,
 .selectedEl {
