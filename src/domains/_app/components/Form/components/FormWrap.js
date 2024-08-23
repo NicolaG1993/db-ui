@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import { useErrorBoundary } from "react-error-boundary";
-import styles from "@/src/domains/_app/components/Form/components/Form.module.css";
-import FormDrawer from "./FormDrawer@2.0/FormDrawer";
+// import styles from "@/src/domains/_app/components/Form/components/Form.module.css";
+// import FormDrawer from "./FormDrawer@2.0/FormDrawer";
 import FormDrawerContent from "./FormDrawer@2.0/FormDrawerContent";
 import { selectAppSettings } from "@/src/application/redux/slices/appSettingsSlice";
 import {
@@ -24,13 +24,16 @@ import {
     selectFormStoreLabel,
     selectFormIsFinish,
     updateFormState,
+    handleDrawer,
+    validateForm,
+    hydrateSideNavDropdowns,
 } from "@/src/application/redux/slices/formSlice";
 import dataStructureForms from "@/src/application/settings/dataStructureForms";
 import { fetchDataForSideNav } from "@/src/domains/_app/actions/formFetchers";
 import submitForm from "@/src/domains/_app/components/Form/actions/submitForm";
 import allNationalities from "@/src/application/settings/allNationalities";
 import { getError } from "@/src/application/utils/error";
-import FormHeader from "./FormHeader@2.0/FormHeader";
+// import FormHeader from "./FormHeader@2.0/FormHeader";
 import {
     activateLoadingItem,
     clearItem,
@@ -40,6 +43,7 @@ import { Form } from "zephyrus-components";
 //     createObjectURL,
 //     revokeObjectURL,
 // } from "../../../actions/useLocalImages";
+import customStyles from "@/src/application/styles/Zephyrus.module.css";
 
 // TODO 🧠🔴 Questo file potrebbe diventare AppForm.js (Wrapper per Form per contenere tutte le fn senza ripeterle - vedere prima se é necessario peró)
 
@@ -47,8 +51,8 @@ export default function FormWrap({
     formLabel,
     propsData,
     setOpenForm,
-    handleEditsInParent,
-    parentIsWaiting,
+    // handleEditsInParent,
+    // parentIsWaiting,
 }) {
     const dispatch = useDispatch();
     const router = useRouter();
@@ -88,6 +92,7 @@ export default function FormWrap({
 
     // FETCH DATA FOR DRAWER
     useEffect(() => {
+        console.log("uiState: ", uiState);
         // 🧠🧠🧠 can i move this into drawer? or FormSideNav 🧠🧠🧠
         if (!uiState.hintsIsOpen) {
             if (uiState?.sideNavTopic) {
@@ -106,6 +111,9 @@ export default function FormWrap({
                         appSettings.TAGS_OBJ
                     ).then(({ data, parsedData }) => {
                         dispatch(initSideNavData({ data, parsedData }));
+                        if (uiState.sideNavTopic === "tags") {
+                            dispatch(hydrateSideNavDropdowns());
+                        }
                     });
                 }
             } else if (sideNavData) {
@@ -221,15 +229,22 @@ export default function FormWrap({
         );
     };
 
-    const handleDrawer = (val) => {
+    const toggleDrawer = (val) => {
+        // console.log("🔥 toggleDrawer: ", val);
         dispatch(handleDrawer(val ? val : false));
     };
+
+    // console.log("FormWrap: ", {
+    //     formState,
+    //     uiState,
+    // });
 
     return (
         <Form
             formSettings={formSettings}
             formState={formState}
             formTitle={formTitle}
+            formLabel={formLabel}
             formErrors={formErrors}
             FormComponent={FormComponent}
             FormDrawerContent={FormDrawerContent}
@@ -240,7 +255,7 @@ export default function FormWrap({
             onFormChange={onFormChange}
             onFormValidate={onFormValidate}
             onSubmit={onSubmit}
-            handleDrawer={handleDrawer}
+            handleDrawer={toggleDrawer}
             sideNavTopic={sideNavTopic}
             hintsIsOpen={hintsIsOpen}
             customStyles={customStyles}

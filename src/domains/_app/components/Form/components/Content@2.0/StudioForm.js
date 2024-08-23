@@ -1,24 +1,24 @@
 import styles from "@/src/domains/_app/components/Form/components/Form.module.css";
-import {
-    selectFormPropsData,
-    selectFormState,
-    selectFormStoreSettings,
-    selectFormStoreErrors,
-    selectFormIsLoading,
-    validateForm,
-    updateFormState,
-    openSideNav,
-    selectFormIsLoadingResponse,
-    selectFormIsFinish,
-} from "@/src/application/redux/slices/formSlice";
-import { shallowEqual, useDispatch, useSelector } from "react-redux";
-import { useState } from "react";
+// import {
+//     selectFormPropsData,
+//     selectFormState,
+//     selectFormStoreSettings,
+//     selectFormStoreErrors,
+//     selectFormIsLoading,
+//     validateForm,
+//     updateFormState,
+//     openSideNav,
+//     selectFormIsLoadingResponse,
+//     selectFormIsFinish,
+// } from "@/src/application/redux/slices/formSlice";
+// import { shallowEqual, useDispatch, useSelector } from "react-redux";
+// import { useState } from "react";
 import customStyles from "@/src/application/styles/Zephyrus.module.css";
 import { InputText, InputImage, InputFake, Button } from "zephyrus-components";
-import {
-    createObjectURL,
-    revokeObjectURL,
-} from "@/src/domains/_app/actions/useLocalImages";
+// import {
+//     createObjectURL,
+//     revokeObjectURL,
+// } from "@/src/domains/_app/actions/useLocalImages";
 
 export default function StudioForm({
     formState,
@@ -75,19 +75,7 @@ export default function StudioForm({
     // Render UI
     //================================================================================
     return (
-        <form
-            onSubmit={(e) =>
-                onSubmit({
-                    e,
-                    formState,
-                    newImage,
-                    formSettings,
-                    propsData,
-                    formLabel: formSettings.key,
-                })
-            }
-            className={styles.form}
-        >
+        <>
             <div className={styles.body}>
                 <div className={styles["form-row"]}>
                     <InputImage
@@ -180,6 +168,6 @@ export default function StudioForm({
                     />
                 </div>
             </div>
-        </form>
+        </>
     );
 }

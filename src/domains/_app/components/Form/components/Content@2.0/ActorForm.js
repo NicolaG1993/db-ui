@@ -1,22 +1,22 @@
 import styles from "@/src/domains/_app/components/Form/components/Form.module.css";
-import {
-    selectFormPropsData,
-    selectFormState,
-    selectFormStoreSettings,
-    selectFormStoreErrors,
-    selectFormIsLoading,
-    selectFormIsFinish,
-    validateForm,
-    updateFormState,
-    openSideNav,
-    // selectFormIsLoadingResponse,
-} from "@/src/application/redux/slices/formSlice";
-import { shallowEqual, useDispatch, useSelector } from "react-redux";
-import {
-    createObjectURL,
-    revokeObjectURL,
-} from "@/src/domains/_app/actions/useLocalImages";
-import { useState } from "react";
+// import {
+//     selectFormPropsData,
+//     selectFormState,
+//     selectFormStoreSettings,
+//     selectFormStoreErrors,
+//     selectFormIsLoading,
+//     selectFormIsFinish,
+//     validateForm,
+//     updateFormState,
+//     openSideNav,
+//     // selectFormIsLoadingResponse,
+// } from "@/src/application/redux/slices/formSlice";
+// import { shallowEqual, useDispatch, useSelector } from "react-redux";
+// import {
+//     createObjectURL,
+//     revokeObjectURL,
+// } from "@/src/domains/_app/actions/useLocalImages";
+// import { useState } from "react";
 import customStyles from "@/src/application/styles/Zephyrus.module.css";
 import {
     Button,
@@ -107,19 +107,7 @@ export default function ActorForm({
     //================================================================================
 
     return (
-        <form
-            onSubmit={(e) =>
-                onSubmit({
-                    e,
-                    formState,
-                    newImage,
-                    formSettings,
-                    propsData,
-                    formLabel: formSettings.key,
-                })
-            }
-            className={styles.form}
-        >
+        <>
             <div className={styles.body}>
                 <div className={styles["form-subheading"]}>
                     <h5>• Info</h5>
@@ -275,6 +263,6 @@ export default function ActorForm({
                     />
                 </div>
             </div>
-        </form>
+        </>
     );
 }

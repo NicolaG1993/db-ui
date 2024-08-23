@@ -4,6 +4,7 @@ import checkLevelValuesError from "@/src/domains/all/components/Filters/Dropdown
 // SO THE LEVELS ARE STORED SEPARETELY: BY LEVEL - NOT NESTED INSIDE EACHOTHERS es. {1:{}, 2: {}}
 
 const getDropdownsState = ({ stateObj, propsObj, dropdownsState }) => {
+    console.log("getDropdownsState: ", { stateObj, propsObj, dropdownsState });
     // not sure if propsobj is parsedData o filteredData
     /*
     propsObj = [

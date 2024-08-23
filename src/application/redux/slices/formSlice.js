@@ -136,13 +136,17 @@ const formSlice = createSlice({
 
         // can i make a single dynamic function for UI reducers? 🧠
         handleDrawer: (state, action) => {
+            console.log("🔥 handleDrawer: ", action.payload);
             // mi serve veramente handleDrawer? non posso fare tutto gia con le altre? 🧠
-            const { newVal } = action.payload;
-            if (typeof newVal == "boolean" || typeof newVal == "string") {
-                state.ui.sideNavTopic = newVal;
-            } else {
-                state.ui.sideNavTopic = !state.ui.sideNavTopic;
-            }
+            // const newVal = action.payload;
+            // if (typeof newVal === "boolean" || typeof newVal === "string") {
+            state.ui.sideNavTopic = action.payload;
+            state.ui.drawerIsOpen = !!action.payload;
+            // }
+            //  else {
+            //     // state.ui.sideNavTopic = !state.ui.sideNavTopic;
+            //     state.ui.sideNavTopic = false;
+            // }
         },
 
         // 🔴🔴🔴 QUESTA VERSIONE FUNZIONA MA NON DOPO ACEPTING MISSING HINTS
@@ -254,13 +258,13 @@ const formSlice = createSlice({
             // not used anymore ? 🧠
             state.ui.sideNavTopic = false;
         },
-        openSideNav: (state, action) => {
-            state.ui.hintsIsOpen = false;
-            if (action.payload) {
-                state.ui.drawerIsOpen = true;
-                state.ui.sideNavTopic = action.payload;
-            }
-        },
+        // openSideNav: (state, action) => {
+        //     state.ui.hintsIsOpen = false;
+        //     if (action.payload) {
+        //         state.ui.drawerIsOpen = true;
+        //         state.ui.sideNavTopic = action.payload;
+        //     }
+        // },
 
         openHintsNav: (state) => {
             state.ui.hintsIsOpen = true;
@@ -288,6 +292,7 @@ const formSlice = createSlice({
                 : newState.data;
 
             state.sideNavData = newState;
+            state.sideNavData.renderReady = true;
         },
 
         updateSideNavSelected: (state, action) => {
@@ -336,6 +341,7 @@ const formSlice = createSlice({
                 propsObj: state.sideNavData.parsedData,
                 dropdownsState: state.sideNavData.dropdownsState,
             });
+            console.log("hydrateSideNavDropdowns: ", { res, error });
             if (error) {
                 // 🧠 handle Error correctly - now we are just storing it 🧠
                 state.sideNavData.error = error;
@@ -390,6 +396,7 @@ const formSlice = createSlice({
 
         searchNavData: (state, action) => {
             const { str, TAGS_OBJ } = action.payload;
+            state.sideNavData.renderReady = false;
 
             if (str) {
                 if (str !== state.sideNavData.filters.search) {
@@ -432,6 +439,8 @@ const formSlice = createSlice({
                     : state.sideNavData.data;
             }
 
+            state.sideNavData.renderReady = true;
+
             ////////
             // We are displaying data from "menuStructure" in the left side
             // menuStructure: <=  state.formStore.sideNavData.filteredData
@@ -470,6 +479,8 @@ const formSlice = createSlice({
             } else {
                 state.sideNavData.filteredData = sourceData;
             }
+
+            state.sideNavData.renderReady = true;
         },
 
         handlePostSuccess: (state, action) => {
@@ -495,7 +506,7 @@ export const {
     concludeDrawer,
     concludeDrawerAfterHints,
     closeSideNav,
-    openSideNav,
+    // openSideNav,
     openHintsNav,
     closeHintsNav,
     initSideNavData,

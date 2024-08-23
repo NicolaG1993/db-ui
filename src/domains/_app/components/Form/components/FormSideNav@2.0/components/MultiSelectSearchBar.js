@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Button, SearchBar } from "zephyrus-components";
+import styles from "@/src/domains/_app/components/Form/components/Form.module.css";
 import customStyles from "@/src/application/styles/Zephyrus.module.css";
 
 export default function FormSideNavSearchBar({
@@ -38,8 +39,7 @@ export default function FormSideNavSearchBar({
     }, [topic]);
 
     return (
-        <div>
-            {/* TODO: Stylize new div ☝️🔴🧠 */}
+        <div className={styles.formSideNavSearchBar}>
             <SearchBar
                 version="input-only"
                 value={searchBar}

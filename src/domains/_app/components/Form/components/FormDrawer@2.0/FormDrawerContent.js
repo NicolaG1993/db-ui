@@ -3,9 +3,9 @@ import FormDrawerHints from "../FormSideNav@2.0/components/FormDrawerHints";
 
 export default function FormDrawerContent({ sideNavTopic, hintsIsOpen }) {
     if (sideNavTopic && !hintsIsOpen) {
-        <FormDrawerMultiSelect />;
+        return <FormDrawerMultiSelect />;
     } else if (hintsIsOpen) {
         // 🧠 HINTS NAV IS OUTSIDE SIDE NAV - BECAUSE WE WANT TO SHOW IT ALSO ON FORM SUBMIT - maybe not 🧠
-        <FormDrawerHints />;
+        return <FormDrawerHints />;
     }
 }

@@ -58,11 +58,11 @@ export default function FormDrawerHints() {
 
     const removedHintsIDs = hintsFormsSelected.removed.map(({ id }) => id);
 
-    console.log("⬜ FormSideHints: ", {
-        hints,
-        formState: formState.tags, // used as original ref for removed tags
-        currentSelection, // used as original ref for missing tags
-    });
+    // console.log("⬜ FormSideHints: ", {
+    //     hints,
+    //     formState: formState.tags, // used as original ref for removed tags
+    //     currentSelection, // used as original ref for missing tags
+    // });
     // potremmo aggiungere anche un'altra lista: "Suggested tags"
 
     const handleSubmitMissingHints = (e) => {
@@ -129,12 +129,12 @@ export default function FormDrawerHints() {
         // e.preventDefault();
         const value = JSON.parse(eventTarget.value);
 
-        console.log("e.target: ", {
-            eventTarget: eventTarget,
-            "eventTarget.value": value,
-            "eventTarget.checked": eventTarget.checked,
-            hintsFormsSelected,
-        });
+        // console.log("e.target: ", {
+        //     eventTarget: eventTarget,
+        //     "eventTarget.value": value,
+        //     "eventTarget.checked": eventTarget.checked,
+        //     hintsFormsSelected,
+        // });
 
         let result = [];
         if (eventTarget.checked) {
@@ -171,11 +171,11 @@ export default function FormDrawerHints() {
     • NB che peró concludeDrawer() funziona giá con skipHints (nn sn sicuro! testare)
     🔴🔴🔴 */
 
-    console.log("🎸 removedHintsIDs: ", removedHintsIDs);
+    // console.log("🎸 removedHintsIDs: ", removedHintsIDs);
 
     return (
-        <div id={styles.FormSideHints} className={styles.sidewrap}>
-            <div className={styles.nav}>
+        <div id={styles.FormSideHints} className={styles.formDrawerWrap}>
+            <div className={styles.formDrawerTopBar}>
                 <div className={styles.wrapper}>
                     <div className={styles.hintsListWrap}>
                         <div className={styles.hintsListHeader}>
@@ -202,6 +202,7 @@ export default function FormDrawerHints() {
                                     }
                                 >
                                     <div className={styles.hintsWrap}>
+                                        {/* TODO: 🧠👇🔴 Make input component */}
                                         {hints.missing.map((el) => (
                                             <div key={`hint missing ` + el.id}>
                                                 <input
@@ -282,6 +283,7 @@ export default function FormDrawerHints() {
                                         )
                                     }
                                 >
+                                    {/* TODO: 🧠👇🔴 Make input component */}
                                     <div className={styles.hintsWrap}>
                                         {hints.removed.map((el) => (
                                             <div key={`hint removed ` + el.id}>

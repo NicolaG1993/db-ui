@@ -5,7 +5,8 @@ import { groupJsonByValue } from "@/src/application/utils/parsers";
 
 /* USED FOR GETTING SIMPLE SIDENAV DATA IN FORMS */
 const fetchDataForSideNav = async (topic, TAGS_OBJ) => {
-    if (topic !== "nationality") {
+    console.log("fetchDataForSideNav: ", { topic, TAGS_OBJ });
+    if (topic !== "nationalities") {
         let { itemLabel } = dataStructureGroups[topic];
         try {
             const res = await axiosAuthInstance.get(`/api/list/all`, {

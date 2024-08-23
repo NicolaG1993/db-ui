@@ -28,10 +28,10 @@ const extractAllTags = (filteredData) => {
 
     ///////////
 
-    console.log("extractAllTags: ", {
-        filteredData,
-        result: result.filter((el) => el),
-    });
+    // console.log("extractAllTags: ", {
+    //     filteredData,
+    //     result: result.filter((el) => el),
+    // });
     return result.filter((el) => el); // this filter removes possible "undefined" results, that would break the UI
 };
 

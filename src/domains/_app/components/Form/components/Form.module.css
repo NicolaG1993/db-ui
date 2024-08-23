@@ -1,45 +1,3 @@
-/* FORM */
-.formWrapContainer {
-    position: relative;
-    height: 66vh;
-    overflow: hidden;
-}
-
-/* .formWrap {
-    padding: 0 1em;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    position: absolute;
-    width: 100%;
-} */
-.formWrap {
-    padding: 0 1em;
-    position: absolute;
-    width: 100%;
-    /* max-height: 100%; */
-    height: 100%;
-    display: grid;
-    grid-template-rows: 80px 1fr;
-}
-.formWrap > div:nth-child(1) {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 100%;
-    border-bottom: 1px solid var(--bg600);
-    /* margin-bottom: 2em; */
-    padding: 0 2em 0 2em;
-}
-.formWrap > div:nth-child(1) > h2 {
-    margin: 1em 0;
-}
-
-.formBox {
-    overflow-y: auto;
-    padding-bottom: 0.5em;
-}
-
 .form {
     display: grid;
     grid-template-rows: 1fr 100px;
@@ -85,19 +43,6 @@
     /* margin: 0 2em 0 0; */
 }
 
-.input-and-btn-wrap {
-    width: 100%;
-    display: flex;
-}
-.input-and-btn-wrap > button {
-    width: 40px;
-    cursor: pointer;
-    font-size: 12px;
-    margin-left: 0.8em;
-    padding: 0;
-    border-radius: 3px;
-}
-
 .buttons-box {
     margin: 1rem 0;
     width: 100%;
@@ -123,270 +68,6 @@
     border: none;
     outline: none;
 }
-
-/* SIDE WRAP */
-.sidewrap {
-    position: relative;
-    padding: 0.5rem;
-    top: 0;
-    height: 100%;
-    width: 100%;
-    transition: 0.4s ease-in;
-    background: var(--bg300);
-    /* background: var(--bg200); */
-    border-radius: 25px;
-    z-index: 3;
-    overflow: hidden;
-    /* border-left: 1px solid var(--text); */
-}
-.sidewrap > .nav {
-    display: flex;
-    align-items: center;
-    /* position: absolute;
-    top: 0;
-    left: 0; */
-    width: 100%;
-    z-index: 10;
-    padding: 15px;
-}
-
-.sidewrap > .nav > .sideNavHeading > p:nth-child(1) {
-    font-weight: bold;
-    margin: 0 0 0.25rem 0;
-}
-.sidewrap > .nav > .sideNavHeading > p:nth-child(2) {
-    font-size: 12px;
-    color: var(--bg800);
-    margin: 0;
-}
-
-.sidewrap > .nav > .closeDrawerBtn {
-    background: var(--bg600);
-    border-radius: 25px;
-    /* padding: 0.5rem; */
-    width: 100px;
-    height: 30px;
-    outline: none;
-    border: none;
-    float: right;
-    margin-left: auto;
-    cursor: pointer;
-}
-.sidewrap > .nav > .closeDrawerBtn:hover {
-    font-weight: bold;
-    background: var(--bg800);
-}
-
-.sidewrapContent {
-    height: 95%;
-    /* height: 425px; */
-    overflow: hidden;
-    display: grid;
-    grid-template-rows: auto 1fr;
-}
-
-.sidewrapHeader {
-    /* height: 80px; */
-    grid-row-start: 1;
-    grid-row-end: 2;
-    background: var(--bg200);
-}
-.sidewrapHeader > .wrapper {
-    height: 100%;
-    padding: 0.5rem;
-}
-
-.sidewrapBody {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    /* grid-template-columns: 1fr auto; */
-    height: 100%;
-    grid-row-start: 2;
-    grid-row-end: 3;
-    overflow-y: hidden;
-}
-
-.wrapper {
-    padding: 0.5rem 0.5rem 0 0.5rem;
-    /* border-radius: 4px; */
-    border: 1px solid var(--bg800);
-    background: var(--bg200);
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    overflow-y: auto;
-    /* align-items: flex-end; */
-}
-.sidewrapContent > .wrapper:nth-child(1) {
-    padding-right: 1rem;
-}
-.sidewrapContent > .wrapper:nth-child(2) {
-    border-left: 1px solid var(--bg800);
-    padding-left: 1rem;
-}
-
-/* FormSideHints */
-#FormSideHints {
-    padding: 0;
-    /* display: flex;
-    flex-direction: column; */
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: repeat(7, 1fr) 30px;
-}
-#FormSideHints > .nav {
-    /* height: 100%; */
-    /* max-height: 50%; */
-    align-items: stretch;
-    padding: 0;
-
-    grid-row-start: 1;
-    grid-row-end: 5;
-    grid-column-start: 1;
-    grid-column-end: 3;
-}
-#FormSideHints > .nav > .wrapper {
-    width: 50%;
-    overflow-y: hidden;
-    height: 100%;
-    padding: 0.5rem;
-}
-#FormSideHints > .nav > .wrapper:nth-child(1) {
-    border-radius: 25px 0 0 0;
-}
-#FormSideHints > .nav > .wrapper:nth-child(2) {
-    border-radius: 0 25px 0 0;
-}
-
-.hintsListWrap {
-    font-size: 12px;
-    height: 100%;
-    /* serve grid ? */
-    display: grid;
-    grid-template-rows: repeat(13, 1fr);
-}
-
-.hintsListHeader {
-    border-bottom: 1px solid var(--bg800);
-    padding: 0 0.25rem 0.25rem 0.25rem;
-    grid-row-start: 1;
-    grid-row-end: 4;
-}
-
-.hintsListHeader > p:first-child {
-    font-size: 13px;
-    font-weight: bold;
-    margin: 0 0 0.2rem 0;
-}
-
-.hintsListHeader > p:nth-child(2) {
-    font-size: 11px;
-    color: var(--bg800);
-    margin: 0.15rem 0 0.15rem 0;
-    line-height: 13px;
-}
-
-.hintsListWrap > .hintsListFormWrap {
-    height: 100%;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    grid-row-start: 4;
-    grid-row-end: 14;
-}
-.hintsListWrap > .hintsListFormWrap > form {
-    overflow-y: hidden;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-    align-items: stretch;
-    width: 100%;
-    height: 100%;
-}
-.hintsListWrap > .hintsListFormWrap > form > .hintsWrap {
-    /* height: 150px; */
-    height: 100%;
-    width: 100%;
-    overflow-y: auto;
-    padding: 0.25rem;
-
-    /* border: 1px solid var(--bg800); */
-    background: var(--bg300);
-}
-.hintsListWrap > .hintsListFormWrap > form > .hintsWrap > div {
-    margin: 0.1rem 0;
-}
-.hintsListWrap > .hintsListFormWrap > form > .buttonsWrap {
-    justify-self: flex-end;
-    border-top: 1px solid var(--bg800);
-    padding-top: 0.5rem;
-}
-.hintsListWrap > .hintsListFormWrap > form > .buttonsWrap > button {
-    border-radius: 4px;
-    width: 70px;
-    margin: 0 0.25rem;
-    font-size: 12px;
-    /* TODO 🧠🧠🧠 */
-}
-.hintsListWrap > .hintsListFormWrap > form > .buttonsWrap > button:first-child {
-    margin: 0 0.25rem 0 0;
-}
-
-.finalResultWrap {
-    padding: 0.5rem 0.5rem 0 0.5rem;
-    /* border-radius: 4px; */
-    border: 1px solid var(--bg800);
-    background: var(--bg200);
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    overflow-y: auto;
-
-    grid-row-start: 5;
-    grid-row-end: 8;
-    grid-column-start: 1;
-    grid-column-end: 3;
-}
-.hintsListBody {
-    font-size: 12px;
-}
-.hintsListBody p {
-    margin: 0.15rem 0;
-}
-.finalResultElement {
-}
-.missingElement {
-    color: green;
-}
-.removedElement {
-    color: red;
-    text-decoration: line-through;
-}
-
-.sideHintsFooter {
-    /* padding: 0.5rem; */
-    border-radius: 0 0 25px 25px;
-    border: 1px solid var(--bg800);
-    background: var(--bg200);
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    padding: 0;
-    /* justify-self: flex-end; */
-    grid-row-start: 8;
-    grid-row-end: 9;
-    grid-column-start: 1;
-    grid-column-end: 3;
-}
-.sideHintsFooter > button {
-    font-weight: bold;
-    height: 100%;
-    border-radius: 0 0 25px 25px;
-}
-
-/* 🧠🧠🧠 MAKE GRID INSTEAD OF FLEX  🧠🧠🧠 */
 
 /* FORM INPUTS RE-STYLING */
 .form-row {
@@ -425,6 +106,126 @@
     justify-content: flex-start;
     width: 25%;
 }
+
+.formDrawerWrap {
+    /* position: relative;
+    padding: 0.5rem;
+    top: 0; */
+    height: 100%;
+    width: 100%;
+    /* transition: 0.4s ease-in;
+    background: var(--bg300);
+    border-radius: 25px;
+    z-index: 3;
+    overflow: hidden; */
+}
+
+.formDrawerTopBar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    z-index: 10;
+    padding: 15px;
+}
+
+.formDrawerTopBar > .sideNavHeading > p:nth-child(1) {
+    font-weight: bold;
+    margin: 0 0 0.25rem 0;
+}
+.formDrawerTopBar > .sideNavHeading > p:nth-child(2) {
+    font-size: 12px;
+    color: var(--bg800);
+    margin: 0;
+}
+
+.sidewrapContent {
+    height: 95%;
+    /* height: 425px; */
+    overflow: hidden;
+    display: grid;
+    grid-template-rows: auto 1fr;
+}
+
+.wrapper {
+    padding: 0.5rem 0.5rem 0 0.5rem;
+    /* border-radius: 4px; */
+    border: 1px solid var(--bg800);
+    background: var(--bg200);
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    /* align-items: flex-end; */
+}
+.sidewrapContent > .wrapper:nth-child(1) {
+    padding-right: 1rem;
+}
+.sidewrapContent > .wrapper:nth-child(2) {
+    border-left: 1px solid var(--bg800);
+    padding-left: 1rem;
+}
+
+.sidewrapHeader {
+    /* height: 80px; */
+    grid-row-start: 1;
+    grid-row-end: 2;
+    background: var(--bg200);
+}
+.sidewrapHeader > .wrapper {
+    height: 100%;
+    padding: 0.5rem;
+}
+
+.formSideNavSearchBar {
+    display: grid;
+    grid-template-columns: 1fr auto;
+}
+
+.sidewrapBody {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    /* grid-template-columns: 1fr auto; */
+    height: 100%;
+    grid-row-start: 2;
+    grid-row-end: 3;
+    overflow-y: hidden;
+}
+
+/* FormSideHints */
+#FormSideHints {
+    padding: 0;
+    /* display: flex;
+    flex-direction: column; */
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: repeat(7, 1fr) 30px;
+}
+#FormSideHints > .formDrawerTopBar {
+    /* height: 100%; */
+    /* max-height: 50%; */
+    align-items: stretch;
+    padding: 0;
+
+    grid-row-start: 1;
+    grid-row-end: 5;
+    grid-column-start: 1;
+    grid-column-end: 3;
+}
+#FormSideHints > .formDrawerTopBar > .wrapper {
+    width: 50%;
+    overflow-y: hidden;
+    height: 100%;
+    padding: 0.5rem;
+}
+#FormSideHints > .formDrawerTopBar > .wrapper:nth-child(1) {
+    border-radius: 25px 0 0 0;
+}
+#FormSideHints > .formDrawerTopBar > .wrapper:nth-child(2) {
+    border-radius: 0 25px 0 0;
+}
+
+/* 🧠🧠🧠 MAKE GRID INSTEAD OF FLEX  🧠🧠🧠 */
 
 /* NEW STYLES */
 

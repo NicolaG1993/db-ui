@@ -29,7 +29,7 @@ export default function CategoryForm({
     isFinish,
     handleAddImage,
     handleRemoveImage,
-    handleDrawer,
+    // handleDrawer,
     onFormChange,
     onFormValidate,
     onSubmit,
@@ -74,19 +74,7 @@ export default function CategoryForm({
     // Render UI
     //================================================================================
     return (
-        <form
-            onSubmit={(e) =>
-                onSubmit({
-                    e,
-                    formState,
-                    newImage,
-                    formSettings,
-                    propsData,
-                    formLabel: formSettings.key,
-                })
-            }
-            className={styles.form}
-        >
+        <>
             <div className={styles.body}>
                 <div className={styles["form-row"]}>
                     <InputImage
@@ -142,6 +130,6 @@ export default function CategoryForm({
                     />
                 </div>
             </div>
-        </form>
+        </>
     );
 }

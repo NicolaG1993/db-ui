@@ -1,22 +1,22 @@
 import styles from "@/src/domains/_app/components/Form/components/Form.module.css";
-import { useState } from "react";
-import {
-    selectFormState,
-    selectFormStoreErrors,
-    selectFormStoreSettings,
-    selectFormPropsData,
-    validateForm,
-    // selectFormIsLoadingResponse,
-    updateFormState,
-    openSideNav,
-    selectFormIsLoading,
-    selectFormIsFinish,
-} from "@/src/application/redux/slices/formSlice";
-import { shallowEqual, useDispatch, useSelector } from "react-redux";
-import {
-    createObjectURL,
-    revokeObjectURL,
-} from "@/src/domains/_app/actions/useLocalImages";
+// import { useState } from "react";
+// import {
+//     selectFormState,
+//     selectFormStoreErrors,
+//     selectFormStoreSettings,
+//     selectFormPropsData,
+//     validateForm,
+//     // selectFormIsLoadingResponse,
+//     updateFormState,
+//     openSideNav,
+//     selectFormIsLoading,
+//     selectFormIsFinish,
+// } from "@/src/application/redux/slices/formSlice";
+// import { shallowEqual, useDispatch, useSelector } from "react-redux";
+// import {
+//     createObjectURL,
+//     revokeObjectURL,
+// } from "@/src/domains/_app/actions/useLocalImages";
 import customStyles from "@/src/application/styles/Zephyrus.module.css";
 import {
     InputText,
@@ -79,23 +79,15 @@ export default function MovieForm({
     //     }
     // };
 
+    console.log("MovieForm: ", {
+        formState,
+    });
+
     //================================================================================
     // Render UI
     //================================================================================
     return (
-        <form
-            onSubmit={(e) =>
-                onSubmit({
-                    e,
-                    formState,
-                    newImage,
-                    formSettings,
-                    propsData,
-                    formLabel: formSettings.key,
-                })
-            }
-            className={styles.form}
-        >
+        <>
             <div className={styles.body}>
                 <div className={styles["form-subheading"]}>
                     <h5>• Info</h5>
@@ -250,6 +242,6 @@ export default function MovieForm({
                     />
                 </div>
             </div>
-        </form>
+        </>
     );
 }

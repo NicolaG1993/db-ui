@@ -23,6 +23,8 @@ import {
     selectFormSideNavRenderReady,
     selectFormSideDropdownsState,
     updateSideNavDropdownsState,
+    handleSideNavRenderReady,
+    hydrateSideNavDropdowns,
 } from "@/src/application/redux/slices/formSlice";
 import { useAppSelector } from "@/src/application/redux/lib/hooks";
 import { selectAppSettings } from "@/src/application/redux/slices/appSettingsSlice";
@@ -35,6 +37,7 @@ import {
 } from "zephyrus-components";
 import customStyles from "@/src/application/styles/Zephyrus.module.css";
 import createNewMenus from "@/src/domains/all/components/Filters/DropdownMenusByLevel/utils/createNewMenus";
+import { useEffect } from "react";
 
 export default function FormDrawerMultiSelect() {
     const dispatch = useDispatch();
@@ -119,15 +122,15 @@ export default function FormDrawerMultiSelect() {
          * * * in this case i think we can restore MultiSelectSearchBar
          */
 
-        console.log("💚 handleSearch invoked: ", {
-            str,
-            searchBar,
-            sideNavRawData,
-            filteredData,
-            "filters.search": filters.search,
-        });
+        // console.log("💚 handleSearch invoked: ", {
+        //     str,
+        //     searchBar,
+        //     sideNavRawData,
+        //     filteredData,
+        //     "filters.search": filters.search,
+        // });
         if (sideNavRawData && filteredData) {
-            console.log("💚 filteredData: ", filteredData);
+            // console.log("💚 filteredData: ", filteredData);
             dispatch(
                 searchNavData({
                     str,
@@ -168,7 +171,7 @@ export default function FormDrawerMultiSelect() {
         shallowEqual
     );
 
-    const handleClickEl = (it, userAction) => {
+    const handleClickEl = ({ it, userAction }) => {
         dispatch(
             updateSideNavSelected({
                 value: it,
@@ -190,9 +193,17 @@ export default function FormDrawerMultiSelect() {
         );
     };
 
+    // useEffect(() => {
+    //     uiState.sideNavTopic === "tags" && dispatch(hydrateSideNavDropdowns());
+    // }, [uiState.sideNavTopic]);
+
+    // useEffect(() => {
+    //     dispatch(handleSideNavRenderReady(true));
+    // }, []);
+
     return (
-        <div id={styles.FormSideNav} className={styles.sidewrap}>
-            <div className={styles.nav}>
+        <div id={styles.FormSideNav} className={styles.formDrawerWrap}>
+            <div className={styles.formDrawerTopBar}>
                 <div className={styles.sideNavHeading}>
                     <p>
                         {`${
@@ -227,6 +238,7 @@ export default function FormDrawerMultiSelect() {
             <div className={styles.sidewrapContent}>
                 <div className={styles.sidewrapHeader}>
                     <div className={styles.wrapper}>
+                        {/* ???: Create component? 🧠👇 */}
                         <MultiSelectSearchBar
                             topic={uiState.sideNavTopic}
                             data={sourceData}
@@ -237,40 +249,6 @@ export default function FormDrawerMultiSelect() {
                 </div>
                 <div className={styles.sidewrapBody}>
                     <div className={styles.wrapper}>
-                        {/* 🔴 sistemare condition, questa é in conflitto con la precedente - perché puó trasformare filteredData in array 
-                        magari aggiungere label match
-                        */}
-                        {/* {filteredData && filteredData.length && (
-                            <InputsSelector
-                                arr={filteredData.map((el) =>
-                                    el.id && el.name
-                                        ? { id: el.id, name: el.name }
-                                        : el
-                                )}
-                                filters={formState[uiState.sideNavTopic]}
-                                topic={uiState.sideNavTopic}
-                            />
-                        )} */}
-
-                        {/* 🧠 TESTARE NUOVE CONDITIONS 🧠 
-                        
-                        for loading we could have an overlay, on top of all components - not priority
-
-                        🧠🧠🧠
-                        I believe this components should not call action by themself,
-                        instead the parent should pass as much props as possible
-                        🧠🧠🧠
-                        */}
-
-                        {/* ⚠️⚠️ UPDATE ⚠️⚠️:
-
-        <DropdownMenusByLevel/> renders only if there is no search typed by the user
-        otherwise we should display  <InputsSelector/> with the filtered tags, same as we do for categories, studios, nationalities, etc..
-                                
-        FIX: in uno uso store selectors, nell'altro uso props - sbagliato ⚠️
-        Inoltre devo convertire tags data quando lo voglio usare in <InputsSelector/> ⚠️
-*/}
-
                         {!sideNavRawData ? (
                             <p>Loading filters data...</p>
                         ) : (
@@ -299,17 +277,9 @@ export default function FormDrawerMultiSelect() {
                                         menuStructure={menuStructure}
                                         customStyles={customStyles}
                                     />
-                                    // <DropdownMenusByLevel
-                                    //     topic={uiState.sideNavTopic}
-                                    //     userStyles={styles}
-                                    // />
                                 )
                             ) : filteredData.length &&
                               uiState.sideNavTopic !== "nationalities" ? (
-                                // <InputsSelector
-                                //     data={filteredData.map((el) => el)}
-                                //     topic={uiState.sideNavTopic}
-                                // />
                                 <InputItemsList
                                     data={filteredData.map((el) => el)}
                                     topic={uiState.sideNavTopic}
@@ -320,15 +290,6 @@ export default function FormDrawerMultiSelect() {
                                 />
                             ) : (
                                 uiState.sideNavTopic === "nationalities" && (
-                                    // <NationalitiesSelector
-                                    //     data={filteredData.map(
-                                    //         ({ name }) => name
-                                    //     )}
-                                    //     filters={
-                                    //         formState[uiState.sideNavTopic]
-                                    //     }
-                                    //     topic={uiState.sideNavTopic}
-                                    // />
                                     <InputItemsList
                                         // data={filteredData.map((el) => el)}
                                         data={filteredData.map(
