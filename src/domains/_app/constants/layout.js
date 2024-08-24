@@ -189,7 +189,7 @@ export default function Layout({ children }) {
 
     const handleRouting = async (url) => {
         // id && clearPreviousItem(id);
-        clearPreviousItem();
+        clearPreviousItem(url);
         router.push(url);
     };
 
@@ -239,11 +239,16 @@ export default function Layout({ children }) {
     const overridePlaylist = (playlist) => {
         dispatch(updateSessionPlaylist(playlist));
     };
-    const clearPreviousItem = () => {
+    const clearPreviousItem = (url) => {
+        console.log("url: ", { url, routeQuery: router.query });
+        const idPattern = /\/\d+$/;
         // if (id.toString() !== router.query.id) {
-        dispatch(clearItem());
-        dispatch(activateLoadingItem());
-        // }
+        if (idPattern.test(url)) {
+            dispatch(clearItem());
+            dispatch(activateLoadingItem());
+        } else {
+            dispatch(clearItem());
+        }
     };
     const deletePlaylist = () => {
         dispatch(deleteSessionPlaylist());

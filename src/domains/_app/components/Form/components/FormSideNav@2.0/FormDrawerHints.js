@@ -196,18 +196,6 @@ export default function FormDrawerHints() {
                                                 // defaultChecked
                                                 customStyles={customStyles}
                                             />
-                                            // <div key={`hint missing ` + el.id}>
-                                            //     <input
-                                            //         type="checkbox"
-                                            //         id={el.id}
-                                            //         name={el.name}
-                                            //         value={JSON.stringify(el)}
-                                            //         defaultChecked
-                                            //     />
-                                            //     <label htmlFor={el.name}>
-                                            //         {el.name}
-                                            //     </label>
-                                            // </div>
                                         ))}
                                     </div>
                                     {/* 🧠 SKIP POTREBBE SEMPLICEMENTE ELIMINARE HINTS 🧠 */}
@@ -287,18 +275,6 @@ export default function FormDrawerHints() {
                                                 defaultChecked={false}
                                                 customStyles={customStyles}
                                             />
-                                            // <div key={`hint removed ` + el.id}>
-                                            //     <input
-                                            //         type="checkbox"
-                                            //         id={el.id}
-                                            //         name={el.name}
-                                            //         value={JSON.stringify(el)}
-                                            //         // defaultChecked
-                                            //     />
-                                            //     <label htmlFor={el.name}>
-                                            //         {el.name}
-                                            //     </label>
-                                            // </div>
                                         ))}
                                     </div>
                                     <div className={styles.buttonsWrap}>

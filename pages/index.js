@@ -60,9 +60,13 @@ export default function Home() {
     const { showTooltip, hideTooltip } = useAppContext();
     let sessionPlaylist = useSelector(selectSessionPlaylist, shallowEqual);
 
-    const clearPreviousItem = () => {
-        dispatch(clearItem());
-        dispatch(activateLoadingItem());
+    const clearPreviousItem = (id) => {
+        if (id) {
+            dispatch(clearItem());
+            dispatch(activateLoadingItem());
+        } else {
+            dispatch(clearItem());
+        }
     };
 
     const onMouseOver = (title, description, e) => {
@@ -78,7 +82,7 @@ export default function Home() {
     };
 
     const onClickCard = ({ id, label }) => {
-        clearPreviousItem();
+        clearPreviousItem(id);
         router.push(`/el/${label}/${id}`);
     };
 
