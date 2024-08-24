@@ -53,10 +53,6 @@ export default function RecordForm({
     return (
         <>
             <div className={styles.body}>
-                {/* <div className={styles["form-col-left"]}>
-                    <h5>Date</h5>
-                </div> */}
-
                 <div className={styles["form-row-full"]}>
                     <InputDate
                         name={"created_at"}
@@ -68,25 +64,6 @@ export default function RecordForm({
                         error={formErrors.created_at}
                         customStyles={customStyles}
                     />
-                    {/* <input
-                    type="date"
-                    name="created_at"
-                    id="CreatedAt"
-                    onChange={(e) =>
-                        dispatch(
-                            updateFormState({
-                                val: e.target.value,
-                                topic: e.target.name,
-                                log: "date",
-                            })
-                        )
-                    }
-                    onBlur={(e) => validateData(e)}
-                    value={formState.date}
-                />
-                {errors.date && (
-                    <div className={"form-error"}>{errors.date}</div>
-                )} */}
                 </div>
             </div>
 

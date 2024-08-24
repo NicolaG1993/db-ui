@@ -18,7 +18,7 @@ import {
     updateSessionPlaylist,
 } from "@/src/application/redux/slices/sessionPlaylistSlice";
 import { getError } from "@/src/application/utils/error";
-import { Button } from "zephyrus-components";
+import { Button, InputText } from "zephyrus-components";
 import customStyles from "@/src/application/styles/Zephyrus.module.css";
 
 export default function SavePlaylistForm({ closeModal, sessionPlaylist }) {
@@ -198,18 +198,6 @@ export default function SavePlaylistForm({ closeModal, sessionPlaylist }) {
         }
     };
 
-    // console.log("💩SavePlaylistForm: ", {
-    //     hints,
-    //     title,
-    //     errors,
-    //     allPlaylists,
-    //     match,
-    //     newElementsModal,
-    //     newElements,
-    //     sessionPlaylist,
-    //     userInfo,
-    // });
-
     // RENDER //
     return (
         <>
@@ -222,24 +210,29 @@ export default function SavePlaylistForm({ closeModal, sessionPlaylist }) {
                 ))
             ) : !newElementsModal ? (
                 <div className={styles["form"]}>
+                    {/* Can we use one of our searchbars for this? 🧠👇 */}
                     <p className={styles["form-title"]}>Save playlist</p>
                     <div className={styles["input-wrapper"]}>
-                        <input
+                        <InputText
                             type="text"
-                            placeholder={"Playlist title..."}
                             name="title"
                             id="Title"
+                            label={true}
+                            placeholder={"Playlist title..."}
                             onChange={(e) => setTitle(e.target.value)}
                             value={title}
-                            required
+                            // required
+                            isMandatory={true}
+                            error={errors.title}
+                            customStyles={customStyles}
                         />
 
                         <Button
                             size="medium"
                             type="button"
                             label={match ? "Update" : "Save"}
-                            customStyles={customStyles}
                             onClick={(e) => handleSubmit(e)}
+                            customStyles={customStyles}
                         />
                     </div>
 

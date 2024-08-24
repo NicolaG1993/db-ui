@@ -42,23 +42,7 @@ export default function DropDownPreferences({ userId }) {
                     // defaultChecked={false}
                     customStyles={customStyles}
                 />
-                {/* <label>
-                    <span className={styles.label}>Show Scrollbars:</span>
-                    <input
-                        type="checkbox"
-                        checked={showScrollbars}
-                        onChange={(e) => {
-                            // console.log(
-                            //     "checkbox onChange: ",
-                            //     e.target.checked
-                            // );
-                            return handleSettingChange(
-                                "showScrollbars",
-                                e.target.checked
-                            );
-                        }}
-                    />
-                </label> */}
+
                 <label>
                     <span className={styles.label}>Theme:</span>
                     <InputSelectCustom

@@ -1,12 +1,7 @@
 import { useState } from "react";
-// import { useDispatch } from "react-redux";
 import styles from "@/src/domains/_app/components/Auth/AuthModal.module.css";
-import // selectUserState,
-// userLogin,
-"@/src/application/redux/slices/userSlice.js";
 import { emailValidation } from "@/src/application/utils/validateForms.js";
 import { getError } from "@/src/application/utils/error.js";
-// import loginUser from "@/src/domains/_app/components/Auth/actions/loginUser.js";
 import { useRouter } from "next/router";
 import sendNewVerificationEmail from "../actions/sendNewVerificationEmail";
 import { Button, InputText } from "zephyrus-components";
