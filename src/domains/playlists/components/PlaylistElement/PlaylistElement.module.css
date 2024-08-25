@@ -38,18 +38,18 @@
     height: 25px;
     padding-top: 1px;
 }
-.playlist .btn {
-    background-color: var(--bg000);
+.playlist > button {
+    /* background-color: var(--bg000);
     width: 60px;
     height: 25px;
     text-align: center;
     align-self: center;
     border-radius: 6px;
     padding: 0.2rem 0.5rem;
-    font-size: 0.7rem;
+    font-size: 0.7rem; */
     margin: 0 0.2rem;
 }
 
-.playlist > .btn:last-child {
+.playlist > button:last-child {
     margin: 0 0 0 0.2rem;
 }

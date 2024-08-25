@@ -28,7 +28,7 @@ export default function PlaylistElement({ el, handleDelete }) {
             <p>{el.movies?.length || 0} movies</p>
 
             <Button
-                size="medium"
+                size="small"
                 type="button"
                 label="View"
                 customStyles={customStyles}
@@ -36,7 +36,7 @@ export default function PlaylistElement({ el, handleDelete }) {
                 // className={styles.btn} // TODO? 🔴
             />
             <Button
-                size="medium"
+                size="small"
                 type="button"
                 label="Load"
                 customStyles={customStyles}
@@ -44,7 +44,7 @@ export default function PlaylistElement({ el, handleDelete }) {
                 // className={styles.btn} // TODO? 🔴
             />
             <Button
-                size="medium"
+                size="small"
                 type="button"
                 label="Delete"
                 customStyles={customStyles}

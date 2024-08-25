@@ -193,21 +193,26 @@
 
 .itemButtonsWrap {
     /* margin-top: 3em; */
-    margin: 0.5rem 0.25rem;
+    padding: 0.5rem 1rem;
     display: flex;
-    flex-wrap: wrap;
-    /* flex-direction: column; */
+    /* flex-wrap: wrap; */
+    flex-direction: column;
+    justify-content: center;
+    height: 100%;
 }
 
 .itemButtonsWrap button {
+    width: 100%;
+    height: 2rem;
+    margin: 0.5rem 0;
+}
+
+/* .itemButtonsWrap button {
     width: 50%;
     margin: 0.5em;
     line-height: 2em;
-    /* border-radius: 10px;
-     border: none;
-    cursor: pointer; */
     flex-grow: 2;
-}
+} */
 .itemButtonsWrap button:hover {
     /* background-color: var(--bg700); */
 }

@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-import DropdownMenusByLevel from "./DropdownMenusByLevel/DropdownMenusByLevel";
+// import DropdownMenusByLevel from "./DropdownMenusByLevel/DropdownMenusByLevel";
 import styles from "@/src/application/styles/Home.module.css";
 // import axios from "axios";
-import InputsSelector from "./InputsSelector/InputsSelector";
-import NationalitiesSelector from "./NationalitiesSelector/NationalitiesSelector";
-import ActiveElements from "./ActiveElements/ActiveElements";
+// import InputsSelector from "./InputsSelector/InputsSelector";
+// import NationalitiesSelector from "./NationalitiesSelector/NationalitiesSelector";
+// import ActiveElements from "./ActiveElements/ActiveElements";
 import { Button } from "zephyrus-components";
 import customStyles from "@/src/application/styles/Zephyrus.module.css";
 //================================================================================

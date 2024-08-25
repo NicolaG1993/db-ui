@@ -234,7 +234,7 @@ export default function FullList({ tableName }) {
             </span> */}
             </div>
 
-            {filtersBar && (
+            {/* {filtersBar && (
                 <FiltersBar
                     filters={filters}
                     updateFilters={updateFilters}
@@ -243,7 +243,7 @@ export default function FullList({ tableName }) {
                     allLabels={["tags", "nationalities"]}
                     fetchData={fetchDataForFilter}
                 />
-            )}
+            )} */}
 
             {isError ? (
                 <div>{isError}</div>
