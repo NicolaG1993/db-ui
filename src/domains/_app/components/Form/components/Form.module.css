@@ -1,3 +1,4 @@
+/* eliminare o muovere questa class 👇🧠 */
 .form {
     display: grid;
     grid-template-rows: 1fr 100px;
@@ -6,12 +7,11 @@
     /* max-height: 100%; */
     /* max-height: 380px; */
     /* width: 420px; */
-
     padding-left: 1.5em;
-
     font-size: 15px;
 }
-.form > .body {
+
+.body {
     height: 100%;
     grid-row-start: 1;
     grid-row-end: 2;
@@ -23,7 +23,7 @@
     align-items: flex-start;
     justify-content: flex-start;
 }
-.form > .footer {
+.footer {
     height: 100%;
     grid-row-start: 2;
     grid-row-end: 3;

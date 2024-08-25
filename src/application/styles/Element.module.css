@@ -84,6 +84,7 @@
     padding: 0.7rem 0.5rem 0.7rem 0.5rem;
     margin: 0;
     font-size: 1.2em;
+    border-bottom: 1px solid var(--bg600);
 }
 
 /* 👇 Reduce rendundant css after flexible items 👇 */

@@ -24,11 +24,15 @@ export default async function handler(req, res) {
         const formData = await asyncParse(req);
         let { image } = formData.files;
         let { folder } = formData.fields;
+        console.log("S3 single-upload: ", {
+            formData,
+            image,
+            folder,
+        });
         const allPromises = [];
 
-        const { originalFilename, mimetype, size, filepath } = image;
+        const { originalFilename, mimetype, size, filepath } = image[0];
 
-        console.log("folder", folder);
         const uploadParams = {
             Bucket: process.env.S3_BUCKET_NAME,
             // ACL: "public-read",
@@ -54,13 +58,13 @@ export default async function handler(req, res) {
                 res.status(200).json(data);
             })
             .catch((err) => {
-                console.log("🧡🧡🧡 UPLOAD ERROR!!", err);
+                console.log("🧡🧡🧡 UPLOAD ERROR lvl.2!!", err);
             });
     } catch (err) {
         res.status(500).send({
             message: ["Request error uploading image"],
             error: err,
         });
-        console.log("🧡🧡🧡 UPLOAD ERROR!!", err);
+        console.log("🧡🧡🧡 UPLOAD ERROR lvl.1!!", err);
     }
 }

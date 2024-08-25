@@ -35,19 +35,19 @@ export default function InfiteScrollingWrap({
     const sortingOptions = [
         {
             value: `${relationsTableSettings.nameType}-asc`,
-            name: `Sort by ${relationsTableSettings.nameType} ascending`,
+            name: `${relationsTableSettings.nameType} ascending`,
         },
         {
             value: `${relationsTableSettings.nameType}-desc`,
-            name: `Sort by ${relationsTableSettings.nameType} descending`,
+            name: `${relationsTableSettings.nameType} descending`,
         },
         {
             value: "rating-asc",
-            name: "Sort by Rating Ascending",
+            name: "Rating Ascending",
         },
         {
             value: "rating-desc",
-            name: "Sort by Rating Descending",
+            name: "Rating Descending",
         },
     ];
 
@@ -166,17 +166,21 @@ export default function InfiteScrollingWrap({
     return (
         <div className={styles.infiniteScrollingWrap}>
             <div className={styles.wrapHeading}>
-                <InputSelect
-                    name="relationsListSorting"
-                    id="RelationsListSorting"
-                    onChange={() =>
-                        updateFilters({ order: "title", direction: "asc" })
-                    }
-                    options={sortingOptions}
-                    // disabled={true}
-                    value={filters.order} // todo
-                    customStyles={customStyles}
-                />
+                <div className={styles.sorterBox}>
+                    <InputSelect
+                        name="relationsListSorting"
+                        id="RelationsListSorting"
+                        label={"Sort by: "}
+                        onChange={() =>
+                            updateFilters({ order: "title", direction: "asc" })
+                        }
+                        options={sortingOptions}
+                        // disabled={true}
+                        size={"small"}
+                        value={filters.order} // todo
+                        customStyles={customStyles}
+                    />
+                </div>
             </div>
 
             <div className={styles.infiniteScrolling} ref={scrollContainerRef}>

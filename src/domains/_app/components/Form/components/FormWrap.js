@@ -242,7 +242,13 @@ export default function FormWrap({
     return (
         <Form
             formSettings={formSettings}
-            formState={formState}
+            formState={{
+                ...formState,
+                pic:
+                    formState?.pic && formState.pic !== "/no-image.png"
+                        ? formState.pic
+                        : null,
+            }}
             formTitle={formTitle}
             formLabel={formLabel}
             formErrors={formErrors}
