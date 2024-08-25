@@ -31,6 +31,26 @@ export default function InfiteScrollingWrap({
 }) {
     const relationsTableSettings = dataStructureGroups[relationsGroup];
 
+    // Move from here into util? 🧠👇
+    const sortingOptions = [
+        {
+            value: `${relationsTableSettings.nameType}-asc`,
+            name: `Sort by ${relationsTableSettings.nameType} ascending`,
+        },
+        {
+            value: `${relationsTableSettings.nameType}-desc`,
+            name: `Sort by ${relationsTableSettings.nameType} descending`,
+        },
+        {
+            value: "rating-asc",
+            name: "Sort by Rating Ascending",
+        },
+        {
+            value: "rating-desc",
+            name: "Sort by Rating Descending",
+        },
+    ];
+
     const scrollContainerRef = useRef(null);
 
     let [data, setData] = useState([]);
@@ -144,51 +164,42 @@ export default function InfiteScrollingWrap({
     };
 
     return (
-        <div className={styles.infiniteScrollingWrap} ref={scrollContainerRef}>
-            <InputSelect
-                name="relationsListSorting"
-                id="RelationsListSorting"
-                onChange={() =>
-                    updateFilters({ order: "title", direction: "asc" })
-                }
-                options={[
-                    {
-                        value: `${relationsTableSettings.nameType}-asc`,
-                        name: `Sort by ${relationsTableSettings.nameType} ascending`,
-                    },
-                    {
-                        value: `${relationsTableSettings.nameType}-desc`,
-                        name: `Sort by ${relationsTableSettings.nameType} descending`,
-                    },
-                    { value: "rating-asc", name: "Sort by Rating Ascending" },
-                    {
-                        value: "rating-desc",
-                        name: "Sort by Rating Descending",
-                    },
-                ]}
-                disabled={true}
-                // value={""} // todo
-                customStyles={customStyles}
-            />
+        <div className={styles.infiniteScrollingWrap}>
+            <div className={styles.wrapHeading}>
+                <InputSelect
+                    name="relationsListSorting"
+                    id="RelationsListSorting"
+                    onChange={() =>
+                        updateFilters({ order: "title", direction: "asc" })
+                    }
+                    options={sortingOptions}
+                    // disabled={true}
+                    value={filters.order} // todo
+                    customStyles={customStyles}
+                />
+            </div>
 
-            <RelationsList
-                data={data} // TODO: fetching has to be moved up here // otherwise we could create a custom wrapper for this
-                table={relationsTableSettings} // table={dataStructureGroups["movies"]}
-                hasMore={hasMore} // TODO: move up here
-                loading={loading} // TODO: move up here
-                filters={filters} // TODO: move up here // not implemented yet!
-                // onLoadMore={loadMoreData} // TODO: move up here
-                // onUpdateFilters={updateFilters} // TODO: move up here // not implemented yet!
-                cardHasOverlay={relationsTableSettings.itemGroup === "movies"} // TODO: info come questa possono essere messe in tableSettings 🧠🧠🧠
-                currentPlaylist={sessionPlaylist}
-                onMouseOver={onMouseOver}
-                onMouseOut={onMouseOut}
-                onClickCard={onClickCard}
-                onAddItem={addToPlaylist}
-                onRemoveItem={removeFromPlaylist}
-                customStyles={customStyles}
-            />
-            {/* <div className={styles.relationsGrid}>
+            <div className={styles.infiniteScrolling} ref={scrollContainerRef}>
+                <RelationsList
+                    data={data} // TODO: fetching has to be moved up here // otherwise we could create a custom wrapper for this
+                    table={relationsTableSettings} // table={dataStructureGroups["movies"]}
+                    hasMore={hasMore} // TODO: move up here
+                    loading={loading} // TODO: move up here
+                    filters={filters} // TODO: move up here // not implemented yet!
+                    // onLoadMore={loadMoreData} // TODO: move up here
+                    // onUpdateFilters={updateFilters} // TODO: move up here // not implemented yet!
+                    cardHasOverlay={
+                        relationsTableSettings.itemGroup === "movies"
+                    } // TODO: info come questa possono essere messe in tableSettings 🧠🧠🧠
+                    currentPlaylist={sessionPlaylist}
+                    onMouseOver={onMouseOver}
+                    onMouseOut={onMouseOut}
+                    onClickCard={onClickCard}
+                    onAddItem={addToPlaylist}
+                    onRemoveItem={removeFromPlaylist}
+                    customStyles={customStyles}
+                />
+                {/* <div className={styles.relationsGrid}>
                  {data?.map((el, i) => (
                      <Card
                          key={`RelationsList ${el[table.nameType]} ${i}`}
@@ -200,6 +211,7 @@ export default function InfiteScrollingWrap({
                  {loading && <p>Loading...</p>}
                  {!hasMore && <p>End of the list</p>}
              </div> */}
+            </div>
         </div>
     );
 }

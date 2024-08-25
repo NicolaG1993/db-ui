@@ -1,8 +1,29 @@
 .infiniteScrollingWrap {
+    /* overflow-y: auto;
+    overflow-x: hidden; */
+    overflow: hidden;
+    padding: 1rem 0.3rem 0.5rem 1rem;
+    display: grid;
+    /* height: 100%; */
+    grid-template-rows: auto 100%;
+
+    /* display: flex; */
+}
+
+.infiniteScrollingWrap > .wrapHeading {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    /* padding: 1rem; */
+    margin-bottom: 2rem;
+}
+
+.infiniteScrollingWrap > .infiniteScrolling {
     overflow-y: auto;
     overflow-x: hidden;
-    padding: 2.5em 0.3em 0.5em 0.3em;
-    display: grid;
+    padding: 1em 0.3em 4em 0.3em;
     height: 100%;
-    grid-template-rows: 50px 100%;
+    /* display: grid;
+    grid-template-rows: 50px 100%; */
 }

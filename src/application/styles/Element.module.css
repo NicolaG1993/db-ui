@@ -1,11 +1,13 @@
 .elWrap {
-    display: grid;
-    grid-template-columns: repeat(8, 1fr);
-    grid-template-rows: repeat(4, 1fr) auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* justify-content: center; */
+
     min-height: 80vh;
     /* max-height: 120vh; */
-    row-gap: 0.8rem;
-    column-gap: 0.8rem;
+    /* row-gap: 0.8rem;
+    column-gap: 0.8rem; */
     margin: 2rem 0;
     padding: 0.8rem;
     border: 1px solid var(--bg600);
@@ -13,6 +15,22 @@
     background-color: var(--bg300);
     width: 100%;
     max-width: 1280px;
+    overflow: hidden;
+}
+
+.infosBlock {
+    width: 100%;
+    row-gap: 0.8rem;
+    column-gap: 0.8rem;
+    max-height: 750px;
+}
+
+.elWrap > .infosBlock:nth-child(1) {
+    /* max-height: 750px; */
+}
+
+.elWrap > .infosBlock:nth-child(2) {
+    height: 100%;
 }
 
 .infoWrap {
@@ -70,7 +88,12 @@
 
 /* 👇 Reduce rendundant css after flexible items 👇 */
 /* ACTOR */
-#Actor > .infoWrap:nth-child(1) {
+#Actor > .infosBlock:first-child {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    grid-template-rows: repeat(4, 1fr) auto;
+}
+#Actor > .infosBlock > .infoWrap:nth-child(1) {
     grid-column-start: 1;
     grid-column-end: 3;
     grid-row-start: 1;
@@ -78,32 +101,31 @@
     display: flex;
     flex-direction: column;
 }
-#Actor > .infoWrap:nth-child(2) {
+#Actor > .infosBlock > .infoWrap:nth-child(2) {
     grid-column-start: 3;
     grid-column-end: 5;
     grid-row-start: 1;
     grid-row-end: 5;
 }
-#Actor > .infoWrap:nth-child(3) {
+#Actor > .infosBlock > .infoWrap:nth-child(3) {
     grid-column-start: 5;
     grid-column-end: 7;
     grid-row-start: 1;
     grid-row-end: 5;
 }
-#Actor > .infoWrap:nth-child(4) {
-    grid-column-start: 1;
-    grid-column-end: 9;
-    grid-row-start: 5;
-    grid-row-end: 6;
-}
-#Actor > .infoWrap:nth-child(5) {
+#Actor > .infosBlock > .infoWrap:nth-child(4) {
     grid-column-start: 7;
     grid-column-end: 9;
     grid-row-start: 1;
     grid-row-end: 2;
 }
 /* STUDIO + DISTRIBUTION */
-#Studio > .infoWrap:nth-child(1) {
+#Studio > .infosBlock:first-child {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    grid-template-rows: repeat(3, 1fr) auto;
+}
+#Studio > .infosBlock > .infoWrap:nth-child(1) {
     grid-column-start: 1;
     grid-column-end: 4;
     grid-row-start: 1;
@@ -111,26 +133,25 @@
     display: flex;
     flex-direction: column;
 }
-#Studio > .infoWrap:nth-child(2) {
+#Studio > .infosBlock > .infoWrap:nth-child(2) {
     grid-column-start: 4;
     grid-column-end: 7;
     grid-row-start: 1;
     grid-row-end: 5;
 }
-#Studio > .infoWrap:nth-child(3) {
-    grid-column-start: 1;
-    grid-column-end: 9;
-    grid-row-start: 5;
-    grid-row-end: 6;
-}
-#Studio > .infoWrap:nth-child(4) {
+#Studio > .infosBlock > .infoWrap:nth-child(3) {
     grid-column-start: 7;
     grid-column-end: 9;
     grid-row-start: 1;
     grid-row-end: 2;
 }
 /* CATEGORY + TAG */
-#Category > .infoWrap:nth-child(1) {
+#Category > .infosBlock:first-child {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    grid-template-rows: repeat(3, 1fr) auto;
+}
+#Category > .infosBlock > .infoWrap:nth-child(1) {
     grid-column-start: 1;
     grid-column-end: 4;
     grid-row-start: 1;
@@ -138,56 +159,49 @@
     display: flex;
     flex-direction: column;
 }
-#Category > .infoWrap:nth-child(2) {
+#Category > .infosBlock > .infoWrap:nth-child(2) {
     grid-column-start: 4;
     grid-column-end: 7;
     grid-row-start: 1;
     grid-row-end: 5;
 }
-#Category > .infoWrap:nth-child(3) {
-    grid-column-start: 1;
-    grid-column-end: 9;
-    grid-row-start: 5;
-    grid-row-end: 6;
-}
-#Category > .infoWrap:nth-child(4) {
+#Category > .infosBlock > .infoWrap:nth-child(3) {
     grid-column-start: 7;
     grid-column-end: 9;
     grid-row-start: 1;
     grid-row-end: 2;
 }
 /* MOVIE */
-#Movie > .infoWrap:nth-child(1) {
+#Movie > .infosBlock:first-child {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    grid-template-rows: repeat(6, 1fr) auto;
+}
+#Movie > .infosBlock > .infoWrap:nth-child(1) {
     grid-column-start: 1;
     grid-column-end: 4;
     grid-row-start: 1;
-    grid-row-end: 5;
+    grid-row-end: 7;
     display: flex;
     flex-direction: column;
 }
-#Movie > .infoWrap:nth-child(2) {
+#Movie > .infosBlock > .infoWrap:nth-child(2) {
     grid-column-start: 4;
     grid-column-end: 7;
     grid-row-start: 1;
-    grid-row-end: 5;
+    grid-row-end: 7;
 }
-#Movie > .infoWrap:nth-child(3) {
-    grid-column-start: 1;
-    grid-column-end: 9;
-    grid-row-start: 5;
-    grid-row-end: 6;
-}
-#Movie > .infoWrap:nth-child(4) {
+#Movie > .infosBlock > .infoWrap:nth-child(3) {
     grid-column-start: 7;
     grid-column-end: 9;
     grid-row-start: 1;
-    grid-row-end: 2;
+    grid-row-end: 3;
 }
-#Movie > .infoWrap:nth-child(5) {
+#Movie > .infosBlock > .infoWrap:nth-child(4) {
     grid-column-start: 7;
     grid-column-end: 9;
-    grid-row-start: 2;
-    grid-row-end: 5;
+    grid-row-start: 3;
+    grid-row-end: 7;
 }
 /* Rendundant code ☝️ */
 

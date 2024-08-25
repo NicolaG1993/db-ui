@@ -69,166 +69,171 @@ export default function Actor({
 
     return (
         <div id={styles.Actor} className={styles.elWrap}>
-            <div className={styles.infoWrap}>
-                <div className={styles.picWrap}>
-                    <Image
-                        src={pic ? pic : detectImage(item)}
-                        alt={item[nameType]}
-                        fill
-                        style={{ objectFit: "cover" }}
-                    />
+            <div className={styles.infosBlock}>
+                <div className={styles.infoWrap}>
+                    <div className={styles.picWrap}>
+                        <Image
+                            src={pic ? pic : detectImage(item)}
+                            alt={item[nameType]}
+                            fill
+                            style={{ objectFit: "cover" }}
+                        />
+                    </div>
+
+                    <div className={styles.underPicWrap}>
+                        <h1>{item[nameType]}</h1>
+                        <ItemRow
+                            label={"Rating"}
+                            value={rating ? rating : "Unrated"}
+                            customStyles={customStyles}
+                        />
+                    </div>
                 </div>
 
-                <div className={styles.underPicWrap}>
-                    <h1>{item[nameType]}</h1>
+                <div className={styles.infoWrap}>
+                    <div className={styles.infoHeadingWrap}>
+                        <h3>PERSONAL INFO</h3>
+                    </div>
                     <ItemRow
-                        label={"Rating"}
-                        value={rating ? rating : "Unrated"}
+                        label={"Birthday"}
+                        value={birthday && formatDateEU(birthday)}
+                        customStyles={customStyles}
+                    />
+                    <ItemRow
+                        label={"Age"}
+                        value={birthday && `${getAge(birthday)} y.o.`}
+                        customStyles={customStyles}
+                    />
+                    <ItemRow
+                        label={"Genre"}
+                        value={genre}
+                        customStyles={customStyles}
+                    />
+                    <ItemRow
+                        label={"Nationality"}
+                        group={"nationalities"}
+                        values={nationalities}
+                        onClick={handleRouting}
+                        customStyles={customStyles}
+                    />
+                    <ItemRow
+                        label={"Hair"}
+                        group={"tag"}
+                        arr={itemInfo?.Hair}
+                        onClick={handleRouting}
+                        customStyles={customStyles}
+                    />
+                    <ItemRow label={"Eyes color"} customStyles={customStyles} />
+                    {/* TODO 🧠 */}
+                    <ItemRow
+                        label={"Ethnicity"}
+                        group={"tag"}
+                        arr={itemInfo?.Ethnicity}
+                        onClick={handleRouting}
+                        customStyles={customStyles}
+                    />
+                    <ItemRow
+                        label={"Body type"}
+                        group={"tag"}
+                        arr={itemInfo?.["Body Types"]}
+                        onClick={handleRouting}
+                        customStyles={customStyles}
+                    />
+                    <ItemRow
+                        label={"Social"}
+                        socials={{ instagram, twitter }}
+                        customStyles={customStyles}
+                    />
+                    <ItemRow
+                        label={"Links"}
+                        urls={moreUrls}
                         customStyles={customStyles}
                     />
                 </div>
-            </div>
 
-            <div className={styles.infoWrap}>
-                <div className={styles.infoHeadingWrap}>
-                    <h3>PERSONAL INFO</h3>
-                </div>
-                <ItemRow
-                    label={"Birthday"}
-                    value={birthday && formatDateEU(birthday)}
-                    customStyles={customStyles}
-                />
-                <ItemRow
-                    label={"Age"}
-                    value={birthday && `${getAge(birthday)} y.o.`}
-                    customStyles={customStyles}
-                />
-                <ItemRow
-                    label={"Genre"}
-                    value={genre}
-                    customStyles={customStyles}
-                />
-                <ItemRow
-                    label={"Nationality"}
-                    group={"nationalities"}
-                    values={nationalities}
-                    onClick={handleRouting}
-                    customStyles={customStyles}
-                />
-                <ItemRow
-                    label={"Hair"}
-                    group={"tag"}
-                    arr={itemInfo?.Hair}
-                    onClick={handleRouting}
-                    customStyles={customStyles}
-                />
-                <ItemRow label={"Eyes color"} /> {/* TODO 🧠 */}
-                <ItemRow
-                    label={"Ethnicity"}
-                    group={"tag"}
-                    arr={itemInfo?.Ethnicity}
-                    onClick={handleRouting}
-                    customStyles={customStyles}
-                />
-                <ItemRow
-                    label={"Body type"}
-                    group={"tag"}
-                    arr={itemInfo?.["Body Types"]}
-                    onClick={handleRouting}
-                    customStyles={customStyles}
-                />
-                <ItemRow
-                    label={"Social"}
-                    socials={{ instagram, twitter }}
-                    customStyles={customStyles}
-                />
-                <ItemRow
-                    label={"Links"}
-                    urls={moreUrls}
-                    customStyles={customStyles}
-                />
-            </div>
+                <div className={styles.infoWrap}>
+                    <div className={styles.infoHeadingWrap}>
+                        <h3>MISC. INFO</h3>
+                    </div>
 
-            <div className={styles.infoWrap}>
-                <div className={styles.infoHeadingWrap}>
-                    <h3>MISC. INFO</h3>
-                </div>
-
-                <ItemRow
-                    label={"Tags"}
-                    parsedData={parseTagsForUiList(tags)}
-                    group={"tag"}
-                    onClick={handleRouting}
-                    customStyles={customStyles}
-                />
-
-                <ItemRow
-                    label={"Categories"}
-                    parsedData={parseTagsForUiList(categories)}
-                    group={"category"}
-                    onClick={handleRouting}
-                    customStyles={customStyles}
-                />
-
-                <ItemRow
-                    label={"Studios"}
-                    arr={studios}
-                    group={"studio"}
-                    onClick={handleRouting}
-                    customStyles={customStyles}
-                />
-
-                <ItemRow
-                    label={"Distribution"}
-                    arr={distributions}
-                    group={"distribution"}
-                    onClick={handleRouting}
-                    customStyles={customStyles}
-                />
-
-                <ItemRow
-                    label={"Tot. Clips"}
-                    value={totalMovies}
-                    customStyles={customStyles}
-                />
-            </div>
-
-            <div className={styles.infoWrap}>
-                <div className={styles.infoHeadingWrap}>
-                    <h3>MOVIES</h3>
-
-                    {totalMovies > 0 && (
-                        <Link href="/search">see all ({totalMovies})</Link> // 🧠 TODO: Landing page for this link - or just remove it!
-                    )}
-                </div>
-
-                <InfiteScrollingWrap
-                    itemId={id}
-                    itemLabel={label}
-                    relationsGroup={"movies"}
-                />
-            </div>
-
-            <div className={styles.infoWrap}>
-                <div className={styles.infoHeadingWrap}>
-                    <h3>ACTIONS</h3>
-                </div>
-
-                <div className={styles.itemButtonsWrap}>
-                    <Button
-                        size="medium"
-                        type="button"
-                        label="Modify"
+                    <ItemRow
+                        label={"Tags"}
+                        parsedData={parseTagsForUiList(tags)}
+                        group={"tag"}
+                        onClick={handleRouting}
                         customStyles={customStyles}
-                        onClick={() => setFormIsOpen(true, item)}
                     />
-                    <Button
-                        size="medium"
-                        type="button"
-                        label="Delete"
-                        colorScheme="danger"
+
+                    <ItemRow
+                        label={"Categories"}
+                        parsedData={parseTagsForUiList(categories)}
+                        group={"category"}
+                        onClick={handleRouting}
                         customStyles={customStyles}
-                        onClick={() => handleDelete(id)}
+                    />
+
+                    <ItemRow
+                        label={"Studios"}
+                        arr={studios}
+                        group={"studio"}
+                        onClick={handleRouting}
+                        customStyles={customStyles}
+                    />
+
+                    <ItemRow
+                        label={"Distribution"}
+                        arr={distributions}
+                        group={"distribution"}
+                        onClick={handleRouting}
+                        customStyles={customStyles}
+                    />
+
+                    <ItemRow
+                        label={"Tot. Clips"}
+                        value={totalMovies}
+                        customStyles={customStyles}
+                    />
+                </div>
+
+                <div className={styles.infoWrap}>
+                    <div className={styles.infoHeadingWrap}>
+                        <h3>ACTIONS</h3>
+                    </div>
+
+                    <div className={styles.itemButtonsWrap}>
+                        <Button
+                            size="medium"
+                            type="button"
+                            label="Modify"
+                            customStyles={customStyles}
+                            onClick={() => setFormIsOpen(true, item)}
+                        />
+                        <Button
+                            size="medium"
+                            type="button"
+                            label="Delete"
+                            colorScheme="danger"
+                            customStyles={customStyles}
+                            onClick={() => handleDelete(id)}
+                        />
+                    </div>
+                </div>
+            </div>
+
+            <div className={styles.infosBlock}>
+                <div className={styles.infoWrap}>
+                    <div className={styles.infoHeadingWrap}>
+                        <h3>MOVIES</h3>
+
+                        {totalMovies > 0 && (
+                            <Link href="/search">see all ({totalMovies})</Link> // 🧠 TODO: Landing page for this link - or just remove it!
+                        )}
+                    </div>
+
+                    <InfiteScrollingWrap
+                        itemId={id}
+                        itemLabel={label}
+                        relationsGroup={"movies"}
                     />
                 </div>
             </div>
