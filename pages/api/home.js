@@ -28,6 +28,7 @@ export default async function handler(req, res) {
                 0,
                 "actor.created_at DESC"
             );
+            console.log("🧑‍🏭 actors: ", actors.rows);
             const mappedActors = mapActorsRawToActors(actors.rows);
 
             const movies = await getAllMoviesWithInfos(

@@ -3,8 +3,8 @@ import { useEffect, useState } from "react";
 import styles from "./FullList.module.css";
 import dataStructureGroups from "@/src/application/settings/dataStructureGroups";
 
-import FiltersBar from "../Filters/Filters";
-import { fetchDataForFilter } from "@/src/domains/_app/actions/customFetchers";
+// import FiltersBar from "../Filters/Filters";
+// import { fetchDataForFilter } from "@/src/domains/_app/actions/customFetchers";
 import { getError } from "@/src/application/utils/error";
 
 import FullListHeading from "./FullListHeading";
@@ -70,6 +70,7 @@ export default function FullList({ tableName }) {
                 order: order,
             };
             const data = await fetchAllData(url, params);
+            console.log("fetchAllData 🧑‍🏭🧠🐉: ", data);
             setDisplayData(data);
         } catch (err) {
             console.log("ERROR!", getError(err)); // TODO: proper error message in UI

@@ -56,7 +56,7 @@ export default function CategoryForm({
                         label={true}
                         isMandatory={true}
                         value={formState.name}
-                        onChange={(e) => onFormChange(e)}
+                        onChange={(e) => onFormChange({ e })}
                         onBlur={(e) => onFormValidate(e)}
                         placeholder="Type the name here..."
                         error={formErrors.name}
@@ -71,7 +71,7 @@ export default function CategoryForm({
                         label={true}
                         // isMandatory={true}
                         value={formState.type}
-                        onChange={(e) => onFormChange(e)}
+                        onChange={(e) => onFormChange({ e })}
                         onBlur={(e) => onFormValidate(e)}
                         placeholder="Type the type name here..."
                         error={formErrors.type}

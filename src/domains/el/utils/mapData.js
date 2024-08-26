@@ -129,6 +129,16 @@ const mapActorRawToActor = (rawActor) => {
 
         totalMovies: rawActor.total_movies,
 
+        movies:
+            rawActor.movies?.map((mov) => ({
+                id: mov.id,
+                title: mov.title,
+                rating: mov.rating,
+                records: mov.records,
+                pic: mov.pic,
+                actors: mov.actors,
+            })) || [],
+
         tags:
             rawActor.tags?.map((tag) => ({
                 id: tag.id,
@@ -180,7 +190,16 @@ const mapActorsRawToActors = (rawArray) => {
         instagram: rawActor.instagram,
         moreUrls: rawActor.more_urls,
         nationalities: rawActor.nationalities,
-        totalMovies: rawActor.total_movies,
+        totalMovies: Number(rawActor.total_movies),
+        movies:
+            rawActor.movies?.map((mov) => ({
+                id: mov.id,
+                title: mov.title,
+                rating: mov.rating,
+                records: mov.records,
+                pic: mov.pic,
+                actors: mov.actors,
+            })) || [],
         tags:
             rawActor.tags?.map((tag) => ({
                 id: tag.id,
@@ -226,6 +245,15 @@ const mapCategoryRawToCategory = (rawCategory) => {
         pic: rawCategory.category_pic || "/no-image.png",
         type: rawCategory.category_type,
         totalMovies: rawCategory.total_movies,
+        movies:
+            rawCategory.movies?.map((mov) => ({
+                id: mov.id,
+                title: mov.title,
+                rating: mov.rating,
+                records: mov.records,
+                pic: mov.pic,
+                actors: mov.actors,
+            })) || [],
         actors:
             rawCategory.actors?.map((act) => ({
                 id: act.actor_id,
@@ -248,6 +276,15 @@ const mapTagRawToTag = (rawTag) => {
         pic: rawTag.tag_pic || "/no-image.png",
         type: rawTag.tag_type,
         totalMovies: rawTag.total_movies,
+        movies:
+            rawTag.movies?.map((mov) => ({
+                id: mov.id,
+                title: mov.title,
+                rating: mov.rating,
+                records: mov.records,
+                pic: mov.pic,
+                actors: mov.actors,
+            })) || [],
         actors:
             rawTag.actors?.map((act) => ({
                 id: act.actor_id,
@@ -271,6 +308,15 @@ const mapStudioRawToStudio = (rawStudio) => {
         website: rawStudio.studio_website,
         totalMovies: rawStudio.total_movies,
         nationalities: rawStudio.studio_nationalities,
+        movies:
+            rawStudio.movies?.map((mov) => ({
+                id: mov.id,
+                title: mov.title,
+                rating: mov.rating,
+                records: mov.records,
+                pic: mov.pic,
+                actors: mov.actors,
+            })) || [],
         actors:
             rawStudio.actors?.map((act) => ({
                 id: act.actor_id,
@@ -294,6 +340,15 @@ const mapDistributionRawToDistribution = (rawDistribution) => {
         website: rawDistribution.distribution_website,
         totalMovies: rawDistribution.total_movies,
         nationalities: rawDistribution.distribution_nationalities,
+        movies:
+            rawDistribution.movies?.map((mov) => ({
+                id: mov.id,
+                title: mov.title,
+                rating: mov.rating,
+                records: mov.records,
+                pic: mov.pic,
+                actors: mov.actors,
+            })) || [],
         actors:
             rawDistribution.actors?.map((act) => ({
                 id: act.actor_id,

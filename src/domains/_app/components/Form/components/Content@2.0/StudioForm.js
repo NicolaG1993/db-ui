@@ -38,7 +38,7 @@ export default function StudioForm({
                         label={true}
                         isMandatory={true}
                         value={formState.name}
-                        onChange={(e) => onFormChange(e)}
+                        onChange={(e) => onFormChange({ e })}
                         onBlur={(e) => onFormValidate(e)}
                         placeholder="Type the name here..."
                         error={formErrors.name}
@@ -53,7 +53,7 @@ export default function StudioForm({
                         label={true}
                         isMandatory={false}
                         value={formState.website}
-                        onChange={(e) => onFormChange(e)}
+                        onChange={(e) => onFormChange({ e })}
                         onBlur={(e) => onFormValidate(e)}
                         placeholder="Type the website here..."
                         error={formErrors.website}

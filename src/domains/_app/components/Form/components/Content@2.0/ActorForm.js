@@ -133,7 +133,7 @@ export default function ActorForm({
                         label={true}
                         isMandatory={true}
                         value={formState.name}
-                        onChange={(e) => onFormChange(e)}
+                        onChange={(e) => onFormChange({ e })}
                         onBlur={(e) => onFormValidate(e)}
                         placeholder="Type the name here..."
                         error={formErrors.name}
@@ -152,7 +152,7 @@ export default function ActorForm({
                             { value: "trans", name: "T" },
                         ]}
                         value={formState.genre}
-                        onChange={(e) => onFormChange(e)}
+                        onChange={(e) => onFormChange({ e })}
                         multipleSelection={false}
                         includeParents={false}
                         placeholder={""}
@@ -167,7 +167,7 @@ export default function ActorForm({
                         name={"birthday"}
                         id={"Birthday"}
                         label={true}
-                        onChange={(e) => onFormChange(e)}
+                        onChange={(e) => onFormChange({ e })}
                         value={formState.birthday}
                         error={formErrors.birthday}
                         customStyles={customStyles}
@@ -181,7 +181,7 @@ export default function ActorForm({
                         label={true}
                         step="0.01"
                         max="5"
-                        onChange={(e) => onFormChange(e)}
+                        onChange={(e) => onFormChange({ e })}
                         onBlur={(e) => onFormValidate(e)}
                         value={formState.rating}
                         placeholder="Type your rating (max 5.00)"
@@ -212,7 +212,7 @@ export default function ActorForm({
                         //         })
                         //     )
                         // }
-                        onChange={(e) => onFormChange(e)} // qui non usiamo event! 🔴🔴🔴 FIX
+                        onChange={(e) => onFormChange({ e })} // qui non usiamo event! 🔴🔴🔴 FIX
                         // onBlur={(e) => onFormValidate(e)}
                         error={formErrors.socials}
                         placeholder={"Insert social link here..."}

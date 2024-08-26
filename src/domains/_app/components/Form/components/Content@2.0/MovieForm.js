@@ -78,11 +78,14 @@ export default function MovieForm({
     //         dispatch(updateFormState({ val: "", topic: "pic" }));
     //     }
     // };
-
-    console.log("MovieForm: ", {
-        formState,
-    });
-
+    const handleUrls = (newArray) => {
+        console.log("handleUrls: ", { newArray });
+        onFormChange &&
+            onFormChange({
+                val: newArray,
+                topic: "urls",
+            });
+    };
     //================================================================================
     // Render UI
     //================================================================================
@@ -112,7 +115,7 @@ export default function MovieForm({
                         label={true}
                         isMandatory={true}
                         value={formState.title}
-                        onChange={(e) => onFormChange(e)}
+                        onChange={(e) => onFormChange({ e })}
                         onBlur={(e) => onFormValidate(e)}
                         placeholder="Type the title here..."
                         error={formErrors.title}
@@ -126,7 +129,23 @@ export default function MovieForm({
                         id={"Urls"}
                         label={true}
                         formState={formState}
-                        onChange={(e) => onFormChange(e)}
+                        onChange={(newArray) =>
+                            onFormChange({
+                                val: newArray,
+                                topic: "urls",
+                            })
+                        }
+                        // FIX: not finished 🔴👇
+                        // onDelete={(e) => onUrlDelete(e)}
+                        // onDelete={(newArray) =>
+                        //     // TODO: Dobbiamo riceve index invece di usare event in questo caso 🔴🧠
+                        //     onFormChange({
+                        //         val: newArray,
+                        //         topic: "urls",
+                        //     })
+                        // }
+                        // FIX: "e" contiene solo current input value, ma noi dobbiamo fargli fare il merge con quelli gia presenti.
+                        // e gestire anche il delete! 🧠
                         placeholder="Type URL here...   "
                         customStyles={customStyles}
                     />
@@ -138,7 +157,7 @@ export default function MovieForm({
                         id={"Rating"}
                         step="0.01"
                         max="5"
-                        onChange={(e) => onFormChange(e)}
+                        onChange={(e) => onFormChange({ e })}
                         onBlur={(e) => onFormValidate(e)}
                         value={formState.rating}
                         placeholder="Type your rating (max 5.00)"
@@ -152,7 +171,7 @@ export default function MovieForm({
                     <InputDate
                         name={"release"}
                         id={"Release"}
-                        onChange={(e) => onFormChange(e)}
+                        onChange={(e) => onFormChange({ e })}
                         // onBlur={(e) => onFormValidate(e)}
                         value={formState.release ? formState.release : ""}
                         error={formErrors.birthday}

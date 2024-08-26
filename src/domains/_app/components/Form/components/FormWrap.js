@@ -211,6 +211,7 @@ export default function FormWrap({
     // };
 
     const onFormChange = ({ val, topic }) => {
+        console.log("onFormChange fired 🔥🧑‍🏭🔥: ", { val, topic });
         dispatch(
             updateFormState({
                 val,
@@ -218,6 +219,16 @@ export default function FormWrap({
             })
         );
     };
+
+    // // FIX: not finished 🔴👇
+    // const onUrlDelete = ({ val, topic }) => {
+    //     dispatch(
+    //         updateFormState({
+    //             val,
+    //             topic,
+    //         })
+    //     );
+    // };
 
     const onFormValidate = ({ name, value, id }) => {
         dispatch(

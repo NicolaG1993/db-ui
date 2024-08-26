@@ -58,7 +58,7 @@ export default function RecordForm({
                         name={"created_at"}
                         id={"CreatedAt"}
                         label={true} // "Date" ?
-                        onChange={(e) => onFormChange(e)}
+                        onChange={(e) => onFormChange({ e })}
                         onBlur={(e) => validateData(e)}
                         value={formatFormInputDate(formState.created_at)}
                         error={formErrors.created_at}

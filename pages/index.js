@@ -33,6 +33,7 @@ export default function Home() {
     //================================================================================
     const fetchData = async () => {
         const res = await getHomeData();
+        console.log("getHomeData: ", res);
         if (res.status === 200 && res.data) {
             if (res.data.groupAResp) {
                 setGroupA(res.data.groupAResp);
