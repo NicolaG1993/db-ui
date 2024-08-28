@@ -52,7 +52,7 @@ export default async function handler(req, res) {
                 Number(offset),
                 orderString
             );
-            console.log("🎃⛽👉 getAllMoviesWithInfos rows: ", rows);
+            // console.log("🎃⛽👉 getAllMoviesWithInfos rows: ", rows);
             await commit(client);
             const mappedMovies = mapMoviesRawToMovies(rows);
             res.status(200).send(mappedMovies);

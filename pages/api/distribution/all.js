@@ -7,6 +7,7 @@ import {
 } from "@/src/application/db/db.js";
 import { getAllDistributions } from "@/src/application/db/utils/item.js";
 import { getAllRelations } from "@/src/application/db/utils/utils.js";
+import { mapDistributionsRawToDistributions } from "@/src/domains/el/utils/mapData";
 
 export default async function handler(req, res) {
     if (req.method === "GET") {
@@ -26,7 +27,11 @@ export default async function handler(req, res) {
                 return { ...o, count: count };
             });
             await commit(client);
-            res.status(200).send(finalObj);
+
+            const mappedDistributions =
+                mapDistributionsRawToDistributions(finalObj);
+
+            res.status(200).send(mappedDistributions);
         } catch (err) {
             await rollback(client);
             console.log(err);

@@ -14,6 +14,7 @@ const mapMovieRawToMovie = (rawMovie) => {
         rating: rawMovie.movie_rating,
         release: rawMovie.movie_release,
         totalActors: rawMovie.actor_count,
+        fullCount: rawMovie.full_count, // all movies (needed for pagination)
 
         actors:
             rawMovie.actors?.map((actor) => ({
@@ -67,6 +68,7 @@ const mapMoviesRawToMovies = (rawArray) => {
             release: rawMovie.release,
             records: rawMovie.records,
             totalActors: rawMovie.actors?.length || 0,
+            fullCount: rawMovie.full_count, // all movies (needed for pagination)
 
             actors:
                 rawMovie.actors?.map((actor) => ({
@@ -126,6 +128,7 @@ const mapActorRawToActor = (rawActor) => {
         instagram: rawActor.actor.instagram,
         moreUrls: rawActor.actor.more_urls,
         nationalities: rawActor.actor.nationalities,
+        fullCount: rawActor.full_count,
 
         totalMovies: rawActor.total_movies,
 
@@ -178,6 +181,7 @@ const mapActorRawToActor = (rawActor) => {
 };
 
 const mapActorsRawToActors = (rawArray) => {
+    console.log("rawArray: ", rawArray);
     const mappedArray = rawArray.map((rawActor) => ({
         id: rawActor.id,
         createdAt: rawActor.created_at,
@@ -191,6 +195,7 @@ const mapActorsRawToActors = (rawArray) => {
         moreUrls: rawActor.more_urls,
         nationalities: rawActor.nationalities,
         totalMovies: Number(rawActor.total_movies),
+        fullCount: rawActor.full_count,
         movies:
             rawActor.movies?.map((mov) => ({
                 id: mov.id,
@@ -245,6 +250,7 @@ const mapCategoryRawToCategory = (rawCategory) => {
         pic: rawCategory.category_pic || "/no-image.png",
         type: rawCategory.category_type,
         totalMovies: rawCategory.total_movies,
+        fullCount: rawCategory.full_count,
         movies:
             rawCategory.movies?.map((mov) => ({
                 id: mov.id,
@@ -267,6 +273,41 @@ const mapCategoryRawToCategory = (rawCategory) => {
     return category;
 };
 
+const mapCategoriesRawToCategories = (rawArray) => {
+    const mappedArray = rawArray.map((rawCategory) => {
+        let category = {
+            id: rawCategory.category_id,
+            createdAt: rawCategory.category_created_at,
+            name: rawCategory.category_name,
+            pic: rawCategory.category_pic || "/no-image.png",
+            type: rawCategory.category_type,
+            totalMovies: rawCategory.count, // rawCategory.total_movies
+            fullCount: rawCategory.full_count,
+            movies:
+                rawCategory.movies?.map((mov) => ({
+                    id: mov.id,
+                    title: mov.title,
+                    rating: mov.rating,
+                    records: mov.records,
+                    pic: mov.pic,
+                    actors: mov.actors,
+                })) || [],
+            actors:
+                rawCategory.actors?.map((act) => ({
+                    id: act.actor_id,
+                    name: act.actor_name,
+                    count: act.movies_count,
+                })) || [],
+        };
+
+        category.actors = filterUniqueActors(category.actors);
+
+        return category;
+    });
+
+    return mappedArray;
+};
+
 /* TAG */
 const mapTagRawToTag = (rawTag) => {
     let tag = {
@@ -276,6 +317,7 @@ const mapTagRawToTag = (rawTag) => {
         pic: rawTag.tag_pic || "/no-image.png",
         type: rawTag.tag_type,
         totalMovies: rawTag.total_movies,
+        fullCount: rawTag.full_count,
         movies:
             rawTag.movies?.map((mov) => ({
                 id: mov.id,
@@ -298,6 +340,41 @@ const mapTagRawToTag = (rawTag) => {
     return tag;
 };
 
+const mapTagsRawToTags = (rawArray) => {
+    const mappedArray = rawArray.map((rawTag) => {
+        let tag = {
+            id: rawTag.tag_id,
+            createdAt: rawTag.tag_created_at,
+            name: rawTag.tag_name,
+            pic: rawTag.tag_pic || "/no-image.png",
+            type: rawTag.tag_type,
+            totalMovies: rawTag.total_movies,
+            fullCount: rawTag.full_count,
+            movies:
+                rawTag.movies?.map((mov) => ({
+                    id: mov.id,
+                    title: mov.title,
+                    rating: mov.rating,
+                    records: mov.records,
+                    pic: mov.pic,
+                    actors: mov.actors,
+                })) || [],
+            actors:
+                rawTag.actors?.map((act) => ({
+                    id: act.actor_id,
+                    name: act.actor_name,
+                    count: act.movies_count,
+                })) || [],
+        };
+
+        tag.actors = filterUniqueActors(tag.actors);
+
+        return tag;
+    });
+
+    return mappedArray;
+};
+
 /* STUDIO */
 const mapStudioRawToStudio = (rawStudio) => {
     let studio = {
@@ -308,6 +385,7 @@ const mapStudioRawToStudio = (rawStudio) => {
         website: rawStudio.studio_website,
         totalMovies: rawStudio.total_movies,
         nationalities: rawStudio.studio_nationalities,
+        fullCount: rawStudio.full_count,
         movies:
             rawStudio.movies?.map((mov) => ({
                 id: mov.id,
@@ -330,6 +408,44 @@ const mapStudioRawToStudio = (rawStudio) => {
     return studio;
 };
 
+const mapStudiosRawToStudios = (rawArray) => {
+    const mappedArray = rawArray.map((rawStudio) => {
+        let studio = {
+            id: rawStudio.studio_id,
+            createdAt: rawStudio.studio_created_at,
+            name: rawStudio.studio_name,
+            pic: rawStudio.studio_pic || "/no-image.png",
+            website: rawStudio.studio_website,
+            totalMovies: rawStudio.total_movies,
+            nationalities: rawStudio.studio_nationalities,
+            totalMovies: rawStudio.total_movies,
+            fullCount: rawStudio.full_count,
+
+            movies:
+                rawStudio.movies?.map((mov) => ({
+                    id: mov.id,
+                    title: mov.title,
+                    rating: mov.rating,
+                    records: mov.records,
+                    pic: mov.pic,
+                    actors: mov.actors,
+                })) || [],
+            actors:
+                rawStudio.actors?.map((act) => ({
+                    id: act.actor_id,
+                    name: act.actor_name,
+                    count: act.movies_count,
+                })) || [],
+        };
+
+        studio.actors = filterUniqueActors(studio.actors);
+
+        return studio;
+    });
+
+    return mappedArray;
+};
+
 /* DISTRIBUTION */
 const mapDistributionRawToDistribution = (rawDistribution) => {
     let distribution = {
@@ -340,6 +456,7 @@ const mapDistributionRawToDistribution = (rawDistribution) => {
         website: rawDistribution.distribution_website,
         totalMovies: rawDistribution.total_movies,
         nationalities: rawDistribution.distribution_nationalities,
+        fullCount: rawDistribution.full_count,
         movies:
             rawDistribution.movies?.map((mov) => ({
                 id: mov.id,
@@ -360,6 +477,44 @@ const mapDistributionRawToDistribution = (rawDistribution) => {
     distribution.actors = filterUniqueActors(distribution.actors);
 
     return distribution;
+};
+
+const mapDistributionsRawToDistributions = (rawArray) => {
+    const mappedArray = rawArray.map((rawDistribution) => {
+        let distribution = {
+            id: rawDistribution.distribution_id,
+            createdAt: rawDistribution.distribution_created_at,
+            name: rawDistribution.distribution_name,
+            pic: rawDistribution.distribution_pic || "/no-image.png",
+            website: rawDistribution.distribution_website,
+            totalMovies: rawDistribution.total_movies,
+            nationalities: rawDistribution.distribution_nationalities,
+            totalMovies: rawDistribution.total_movies,
+            fullCount: rawDistribution.full_count,
+
+            movies:
+                rawDistribution.movies?.map((mov) => ({
+                    id: mov.id,
+                    title: mov.title,
+                    rating: mov.rating,
+                    records: mov.records,
+                    pic: mov.pic,
+                    actors: mov.actors,
+                })) || [],
+            actors:
+                rawDistribution.actors?.map((act) => ({
+                    id: act.actor_id,
+                    name: act.actor_name,
+                    count: act.movies_count,
+                })) || [],
+        };
+
+        distribution.actors = filterUniqueActors(distribution.actors);
+
+        return distribution;
+    });
+
+    return mappedArray;
 };
 
 /* RECORD */
@@ -392,9 +547,13 @@ export {
     mapActorRawToActor,
     mapActorsRawToActors,
     mapCategoryRawToCategory,
+    mapCategoriesRawToCategories,
     mapTagRawToTag,
+    mapTagsRawToTags,
     mapStudioRawToStudio,
+    mapStudiosRawToStudios,
     mapDistributionRawToDistribution,
+    mapDistributionsRawToDistributions,
     mapRecordRawToRecord,
     mapRecordsRawToRecords,
 };

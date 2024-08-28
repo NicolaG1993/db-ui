@@ -141,9 +141,10 @@ export default function FullList({ tableName }) {
     }, [selectedPage, step, order]);
 
     useEffect(() => {
+        console.log("displayData changes: ", displayData);
         if (displayData && displayData.length) {
             // full_count is stored inside every row
-            const val = displayData[0].full_count;
+            const val = displayData[0].fullCount;
             setTotalCount(Number(val));
         } else {
             setTotalCount(0);

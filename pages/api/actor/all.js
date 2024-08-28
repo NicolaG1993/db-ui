@@ -6,6 +6,7 @@ import {
     connect,
 } from "@/src/application/db/db.js";
 import { getAllActorsWithInfos } from "@/src/application/db/utils/item.js";
+import { mapActorsRawToActors } from "@/src/domains/el/utils/mapData";
 
 export default async function handler(req, res) {
     if (req.method === "GET") {
@@ -58,7 +59,8 @@ export default async function handler(req, res) {
                 orderString
             );
             await commit(client);
-            res.status(200).send(rows);
+            const mappedActors = mapActorsRawToActors(rows);
+            res.status(200).send(mappedActors);
         } catch (err) {
             await rollback(client);
             console.error(err);

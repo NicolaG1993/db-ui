@@ -7,6 +7,7 @@ import {
 } from "@/src/application/db/db.js";
 import { getAllTags } from "@/src/application/db/utils/item.js";
 import { getAllRelations } from "@/src/application/db/utils/utils.js";
+import { mapTagsRawToTags } from "@/src/domains/el/utils/mapData";
 
 export default async function handler(req, res) {
     if (req.method === "GET") {
@@ -24,7 +25,9 @@ export default async function handler(req, res) {
                 return { ...o, count: count };
             });
 
-            res.status(200).send(finalObj);
+            const mappedTags = mapTagsRawToTags(finalObj);
+
+            res.status(200).send(mappedTags);
         } catch (err) {
             await rollback(client);
             console.log(err);
