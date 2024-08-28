@@ -276,11 +276,11 @@ const mapCategoryRawToCategory = (rawCategory) => {
 const mapCategoriesRawToCategories = (rawArray) => {
     const mappedArray = rawArray.map((rawCategory) => {
         let category = {
-            id: rawCategory.category_id,
-            createdAt: rawCategory.category_created_at,
-            name: rawCategory.category_name,
-            pic: rawCategory.category_pic || "/no-image.png",
-            type: rawCategory.category_type,
+            id: rawCategory.id,
+            createdAt: rawCategory.created_at,
+            name: rawCategory.name,
+            pic: rawCategory.pic || "/no-image.png",
+            type: rawCategory.type,
             totalMovies: rawCategory.count, // rawCategory.total_movies
             fullCount: rawCategory.full_count,
             movies:
@@ -343,11 +343,11 @@ const mapTagRawToTag = (rawTag) => {
 const mapTagsRawToTags = (rawArray) => {
     const mappedArray = rawArray.map((rawTag) => {
         let tag = {
-            id: rawTag.tag_id,
-            createdAt: rawTag.tag_created_at,
-            name: rawTag.tag_name,
-            pic: rawTag.tag_pic || "/no-image.png",
-            type: rawTag.tag_type,
+            id: rawTag.id,
+            createdAt: rawTag.created_at,
+            name: rawTag.name,
+            pic: rawTag.pic || "/no-image.png",
+            type: rawTag.type,
             totalMovies: rawTag.total_movies,
             fullCount: rawTag.full_count,
             movies:
@@ -411,13 +411,13 @@ const mapStudioRawToStudio = (rawStudio) => {
 const mapStudiosRawToStudios = (rawArray) => {
     const mappedArray = rawArray.map((rawStudio) => {
         let studio = {
-            id: rawStudio.studio_id,
-            createdAt: rawStudio.studio_created_at,
-            name: rawStudio.studio_name,
-            pic: rawStudio.studio_pic || "/no-image.png",
-            website: rawStudio.studio_website,
+            id: rawStudio.id,
+            createdAt: rawStudio.created_at,
+            name: rawStudio.name,
+            pic: rawStudio.pic || "/no-image.png",
+            website: rawStudio.website,
             totalMovies: rawStudio.total_movies,
-            nationalities: rawStudio.studio_nationalities,
+            nationalities: rawStudio.nationalities,
             totalMovies: rawStudio.total_movies,
             fullCount: rawStudio.full_count,
 
@@ -482,13 +482,13 @@ const mapDistributionRawToDistribution = (rawDistribution) => {
 const mapDistributionsRawToDistributions = (rawArray) => {
     const mappedArray = rawArray.map((rawDistribution) => {
         let distribution = {
-            id: rawDistribution.distribution_id,
-            createdAt: rawDistribution.distribution_created_at,
-            name: rawDistribution.distribution_name,
-            pic: rawDistribution.distribution_pic || "/no-image.png",
-            website: rawDistribution.distribution_website,
+            id: rawDistribution.id,
+            createdAt: rawDistribution.created_at,
+            name: rawDistribution.name,
+            pic: rawDistribution.pic || "/no-image.png",
+            website: rawDistribution.website,
             totalMovies: rawDistribution.total_movies,
-            nationalities: rawDistribution.distribution_nationalities,
+            nationalities: rawDistribution.nationalities,
             totalMovies: rawDistribution.total_movies,
             fullCount: rawDistribution.full_count,
 
