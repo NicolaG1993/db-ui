@@ -1,13 +1,4 @@
-// import {
-//     selectFormIsFinish,
-//     selectFormIsLoading,
-//     selectFormPropsData,
-//     selectFormState,
-//     selectFormStoreErrors,
-//     selectFormStoreSettings,
-// } from "@/src/application/redux/slices/formSlice";
 import styles from "@/src/domains/_app/components/Form/components/Form.module.css";
-// import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import { Button, InputDate } from "zephyrus-components";
 import customStyles from "@/src/application/styles/Zephyrus.module.css";
 import { formatFormInputDate } from "@/src/application/utils/convertTimestamp";
@@ -27,29 +18,6 @@ export default function RecordForm({
     // onFormValidate,
     // onSubmit,
 }) {
-    console.log("RecordForm: ", { formState, formErrors, isLoading, isFinish });
-    // let formState = useSelector(selectFormState, shallowEqual);
-    // let propsData = useSelector(selectFormPropsData, shallowEqual);
-    // let form = useSelector(selectFormStoreSettings, shallowEqual);
-    // let errors = useSelector(selectFormStoreErrors, shallowEqual);
-    // let isLoading = useSelector(selectFormIsLoading, shallowEqual);
-    // const isFinish = useSelector(selectFormIsFinish, shallowEqual);
-
-    // const dispatch = useDispatch();
-
-    // <form
-    //     onSubmit={(e) =>
-    //         confirmChanges({
-    //             e,
-    //             formState,
-    //             newImage,
-    //             form,
-    //             propsData,
-    //             formLabel: form.key,
-    //         })
-    //     }
-    //     className={styles.form}
-    // >
     return (
         <>
             <div className={styles.body}>

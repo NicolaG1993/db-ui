@@ -1,5 +1,5 @@
 import { useState } from "react";
-import styles from "@/src/application/styles/AdminDashboard.module.css";
+import styles from "@/src/domains/_app/constants/components/SideNavMenu/SideNavMenu.module.css";
 import FormWrap from "@/src/domains/_app/components/Form/components/FormWrap";
 import Cookies from "js-cookie";
 import { selectFormStoreUI } from "@/src/application/redux/slices/formSlice";
@@ -22,7 +22,6 @@ export default function NewDataForm({ formLabel }) {
 
     const handleFormChange = (label) => !uiState.drawerIsOpen && setUI(label);
 
-    console.log("NewDataForm: ", { formLabel, UI, uiState });
     return (
         <>
             {/* 👇 CHANGE DOWN HERE: make flexible 👇 */}

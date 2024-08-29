@@ -3,7 +3,6 @@
 import styles from "@/src/domains/_app/constants/components/SideNavMenu/SideNavMenu.module.css";
 // We need to move the required styles to "SideNavMenu.module.css"
 // the problem right now is that i believe we are using them somewhere else / non ho voglia di sistemarlo ora, sto facendo altro
-import adminDashboardtyles from "@/src/application/styles/AdminDashboard.module.css";
 import allThemes from "@/src/application/settings/allThemes";
 // import CustomDropdown from "@/src/domains/_app/components/Inputs/CustomDropdown/CustomDropdown";
 import { useAppContext } from "@/src/domains/_app/contexts/AppContext";
@@ -54,15 +53,11 @@ export default function DropDownPreferences({ userId }) {
                         }
                         OptionComponent={({ el, handleOptionSelect }) => (
                             <div
-                                className={adminDashboardtyles["theme-option"]}
+                                className={styles["theme-option"]}
                                 value={el.tag}
                                 onClick={() => handleOptionSelect(el.tag)}
                             >
-                                <div
-                                    className={
-                                        adminDashboardtyles["theme-preview"]
-                                    }
-                                >
+                                <div className={styles["theme-preview"]}>
                                     <div
                                         style={{
                                             background: el.rgb1,

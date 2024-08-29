@@ -28,7 +28,7 @@ export default function Playlists() {
     const getAllPlaylists = async () => {
         try {
             let data = await fetchAllPlaylists("", userInfo.id);
-            console.log("⭐ fetchAllPlaylists: ", data);
+
             setAllPlaylists(data);
         } catch (err) {
             console.log("err: ", err);

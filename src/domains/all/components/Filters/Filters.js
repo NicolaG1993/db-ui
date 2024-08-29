@@ -1,15 +1,10 @@
+// TODO: Filters non é in uso al momento, probabilmente necessita profondo refactor 🧠👇🔴👇
+
 import { useEffect, useState } from "react";
-// import DropdownMenusByLevel from "./DropdownMenusByLevel/DropdownMenusByLevel";
 import styles from "@/src/application/styles/Home.module.css";
-// import axios from "axios";
-// import InputsSelector from "./InputsSelector/InputsSelector";
-// import NationalitiesSelector from "./NationalitiesSelector/NationalitiesSelector";
-// import ActiveElements from "./ActiveElements/ActiveElements";
 import { Button } from "zephyrus-components";
 import customStyles from "@/src/application/styles/Zephyrus.module.css";
-//================================================================================
-// Filters Bar
-//================================================================================
+
 export default function FiltersBar({
     filters,
     updateFilters,
@@ -104,7 +99,7 @@ const FiltersUI = ({
     // const [dataByTypes, setDataByTypes] = useState(undefined);
 
     useEffect(() => {
-        console.log("FiltersUI renders: ", filters);
+        // console.log("FiltersUI renders: ", filters);
     }, []);
 
     useEffect(() => {
@@ -142,11 +137,6 @@ const FiltersUI = ({
         }
     }, [data]);
     */
-
-    // console.log("topic: ", topic);
-    // console.log("data: ", data);
-    // console.log("obj: ", obj);
-    // console.log("dataByTypes: ", dataByTypes);
 
     return (
         <div className={styles.filtersUI}>

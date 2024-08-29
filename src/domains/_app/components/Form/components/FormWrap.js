@@ -1,9 +1,7 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useRouter } from "next/router";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import { useErrorBoundary } from "react-error-boundary";
-// import styles from "@/src/domains/_app/components/Form/components/Form.module.css";
-// import FormDrawer from "./FormDrawer@2.0/FormDrawer";
 import FormDrawerContent from "./FormDrawer@2.0/FormDrawerContent";
 import { selectAppSettings } from "@/src/application/redux/slices/appSettingsSlice";
 import {
@@ -33,16 +31,11 @@ import { fetchDataForSideNav } from "@/src/domains/_app/actions/formFetchers";
 import submitForm from "@/src/domains/_app/components/Form/actions/submitForm";
 import allNationalities from "@/src/application/settings/allNationalities";
 import { getError } from "@/src/application/utils/error";
-// import FormHeader from "./FormHeader@2.0/FormHeader";
 import {
     activateLoadingItem,
     clearItem,
 } from "@/src/application/redux/slices/itemSlice";
 import { Form } from "zephyrus-components";
-// import {
-//     createObjectURL,
-//     revokeObjectURL,
-// } from "../../../actions/useLocalImages";
 import customStyles from "@/src/application/styles/Zephyrus.module.css";
 
 // TODO 🧠🔴 Questo file potrebbe diventare AppForm.js (Wrapper per Form per contenere tutte le fn senza ripeterle - vedere prima se é necessario peró)
@@ -92,7 +85,6 @@ export default function FormWrap({
 
     // FETCH DATA FOR DRAWER
     useEffect(() => {
-        console.log("uiState: ", uiState);
         // 🧠🧠🧠 can i move this into drawer? or FormSideNav 🧠🧠🧠
         if (!uiState.hintsIsOpen) {
             if (uiState?.sideNavTopic) {
@@ -211,7 +203,6 @@ export default function FormWrap({
     // };
 
     const onFormChange = ({ val, topic }) => {
-        console.log("onFormChange fired 🔥🧑‍🏭🔥: ", { val, topic });
         dispatch(
             updateFormState({
                 val,
@@ -241,14 +232,8 @@ export default function FormWrap({
     };
 
     const toggleDrawer = (val) => {
-        // console.log("🔥 toggleDrawer: ", val);
         dispatch(handleDrawer(val ? val : false));
     };
-
-    // console.log("FormWrap: ", {
-    //     formState,
-    //     uiState,
-    // });
 
     return (
         <Form

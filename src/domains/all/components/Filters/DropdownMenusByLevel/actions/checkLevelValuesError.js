@@ -1,5 +1,4 @@
 const checkLevelValuesError = (val, key) => {
-    // console.log("checkLevelValuesError: ", { valType: typeof val, val, key });
     if (typeof val !== "object" && !Array.isArray(val)) {
         return `Error: The level "${key}" contains a value that is not an object or an array`;
     }

@@ -3,24 +3,23 @@ import { useRouter } from "next/router";
 // import axios from "axios";
 import styles from "@/src/application/styles/Element.module.css";
 import dataStructureItems from "@/src/application/settings/dataStructureItems";
-import { parseTagsForUiList } from "@/src/domains/_app/utils/parsers";
+// import { parseTagsForUiList } from "@/src/domains/_app/utils/parsers";
 import Head from "next/head";
 import fetchItem from "@/src/domains/el/actions/fetchItem";
 import {
-    selectItemStore,
+    // selectItemStore,
     selectSelectedItem,
     selectItemIsLoaded,
     selectItem,
     activateLoadingItem,
-    setStoreError,
+    // setStoreError,
     selectItemIsLoading,
     selectItemIsChanged,
 } from "@/src/application/redux/slices/itemSlice";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import deleteItem from "@/src/domains/el/actions/deleteItem";
 import ItemSkeleton from "@/src/domains/el/components/Item/ItemSkeleton";
-// import ErrorUI from "@/src/domains/_app/components/Error/ErrorUI";
-import { getError } from "@/src/application/utils/error";
+// import { getError } from "@/src/application/utils/error";
 import { useErrorBoundary } from "react-error-boundary";
 import {
     closeForm,

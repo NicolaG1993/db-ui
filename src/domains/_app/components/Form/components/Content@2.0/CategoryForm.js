@@ -1,23 +1,6 @@
 import styles from "@/src/domains/_app/components/Form/components/Form.module.css";
-// import {
-//     selectFormPropsData,
-//     selectFormState,
-//     selectFormStoreSettings,
-//     selectFormStoreErrors,
-//     selectFormIsLoading,
-//     validateForm,
-//     updateFormState,
-//     selectFormIsLoadingResponse,
-//     selectFormIsFinish,
-// } from "@/src/application/redux/slices/formSlice";
-// import { shallowEqual, useDispatch, useSelector } from "react-redux";
-// import { useState } from "react";
 import { InputText, InputImage, Button } from "zephyrus-components";
 import customStyles from "@/src/application/styles/Zephyrus.module.css";
-// import {
-//     createObjectURL,
-//     revokeObjectURL,
-// } from "@/src/domains/_app/actions/useLocalImages";
 
 export default function CategoryForm({
     formState,

@@ -1,22 +1,4 @@
 import styles from "@/src/domains/_app/components/Form/components/Form.module.css";
-// import {
-//     selectFormPropsData,
-//     selectFormState,
-//     selectFormStoreSettings,
-//     selectFormStoreErrors,
-//     selectFormIsLoading,
-//     selectFormIsFinish,
-//     validateForm,
-//     updateFormState,
-//     openSideNav,
-//     // selectFormIsLoadingResponse,
-// } from "@/src/application/redux/slices/formSlice";
-// import { shallowEqual, useDispatch, useSelector } from "react-redux";
-// import {
-//     createObjectURL,
-//     revokeObjectURL,
-// } from "@/src/domains/_app/actions/useLocalImages";
-// import { useState } from "react";
 import customStyles from "@/src/application/styles/Zephyrus.module.css";
 import {
     Button,

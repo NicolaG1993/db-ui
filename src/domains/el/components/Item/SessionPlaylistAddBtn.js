@@ -5,7 +5,6 @@ import {
     removeElementFromSessionPlaylist,
     selectSessionPlaylist,
 } from "@/src/application/redux/slices/sessionPlaylistSlice";
-// import styles from "@/src/application/styles/Element.module.css";
 import { useState, useEffect } from "react";
 import { useDispatch, shallowEqual, useSelector } from "react-redux";
 import { Button } from "zephyrus-components";

@@ -1,3 +1,5 @@
+// this could be a good starting file for a fn library 🧠
+
 function formatJSDate(date) {
     let dt = new Date(date);
     return (

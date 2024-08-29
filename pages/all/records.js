@@ -15,7 +15,7 @@ import { mapRecordsRawToRecords } from "@/src/domains/el/utils/mapData";
 const fetchData = async () => {
     try {
         const res = await axiosAuthInstance.get("/api/record/all");
-        console.log("fetchData activated: ", res);
+
         const mappedData = mapRecordsRawToRecords(res.data);
         return mappedData;
     } catch (error) {

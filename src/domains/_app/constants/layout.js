@@ -2,8 +2,6 @@ import Head from "next/head";
 import { useEffect, useState } from "react";
 
 import Footer from "@/src/domains/_app/constants/components/Footer/Footer";
-// import Widgets from "@/src/domains/_app/constants/components/Widgets/Widgets";
-// import SessionPlaylist from "@/src/domains/_app/constants/components/SessionPlaylist/SessionPlaylist";
 
 import { shallowEqual, useDispatch } from "react-redux";
 import fetchS3SettingsFile from "@/src/domains/_app/actions/fetchS3SettingsFile.js";
@@ -14,13 +12,8 @@ import {
 
 import AuthModal from "@/src/domains/_app/components/Auth/AuthModal.js";
 import { useSelector } from "react-redux";
-import {
-    selectUserState,
-    // userLogin,
-} from "@/src/application/redux/slices/userSlice.js";
-// import styles from "@/src/domains/_app/constants/Layout.module.css";
-// import RandomNumberButton from "./components/Widgets/RandomNumberButton";
-// import SessionPlaylistButton from "./components/Widgets/SessionPlaylistButton";
+import { selectUserState } from "@/src/application/redux/slices/userSlice.js";
+
 import {
     activateLoadingItem,
     clearItem,
@@ -28,8 +21,7 @@ import {
 } from "@/src/application/redux/slices/itemSlice";
 import AppBlur from "@/src/domains/_app/constants/components/AppBlur/AppBlur";
 import SideNavMenu from "./components/SideNavMenu/SideNavMenu";
-// import { useErrorBoundary } from "react-error-boundary";
-// import AddNewWrap from "@/src/domains/_app/constants/components/SideNavMenu/components/NewDataForm";
+
 import {
     closeForm,
     openForm,
@@ -56,8 +48,6 @@ export default function Layout({ children }) {
     //================================================================================
     const dispatch = useDispatch();
     const router = useRouter();
-    // const { theme } = useAppContext();
-    // const [user, setUser] = useState();
     let isItemFormOpen = useSelector(selectIsFormOpen, shallowEqual);
     let sessionPlaylist = useSelector(selectSessionPlaylist, shallowEqual);
     let userInfo = useSelector(selectUserState);
@@ -66,9 +56,6 @@ export default function Layout({ children }) {
     const [showLoadingScreen, setShowLoadingScreen] = useState(false);
     const [showAuthModal, setShowAuthModal] = useState(true);
     const [renderingApp, setRenderingApp] = useState(true); // forse si potrebbe spostare in redux
-    // const { showBoundary } = useErrorBoundary();
-    // const [appError, setAppError] = useState();
-    // let itemStoreError = useSelector(selectItemStoreError, shallowEqual);
     const [tooltipVisible, setTooltipVisible] = useState(false);
     const [tooltipProps, setTooltipProps] = useState({
         title: "",
@@ -110,12 +97,10 @@ export default function Layout({ children }) {
     };
 
     const openDrawer = (e, invoker) => {
-        console.log("openDrawer: ", { isDrawerOpen, invoker });
         e.stopPropagation();
         !isDrawerOpen && setIsDrawerOpen(true);
     };
     const closeDrawer = (e, invoker) => {
-        console.log("closeDrawer: ", { isDrawerOpen, invoker });
         e.stopPropagation();
         setTimeout(() => {
             isDrawerOpen && setIsDrawerOpen(false);
@@ -240,7 +225,6 @@ export default function Layout({ children }) {
         dispatch(updateSessionPlaylist(playlist));
     };
     const clearPreviousItem = (url) => {
-        console.log("url: ", { url, routeQuery: router.query });
         const idPattern = /\/\d+$/;
         // if (id.toString() !== router.query.id) {
         if (idPattern.test(url)) {
@@ -265,12 +249,6 @@ export default function Layout({ children }) {
             // !status && closeWidget(); // 🔴🔴🔴 We do this inside WidgetsUI now , delete
         }
     };
-
-    console.log("LAYOUT 🧑‍🏭👉 ", {
-        playlistCounter: sessionPlaylist?.length,
-        widgetsConfig,
-        sessionPlaylist,
-    });
 
     //================================================================================
     // Render UI

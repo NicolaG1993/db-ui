@@ -1,22 +1,5 @@
 import styles from "@/src/domains/_app/components/Form/components/Form.module.css";
-// import { useState } from "react";
-// import {
-//     selectFormState,
-//     selectFormStoreErrors,
-//     selectFormStoreSettings,
-//     selectFormPropsData,
-//     validateForm,
-//     // selectFormIsLoadingResponse,
-//     updateFormState,
-//     openSideNav,
-//     selectFormIsLoading,
-//     selectFormIsFinish,
-// } from "@/src/application/redux/slices/formSlice";
-// import { shallowEqual, useDispatch, useSelector } from "react-redux";
-// import {
-//     createObjectURL,
-//     revokeObjectURL,
-// } from "@/src/domains/_app/actions/useLocalImages";
+
 import customStyles from "@/src/application/styles/Zephyrus.module.css";
 import {
     InputText,
@@ -43,49 +26,14 @@ export default function MovieForm({
     onFormValidate,
     onSubmit,
 }) {
-    // const formState = useSelector(selectFormState, shallowEqual);
-    // const propsData = useSelector(selectFormPropsData, shallowEqual);
-    // const form = useSelector(selectFormStoreSettings, shallowEqual);
-    // const errors = useSelector(selectFormStoreErrors, shallowEqual);
-    // let isLoading = useSelector(selectFormIsLoading, shallowEqual);
-    // const isLoadingResponse = useSelector(
-    //     selectFormIsLoadingResponse,
-    //     shallowEqual
-    // );
-    // const isFinish = useSelector(selectFormIsFinish, shallowEqual);
-
-    // const dispatch = useDispatch();
-
-    // const [newImage, setNewImage] = useState();
-
-    // const handleNewImage = (e) => {
-    //     const imgFile = e.target.files["0"];
-    //     const file = {
-    //         location: createObjectURL(imgFile),
-    //         key: imgFile.name,
-    //         file: imgFile,
-    //     };
-    //     setNewImage(file);
-    //     dispatch(updateFormState({ val: file.location, topic: "pic" }));
+    // const handleUrls = (newArray) => {
+    //     onFormChange &&
+    //         onFormChange({
+    //             val: newArray,
+    //             topic: "urls",
+    //         });
     // };
 
-    // const handleRemoveImage = (imgFile) => {
-    //     if (imgFile) {
-    //         revokeObjectURL(imgFile);
-    //         setNewImage();
-    //     }
-    //     if (formState.pic) {
-    //         dispatch(updateFormState({ val: "", topic: "pic" }));
-    //     }
-    // };
-    const handleUrls = (newArray) => {
-        console.log("handleUrls: ", { newArray });
-        onFormChange &&
-            onFormChange({
-                val: newArray,
-                topic: "urls",
-            });
-    };
     //================================================================================
     // Render UI
     //================================================================================
