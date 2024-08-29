@@ -63,7 +63,16 @@ export default function Studio({ label, item, handleDelete, setFormIsOpen }) {
                     />
 
                     {/* TODO: New case for ItemRow component ? 👇🧠🧠🧠 */}
-                    <div className={styles.elRowToScroll}>
+
+                    <ItemRow
+                        label={"Actors"}
+                        arr={actors}
+                        onClick={handleRouting}
+                        tagType={"complex"}
+                        customStyles={customStyles}
+                    />
+
+                    {/* <div className={styles.elRowToScroll}>
                         <span>Actors: </span>
                         <div className={styles.tagsWrap}>
                             {actors ? (
@@ -85,7 +94,7 @@ export default function Studio({ label, item, handleDelete, setFormIsOpen }) {
                                 <p>N/A</p>
                             )}
                         </div>
-                    </div>
+                    </div> */}
                 </div>
 
                 <div className={styles.infoWrap}>
@@ -93,7 +102,7 @@ export default function Studio({ label, item, handleDelete, setFormIsOpen }) {
                         <h3>ACTIONS</h3>
                     </div>
 
-                    <div className={styles.buttonsWrap}>
+                    <div className={styles.itemButtonsWrap}>
                         <Button
                             size="medium"
                             type="button"

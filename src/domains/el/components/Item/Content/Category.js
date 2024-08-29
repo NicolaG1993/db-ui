@@ -58,8 +58,14 @@ export default function Category({
                         customStyles={customStyles}
                     />
 
-                    <div className={styles.elRowToScroll}>
-                        {/* TODO: New case for ItemRow component ? 👇🧠🧠🧠 */}
+                    <ItemRow
+                        label={"Actors"}
+                        arr={actors}
+                        onClick={handleRouting}
+                        tagType={"complex"}
+                        customStyles={customStyles}
+                    />
+                    {/* <div className={styles.elRowToScroll}>
                         <span>Actors: </span>
                         <div className={styles.tagsWrap}>
                             {actors ? (
@@ -81,7 +87,7 @@ export default function Category({
                                 <p>N/A</p>
                             )}
                         </div>
-                    </div>
+                    </div> */}
                 </div>
 
                 <div className={styles.infoWrap}>
@@ -89,7 +95,7 @@ export default function Category({
                         <h3>ACTIONS</h3>
                     </div>
 
-                    <div className={styles.buttonsWrap}>
+                    <div className={styles.itemButtonsWrap}>
                         <Button
                             size="medium"
                             type="button"

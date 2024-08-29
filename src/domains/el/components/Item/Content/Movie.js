@@ -57,7 +57,6 @@ export default function Movie({
                         <h1>{item[nameType]}</h1>
                         <div className={styles.elRow}>
                             {/* 🔴 elRow should not be here */}
-                            <span>Rating: </span>
                             <ItemRow
                                 label={"Rating"}
                                 value={rating ? rating : "Unrated"}

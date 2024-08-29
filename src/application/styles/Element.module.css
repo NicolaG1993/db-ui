@@ -23,14 +23,17 @@
     row-gap: 0.8rem;
     column-gap: 0.8rem;
     max-height: 750px;
+    margin-bottom: 0.8rem;
 }
 
 .elWrap > .infosBlock:nth-child(1) {
     /* max-height: 750px; */
 }
-
 .elWrap > .infosBlock:nth-child(2) {
     height: 100%;
+}
+.elWrap > .infosBlock:last-child {
+    margin-bottom: 0;
 }
 
 .infoWrap {
@@ -92,7 +95,7 @@
 #Actor > .infosBlock:first-child {
     display: grid;
     grid-template-columns: repeat(8, 1fr);
-    grid-template-rows: repeat(4, 1fr) auto;
+    grid-template-rows: repeat(3, 1fr) auto;
 }
 #Actor > .infosBlock > .infoWrap:nth-child(1) {
     grid-column-start: 1;
@@ -176,7 +179,7 @@
 #Movie > .infosBlock:first-child {
     display: grid;
     grid-template-columns: repeat(8, 1fr);
-    grid-template-rows: repeat(6, 1fr) auto;
+    grid-template-rows: repeat(5, 1fr) auto;
 }
 #Movie > .infosBlock > .infoWrap:nth-child(1) {
     grid-column-start: 1;

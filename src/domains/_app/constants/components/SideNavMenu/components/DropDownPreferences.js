@@ -34,7 +34,8 @@ export default function DropDownPreferences({ userId }) {
                     id={"ShowScrollbars"}
                     name={"showScrollbars"}
                     label={"Show Scrollbars"}
-                    value={JSON.stringify(el)}
+                    // value={JSON.stringify(el)} // FIX: el is undefined 🔴🔴🔴🔴
+                    value={JSON.stringify(theme)} // test 🟡🧠
                     checked={showScrollbars}
                     onChange={(e) =>
                         handleSettingChange("showScrollbars", e.target.checked)
