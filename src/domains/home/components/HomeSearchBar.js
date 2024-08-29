@@ -6,17 +6,11 @@ import customStyles from "@/src/application/styles/Zephyrus.module.css";
 import { useRouter } from "next/router";
 
 export default function HomeSearchbar() {
-    //================================================================================
-    // Component State
-    //================================================================================
     const [searchBar, setSearchBar] = useState();
     const [selectedOption, setSelectedOption] = useState("movie");
     const [searchResults, setSearchResults] = useState();
     const router = useRouter();
 
-    //================================================================================
-    // Search Bar Functions
-    //================================================================================
     const handleSearchBar = (str) => {
         setSearchBar(str);
     };
@@ -49,9 +43,6 @@ export default function HomeSearchbar() {
         setSearchResults();
     }, [selectedOption]);
 
-    //================================================================================
-    // Render UI
-    //================================================================================
     return (
         <div className={styles.homesearchbarwrap}>
             <SearchBar

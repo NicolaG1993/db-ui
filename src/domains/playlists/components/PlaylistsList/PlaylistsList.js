@@ -1,5 +1,5 @@
 import PlaylistElement from "@/src/domains/playlists/components/PlaylistElement/PlaylistElement.js";
-import styles from "./PlaylistsList.module.css";
+// import styles from "./PlaylistsList.module.css";
 
 export default function PlaylistsList({ allPlaylists, handleDelete }) {
     return (

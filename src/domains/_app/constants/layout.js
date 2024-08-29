@@ -199,7 +199,7 @@ export default function Layout({ children }) {
         // 🧠🧠 credo che noi dovremmo passare a WidgetsUI solo la lista dei components (e forse height&width? + qualche info tipo label)
         // 🧠🧠 Gli imports poi saranno gestiti dentro WidgetsUI xk sono disponibili solo i widget dentro library folder
         {
-            type: "Playlist", //"SessionPlaylist",
+            type: "SessionPlaylist", //"Playlist", //"SessionPlaylist",
             label: "Session Playlist",
             maxHeight: "650px",
         },
@@ -262,9 +262,15 @@ export default function Layout({ children }) {
         if (uiElement === "ADD_NEW") {
             status && openAddNew();
         } else if (uiElement === "WIDGET") {
-            !status && closeWidget(); // 🔴🔴🔴
+            // !status && closeWidget(); // 🔴🔴🔴 We do this inside WidgetsUI now , delete
         }
     };
+
+    console.log("LAYOUT 🧑‍🏭👉 ", {
+        playlistCounter: sessionPlaylist?.length,
+        widgetsConfig,
+        sessionPlaylist,
+    });
 
     //================================================================================
     // Render UI

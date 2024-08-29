@@ -541,6 +541,28 @@ const mapRecordsRawToRecords = (rawRecords) => {
     };
 };
 
+/* PLAYLIST */
+
+const mapPlaylistRawToPlaylist = (rawPlaylist) => {
+    let playlist = {
+        id: rawPlaylist.id,
+        title: rawPlaylist.title,
+        createdAt: rawPlaylist.created_at,
+        userId: rawPlaylist.userid,
+        movies:
+            rawPlaylist.movies?.map((rawMovie) => ({
+                id: rawMovie.id,
+                title: rawMovie.title,
+                pic: rawMovie.pic || "/no-image.png",
+                urls: rawMovie.urls || [],
+                rating: rawMovie.rating,
+                release: rawMovie.release,
+            })) || [],
+    };
+
+    return playlist;
+};
+
 export {
     mapMovieRawToMovie,
     mapMoviesRawToMovies,
@@ -556,4 +578,5 @@ export {
     mapDistributionsRawToDistributions,
     mapRecordRawToRecord,
     mapRecordsRawToRecords,
+    mapPlaylistRawToPlaylist,
 };
