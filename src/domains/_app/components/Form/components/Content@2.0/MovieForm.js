@@ -155,6 +155,7 @@ export default function MovieForm({
                     <InputRating
                         name={"rating"}
                         id={"Rating"}
+                        label={true}
                         step="0.01"
                         max="5"
                         onChange={(e) => onFormChange({ e })}
@@ -171,6 +172,7 @@ export default function MovieForm({
                     <InputDate
                         name={"release"}
                         id={"Release"}
+                        label={true}
                         onChange={(e) => onFormChange({ e })}
                         // onBlur={(e) => onFormValidate(e)}
                         value={formState.release ? formState.release : ""}

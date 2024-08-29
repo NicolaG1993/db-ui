@@ -194,6 +194,7 @@ export default function FormDrawerHints() {
                                                 label={el.name}
                                                 value={JSON.stringify(el)}
                                                 // defaultChecked
+                                                rowSize={"list"}
                                                 customStyles={customStyles}
                                             />
                                         ))}
@@ -201,7 +202,7 @@ export default function FormDrawerHints() {
                                     {/* 🧠 SKIP POTREBBE SEMPLICEMENTE ELIMINARE HINTS 🧠 */}
                                     <div className={styles.buttonsWrap}>
                                         <Button
-                                            size="small"
+                                            size="mini"
                                             type="button"
                                             label="Skip this step"
                                             customStyles={customStyles}
@@ -222,7 +223,7 @@ export default function FormDrawerHints() {
                                               🧠 */}
 
                                         <Button
-                                            size="small"
+                                            size="mini"
                                             type="submit"
                                             label="Confirm your choice"
                                             form="missingHintsForm"
@@ -273,13 +274,14 @@ export default function FormDrawerHints() {
                                                 label={el.name}
                                                 value={JSON.stringify(el)}
                                                 defaultChecked={false}
+                                                rowSize={"list"}
                                                 customStyles={customStyles}
                                             />
                                         ))}
                                     </div>
                                     <div className={styles.buttonsWrap}>
                                         <Button
-                                            size="small"
+                                            size="medium"
                                             type="button"
                                             label="Skip this step"
                                             customStyles={customStyles}
@@ -288,7 +290,7 @@ export default function FormDrawerHints() {
                                             }
                                         />
                                         <Button
-                                            size="small"
+                                            size="medium"
                                             type="submit"
                                             label="Confirm your choice"
                                             customStyles={customStyles}

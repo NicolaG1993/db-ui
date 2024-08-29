@@ -153,8 +153,8 @@
     border: 1px solid var(--bg800);
     background: var(--bg200);
     width: 100%;
-    display: flex;
-    flex-direction: column;
+    /* display: flex;
+    flex-direction: column; */
     overflow-y: auto;
     /* align-items: flex-end; */
 }
@@ -226,6 +226,137 @@
 }
 
 /* 🧠🧠🧠 MAKE GRID INSTEAD OF FLEX  🧠🧠🧠 */
+
+/*** HINTS ***/
+.hintsListWrap {
+    font-size: 12px;
+    height: 100%;
+    /* serve grid ? */
+    display: grid;
+    grid-template-rows: repeat(13, 1fr);
+}
+
+.hintsListHeader {
+    border-bottom: 1px solid var(--bg800);
+    padding: 0 0.25rem 0.25rem 0.25rem;
+    grid-row-start: 1;
+    grid-row-end: 4;
+}
+
+.hintsListHeader > p:first-child {
+    font-size: 13px;
+    font-weight: bold;
+    margin: 0 0 0.2rem 0;
+}
+
+.hintsListHeader > p:nth-child(2) {
+    font-size: 11px;
+    color: var(--bg800);
+    margin: 0.15rem 0 0.15rem 0;
+    line-height: 13px;
+}
+
+.hintsListWrap > .hintsListFormWrap {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    grid-row-start: 4;
+    grid-row-end: 14;
+}
+.hintsListWrap > .hintsListFormWrap > form {
+    overflow-y: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: stretch;
+    width: 100%;
+    height: 100%;
+}
+.hintsListWrap > .hintsListFormWrap > form > .hintsWrap {
+    /* height: 150px; */
+    height: 100%;
+    width: 100%;
+    overflow-y: auto;
+    padding: 0.25rem;
+
+    /* border: 1px solid var(--bg800); */
+    background: var(--bg300);
+}
+.hintsListWrap > .hintsListFormWrap > form > .hintsWrap > div {
+    margin: 0.1rem 0;
+}
+.hintsListWrap > .hintsListFormWrap > form > .buttonsWrap {
+    justify-self: flex-end;
+    border-top: 1px solid var(--bg800);
+    padding-top: 0.5rem;
+}
+.hintsListWrap > .hintsListFormWrap > form > .buttonsWrap > button {
+    border-radius: 4px;
+    /* width: 70px; */
+    margin: 0 0.25rem;
+    font-size: 12px;
+    /* TODO 🧠🧠🧠 */
+}
+.hintsListWrap > .hintsListFormWrap > form > .buttonsWrap > button:first-child {
+    margin: 0 0.25rem 0 0;
+}
+
+.finalResultWrap {
+    padding: 0.5rem 0.5rem 0 0.5rem;
+    /* border-radius: 4px; */
+    border: 1px solid var(--bg800);
+    background: var(--bg200);
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+
+    grid-row-start: 5;
+    grid-row-end: 8;
+    grid-column-start: 1;
+    grid-column-end: 3;
+}
+
+.hintsListBody {
+    font-size: 12px;
+}
+.hintsListBody p {
+    margin: 0.15rem 0;
+}
+.finalResultElement {
+}
+.missingElement {
+    color: green;
+}
+.removedElement {
+    color: red;
+    text-decoration: line-through;
+}
+
+.sideHintsFooter {
+    /* padding: 0.5rem; */
+    border-radius: 0 0 25px 25px;
+    border: 1px solid var(--bg800);
+    background: var(--bg200);
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    /* justify-self: flex-end; */
+    grid-row-start: 8;
+    grid-row-end: 9;
+    grid-column-start: 1;
+    grid-column-end: 3;
+}
+.sideHintsFooter > button {
+    font-weight: bold;
+    height: 100%;
+    border-radius: 0 0 25px 25px;
+    width: 100%;
+}
 
 /* NEW STYLES */
 
