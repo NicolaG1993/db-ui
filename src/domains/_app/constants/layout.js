@@ -1,7 +1,7 @@
 import Head from "next/head";
 import { useEffect, useState } from "react";
 
-import Footer from "@/src/domains/_app/constants/components/Footer/Footer";
+// import Footer from "@/src/domains/_app/constants/components/Footer/Footer";
 
 import { shallowEqual, useDispatch } from "react-redux";
 import fetchS3SettingsFile from "@/src/domains/_app/actions/fetchS3SettingsFile.js";
@@ -313,7 +313,7 @@ export default function Layout({ children }) {
                         <SideNavMenu onClose={closeDrawer} />
                     </Drawer>
                     {children({ showTooltip })}
-                    <Footer />
+                    {/* <Footer /> */}
 
                     <Tooltip
                         {...tooltipProps}
