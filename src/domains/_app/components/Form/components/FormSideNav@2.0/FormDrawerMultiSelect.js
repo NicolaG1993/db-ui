@@ -1,8 +1,4 @@
 import styles from "@/src/domains/_app/components/Form/components/Form.module.css";
-// import ActiveElements from "@/src/domains/all/components/Filters/ActiveElements/ActiveElements";
-// import DropdownMenusByLevel from "@/src/domains/all/components/Filters/DropdownMenusByLevel/DropdownMenusByLevel";
-// import InputsSelector from "@/src/domains/all/components/Filters/InputsSelector/InputsSelector";
-// import NationalitiesSelector from "@/src/domains/all/components/Filters/NationalitiesSelector/NationalitiesSelector";
 import checkHints from "@/src/domains/_app/components/Form/actions/checkHints";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import {

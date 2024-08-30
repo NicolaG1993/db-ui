@@ -152,7 +152,7 @@ const FiltersUI = ({
                             <>
                                 <div className={styles.allData}>
                                     <div className={styles.content}>
-                                        {typeof data === "object" &&
+                                        {/* {typeof data === "object" &&
                                             !Array.isArray(data) && (
                                                 <DropdownMenusByLevel
                                                     obj={data}
@@ -185,7 +185,7 @@ const FiltersUI = ({
                                                 styles={styles}
                                                 topic={topic}
                                             />
-                                        )}
+                                        )} */}
                                         {/* {topic === "type" && (
                                         <DropdownMenusByLevel
                                             filters={filters[topic]}
@@ -199,12 +199,12 @@ const FiltersUI = ({
                                 </div>
 
                                 <div className={styles.selectedData}>
-                                    <ActiveElements
+                                    {/* <ActiveElements
                                         arr={filters[topic]}
                                         handleChildState={updateFilters}
                                         styles={styles}
                                         topic={topic}
-                                    />
+                                    /> */}
                                 </div>
                             </>
                         ) : (
