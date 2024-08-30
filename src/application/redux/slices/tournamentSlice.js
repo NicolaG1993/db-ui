@@ -61,7 +61,8 @@ const tournamentSlice = createSlice({
         shuffleTournamentData: (state) => {
             state.isLoaded = false;
             let newState = shuffle(state.tournamentData);
-            Cookies.set("tournamentData", JSON.stringify(newState));
+            // Cookies.set("tournamentData", JSON.stringify(newState));
+            sessionStorage.setItem("tournamentData", JSON.stringify(newState));
             state.tournamentData = newState;
             state.isLoaded = true;
         },

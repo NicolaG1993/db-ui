@@ -18,6 +18,8 @@ import {
     updateSessionPlaylist,
 } from "@/src/application/redux/slices/sessionPlaylistSlice";
 import { getError } from "@/src/application/utils/error";
+import { Button, InputText } from "zephyrus-components";
+import customStyles from "@/src/application/styles/Zephyrus.module.css";
 
 export default function SavePlaylistForm({ closeModal, sessionPlaylist }) {
     /*
@@ -196,18 +198,6 @@ export default function SavePlaylistForm({ closeModal, sessionPlaylist }) {
         }
     };
 
-    // console.log("💩SavePlaylistForm: ", {
-    //     hints,
-    //     title,
-    //     errors,
-    //     allPlaylists,
-    //     match,
-    //     newElementsModal,
-    //     newElements,
-    //     sessionPlaylist,
-    //     userInfo,
-    // });
-
     // RENDER //
     return (
         <>
@@ -220,23 +210,30 @@ export default function SavePlaylistForm({ closeModal, sessionPlaylist }) {
                 ))
             ) : !newElementsModal ? (
                 <div className={styles["form"]}>
+                    {/* Can we use one of our searchbars for this? 🧠👇 */}
                     <p className={styles["form-title"]}>Save playlist</p>
                     <div className={styles["input-wrapper"]}>
-                        <input
+                        <InputText
                             type="text"
-                            placeholder={"Playlist title..."}
                             name="title"
                             id="Title"
+                            label={true}
+                            placeholder={"Playlist title..."}
                             onChange={(e) => setTitle(e.target.value)}
                             value={title}
-                            required
+                            // required
+                            isMandatory={true}
+                            error={errors.title}
+                            customStyles={customStyles}
                         />
-                        <button
+
+                        <Button
+                            size="medium"
+                            type="button"
+                            label={match ? "Update" : "Save"}
                             onClick={(e) => handleSubmit(e)}
-                            className="button-standard"
-                        >
-                            {match ? "Update" : "Save"}
-                        </button>
+                            customStyles={customStyles}
+                        />
                     </div>
 
                     {title && (
@@ -268,22 +265,25 @@ export default function SavePlaylistForm({ closeModal, sessionPlaylist }) {
                         Please confirm if you want to add them to the database
                     </p>
 
-                    <button
+                    <Button
+                        size="medium"
+                        type="button"
+                        label={"Confirm"}
+                        customStyles={customStyles}
                         onClick={(e) => handleNewItems(e)}
-                        className="button-standard"
-                    >
-                        Confirm
-                    </button>
+                    />
 
                     {/* 🧨🧨🧨 TODO 🧨🧨🧨 */}
-                    <button
+                    <Button
+                        size="medium"
+                        type="button"
+                        label={"Delete them"}
+                        customStyles={customStyles}
                         onClick={
                             () => confirmSubmitWithoutUrls(sessionPlaylist) // 💚 only the playlist loaded in the sessionPlaylist can be stored 💚 We Gucci
                         }
-                        className="button-standard"
-                    >
-                        Delete them
-                    </button>
+                        colorScheme="danger"
+                    />
                 </div>
             )}
         </>

@@ -1,14 +1,10 @@
-import { useEffect, useState } from "react";
-import DropdownMenusByLevel from "./DropdownMenusByLevel/DropdownMenusByLevel";
-import styles from "@/src/application/styles/Home.module.css";
-import axios from "axios";
-import InputsSelector from "./InputsSelector/InputsSelector";
-import NationalitiesSelector from "./NationalitiesSelector/NationalitiesSelector";
-import ActiveElements from "./ActiveElements/ActiveElements";
+// TODO: Filters non é in uso al momento, probabilmente necessita profondo refactor 🧠👇🔴👇
 
-//================================================================================
-// Filters Bar
-//================================================================================
+import { useEffect, useState } from "react";
+import styles from "@/src/application/styles/Home.module.css";
+import { Button } from "zephyrus-components";
+import customStyles from "@/src/application/styles/Zephyrus.module.css";
+
 export default function FiltersBar({
     filters,
     updateFilters,
@@ -61,21 +57,23 @@ export default function FiltersBar({
             )}
 
             <div className={styles.uiControls}>
-                <button
+                <Button
+                    size="small"
+                    type="button"
+                    label={"Remove filters"}
+                    customStyles={customStyles}
                     onClick={() => {
                         deleteAllFilters({});
                         setFilterSelect(undefined);
                     }}
-                    className="button-standard"
-                >
-                    Remove filters
-                </button>
-                <button
+                />
+                <Button
+                    size="small"
+                    type="button"
+                    label={"Close"}
+                    customStyles={customStyles}
                     onClick={() => closeFilters(false)}
-                    className="button-standard"
-                >
-                    Close
-                </button>
+                />
             </div>
         </div>
     );
@@ -101,7 +99,7 @@ const FiltersUI = ({
     // const [dataByTypes, setDataByTypes] = useState(undefined);
 
     useEffect(() => {
-        console.log("FiltersUI renders: ", filters);
+        // console.log("FiltersUI renders: ", filters);
     }, []);
 
     useEffect(() => {
@@ -140,11 +138,6 @@ const FiltersUI = ({
     }, [data]);
     */
 
-    // console.log("topic: ", topic);
-    // console.log("data: ", data);
-    // console.log("obj: ", obj);
-    // console.log("dataByTypes: ", dataByTypes);
-
     return (
         <div className={styles.filtersUI}>
             {topic && (
@@ -159,7 +152,7 @@ const FiltersUI = ({
                             <>
                                 <div className={styles.allData}>
                                     <div className={styles.content}>
-                                        {typeof data === "object" &&
+                                        {/* {typeof data === "object" &&
                                             !Array.isArray(data) && (
                                                 <DropdownMenusByLevel
                                                     obj={data}
@@ -192,7 +185,7 @@ const FiltersUI = ({
                                                 styles={styles}
                                                 topic={topic}
                                             />
-                                        )}
+                                        )} */}
                                         {/* {topic === "type" && (
                                         <DropdownMenusByLevel
                                             filters={filters[topic]}
@@ -206,12 +199,12 @@ const FiltersUI = ({
                                 </div>
 
                                 <div className={styles.selectedData}>
-                                    <ActiveElements
+                                    {/* <ActiveElements
                                         arr={filters[topic]}
                                         handleChildState={updateFilters}
                                         styles={styles}
                                         topic={topic}
-                                    />
+                                    /> */}
                                 </div>
                             </>
                         ) : (

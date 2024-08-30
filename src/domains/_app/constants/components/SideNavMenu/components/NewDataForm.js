@@ -1,6 +1,6 @@
 import { useState } from "react";
-import styles from "@/src/application/styles/AdminDashboard.module.css";
-import Form from "@/src/domains/_app/components/Form/components/Form";
+import styles from "@/src/domains/_app/constants/components/SideNavMenu/SideNavMenu.module.css";
+import FormWrap from "@/src/domains/_app/components/Form/components/FormWrap";
 import Cookies from "js-cookie";
 import { selectFormStoreUI } from "@/src/application/redux/slices/formSlice";
 import { shallowEqual, useSelector } from "react-redux";
@@ -22,7 +22,6 @@ export default function NewDataForm({ formLabel }) {
 
     const handleFormChange = (label) => !uiState.drawerIsOpen && setUI(label);
 
-    console.log("NewDataForm: ", { formLabel, UI, uiState });
     return (
         <>
             {/* 👇 CHANGE DOWN HERE: make flexible 👇 */}
@@ -93,7 +92,7 @@ export default function NewDataForm({ formLabel }) {
                 </div>
             )}
 
-            <Form
+            <FormWrap
                 formLabel={UI}
                 // handleEditsInParent={addNewToPlaylist}
                 // parentIsWaiting={true}

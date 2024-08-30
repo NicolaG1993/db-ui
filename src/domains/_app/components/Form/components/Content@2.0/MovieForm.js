@@ -1,83 +1,44 @@
 import styles from "@/src/domains/_app/components/Form/components/Form.module.css";
-import { useState } from "react";
-import InputTextToArray from "@/src/domains/_app/components/Inputs/InputTextToArray/InputTextToArray";
+
+import customStyles from "@/src/application/styles/Zephyrus.module.css";
 import {
-    selectFormState,
-    selectFormStoreErrors,
-    selectFormStoreSettings,
-    selectFormPropsData,
-    validateForm,
-    selectFormIsLoadingResponse,
-    updateFormState,
-    openSideNav,
-    selectFormIsLoading,
-    selectFormIsFinish,
-} from "@/src/application/redux/slices/formSlice";
-import { shallowEqual, useDispatch, useSelector } from "react-redux";
-import {
-    createObjectURL,
-    revokeObjectURL,
-} from "@/src/domains/_app/actions/useLocalImages";
-import InputImage from "@/src/domains/_app/components/Inputs/InputImage/InputImage";
-import InputText from "@/src/domains/_app/components/Inputs/InputText/InputText";
-import InputFake from "@/src/domains/_app/components/Inputs/InputFake/InputFake";
-import InputRating from "@/src/domains/_app/components/Inputs/InputRating/InputRating";
-import InputDate from "@/src/domains/_app/components/Inputs/InputDate/InputDate";
+    InputText,
+    InputDate,
+    InputFake,
+    InputImage,
+    InputRating,
+    InputTextToArray,
+    Button,
+} from "zephyrus-components";
 
-export default function MovieForm({ confirmChanges }) {
-    const formState = useSelector(selectFormState, shallowEqual);
-    const propsData = useSelector(selectFormPropsData, shallowEqual);
-    const form = useSelector(selectFormStoreSettings, shallowEqual);
-    const errors = useSelector(selectFormStoreErrors, shallowEqual);
-    let isLoading = useSelector(selectFormIsLoading, shallowEqual);
-    const isLoadingResponse = useSelector(
-        selectFormIsLoadingResponse,
-        shallowEqual
-    );
-    const isFinish = useSelector(selectFormIsFinish, shallowEqual);
-
-    const dispatch = useDispatch();
-
-    const [newImage, setNewImage] = useState();
-
-    const handleNewImage = (e) => {
-        const imgFile = e.target.files["0"];
-        const file = {
-            location: createObjectURL(imgFile),
-            key: imgFile.name,
-            file: imgFile,
-        };
-        setNewImage(file);
-        dispatch(updateFormState({ val: file.location, topic: "pic" }));
-    };
-
-    const handleRemoveImage = (imgFile) => {
-        if (imgFile) {
-            revokeObjectURL(imgFile);
-            setNewImage();
-        }
-        if (formState.pic) {
-            dispatch(updateFormState({ val: "", topic: "pic" }));
-        }
-    };
+export default function MovieForm({
+    formState,
+    formSettings,
+    formErrors,
+    propsData,
+    isLoading,
+    // isLoadingResponse,
+    isFinish,
+    handleAddImage,
+    handleRemoveImage,
+    handleDrawer,
+    onFormChange,
+    onFormValidate,
+    onSubmit,
+}) {
+    // const handleUrls = (newArray) => {
+    //     onFormChange &&
+    //         onFormChange({
+    //             val: newArray,
+    //             topic: "urls",
+    //         });
+    // };
 
     //================================================================================
     // Render UI
     //================================================================================
     return (
-        <form
-            onSubmit={(e) =>
-                confirmChanges({
-                    e,
-                    formState,
-                    newImage,
-                    form,
-                    propsData,
-                    formLabel: form.key,
-                })
-            }
-            className={styles.form}
-        >
+        <>
             <div className={styles.body}>
                 <div className={styles["form-subheading"]}>
                     <h5>• Info</h5>
@@ -86,14 +47,12 @@ export default function MovieForm({ confirmChanges }) {
                 <div className={styles["form-row"]}>
                     <InputImage
                         file={formState.pic}
-                        onAddFile={(e) => handleNewImage(e)}
-                        onDeleteFile={() =>
-                            handleRemoveImage({
-                                imgFile: newImage,
-                            })
-                        }
+                        onAddFile={(e) => handleAddImage(e)}
+                        onDeleteFile={handleRemoveImage}
                         height={200}
                         width={250}
+                        error={formErrors.pic}
+                        customStyles={customStyles}
                     />
                 </div>
 
@@ -101,27 +60,14 @@ export default function MovieForm({ confirmChanges }) {
                     <InputText
                         name="title"
                         id="Title"
+                        label={true}
                         isMandatory={true}
                         value={formState.title}
-                        onChange={(e) =>
-                            dispatch(
-                                updateFormState({
-                                    val: e.target.value,
-                                    topic: e.target.name,
-                                })
-                            )
-                        }
-                        onBlur={(e) =>
-                            dispatch(
-                                validateForm({
-                                    name: e.target.name,
-                                    value: e.target.value,
-                                    id: e.target.id,
-                                })
-                            )
-                        }
+                        onChange={(e) => onFormChange({ e })}
+                        onBlur={(e) => onFormValidate(e)}
                         placeholder="Type the title here..."
-                        error={errors.title}
+                        error={formErrors.title}
+                        customStyles={customStyles}
                     />
                 </div>
 
@@ -129,16 +75,27 @@ export default function MovieForm({ confirmChanges }) {
                     <InputTextToArray
                         name={"urls"}
                         id={"Urls"}
+                        label={true}
                         formState={formState}
-                        onChange={(val, topic) =>
-                            dispatch(
-                                updateFormState({
-                                    val,
-                                    topic,
-                                })
-                            )
+                        onChange={(newArray) =>
+                            onFormChange({
+                                val: newArray,
+                                topic: "urls",
+                            })
                         }
+                        // FIX: not finished 🔴👇
+                        // onDelete={(e) => onUrlDelete(e)}
+                        // onDelete={(newArray) =>
+                        //     // TODO: Dobbiamo riceve index invece di usare event in questo caso 🔴🧠
+                        //     onFormChange({
+                        //         val: newArray,
+                        //         topic: "urls",
+                        //     })
+                        // }
+                        // FIX: "e" contiene solo current input value, ma noi dobbiamo fargli fare il merge con quelli gia presenti.
+                        // e gestire anche il delete! 🧠
                         placeholder="Type URL here...   "
+                        customStyles={customStyles}
                     />
                 </div>
 
@@ -146,31 +103,16 @@ export default function MovieForm({ confirmChanges }) {
                     <InputRating
                         name={"rating"}
                         id={"Rating"}
+                        label={true}
                         step="0.01"
                         max="5"
-                        onChange={(e) =>
-                            dispatch(
-                                updateFormState({
-                                    val: Number(
-                                        parseFloat(e.target.value).toFixed(2)
-                                    ),
-                                    topic: e.target.name,
-                                })
-                            )
-                        }
-                        onBlur={(e) =>
-                            dispatch(
-                                validateForm({
-                                    name: e.target.name,
-                                    value: e.target.value,
-                                    id: e.target.id,
-                                })
-                            )
-                        }
+                        onChange={(e) => onFormChange({ e })}
+                        onBlur={(e) => onFormValidate(e)}
                         value={formState.rating}
                         placeholder="Type your rating (max 5.00)"
                         isMandatory={true}
-                        error={errors.rating}
+                        error={formErrors.rating}
+                        customStyles={customStyles}
                     />
                 </div>
 
@@ -178,15 +120,12 @@ export default function MovieForm({ confirmChanges }) {
                     <InputDate
                         name={"release"}
                         id={"Release"}
-                        onChange={(e) =>
-                            dispatch(
-                                updateFormState({
-                                    val: e.target.value,
-                                    topic: e.target.name,
-                                })
-                            )
-                        }
+                        label={true}
+                        onChange={(e) => onFormChange({ e })}
+                        // onBlur={(e) => onFormValidate(e)}
                         value={formState.release ? formState.release : ""}
+                        error={formErrors.birthday}
+                        customStyles={customStyles}
                     />
                 </div>
 
@@ -198,10 +137,12 @@ export default function MovieForm({ confirmChanges }) {
                     <InputFake
                         name={"actors"}
                         id={"Actors"}
+                        label={true}
                         selected={formState.actors?.length || 0}
                         onClick={() => {
-                            dispatch(openSideNav("actors"));
+                            handleDrawer("actors");
                         }}
+                        customStyles={customStyles}
                     />
                 </div>
 
@@ -209,10 +150,12 @@ export default function MovieForm({ confirmChanges }) {
                     <InputFake
                         name={"categories"}
                         id={"Categories"}
+                        label={true}
                         selected={formState.categories?.length || 0}
                         onClick={() => {
-                            dispatch(openSideNav("categories"));
+                            handleDrawer("categories");
                         }}
+                        customStyles={customStyles}
                     />
                 </div>
 
@@ -220,10 +163,12 @@ export default function MovieForm({ confirmChanges }) {
                     <InputFake
                         name={"tags"}
                         id={"Tags"}
+                        label={true}
                         selected={formState.tags?.length || 0}
                         onClick={() => {
-                            dispatch(openSideNav("tags"));
+                            handleDrawer("tags");
                         }}
+                        customStyles={customStyles}
                     />
                 </div>
 
@@ -231,10 +176,12 @@ export default function MovieForm({ confirmChanges }) {
                     <InputFake
                         name={"production"}
                         id={"Production"}
+                        label={true}
                         selected={formState.studios?.length || 0}
                         onClick={() => {
-                            dispatch(openSideNav("studios"));
+                            handleDrawer("studios");
                         }}
+                        customStyles={customStyles}
                     />
                 </div>
 
@@ -242,10 +189,12 @@ export default function MovieForm({ confirmChanges }) {
                     <InputFake
                         name={"distribution"}
                         id={"Distribution"}
+                        label={true}
                         selected={formState.distributions?.length || 0}
                         onClick={() => {
-                            dispatch(openSideNav("distributions"));
+                            handleDrawer("distributions");
                         }}
+                        customStyles={customStyles}
                     />
                 </div>
             </div>
@@ -253,15 +202,15 @@ export default function MovieForm({ confirmChanges }) {
             {/* Si puo fare component di footer, é sempre uguale */}
             <div className={styles.footer}>
                 <div className={styles["buttons-box"]}>
-                    <button
+                    <Button
+                        size="medium"
                         type="submit"
-                        disabled={isLoading || isFinish} //  🧠 isLoading o isLoadingResponse meglio?
-                        className="button-standard"
-                    >
-                        Confirm
-                    </button>
+                        disabled={isLoading || isFinish} // isLoadingResponse ?
+                        label="Confirm"
+                        customStyles={customStyles}
+                    />
                 </div>
             </div>
-        </form>
+        </>
     );
 }

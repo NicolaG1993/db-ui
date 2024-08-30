@@ -6,6 +6,7 @@ import {
     connect,
 } from "@/src/application/db/db.js";
 import { getAllMoviesWithInfos } from "@/src/application/db/utils/item.js";
+import { mapMoviesRawToMovies } from "@/src/domains/el/utils/mapData";
 
 export default async function handler(req, res) {
     if (req.method === "GET") {
@@ -51,8 +52,10 @@ export default async function handler(req, res) {
                 Number(offset),
                 orderString
             );
+            // console.log("🎃⛽👉 getAllMoviesWithInfos rows: ", rows);
             await commit(client);
-            res.status(200).send(rows);
+            const mappedMovies = mapMoviesRawToMovies(rows);
+            res.status(200).send(mappedMovies);
         } catch (err) {
             await rollback(client);
             console.error(err);

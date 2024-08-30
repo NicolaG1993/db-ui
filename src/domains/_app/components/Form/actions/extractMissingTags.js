@@ -5,12 +5,6 @@ export default function extractMissingTags(
     relationsObj,
     sourceData
 ) {
-    console.log("extractMissingTags 1: ", {
-        currentTags,
-        relationsObj,
-        sourceData,
-    });
-
     /*
         // call API for retrieving ids full objects
         const { data } = await axiosAuthInstance.get("/api/list/filtered", {
@@ -28,11 +22,6 @@ export default function extractMissingTags(
     // we want an array of tag objects
     const missingTagsIDs = extractMissingTagsIDs(currentTags, relationsObj);
     const missingTags = sourceData.filter((t) => missingTagsIDs.includes(t.id));
-
-    console.log("extractMissingTags 2: ", {
-        missingTagsIDs,
-        missingTags,
-    });
 
     /*
         const res = await axiosAuthInstance.get("/api/list/filtered", {

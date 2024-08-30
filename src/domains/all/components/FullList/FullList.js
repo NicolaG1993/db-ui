@@ -3,21 +3,41 @@ import { useEffect, useState } from "react";
 import styles from "./FullList.module.css";
 import dataStructureGroups from "@/src/application/settings/dataStructureGroups";
 
-import FiltersBar from "../Filters/Filters";
-import { fetchDataForFilter } from "@/src/domains/_app/actions/customFetchers";
+// import FiltersBar from "../Filters/Filters";
+// import { fetchDataForFilter } from "@/src/domains/_app/actions/customFetchers";
 import { getError } from "@/src/application/utils/error";
 
 import FullListHeading from "./FullListHeading";
-import FullListSearchBar from "./FullListSearchBar";
-import FullListDisplayer from "./FullListDisplayer";
 import fetchAllData from "../../actions/fetchAllData";
 import fetchFilteredData from "../../actions/fetchFilteredData";
 import scrollToTop from "@/src/domains/_app/utils/scrollToTop";
+import { Pagination, SearchBar } from "zephyrus-components";
+import customStyles from "@/src/application/styles/Zephyrus.module.css";
+import {
+    addToSessionPlaylist,
+    removeElementFromSessionPlaylist,
+    selectSessionPlaylist,
+} from "@/src/application/redux/slices/sessionPlaylistSlice";
+import { shallowEqual, useDispatch, useSelector } from "react-redux";
+import { useAppContext } from "@/src/domains/_app/contexts/AppContext";
+import { useRouter } from "next/router";
+import {
+    activateLoadingItem,
+    clearItem,
+} from "@/src/application/redux/slices/itemSlice";
+
+/*
+TODO: Keep this component as wrap (handle data and declare dynamic functions here!)
+*/
 
 export default function FullList({ tableName }) {
     //================================================================================
     // Component State
     //================================================================================
+    const router = useRouter();
+    const dispatch = useDispatch();
+    const { showTooltip, hideTooltip } = useAppContext();
+    let sessionPlaylist = useSelector(selectSessionPlaylist, shallowEqual);
     let table = dataStructureGroups[tableName];
 
     const [displayData, setDisplayData] = useState();
@@ -50,6 +70,7 @@ export default function FullList({ tableName }) {
                 order: order,
             };
             const data = await fetchAllData(url, params);
+            console.log("fetchAllData 🧑‍🏭🧠🐉: ", data);
             setDisplayData(data);
         } catch (err) {
             console.log("ERROR!", getError(err)); // TODO: proper error message in UI
@@ -120,9 +141,10 @@ export default function FullList({ tableName }) {
     }, [selectedPage, step, order]);
 
     useEffect(() => {
+        console.log("displayData changes: ", displayData);
         if (displayData && displayData.length) {
             // full_count is stored inside every row
-            const val = displayData[0].full_count;
+            const val = displayData[0].fullCount;
             setTotalCount(Number(val));
         } else {
             setTotalCount(0);
@@ -137,12 +159,16 @@ export default function FullList({ tableName }) {
         scrollToTop();
     };
 
-    const handleSearchBar = (e) => {
-        e.preventDefault();
-        setSearchBar(e.target.value);
+    const handleSearchBar = (str) => {
+        // console.log("handleSearchBar: ", str);
+        setSearchBar(str);
     };
+    // const handleSearchBar = (e) => {
+    //     e.preventDefault();
+    //     setSearchBar(e.target.value);
+    // };
 
-    const handleSelect = (e) => {
+    const handleSorting = (e) => {
         e.preventDefault();
         setOrder(e.target.value);
     };
@@ -163,6 +189,29 @@ export default function FullList({ tableName }) {
         }
     };
 
+    const clearPreviousItem = () => {
+        dispatch(clearItem());
+        dispatch(activateLoadingItem());
+    };
+
+    const onMouseOver = (title, description, e) => {
+        showTooltip(title, description, e);
+    };
+    const onMouseOut = () => {
+        hideTooltip();
+    };
+    const onClickCard = ({ id, label }) => {
+        clearPreviousItem();
+        router.push(`/el/${label}/${id}`);
+    };
+
+    const addToPlaylist = (obj) => {
+        dispatch(addToSessionPlaylist(obj));
+    };
+    const removeFromPlaylist = (obj) => {
+        dispatch(removeElementFromSessionPlaylist(obj));
+    };
+
     //================================================================================
     // Render UI
     //================================================================================
@@ -170,14 +219,24 @@ export default function FullList({ tableName }) {
         <main className={styles.fullList}>
             <FullListHeading tableName={tableName} />
 
-            <FullListSearchBar
-                filtersBar={filtersBar}
-                searchBar={searchBar}
-                handleSearchBar={handleSearchBar}
-                toggleFilters={toggleFiltersBar}
-            />
+            <div className={styles.searchBarWrap}>
+                <SearchBar
+                    version="input-only"
+                    value={searchBar}
+                    onChange={handleSearchBar}
+                    customStyles={customStyles}
+                    // toggleFilters={toggleFiltersBar} // TODO? 🧠
+                    // filtersBar={filtersBar} // TODO? 🧠
+                />
+                {/* <span
+                onClick={() => toggleFilters()}
+                className={styles.filtersToggle}
+            >
+                {filtersBar ? "Close" : "Filters"}
+            </span> */}
+            </div>
 
-            {filtersBar && (
+            {/* {filtersBar && (
                 <FiltersBar
                     filters={filters}
                     updateFilters={updateFilters}
@@ -186,22 +245,30 @@ export default function FullList({ tableName }) {
                     allLabels={["tags", "nationalities"]}
                     fetchData={fetchDataForFilter}
                 />
-            )}
+            )} */}
 
             {isError ? (
                 <div>{isError}</div>
             ) : (
-                <FullListDisplayer
+                <Pagination
                     table={table}
-                    tableName={tableName}
+                    // tableName={tableName}
                     displayData={displayData}
                     goToPage={goToPage}
                     step={step}
                     selectedPage={selectedPage}
                     order={order}
+                    handleSorting={handleSorting}
                     totalCount={totalCount}
-                    handleSelect={handleSelect}
                     isLoading={isLoading || !displayData}
+                    currentPlaylist={sessionPlaylist}
+                    cardHasOverlay={table.itemGroup === "movies"} // Fix when we have overlay also for actor card 🧠
+                    onMouseOver={onMouseOver}
+                    onMouseOut={onMouseOut}
+                    onClickCard={onClickCard}
+                    onAddItem={addToPlaylist}
+                    onRemoveItem={removeFromPlaylist}
+                    customStyles={customStyles}
                 />
             )}
         </main>

@@ -225,6 +225,8 @@ body {
         Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 html {
     color-scheme: dark;
@@ -284,8 +286,8 @@ ul {
     margin: 0;
 }
 
+/*
 button {
-    /* border-radius: 3px; */
     border-radius: 10px;
     cursor: pointer;
     transition: 0.08s ease-out;
@@ -294,7 +296,7 @@ button {
 button:hover {
     box-shadow: var(--shadow000);
 }
-button:disabled {
+ button:disabled {
     color: var(--bg700);
     background-color: var(--bg300);
     border: 1px solid var(--bg500);
@@ -337,7 +339,7 @@ button:disabled:hover {
     background-color: var(--dangerBg000);
     border: 1px solid var(--dangerBg000);
     color: white;
-}
+} 
 
 .button-with-icon {
     display: grid;
@@ -356,7 +358,6 @@ button:disabled:hover {
 }
 .button-with-icon > div:first-child > span {
     font-size: 16px;
-    /* margin-right: 6px; */
     width: 45px;
 }
 .button-with-icon > span:nth-child(2) {
@@ -364,24 +365,27 @@ button:disabled:hover {
     justify-self: left;
     margin: 0 16px 0 20px;
 }
+*/
 
-input,
+/* input,
 select {
     background-color: var(--bg400);
     border: 1px solid var(--bg800);
     padding: 3px;
     border-radius: 3px;
-}
+} */
 select {
     cursor: pointer;
 }
-input:hover {
+/* input:hover {
     background-color: var(--bg500);
-    border: 1px solid var(--bg800);
+    border: none;
+    outline: 1px solid var(--bg800);
 }
 select:hover {
-    border: 1px solid var(--bg900);
-}
+    border: none;
+    outline: 1px solid var(--bg900);
+} */
 
 *::-webkit-scrollbar {
     width: 1em;
@@ -409,51 +413,6 @@ select:hover {
 }
 
 /* CUSTOM ELEMENTS */
-#Overlay {
-    position: fixed;
-    height: 100%;
-    width: 100%;
-    z-index: 100;
-    left: 0;
-    top: 55px;
-    background: var(--overlayB);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-#Overlay > .overlayWindow {
-    /* position: absolute; */
-    /* transform: translate(50%, 0%); */
-    /* border: 1px var(--text) solid; */
-    border: 1px var(--bg600) solid;
-    background: var(--bg200);
-    border-radius: 25px;
-    width: 66vw;
-    max-width: 1000px;
-    /* width: 500px; */
-    /* padding: 1em 0; */
-    margin-top: 2em;
-    margin-bottom: 8em;
-    position: relative;
-}
-#Overlay > .overlayWindow > .topBar {
-    width: 100%;
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    /* margin-bottom: 1rem; */
-    position: absolute;
-    padding: 1rem 1.25rem;
-    top: 0;
-    left: 0;
-    z-index: 2;
-}
-#Overlay > .overlayWindow > .topBar > span {
-    cursor: pointer;
-    font-weight: bold;
-    /* float: right; */
-    /* margin-right: 1em; */
-}
 
 .unselectedEl,
 .selectedEl {

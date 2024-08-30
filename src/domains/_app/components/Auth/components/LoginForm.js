@@ -8,9 +8,11 @@ import {
     userLogin,
 } from "@/src/application/redux/slices/userSlice.js";
 import { emailValidation } from "@/src/application/utils/validateForms.js";
-import { getError } from "@/src/application/utils/error.js";
+// import { getError } from "@/src/application/utils/error.js";
 import loginUser from "@/src/domains/_app/components/Auth/actions/loginUser.js";
-import InputText from "@/src/domains/_app/components/Inputs/InputText/InputText";
+
+import { Button, InputText } from "zephyrus-components";
+import customStyles from "@/src/application/styles/Zephyrus.module.css";
 
 export default function LoginForm({ handleTab }) {
     //================================================================================
@@ -32,37 +34,72 @@ export default function LoginForm({ handleTab }) {
     // Functions
     //================================================================================
     const validateData = (e) => {
-        e.preventDefault();
         const { id, name, value } = e.target;
 
-        let newErrObj = { ...errors };
+        let error = "";
         if (id === "Email") {
-            const resp = emailValidation(value);
-            if (resp) {
-                setErrors({ ...errors, [name]: resp });
+            error = emailValidation(value);
+        } else if (id === "Password" && !value) {
+            error = "Password is required";
+        }
+
+        setErrors((prevErrors) => {
+            const newErrors = { ...prevErrors };
+            if (error) {
+                newErrors[name] = error;
             } else {
-                delete newErrObj[name];
-                setErrors(newErrObj);
+                delete newErrors[name];
             }
+            return newErrors;
+        });
+    };
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+
+        // Clear the error for the field that is being typed in
+        setErrors((prevErrors) => {
+            const newErrors = { ...prevErrors };
+            delete newErrors[name];
+            return newErrors;
+        });
+
+        if (name === "email") {
+            setEmail(value);
+        } else if (name === "password") {
+            setPassword(value);
         }
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if (Object.keys(errors).length === 0) {
+        let isValid = true;
+
+        // Validate email
+        const emailError = emailValidation(email);
+        if (emailError) {
+            setErrors((prevErrors) => ({ ...prevErrors, email: emailError }));
+            isValid = false;
+        }
+
+        // Validate password
+        if (!password) {
+            setErrors((prevErrors) => ({
+                ...prevErrors,
+                password: "Password is required",
+            }));
+            isValid = false;
+        }
+
+        if (isValid) {
             try {
                 const resp = await loginUser(email, password);
                 dispatch(userLogin(resp));
                 // router.push("/");
             } catch (err) {
-                // console.log("Login error: ", err);
-                // alert(getError(err));
-
                 const errorCode = err.response?.data?.code;
                 const errorMessage = err.response?.data?.error;
                 if (errorCode === "EMAIL_NOT_VERIFIED") {
-                    // router.push(`/unverified-email?email=${formData.email}`);
-                    // router.push(`/account/verify`);
                     handleTab("notVerified");
                 } else if (
                     errorCode === "EMAIL_NOT_FOUND" ||
@@ -70,9 +107,6 @@ export default function LoginForm({ handleTab }) {
                 ) {
                     alert(errorMessage);
                 } else {
-                    console.log("Login error: ", err);
-                    // setErrors({ ...errors, response: true });
-                    // alert(getError(err));
                     alert("Server error, try again.");
                 }
             }
@@ -92,11 +126,13 @@ export default function LoginForm({ handleTab }) {
                         type="email"
                         name="email"
                         id="Email"
+                        label={true}
                         isMandatory={true}
                         value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        onBlur={(e) => validateData(e)}
+                        onChange={handleChange}
+                        onBlur={validateData}
                         error={errors.email}
+                        customStyles={customStyles}
                     />
                 </div>
                 <div className={styles.inputWrap}>
@@ -104,15 +140,23 @@ export default function LoginForm({ handleTab }) {
                         type="password"
                         name="password"
                         id="Password"
+                        label={true}
                         isMandatory={true}
                         value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        onBlur={(e) => validateData(e)}
+                        onChange={handleChange}
+                        onBlur={validateData}
                         error={errors.password}
+                        customStyles={customStyles}
                     />
                 </div>
                 <div className={styles.buttonWrap}>
-                    <button className="button-standard">Login</button>
+                    <Button
+                        type="submit"
+                        disabled={errors.email || errors.password}
+                        size="medium"
+                        label="Login"
+                        customStyles={customStyles}
+                    />
                 </div>
             </form>
 

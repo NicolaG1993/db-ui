@@ -1,6 +1,8 @@
 import { userLogout } from "@/src/application/redux/slices/userSlice";
 import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
+import { Button } from "zephyrus-components";
+import customStyles from "@/src/application/styles/Zephyrus.module.css";
 
 const LogoutButton = () => {
     const router = useRouter();
@@ -12,9 +14,13 @@ const LogoutButton = () => {
     };
 
     return (
-        <button onClick={() => handleLogout()} className="button-standard">
-            Logout
-        </button>
+        <Button
+            type="button"
+            size="medium"
+            label="Logout"
+            customStyles={customStyles}
+            onClick={() => handleLogout()}
+        />
     );
 };
 

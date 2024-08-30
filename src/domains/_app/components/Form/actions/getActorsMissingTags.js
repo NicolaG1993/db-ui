@@ -14,13 +14,6 @@ export default function getActorsMissingTags({
     originalFormState,
     propsData,
 }) {
-    console.log("🔴 getActorsMissingTags: ", {
-        currentSelection,
-        currentTags,
-        originalFormState,
-        propsData,
-    });
-
     let allActorsTags = []; // all tags from selected actors // former "allTags"
     let allActorsTagsIds = []; //former "allTagsIds"
     let allActorsIDs = [];
@@ -94,21 +87,7 @@ che in actor removed ?
         removedTags = currentTags.filter(({ id }) =>
             removedActorsTags.find((t) => t.id === id)
         );
-
-        console.log("🔴 getActorsMissingTags PT. II: ", {
-            allActorsIDs,
-            removedActors,
-            removedTags,
-            removedActorsData,
-            removedActorsTags,
-            // allSelectedTags,
-        });
     }
-
-    console.log("🔴 getActorsMissingTags PT. III: ", {
-        missingTags: deleteDuplicates(missingTags),
-        removedTags: deleteDuplicates(removedTags),
-    });
 
     return {
         missingTags: deleteDuplicates(missingTags),
@@ -122,12 +101,6 @@ async function oldFn({
     originalFormState,
     propsData,
 }) {
-    console.log("🔴 getActorsMissingTags: ", {
-        currentSelection,
-        currentTags,
-        originalFormState,
-        propsData,
-    });
     // 🧠 IN TEORIA "ACTOR" OBJECT LO RICEVO GIA NEL FORM
     // NO NEED TO CALL API AGAIN
 
@@ -169,13 +142,6 @@ async function oldFn({
             removedActorsRes = res.data;
             */
         }
-
-        console.log("🔴 getActorsMissingTags PT. II: ", {
-            removedActorsRes,
-            removedActors,
-            allActorsIDs,
-            data,
-        });
 
         // PARSING RESPONSE
         // NEW TAGS

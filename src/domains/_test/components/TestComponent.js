@@ -2,6 +2,8 @@ import styles from "@/src/application/styles/Test.module.css";
 import { useState } from "react";
 import { useRouter } from "next/router";
 import axiosAuthInstance from "@/src/application/utils/axiosAuthInstance";
+import { Button } from "zephyrus-components";
+import customStyles from "@/src/application/styles/Zephyrus.module.css";
 
 export default function TestComponent({ formState, updateState }) {
     const [label, setLabel] = useState("");
@@ -80,9 +82,15 @@ export default function TestComponent({ formState, updateState }) {
                 />
             </div>
 
-            <button onClick={handleSubmit} className="button-danger">
-                DELETE
-            </button>
+            <Button
+                size="medium"
+                type="button"
+                colorScheme="danger"
+                label={"DELETE"}
+                customStyles={customStyles}
+                onClick={handleSubmit}
+                disabled={true}
+            />
         </form>
     );
 }

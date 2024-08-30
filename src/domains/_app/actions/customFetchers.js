@@ -14,7 +14,7 @@ const fetchDataForFilter = async (str, topic, TAGS_OBJ) => {
             const res = await axiosAuthInstance.get(`/api/list/all`, {
                 params: { table: itemLabel },
             });
-            console.log("res: ", res.data);
+
             if (topic === "tags") {
                 let result = groupJsonByValue(res.data, "type");
                 return parseTagsByType(result, TAGS_OBJ);

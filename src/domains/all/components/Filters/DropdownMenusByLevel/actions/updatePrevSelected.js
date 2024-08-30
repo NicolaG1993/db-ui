@@ -7,15 +7,7 @@ const updatePrevSelected = ({
 }) => {
     const prevSelectedClone = [...prevSelected];
     const selectedClone = [...selected];
-    console.log("🌸 updatePrevSelected: ", {
-        value,
-        userAction,
-        prevSelected,
-        selected,
-        prevSelectedClone,
-        selectedClone,
-        topic,
-    });
+
     let res = [];
 
     if (topic === "nationalities") {

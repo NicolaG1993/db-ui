@@ -6,6 +6,7 @@ import {
     connect,
 } from "@/src/application/db/db.js";
 import { getPlaylistWithInfos } from "@/src/application/db/utils/playlist.js";
+import { mapPlaylistRawToPlaylist } from "@/src/domains/el/utils/mapData";
 
 export default async function handler(req, res) {
     if (req.method === "GET") {
@@ -20,7 +21,10 @@ export default async function handler(req, res) {
                 Number(user)
             );
             await commit(client);
-            res.status(200).json(rows[0]);
+
+            const mappedData = mapPlaylistRawToPlaylist(rows[0]);
+
+            res.status(200).json(mappedData);
         } catch (err) {
             await rollback(client);
             console.log("ERROR!", err);

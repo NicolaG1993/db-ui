@@ -1,6 +1,7 @@
 /* 
 #ElMain {} 
 */
+
 .main p {
     margin: 0;
 }
@@ -11,6 +12,14 @@
     flex-direction: column;
     align-items: flex-start;
     justify-content: flex-start;
+}
+
+.tournament {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 /* HEADING */

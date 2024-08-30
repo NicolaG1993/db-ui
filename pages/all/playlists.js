@@ -10,6 +10,8 @@ import deletePlaylist from "@/src/domains/playlists/actions/deletePlaylist.js";
 
 import styles from "@/src/application/styles/Records.module.css"; // 🧠❌ Wrong file location, create a separate one or move rest to global
 import { useRouter } from "next/router";
+import { Button, IconEdit, IconPlay, IconTrash } from "zephyrus-components";
+import customStyles from "@/src/application/styles/Zephyrus.module.css";
 
 export default function Playlists() {
     const router = useRouter();
@@ -26,7 +28,7 @@ export default function Playlists() {
     const getAllPlaylists = async () => {
         try {
             let data = await fetchAllPlaylists("", userInfo.id);
-            console.log("⭐ fetchAllPlaylists: ", data);
+
             setAllPlaylists(data);
         } catch (err) {
             console.log("err: ", err);
@@ -58,41 +60,20 @@ export default function Playlists() {
             <div className={"heading"}>
                 <h1>YOUR PLAYLISTS</h1>
                 <div className={styles.buttonsWrap}>
-                    <button
-                        className={"button-standard button-with-icon"}
+                    <Button
+                        size="large"
+                        label="Session playlist editor"
+                        customStyles={customStyles}
                         onClick={() => router.push("/el/playlist/editor")}
-                    >
-                        <div>
-                            <span>🪄</span>
-                        </div>
-                        <span>Session playlist editor</span>
-                    </button>
-
-                    <button
-                        className={"button-standard button-with-icon"}
+                        icon={<IconEdit />}
+                    />
+                    <Button
+                        size="large"
+                        label="Tournament Session"
+                        customStyles={customStyles}
                         onClick={() => router.push("/el/playlist/tournament")}
-                    >
-                        <div>
-                            <span>🏁</span>
-                        </div>
-                        <span>Tournament Session</span>
-                    </button>
-
-                    {/* <Link
-                        href={`/el/playlist/editor`}
-                        title={"Playlist Editor"}
-                        className={styles.fakeBtn + " " + "button-standard"}
-                    >
-                        🪄 Session playlist editor →
-                    </Link> 
-                    <Link
-                        href={`/el/playlist/tournament`}
-                        title={"Tournament Session"}
-                        className={styles.fakeBtn + " " + "button-standard"}
-                    >
-                        🏁 Tournament Session →
-                    </Link>
-                    */}
+                        icon={<IconPlay />}
+                    />
                 </div>
             </div>
 
@@ -127,18 +108,19 @@ export default function Playlists() {
                                 <strong>{elToDelete.title}</strong>? This
                                 playlist will be forever lost
                             </p>
-                            <button
+                            <Button
+                                size="medium"
+                                label="Go back"
+                                customStyles={customStyles}
                                 onClick={cancelDelete}
-                                className="button-standard"
-                            >
-                                Go back
-                            </button>
-                            <button
+                            />
+                            <Button
+                                size="medium"
+                                label="Delete"
+                                customStyles={customStyles}
+                                colorScheme={"danger"}
                                 onClick={() => confirmDelete()}
-                                className="button-danger"
-                            >
-                                Confirm
-                            </button>
+                            />
                         </div>
                     </div>
                 </div>

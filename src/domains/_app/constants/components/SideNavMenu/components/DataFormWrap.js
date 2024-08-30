@@ -30,12 +30,6 @@ export default function DataFormWrap() {
     let isFinish = useSelector(selectFormIsFinish);
     let formRes = useSelector(selectFormResponse, shallowEqual);
 
-    console.log("DataFormWrap: ", {
-        isFormOpen,
-        propsData,
-        singleFormLabel,
-    });
-
     // We need to restore this after refactoring - maybe move logic in redux 🧠👇
     // This is called only for movie and only for SessionPlaylist (seams a edge case to me - maybe to store and handle somewhere else?
     const addNewToPlaylist = (obj) => {

@@ -7,6 +7,7 @@ import {
 } from "@/src/application/db/db.js";
 import { getAllStudios } from "@/src/application/db/utils/item.js";
 import { getAllRelations } from "@/src/application/db/utils/utils.js";
+import { mapStudiosRawToStudios } from "@/src/domains/el/utils/mapData";
 
 export default async function handler(req, res) {
     if (req.method === "GET") {
@@ -23,7 +24,9 @@ export default async function handler(req, res) {
                 return { ...o, count: count };
             });
             await commit(client);
-            res.status(200).send(finalObj);
+            const mappedStudios = mapStudiosRawToStudios(finalObj);
+
+            res.status(200).send(mappedStudios);
         } catch (err) {
             await rollback(client);
             console.log("API ERROR: ", err);

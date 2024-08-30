@@ -5,9 +5,10 @@ import {
     removeElementFromSessionPlaylist,
     selectSessionPlaylist,
 } from "@/src/application/redux/slices/sessionPlaylistSlice";
-// import styles from "@/src/application/styles/Element.module.css";
 import { useState, useEffect } from "react";
 import { useDispatch, shallowEqual, useSelector } from "react-redux";
+import { Button } from "zephyrus-components";
+import customStyles from "@/src/application/styles/Zephyrus.module.css";
 
 export default function SessionPlaylistAddBtn({ el }) {
     let sessionPlaylist = useSelector(selectSessionPlaylist, shallowEqual);
@@ -35,15 +36,20 @@ export default function SessionPlaylistAddBtn({ el }) {
     }, [sessionPlaylist]);
 
     return isClone ? (
-        <button
+        <Button
+            size="mini"
+            type="button"
+            label="Remove from session"
+            customStyles={customStyles}
             onClick={() => deleteFromPlaylist(el)}
-            className="button-standard"
-        >
-            Remove from session
-        </button>
+        />
     ) : (
-        <button onClick={() => addToPlaylist(el)} className="button-standard">
-            Add to session
-        </button>
+        <Button
+            size="mini"
+            type="button"
+            label="Add to session"
+            customStyles={customStyles}
+            onClick={() => addToPlaylist(el)}
+        />
     );
 }

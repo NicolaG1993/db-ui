@@ -6,7 +6,7 @@ import {
     deleteSessionPlaylist,
     removeFromSessionPlaylist,
     shuffleSessionPlaylist,
-    addToSessionPlaylist,
+    // addToSessionPlaylist,
     updateSessionPlaylist,
 } from "@/src/application/redux/slices/sessionPlaylistSlice";
 import SavePlaylistForm from "@/src/domains/_app/constants/components/SessionPlaylist/components/SavePlaylistForm.js";
@@ -15,8 +15,9 @@ import {
     openForm,
     resetFormStore,
 } from "@/src/application/redux/slices/formSlice";
-import PlaylistEditor from "@/src/domains/playlists/components/PlaylistEditor/PlaylistEditor";
-import Modal from "@/src/domains/_app/components/Modal/Modal";
+// import PlaylistEditor from "@/src/domains/playlists/components/PlaylistEditor/PlaylistEditor";
+import { Button, IconBackArrow, Modal, Playlist } from "zephyrus-components";
+import customStyles from "@/src/application/styles/Zephyrus.module.css";
 
 export default function EditorPlaylist() {
     const [saveModal, setSaveModal] = useState(false);
@@ -31,11 +32,9 @@ export default function EditorPlaylist() {
     const overridePlaylist = (playlist) => {
         dispatch(updateSessionPlaylist(playlist));
     };
-    const clearPreviousItem = (id) => {
-        if (id.toString() !== router.query.id) {
-            dispatch(clearItem());
-            dispatch(activateLoadingItem());
-        }
+    const clearPreviousItem = () => {
+        dispatch(clearItem());
+        dispatch(activateLoadingItem());
     };
 
     const removeFromPlaylist = (i) => {
@@ -55,6 +54,11 @@ export default function EditorPlaylist() {
         }
     };
 
+    const handleRouting = async (url) => {
+        clearPreviousItem();
+        router.push(url);
+    };
+
     const closeModal = () => {
         setSaveModal(false);
     };
@@ -63,21 +67,28 @@ export default function EditorPlaylist() {
         <main>
             <div className={"heading"}>
                 <h1>PLAYLISTS EDITOR</h1>
-                {/* <Link href={`/all/playlists`} title={"All playlists"}>
-                    ← All playlists
-                </Link> */}
-                <button
-                    className={"button-standard button-with-icon"}
+
+                <Button
+                    size="large"
+                    label="All playlists"
+                    customStyles={customStyles}
                     onClick={() => router.push("/el/playlist/tournament")}
-                >
-                    <div>
-                        <span>◀</span>
-                    </div>
-                    <span>All playlists</span>
-                </button>
+                    icon={<IconBackArrow />}
+                />
             </div>
 
-            <PlaylistEditor
+            <Playlist
+                playlist={sessionPlaylist}
+                removeFromPlaylist={removeFromPlaylist}
+                overridePlaylist={overridePlaylist}
+                deletePlaylist={deletePlaylist}
+                shufflePlaylist={shufflePlaylist}
+                size={"page"}
+                handleParentUI={handleParentUI}
+                handleRouting={handleRouting}
+                customStyles={customStyles}
+            />
+            {/* <PlaylistEditor
                 playlist={sessionPlaylist} // 🧠 We should be able to choose any playlist (or sessionPlaylist) in this case 🧠
                 removeFromPlaylist={removeFromPlaylist}
                 clearPreviousItem={clearPreviousItem}
@@ -86,10 +97,14 @@ export default function EditorPlaylist() {
                 shufflePlaylist={shufflePlaylist}
                 size={"page"}
                 handleParentUI={handleParentUI}
-            />
+            /> */}
 
-            {/*  🧠 Maybe we should move this to Layout or something.. like Form */}
-            <Modal isOpen={saveModal} onClose={closeModal}>
+            {/*  👇👇🧠🧠 Maybe we should move this to Layout or something.. like Form */}
+            <Modal
+                isOpen={saveModal}
+                onClose={closeModal}
+                customStyles={customStyles}
+            >
                 {saveModal && !!sessionPlaylist?.length && (
                     <div className={"modal-container"}>
                         <SavePlaylistForm

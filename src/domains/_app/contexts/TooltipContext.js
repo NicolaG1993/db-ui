@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
-import Tooltip from "@/src/domains/_app/constants/components/Tooltip/Tooltip";
 import { useRouter } from "next/router";
+import { Tooltip } from "zephyrus-components";
 
 export const TooltipContext = createContext();
 

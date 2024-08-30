@@ -8,31 +8,46 @@ import {
 import {
     getAllActorsWithInfos,
     getAllMoviesWithInfos,
+    searchStudios,
 } from "@/src/application/db/utils/item.js";
 
 export default async function handler(req, res) {
     if (req.method === "GET") {
-        let { str } = req.query;
+        let { str, table } = req.query;
         console.log("QUERY: ", str);
         const client = await connect();
         try {
             await begin(client);
-            const actors = await getAllActorsWithInfos(
-                client,
-                str,
-                10,
-                0,
-                "actor.name ASC"
-            );
-            const movies = await getAllMoviesWithInfos(
-                client,
-                str,
-                10,
-                0,
-                "movie.title ASC"
-            );
+            let response;
+            if (table === "movie") {
+                response = await getAllMoviesWithInfos(
+                    client,
+                    str,
+                    10,
+                    0,
+                    "movie.title ASC"
+                );
+            } else if (table === "actor") {
+                response = await getAllActorsWithInfos(
+                    client,
+                    str,
+                    10,
+                    0,
+                    "actor.name ASC"
+                );
+            } else if (table === "studio") {
+                response = await searchStudios(
+                    client,
+                    str,
+                    10,
+                    0,
+                    "movie.title ASC"
+                );
+            }
+
+            console.log("RESPONSE: ", str);
             await commit(client);
-            res.status(200).send({ groupA: actors.rows, groupB: movies.rows });
+            res.status(200).send({ data: response.rows });
         } catch (err) {
             await rollback(client);
             console.log(err);

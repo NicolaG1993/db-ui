@@ -3,7 +3,8 @@ import styles from "@/src/domains/_app/components/Auth/AuthModal.module.css";
 import { emailValidation } from "@/src/application/utils/validateForms";
 import { getError } from "@/src/application/utils/error";
 import recoveryPassword from "../actions/recoveryPassword";
-import InputText from "@/src/domains/_app/components/Inputs/InputText/InputText";
+import { Button, InputText } from "zephyrus-components";
+import customStyles from "@/src/application/styles/Zephyrus.module.css";
 
 export default function PasswordRecoveryForm({ handleTab }) {
     const [step, setStep] = useState(1);
@@ -60,17 +61,22 @@ export default function PasswordRecoveryForm({ handleTab }) {
                             type="email"
                             name="email"
                             id="Email"
+                            label={true}
                             isMandatory={true}
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                             onBlur={(e) => validateData(e)}
                             error={errors.email}
+                            customStyles={customStyles}
                         />
                     </div>
                     <div className={styles.buttonWrap}>
-                        <button type="submit" className="button-standard">
-                            Recover Password
-                        </button>
+                        <Button
+                            type="submit"
+                            size="medium"
+                            label="Recover Password"
+                            customStyles={customStyles}
+                        />
                     </div>
                 </form>
 

@@ -7,15 +7,23 @@ import {
 import axiosAuthInstance from "@/src/application/utils/axiosAuthInstance";
 
 // BETA 💛
-export default async function createItem({ formState, form, propsData }) {
-    console.log("createItem invoked 🧠: ", { formState, form, propsData });
+export default async function createItem({
+    formState,
+    formSettings,
+    propsData,
+}) {
+    console.log("createItem invoked 🧠: ", {
+        formState,
+        formSettings,
+        propsData,
+    });
     let relatedData;
-    if (form.relations) {
+    if (formSettings.relations) {
         // 🟢 invece di chiamare API per avere relations potrei passare direttamente id da component - invece di name
         // é inutile API qui perché id di relations sono unici e non modificabili
-        relatedData = parseFormRelations(form.relations, formState); // reduce all form selected relations to arrays of ids
+        relatedData = parseFormRelations(formSettings.relations, formState); // reduce all form selected relations to arrays of ids
         // relatedData = await parseFormRelationsPromise(
-        //     form.relations,
+        //     formSettings.relations,
         //     formState
         // );
         console.log("🧠 relatedData: ", relatedData); // {name: string, id: string}[]
@@ -29,7 +37,7 @@ export default async function createItem({ formState, form, propsData }) {
             (relationsObj = parseFormRelationsEdit(relatedData, propsData)); // 🟡 ! TESTARE !
         console.log("🧠 relationsObj: ", relationsObj);
 
-        return axiosAuthInstance.put(form.APImodify, {
+        return axiosAuthInstance.put(formSettings.APImodify, {
             ...formState,
             ...relationsObj,
         });
@@ -58,7 +66,7 @@ export default async function createItem({ formState, form, propsData }) {
         //     // }
         // });
 
-        return axiosAuthInstance.post(form.APInew, {
+        return axiosAuthInstance.post(formSettings.APInew, {
             ...formState,
             ...relatedData,
         });

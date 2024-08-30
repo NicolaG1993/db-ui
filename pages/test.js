@@ -1,6 +1,8 @@
 import { getError } from "@/src/application/utils/error";
 import TestComponent from "@/src/domains/_test/components/TestComponent";
 import { useEffect, useState } from "react";
+import customStyles from "@/src/application/styles/Zephyrus.module.css";
+import { Button } from "zephyrus-components";
 
 // export default function Test() {
 //     const [formState, setFormState] = useState({ name: "" });
@@ -49,7 +51,13 @@ export default function Test() {
     return (
         <main>
             <h1>Test Area</h1>
-            <button onClick={(e) => confirmChanges(e)}>Create item</button>
+
+            <Button
+                size="medium"
+                label="Create item"
+                onClick={(e) => confirmChanges(e)}
+                customStyles={customStyles}
+            />
 
             {error && <div className="form-error">{error}</div>}
         </main>

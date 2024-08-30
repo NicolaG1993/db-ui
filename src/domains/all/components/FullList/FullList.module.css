@@ -1,3 +1,23 @@
 .fullList {
     /* position: relative; */
 }
+
+/* FULL LIST SEARCH BAR*/
+/* TODO: Move to zephyrus? 👇🧠*/
+.searchBarWrap {
+    display: flex;
+    position: relative;
+    margin-bottom: 4rem;
+}
+.filtersToggle {
+    position: absolute;
+    cursor: pointer;
+    /* margin: 0 0.3em; */
+    right: -0.7em;
+    transform: translate(100%);
+    /* transform: translate(calc(100% + 0.3em)); */
+}
+.filtersToggle:hover {
+    /* text-decoration: underline; */
+    color: var(--bg900);
+}

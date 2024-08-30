@@ -51,7 +51,6 @@ const cleanFalseRelations = (obj) => {
 
 // used to extract new realtions from array of objects
 const newRelationsStandardMethod = (arr, propsData, key) => {
-    console.log("newRelationsStandardMethod: ", { arr, propsData, key });
     return arr.filter(
         (id) =>
             !propsData[key]
@@ -94,7 +93,6 @@ const parseFormRelationsEdit = (allRelations, propsData) => {
     let addedRelations = {};
     let removedRelations = {};
 
-    console.log("parseFormRelationsEdit: ", { allRelations, propsData });
     if (allRelations) {
         Object.entries(allRelations).map(([key, arr], i) => {
             if (key === "nationalities") {
@@ -137,8 +135,6 @@ const parseFormRelationsEdit = (allRelations, propsData) => {
                     .filter(({ id }) => !arr.includes(id))
                     .map((el) => el.id);
             }
-            console.log("addedRelations: ", addedRelations);
-            console.log("removedRelations: ", removedRelations);
         });
     }
 

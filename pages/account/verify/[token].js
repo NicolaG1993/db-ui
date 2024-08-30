@@ -2,6 +2,8 @@ import verifyUser from "@/src/domains/_app/components/Auth/actions/verifyUser";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 // import { useDispatch } from "react-redux";
+import { Button } from "zephyrus-components";
+import customStyles from "@/src/application/styles/Zephyrus.module.css";
 
 export default function VerifyEmail() {
     const router = useRouter();
@@ -64,16 +66,24 @@ export default function VerifyEmail() {
                         <>
                             <h2>Error</h2>
                             <p>{response}</p>
-                            <button onClick={() => router.push("/")}>
-                                Go back to login
-                            </button>
+                            <Button
+                                size="medium"
+                                type="button"
+                                label="Go back to login"
+                                customStyles={customStyles}
+                                onClick={() => router.push("/")}
+                            />
                         </>
                     ) : (
                         <>
                             <p>{response}</p>
-                            <button onClick={() => router.push("/")}>
-                                Proceed to login
-                            </button>
+                            <Button
+                                size="medium"
+                                type="button"
+                                label="Proceed to login"
+                                customStyles={customStyles}
+                                onClick={() => router.push("/")}
+                            />
                         </>
                     )
                 ) : (

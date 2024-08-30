@@ -69,64 +69,84 @@ module.exports.editActor = (
 
 module.exports.getAllActorsWithInfos = (client, str, limit, offset, order) => {
     const myQuery = `SELECT 
-        actor.*,
-        COUNT(*) OVER() AS full_count,
-        movies_JSON.movies,
-        tags_JSON.tags,
-        nationalities_JSON.nationalities
-    FROM
-        actor
-
-        LEFT JOIN
-
-            (SELECT
-                movie_actor.actorID,
-                JSON_AGG(
-                    JSON_BUILD_OBJECT(
-                        'id', movie.id,
-                        'title', movie.title,
-                        'pic', movie.pic
-                        )
-                ) AS movies
-            FROM
-                movie_actor
-                JOIN movie ON movie.id = movie_actor.movieID
-            GROUP BY
-                movie_actor.actorID
-        ) AS movies_JSON
-            ON actor.id = movies_JSON.actorID
-
-        LEFT JOIN (
-        
-        SELECT
-          tagRelation.actorID,
-          JSON_AGG(
-            JSON_BUILD_OBJECT(
-              'id', tag.id,
-              'name', tag.name)
-            ) AS tags
-        FROM tagRelation 
-          JOIN tag
-            ON tag.id = tagRelation.tagID
-          GROUP BY tagRelation.actorID
-            
-      ) AS tags_JSON
-        ON actor.id = tags_JSON.actorID
+    actor.*,
+    COUNT(*) OVER() AS full_count,
+    movies_count.total_movies,
+    movies_JSON.movies,
+    tags_JSON.tags,
+    nationalities_JSON.nationalities
+FROM
+    actor
 
     LEFT JOIN
-        (SELECT
+    (
+        SELECT
+            movie_actor.actorID,
+            COUNT(movie_actor.movieID) AS total_movies
+        FROM
+            movie_actor
+        GROUP BY
+            movie_actor.actorID
+    ) AS movies_count
+    ON actor.id = movies_count.actorID
+
+    LEFT JOIN
+    (
+        SELECT
+            movie_actor.actorID,
+            JSON_AGG(
+                JSON_BUILD_OBJECT(
+                    'id', movie.id,
+                    'title', movie.title,
+                    'pic', movie.pic
+                )
+            ) AS movies
+        FROM
+            movie_actor
+            JOIN movie ON movie.id = movie_actor.movieID
+        GROUP BY
+            movie_actor.actorID
+    ) AS movies_JSON
+    ON actor.id = movies_JSON.actorID
+
+    LEFT JOIN
+    (
+        SELECT
+            tagRelation.actorID,
+            JSON_AGG(
+                JSON_BUILD_OBJECT(
+                    'id', tag.id,
+                    'name', tag.name
+                )
+            ) AS tags
+        FROM
+            tagRelation 
+            JOIN tag ON tag.id = tagRelation.tagID
+        GROUP BY 
+            tagRelation.actorID
+    ) AS tags_JSON
+    ON actor.id = tags_JSON.actorID
+
+    LEFT JOIN
+    (
+        SELECT
             nationalityRelation.actorID,
             JSON_AGG(
                 nationalityRelation.nationality
             ) AS nationalities
-            FROM nationalityRelation
-            GROUP BY nationalityRelation.actorID
-        ) AS nationalities_JSON
-        ON actor.id = nationalities_JSON.actorID
+        FROM
+            nationalityRelation
+        GROUP BY
+            nationalityRelation.actorID
+    ) AS nationalities_JSON
+    ON actor.id = nationalities_JSON.actorID
 
-        WHERE actor.name ILIKE '%' || $1 || '%'
-        ORDER BY ${order}
-        LIMIT $2 OFFSET $3
+WHERE 
+    actor.name ILIKE '%' || $1 || '%'
+ORDER BY 
+    ${order}
+LIMIT 
+    $2 OFFSET $3
         `;
     const keys = [str, limit, offset];
     return client.query(myQuery, keys);
@@ -858,11 +878,26 @@ module.exports.editStudio = (client, id, name, pic, website) => {
 };
 
 module.exports.getAllStudios = (client, str) => {
+    const myQuery = `SELECT 
+    studio.*, 
+    COUNT(*) OVER() AS full_count
+FROM 
+    studio
+WHERE 
+    name ILIKE '%' || $1 || '%' 
+    OR website ILIKE '%' || $1 || '%'
+ORDER BY 
+    name`;
+    const key = [str];
+    return client.query(myQuery, key);
+};
+module.exports.searchStudios = (client, str, limit, offset) => {
     const myQuery = `SELECT * 
     FROM studio 
     WHERE name ILIKE '%' || $1 || '%' OR website ILIKE '%' || $1 || '%'
-    ORDER BY name`;
-    const key = [str];
+    ORDER BY name
+    LIMIT $2 OFFSET $3`;
+    const key = [str, limit, offset];
     return client.query(myQuery, key);
 };
 
@@ -970,10 +1005,16 @@ module.exports.editDistribution = (client, id, name, pic, website) => {
 };
 
 module.exports.getAllDistributions = (client, str) => {
-    const myQuery = `SELECT * 
-    FROM distribution 
-    WHERE name ILIKE '%' || $1 || '%' OR website ILIKE '%' || $1 || '%'
-    ORDER BY name`;
+    const myQuery = `SELECT 
+    distribution.*, 
+    COUNT(*) OVER() AS full_count
+FROM 
+    distribution
+WHERE 
+    name ILIKE '%' || $1 || '%' 
+    OR website ILIKE '%' || $1 || '%'
+ORDER BY 
+    name`;
     const key = [str];
     return client.query(myQuery, key);
 };
@@ -1081,10 +1122,16 @@ module.exports.editCategory = (client, id, name, pic, type) => {
 };
 
 module.exports.getAllCategories = (client, str) => {
-    const myQuery = `SELECT * 
-    FROM category
-    WHERE name ILIKE '%' || $1 || '%' OR type ILIKE '%' || $1 || '%'
-    ORDER BY name`;
+    const myQuery = `SELECT 
+    category.*, 
+    COUNT(*) OVER() AS full_count
+FROM 
+    category
+WHERE 
+    name ILIKE '%' || $1 || '%' 
+    OR type ILIKE '%' || $1 || '%'
+ORDER BY 
+    name`;
     const key = [str];
     return client.query(myQuery, key);
 };
@@ -1191,10 +1238,16 @@ module.exports.editTag = (client, id, name, pic, type) => {
 };
 
 module.exports.getAllTags = (client, str) => {
-    const myQuery = `SELECT * 
-    FROM tag 
-    WHERE name ILIKE '%' || $1 || '%' OR type ILIKE '%' || $1 || '%'
-    ORDER BY name`;
+    const myQuery = `SELECT 
+    tag.*, 
+    COUNT(*) OVER() AS full_count
+FROM 
+    tag
+WHERE 
+    name ILIKE '%' || $1 || '%' 
+    OR type ILIKE '%' || $1 || '%'
+ORDER BY 
+    name`;
     const key = [str];
     return client.query(myQuery, key);
 };

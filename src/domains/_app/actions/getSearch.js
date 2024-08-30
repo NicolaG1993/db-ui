@@ -1,18 +1,20 @@
 import axiosAuthInstance from "@/src/application/utils/axiosAuthInstance";
 
-export default async function getSearch(searchBar) {
+export default async function getSearch({ str, group }) {
     let res = { data: undefined, error: undefined };
-    if (searchBar) {
+    if (str && group) {
         try {
             const { data } = await axiosAuthInstance.get(
                 `/api/search/searchbar`,
                 {
                     params: {
-                        str: searchBar,
+                        str: str,
+                        table: group,
                     },
                 }
             );
-            res.data = data;
+
+            res.data = data.data;
         } catch (error) {
             res.error = error;
         }

@@ -1,18 +1,16 @@
 import styles from "@/src/application/styles/Element.module.css";
 import Link from "next/link";
 import Image from "next/image";
-import Form from "@/src/domains/_app/components/Form/components/Form";
-import RelationsList from "@/src/domains/el/components/RelationsList/RelationsList";
 import {
     detectImage,
     parseTagsForUiList,
 } from "@/src/domains/_app/utils/parsers";
 import { formatDateEU, getAge } from "@/src/application/utils/convertTimestamp";
-import IG_icon from "/public/IG_icon.svg";
-import X_icon from "/public/X_icon.svg";
-import Modal from "@/src/domains/_app/components/Modal/Modal";
-import renderLinks from "@/src/domains/el/utils/renderLinks";
 import extractItemInfo from "@/src/domains/el/utils/extractItemInfo";
+import { Button, ItemRow } from "zephyrus-components";
+import customStyles from "@/src/application/styles/Zephyrus.module.css";
+import InfiteScrollingWrap from "../InfiteScrollingWrap";
+import { useRouter } from "next/router";
 
 /*
 Form "open" and "close" should be handled in redux
@@ -45,7 +43,7 @@ export default function Actor({
         id,
         pic,
         rating,
-        movies,
+        // movies,
         nameType,
         twitter,
         instagram,
@@ -60,309 +58,185 @@ export default function Actor({
         totalMovies,
     } = item;
 
+    const router = useRouter();
     const itemInfo = extractItemInfo(tags || []);
-    console.log("Actor: ", { itemInfo });
+
     let {} = itemInfo;
+
+    const handleRouting = (url) => {
+        router.push(url);
+    }; // 🧠 Should move to Item component and pass as prop (?)
 
     return (
         <div id={styles.Actor} className={styles.elWrap}>
-            <div className={styles.infoWrap}>
-                <div className={styles.picWrap}>
-                    <Image
-                        src={pic ? pic : detectImage(item)}
-                        alt={item[nameType]}
-                        fill
-                        style={{ objectFit: "cover" }}
+            <div className={styles.infosBlock}>
+                <div className={styles.infoWrap}>
+                    <div className={styles.picWrap}>
+                        <Image
+                            src={pic ? pic : detectImage(item)}
+                            alt={item[nameType]}
+                            fill
+                            style={{ objectFit: "cover" }}
+                        />
+                    </div>
+
+                    <div className={styles.underPicWrap}>
+                        <h1>{item[nameType]}</h1>
+                        <ItemRow
+                            label={"Rating"}
+                            value={rating ? rating : "Unrated"}
+                            customStyles={customStyles}
+                        />
+                    </div>
+                </div>
+
+                <div className={styles.infoWrap}>
+                    <div className={styles.infoHeadingWrap}>
+                        <h3>PERSONAL INFO</h3>
+                    </div>
+                    <ItemRow
+                        label={"Birthday"}
+                        value={birthday && formatDateEU(birthday)}
+                        customStyles={customStyles}
+                    />
+                    <ItemRow
+                        label={"Age"}
+                        value={birthday && `${getAge(birthday)} y.o.`}
+                        customStyles={customStyles}
+                    />
+                    <ItemRow
+                        label={"Genre"}
+                        value={genre}
+                        customStyles={customStyles}
+                    />
+                    <ItemRow
+                        label={"Nationality"}
+                        group={"nationalities"}
+                        values={nationalities}
+                        onClick={handleRouting}
+                        customStyles={customStyles}
+                    />
+                    <ItemRow
+                        label={"Hair"}
+                        group={"tag"}
+                        arr={itemInfo?.Hair}
+                        onClick={handleRouting}
+                        customStyles={customStyles}
+                    />
+                    <ItemRow label={"Eyes color"} customStyles={customStyles} />
+                    {/* TODO 🧠 */}
+                    <ItemRow
+                        label={"Ethnicity"}
+                        group={"tag"}
+                        arr={itemInfo?.Ethnicity}
+                        onClick={handleRouting}
+                        customStyles={customStyles}
+                    />
+                    <ItemRow
+                        label={"Body type"}
+                        group={"tag"}
+                        arr={itemInfo?.["Body Types"]}
+                        onClick={handleRouting}
+                        customStyles={customStyles}
+                    />
+                    <ItemRow
+                        label={"Social"}
+                        socials={{ instagram, twitter }}
+                        customStyles={customStyles}
+                    />
+                    <ItemRow
+                        label={"Links"}
+                        urls={moreUrls}
+                        customStyles={customStyles}
                     />
                 </div>
 
-                <div className={styles.underPicWrap}>
-                    <h1>{item[nameType]}</h1>
-                    <div className={styles.elRow}>
-                        <span>Rating: </span>
-                        {rating ? <p>{rating}</p> : <p>Unrated</p>}
+                <div className={styles.infoWrap}>
+                    <div className={styles.infoHeadingWrap}>
+                        <h3>MISC. INFO</h3>
+                    </div>
+
+                    <ItemRow
+                        label={"Tags"}
+                        parsedData={parseTagsForUiList(tags)}
+                        group={"tag"}
+                        onClick={handleRouting}
+                        customStyles={customStyles}
+                    />
+
+                    <ItemRow
+                        label={"Categories"}
+                        parsedData={parseTagsForUiList(categories)}
+                        group={"category"}
+                        onClick={handleRouting}
+                        customStyles={customStyles}
+                    />
+
+                    <ItemRow
+                        label={"Studios"}
+                        arr={studios}
+                        group={"studio"}
+                        onClick={handleRouting}
+                        customStyles={customStyles}
+                    />
+
+                    <ItemRow
+                        label={"Distribution"}
+                        arr={distributions}
+                        group={"distribution"}
+                        onClick={handleRouting}
+                        customStyles={customStyles}
+                    />
+
+                    <ItemRow
+                        label={"Tot. Clips"}
+                        value={totalMovies}
+                        customStyles={customStyles}
+                    />
+                </div>
+
+                <div className={styles.infoWrap}>
+                    <div className={styles.infoHeadingWrap}>
+                        <h3>ACTIONS</h3>
+                    </div>
+
+                    <div className={styles.itemButtonsWrap}>
+                        <Button
+                            size="medium"
+                            type="button"
+                            label="Modify"
+                            customStyles={customStyles}
+                            onClick={() => setFormIsOpen(true, item)}
+                        />
+                        <Button
+                            size="medium"
+                            type="button"
+                            label="Delete"
+                            colorScheme="danger"
+                            customStyles={customStyles}
+                            onClick={() => handleDelete(id)}
+                        />
                     </div>
                 </div>
             </div>
 
-            <div className={styles.infoWrap}>
-                <div className={styles.infoHeadingWrap}>
-                    <h3>PERSONAL INFO</h3>
-                </div>
+            <div className={styles.infosBlock}>
+                <div className={styles.infoWrap}>
+                    <div className={styles.infoHeadingWrap}>
+                        <h3>MOVIES</h3>
 
-                <div className={styles.elRow}>
-                    <span>Birthday: </span>
-                    <p>{birthday ? formatDateEU(birthday) : "N/A"}</p>
-                </div>
-
-                <div className={styles.elRow}>
-                    <span>Age: </span>
-                    {birthday ? <p>{getAge(birthday)} y.o.</p> : <p>N/A</p>}
-                </div>
-
-                <div className={styles.elRow}>
-                    <span>Genre: </span>
-                    {genre ? <p>{genre}</p> : <p>N/A</p>}
-                </div>
-
-                <div className={styles.elRow}>
-                    <span>Nationality: </span>
-                    <div className={styles.tagsWrap}>
-                        {nationalities ? (
-                            nationalities.map((el) => (
-                                <Link
-                                    href={`/el/nationality/${el}`}
-                                    key={"nationality " + el}
-                                    className={styles.tagEl}
-                                >
-                                    {el}
-                                </Link>
-                            ))
-                        ) : (
-                            <p>N/A</p>
+                        {totalMovies > 0 && (
+                            <Link href="/search">see all ({totalMovies})</Link> // 🧠 TODO: Landing page for this link - or just remove it!
                         )}
                     </div>
-                </div>
 
-                <div className={styles.elRow}>
-                    <span>Hair: </span>
-                    <div className={styles.tagsWrap}>
-                        {itemInfo && itemInfo.Hair ? (
-                            itemInfo.Hair.map((el) => (
-                                <Link
-                                    href={`/el/tag/${el.id}`}
-                                    key={"hair " + el.id}
-                                    className={styles.tagEl}
-                                >
-                                    {el.name}
-                                </Link>
-                            ))
-                        ) : (
-                            <p>N/A</p>
-                        )}
-                    </div>
-                </div>
-
-                <div className={styles.elRow}>
-                    <span>Eyes color: </span>
-                    <p>{"N/A"}</p>
-                </div>
-
-                <div className={styles.elRow}>
-                    <span>Ethnicity: </span>
-                    <div className={styles.tagsWrap}>
-                        {itemInfo && itemInfo.Ethnicity ? (
-                            itemInfo.Ethnicity.map((el) => (
-                                <Link
-                                    href={`/el/tag/${el.id}`}
-                                    key={"ethnicity " + el.id}
-                                    className={styles.tagEl}
-                                >
-                                    {el.name}
-                                </Link>
-                            ))
-                        ) : (
-                            <p>N/A</p>
-                        )}
-                    </div>
-                </div>
-
-                <div className={styles.elRow}>
-                    <span>Body type: </span>
-                    <div className={styles.tagsWrap}>
-                        {itemInfo && itemInfo["Body Types"] ? (
-                            itemInfo["Body Types"].map((el) => (
-                                <Link
-                                    href={`/el/tag/${el.id}`}
-                                    key={"bodyType " + el.id}
-                                    className={styles.tagEl}
-                                >
-                                    {el.name}
-                                </Link>
-                            ))
-                        ) : (
-                            <p>N/A</p>
-                        )}
-                    </div>
-                </div>
-
-                <div className={styles.elRow}>
-                    <span>Social: </span>
-                    <div>
-                        {instagram && (
-                            <a
-                                href={instagram}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className={styles.iconLink}
-                            >
-                                <X_icon />
-                            </a>
-                        )}
-                        {twitter && (
-                            <a
-                                href={twitter}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className={styles.iconLink}
-                            >
-                                <IG_icon />
-                            </a>
-                        )}
-                    </div>
-                </div>
-
-                {!!moreUrls?.length && (
-                    <div className={styles.elRow}>
-                        <span>Links: </span>
-                        <div>
-                            {moreUrls.map((url, i) => (
-                                <a
-                                    href={url}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    key={`${url} ${i}`}
-                                    className={styles.linkEl}
-                                >
-                                    <p>{url}</p>
-                                </a>
-                            ))}
-                        </div>
-                    </div>
-                )}
-            </div>
-
-            <div className={styles.infoWrap}>
-                <div className={styles.infoHeadingWrap}>
-                    <h3>MISC. INFO</h3>
-                </div>
-
-                <div className={styles.elRowToScroll}>
-                    <span>Tags: </span>
-                    <div className={styles.tagLabelsWrap}>
-                        {tags && renderLinks(parseTagsForUiList(tags), "tag")}
-                    </div>
-                </div>
-
-                <div className={styles.elRowToScroll}>
-                    <span>Categories: </span>
-
-                    <div className={styles.tagLabelsWrap}>
-                        {categories &&
-                            renderLinks(
-                                parseTagsForUiList(categories),
-                                "category"
-                            )}
-                    </div>
-                </div>
-
-                <div className={styles.elRow}>
-                    <span>Studios: </span>
-                    <div className={styles.tagsWrap}>
-                        {studios && studios.length ? (
-                            studios.map((el) => (
-                                <Link
-                                    href={`/el/studio/${el.id}`}
-                                    key={"studio" + el.id}
-                                    className={styles.tagEl}
-                                >
-                                    {el.name}
-                                </Link>
-                            ))
-                        ) : (
-                            <p>N/A</p>
-                        )}
-                    </div>
-                </div>
-
-                <div className={styles.elRow}>
-                    <span>Distribution: </span>
-                    <div className={styles.tagsWrap}>
-                        {distributions && distributions.length ? (
-                            distributions.map((el) => (
-                                <Link
-                                    href={`/el/distribution/${el.id}`}
-                                    key={"distribution" + el.id}
-                                    className={styles.tagEl}
-                                >
-                                    {el.name}
-                                </Link>
-                            ))
-                        ) : (
-                            <p>N/A</p>
-                        )}
-                    </div>
-                </div>
-
-                <div className={styles.elRow}>
-                    <span>Tot. Clips: </span>
-                    <p>{totalMovies}</p>
+                    <InfiteScrollingWrap
+                        itemId={id}
+                        itemLabel={label}
+                        relationsGroup={"movies"}
+                    />
                 </div>
             </div>
-
-            {/* FIX THIS 👇⚠️🧠
-            
-                • Infinite scrolling for data
-                • Improve UI (window is too small and should be attached to bottom of the page - no extra scrolling, is annoying)
-                • We could rework the list design
-                • We should add sorting
-
-                TODO:
-
-                🧠 "movies" should be a separate API request, that works with pagination
-                • "Tot Movies" dobbiamo averlo giá dall'inizio
-                • Le nuove pagine di "movies" vengo aggiunte a quelle gia ottenute, non sostituite
-                • Pagination dev'essere triggered quando user é in fondo alla lista + animazione caricamento
-                • Dobbiamo avere sorting 
-                
-            */}
-            <div className={styles.infoWrap}>
-                <div className={styles.infoHeadingWrap}>
-                    <h3>MOVIES</h3>
-
-                    {totalMovies > 0 && (
-                        <Link href="/search">see all ({totalMovies})</Link>
-                    )}
-                </div>
-
-                <RelationsList
-                    itemName={item[nameType]}
-                    itemId={id}
-                    itemLabel={label}
-                    nameType={nameType}
-                    relationsLabel={"movie"} // fare dinamici ? no perche custom component
-                    relationsGroup={"movies"}
-                />
-            </div>
-
-            <div className={styles.infoWrap}>
-                <div className={styles.infoHeadingWrap}>
-                    <h3>ACTIONS</h3>
-                </div>
-
-                <div className={styles.buttonsWrap}>
-                    <button
-                        onClick={() => setFormIsOpen(true, item)}
-                        className="button-standard"
-                    >
-                        Modify
-                    </button>
-                    <button
-                        onClick={() => handleDelete(id)}
-                        className="button-danger"
-                    >
-                        Delete
-                    </button>
-                </div>
-            </div>
-
-            {/* <Modal isOpen={openForm} onClose={() => setFormIsOpen(false)}>
-                <Form
-                    formLabel={label}
-                    propsData={item}
-                    handleEditsInParent={handleEdits}
-                />
-            </Modal> */}
         </div>
     );
 }

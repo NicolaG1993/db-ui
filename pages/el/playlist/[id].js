@@ -1,13 +1,20 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { selectUserState } from "@/src/application/redux/slices/userSlice.js";
-import Link from "next/link";
+// import Link from "next/link";
 import styles from "@/src/application/styles/Records.module.css";
-import PlaylistMovie from "@/src/domains/playlists/components/PlaylistMovie/PlaylistMovie.js";
+// import PlaylistMovie from "@/src/domains/playlists/components/PlaylistMovie/PlaylistMovie.js";
 import getPlaylist from "@/src/domains/playlists/actions/getPlaylist.js";
+import { Button, IconBackArrow, Playlist } from "zephyrus-components";
+import customStyles from "@/src/application/styles/Zephyrus.module.css";
+import {
+    activateLoadingItem,
+    clearItem,
+} from "@/src/application/redux/slices/itemSlice";
 
-export default function Playlist() {
+export default function PlaylistPreview() {
+    const dispatch = useDispatch();
     const router = useRouter();
     const { id } = router.query;
 
@@ -31,9 +38,51 @@ export default function Playlist() {
         }
     };
 
+    const clearPreviousItem = () => {
+        dispatch(clearItem());
+        dispatch(activateLoadingItem());
+    };
+
+    const handleRouting = async (url) => {
+        clearPreviousItem();
+        router.push(url);
+    };
+
     return (
         <main>
             {playlist ? (
+                <>
+                    <div className={"heading"}>
+                        <h1>{playlist.title}</h1>
+                        <div className={styles.buttonsWrap}>
+                            <Button
+                                size="large"
+                                label="All playlists"
+                                customStyles={customStyles}
+                                onClick={() => router.push("/all/playlists")}
+                                icon={<IconBackArrow />}
+                            />
+                        </div>
+                    </div>
+
+                    <Playlist
+                        playlist={playlist.movies}
+                        // removeFromPlaylist={removeFromPlaylist}
+                        // overridePlaylist={overridePlaylist}
+                        // deletePlaylist={deletePlaylist}
+                        // shufflePlaylist={shufflePlaylist}
+                        size={"page"}
+                        // handleParentUI={handleParentUI}
+                        handleRouting={handleRouting}
+                        isEditable={false}
+                        customStyles={customStyles}
+                    />
+                </>
+            ) : (
+                <p>Loading playlist...</p>
+            )}
+
+            {/* {playlist ? (
                 <>
                     <div className={"heading"}>
                         <h1>{playlist.title}</h1>
@@ -57,7 +106,7 @@ export default function Playlist() {
                 </>
             ) : (
                 <p>Loading playlist...</p>
-            )}
+            )} */}
         </main>
     );
 }

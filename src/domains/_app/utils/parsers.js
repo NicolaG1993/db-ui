@@ -13,7 +13,7 @@ import {
 // import { onlyUnique } from "@/src/application/utils/parsers";
 
 function parseTagsByType(obj, TAGS_OBJ) {
-    console.log("parseTagsByType: ", { obj, TAGS_OBJ });
+    // console.log("parseTagsByType: ", { obj, TAGS_OBJ });
 
     // using TAGS_OBJ to create parsedObj
     const parsedObj = {};
@@ -48,6 +48,7 @@ function parseTagsByType(obj, TAGS_OBJ) {
 // } // SPOSTARE
 
 function parseTagsForUiList(arr) {
+    // console.log("parseTagsForUiList START 🟢: ", { arr });
     let parsedObj = {};
 
     arr.map((el) => {
@@ -71,6 +72,7 @@ function parseTagsForUiList(arr) {
         parsedObj["No Type"] = noTypeData;
     }
 
+    // console.log("parseTagsForUiList END 🟢: ", { parsedObj });
     return parsedObj;
 }
 
@@ -230,6 +232,8 @@ const anyExist = (arr, values) =>
         return arr.includes(Number(value));
     });
 
+// used on actor item when pic is missing - it check if there is one of its movies with a pic instead
+// penso che non la useremo piú a breve: 1. abbiamo spostato components in library esterna; 2. No facciamo piú fetch di actor e movies insieme.
 const detectImage = (obj) => {
     if (obj && obj.movies && obj.movies.length) {
         let validElements = obj.movies.filter((el) => el.pic);

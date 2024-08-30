@@ -13,9 +13,10 @@ import {
     passwordValidation,
     confirmPassword,
 } from "@/src/application/utils/validateForms.js";
-import { getError } from "@/src/application/utils/error.js";
+// import { getError } from "@/src/application/utils/error.js";
 import createUser from "@/src/domains/_app/components/Auth/actions/createUser.js";
-import InputText from "@/src/domains/_app/components/Inputs/InputText/InputText";
+import { Button, InputText } from "zephyrus-components";
+import customStyles from "@/src/application/styles/Zephyrus.module.css";
 
 export default function RegistrationForm({ handleTab }) {
     //================================================================================
@@ -120,11 +121,13 @@ export default function RegistrationForm({ handleTab }) {
                     <InputText
                         name="name"
                         id="Name"
+                        label={true}
                         isMandatory={true}
                         value={userName}
                         onChange={(e) => setUserName(e.target.value)}
                         onBlur={(e) => validateData(e)}
                         error={errors.name}
+                        customStyles={customStyles}
                     />
                 </div>
                 <div className={styles.inputWrap}>
@@ -132,11 +135,13 @@ export default function RegistrationForm({ handleTab }) {
                         type="email"
                         name="email"
                         id="Email"
+                        label={true}
                         isMandatory={true}
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         onBlur={(e) => validateData(e)}
                         error={errors.email}
+                        customStyles={customStyles}
                     />
                 </div>
                 <div className={styles.inputWrap}>
@@ -144,11 +149,13 @@ export default function RegistrationForm({ handleTab }) {
                         type="password"
                         name="password"
                         id="Password"
+                        label={true}
                         isMandatory={true}
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         onBlur={(e) => validateData(e)}
                         error={errors.password}
+                        customStyles={customStyles}
                     />
                 </div>
                 <div className={styles.inputWrap}>
@@ -162,12 +169,16 @@ export default function RegistrationForm({ handleTab }) {
                         onChange={(e) => setPasswordConfirm(e.target.value)}
                         onBlur={(e) => validateData(e)}
                         error={errors.confirmPassword}
+                        customStyles={customStyles}
                     />
                 </div>
                 <div className={styles.buttonWrap}>
-                    <button type="submit" className="button-standard">
-                        Create user
-                    </button>
+                    <Button
+                        size="medium"
+                        type="submit"
+                        label="Create user"
+                        customStyles={customStyles}
+                    />
                 </div>
             </form>
 

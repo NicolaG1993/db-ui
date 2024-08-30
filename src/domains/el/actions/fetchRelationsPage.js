@@ -4,19 +4,13 @@ import { getError } from "@/src/application/utils/error";
 export default async function fetchRelationsPage({
     // relationsLabel,
     relationsGroup,
+    //itemGroup,
     itemLabel,
     itemId,
     filters,
 }) {
     // call page for movies
     // we need to pass arguments: id, page, order, direction, filter // (last 2 optionals)
-
-    // console.log("🟡⚠️🟡⚠️⭐ fetchRelationsPage: ", {
-    //     // relationsLabel,
-    //     itemLabel,
-    //     itemId,
-    //     filters,
-    // });
 
     try {
         // Do smth with filters, i think we need the single proprerties inside + el.id
@@ -38,9 +32,8 @@ export default async function fetchRelationsPage({
                     offset: page === 1 ? 0 : (page - 1) * limit,
                 },
             }
-        );
+        ); // 🟥🟥🟥 itemGroup -> "movies" ; relationsLabel -> "actor"
 
-        // console.log("🍄🍄🍄 data: ", data);
         /* 
         const { data } = await axiosAuthInstance.get(`/api/${label}/${id}`);
       const res = { ...data, ...structure };

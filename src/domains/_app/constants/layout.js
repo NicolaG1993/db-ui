@@ -1,10 +1,7 @@
 import Head from "next/head";
 import { useEffect, useState } from "react";
 
-import Header from "@/src/domains/_app/constants/components/Header/Header";
-import Footer from "@/src/domains/_app/constants/components/Footer/Footer";
-import Widgets from "@/src/domains/_app/constants/components/Widgets/Widgets";
-import SessionPlaylist from "@/src/domains/_app/constants/components/SessionPlaylist/SessionPlaylist";
+// import Footer from "@/src/domains/_app/constants/components/Footer/Footer";
 
 import { shallowEqual, useDispatch } from "react-redux";
 import fetchS3SettingsFile from "@/src/domains/_app/actions/fetchS3SettingsFile.js";
@@ -15,44 +12,50 @@ import {
 
 import AuthModal from "@/src/domains/_app/components/Auth/AuthModal.js";
 import { useSelector } from "react-redux";
+import { selectUserState } from "@/src/application/redux/slices/userSlice.js";
+
 import {
-    selectUserState,
-    userLogin,
-} from "@/src/application/redux/slices/userSlice.js";
-import styles from "@/src/domains/_app/constants/Layout.module.css";
-import RandomNumberButton from "./components/Widgets/RandomNumberButton";
-import SessionPlaylistButton from "./components/Widgets/SessionPlaylistButton";
-import { selectItemIsLoading } from "@/src/application/redux/slices/itemSlice";
+    activateLoadingItem,
+    clearItem,
+    selectItemIsLoading,
+} from "@/src/application/redux/slices/itemSlice";
 import AppBlur from "@/src/domains/_app/constants/components/AppBlur/AppBlur";
-import Tooltip from "@/src/domains/_app/constants/components/Tooltip/Tooltip";
-import Drawer from "../components/Drawer/Drawer";
 import SideNavMenu from "./components/SideNavMenu/SideNavMenu";
-// import { useErrorBoundary } from "react-error-boundary";
-import Modal from "@/src/domains/_app/components/Modal/Modal";
-import AddNewWrap from "@/src/domains/_app/constants/components/SideNavMenu/components/NewDataForm";
+
 import {
     closeForm,
+    openForm,
+    resetFormStore,
     selectIsFormOpen,
 } from "@/src/application/redux/slices/formSlice";
 import DataFormWrap from "./components/SideNavMenu/components/DataFormWrap";
+import customStyles from "@/src/application/styles/Zephyrus.module.css";
+import { Drawer, Header, Modal, Tooltip, WidgetsUI } from "zephyrus-components";
+import getRandomMovie from "@/src/domains/_app/actions/getRandomMovie";
+import {
+    deleteSessionPlaylist,
+    getSessionPlaylist,
+    removeFromSessionPlaylist,
+    selectSessionPlaylist,
+    shuffleSessionPlaylist,
+    updateSessionPlaylist,
+} from "@/src/application/redux/slices/sessionPlaylistSlice";
+import { useRouter } from "next/router";
 
 export default function Layout({ children }) {
     //================================================================================
     // State
     //================================================================================
     const dispatch = useDispatch();
-    // const { theme } = useAppContext();
-    // const [user, setUser] = useState();
+    const router = useRouter();
     let isItemFormOpen = useSelector(selectIsFormOpen, shallowEqual);
+    let sessionPlaylist = useSelector(selectSessionPlaylist, shallowEqual);
+    let userInfo = useSelector(selectUserState);
+    let itemIsLoading = useSelector(selectItemIsLoading, shallowEqual);
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);
     const [showLoadingScreen, setShowLoadingScreen] = useState(false);
     const [showAuthModal, setShowAuthModal] = useState(true);
     const [renderingApp, setRenderingApp] = useState(true); // forse si potrebbe spostare in redux
-    let userInfo = useSelector(selectUserState);
-    let itemIsLoading = useSelector(selectItemIsLoading, shallowEqual);
-    // const { showBoundary } = useErrorBoundary();
-    // const [appError, setAppError] = useState();
-    // let itemStoreError = useSelector(selectItemStoreError, shallowEqual);
     const [tooltipVisible, setTooltipVisible] = useState(false);
     const [tooltipProps, setTooltipProps] = useState({
         title: "",
@@ -93,8 +96,15 @@ export default function Layout({ children }) {
         }
     };
 
-    const toggleDrawer = () => {
-        setIsDrawerOpen(!isDrawerOpen);
+    const openDrawer = (e, invoker) => {
+        e.stopPropagation();
+        !isDrawerOpen && setIsDrawerOpen(true);
+    };
+    const closeDrawer = (e, invoker) => {
+        e.stopPropagation();
+        setTimeout(() => {
+            isDrawerOpen && setIsDrawerOpen(false);
+        }, 150);
     };
 
     const showTooltip = (title, text, e) => {
@@ -148,6 +158,98 @@ export default function Layout({ children }) {
         }
     }, [process.env.CUSTOM_SETTINGS]);
 
+    const setLoadingItem = () => {
+        dispatch(activateLoadingItem());
+    };
+
+    const handleRandomMovie = async () => {
+        setLoadingItem();
+        const res = await getRandomMovie();
+        if (res.status === 200 && res.data) {
+            router.push(`/el/movie/${res.data}`);
+        } else if (res.error) {
+            // TODO: error handling
+        }
+    };
+
+    const handleRouting = async (url) => {
+        // id && clearPreviousItem(id);
+        clearPreviousItem(url);
+        router.push(url);
+    };
+
+    // FIX: COMPLETARE 👇🔴 APPROCCIO CORRETTO 👍
+    const widgetsConfig = [
+        // 🧠 Creare dynamic button component
+        // 🧠🧠 credo che noi dovremmo passare a WidgetsUI solo la lista dei components (e forse height&width? + qualche info tipo label)
+        // 🧠🧠 Gli imports poi saranno gestiti dentro WidgetsUI xk sono disponibili solo i widget dentro library folder
+        {
+            type: "SessionPlaylist", //"Playlist", //"SessionPlaylist",
+            label: "Session Playlist",
+            maxHeight: "650px",
+        },
+        {
+            type: "RandomNumbersGenerator",
+            label: "Roll the dice",
+            maxHeight: "100%",
+            minHeight: "570px",
+        },
+        {
+            type: "UserNotes",
+            label: "Notes",
+            maxHeight: "100%",
+            minHeight: "570px",
+        },
+    ];
+
+    //================================================================================
+    // SessionPlaylist logic
+    //================================================================================
+    // useEffect(() => {
+    //     dispatch(getSessionPlaylist());
+    // }, [open]); // 🔴🔴🔴☝️ FIX: Needs to be triggered inside "WidgetsUI" 🔴🔴🔴
+
+    const getPlaylist = () => {
+        dispatch(getSessionPlaylist());
+    };
+
+    const openAddNew = () => {
+        dispatch(resetFormStore()); // cleanup formState
+        dispatch(openForm({ formLabel: "movie" })); // open Form UI
+    };
+
+    const removeFromPlaylist = (i) => {
+        dispatch(removeFromSessionPlaylist(i));
+    };
+    const overridePlaylist = (playlist) => {
+        dispatch(updateSessionPlaylist(playlist));
+    };
+    const clearPreviousItem = (url) => {
+        const idPattern = /\/\d+$/;
+        // if (id.toString() !== router.query.id) {
+        if (idPattern.test(url)) {
+            dispatch(clearItem());
+            dispatch(activateLoadingItem());
+        } else {
+            dispatch(clearItem());
+        }
+    };
+    const deletePlaylist = () => {
+        dispatch(deleteSessionPlaylist());
+    };
+    const shufflePlaylist = () => {
+        dispatch(shuffleSessionPlaylist());
+    };
+
+    // Maybe move this logic inside "WidgetsUI" to solve issue 👇🧠
+    const handleParentUI = (uiElement, status) => {
+        if (uiElement === "ADD_NEW") {
+            status && openAddNew();
+        } else if (uiElement === "WIDGET") {
+            // !status && closeWidget(); // 🔴🔴🔴 We do this inside WidgetsUI now , delete
+        }
+    };
+
     //================================================================================
     // Render UI
     //================================================================================
@@ -185,30 +287,55 @@ export default function Layout({ children }) {
                     {showLoadingScreen && <AppBlur visible={itemIsLoading} />}
 
                     <Header
-                        openDrawer={toggleDrawer}
-                        showTooltip={showTooltip}
-                        hideTooltip={hideTooltip}
+                        isDrawerOpen={isDrawerOpen}
+                        openDrawer={openDrawer}
+                        closeDrawer={closeDrawer}
+                        handleRandomMovie={handleRandomMovie}
+                        handleRouting={handleRouting}
+                        customStyles={customStyles}
+                        // showTooltip={showTooltip}
+                        // hideTooltip={hideTooltip}
                     />
                     <Modal
                         isOpen={isItemFormOpen}
                         onClose={() => dispatch(closeForm())}
+                        customStyles={customStyles}
                     >
                         <DataFormWrap />
                     </Modal>
                     <Drawer
                         isOpen={isDrawerOpen}
-                        onClose={toggleDrawer}
+                        onClose={closeDrawer}
                         title={"Menu"}
+                        customStyles={customStyles}
+                        showCloseButton={false}
                     >
-                        <SideNavMenu onClose={toggleDrawer} />
+                        <SideNavMenu onClose={closeDrawer} />
                     </Drawer>
                     {children({ showTooltip })}
-                    <Footer />
+                    {/* <Footer /> */}
 
-                    <Tooltip {...tooltipProps} visible={tooltipVisible} />
-                    <Widgets
-                        showTooltip={showTooltip}
-                        hideTooltip={hideTooltip}
+                    <Tooltip
+                        {...tooltipProps}
+                        visible={tooltipVisible}
+                        customStyles={customStyles}
+                    />
+                    <WidgetsUI
+                        widgetsConfig={widgetsConfig}
+                        playlist={sessionPlaylist}
+                        playlistCounter={sessionPlaylist?.length}
+                        handleParentUI={handleParentUI}
+                        openAppModal={openAddNew}
+                        getPlaylist={getPlaylist}
+                        removeFromPlaylist={removeFromPlaylist}
+                        overridePlaylist={overridePlaylist}
+                        deletePlaylist={deletePlaylist}
+                        shufflePlaylist={shufflePlaylist}
+                        handleRouting={handleRouting}
+                        hasPlaylistWidget={true}
+                        customStyles={customStyles}
+                        // showTooltip={showTooltip}
+                        // hideTooltip={hideTooltip}
                     />
                 </div>
             )}

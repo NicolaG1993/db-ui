@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import styles from "@/src/application/styles/Element.module.css";
 import { formatDateEU } from "@/src/application/utils/convertTimestamp";
 import axiosAuthInstance from "@/src/application/utils/axiosAuthInstance";
+import { Button } from "zephyrus-components";
+import customStyles from "@/src/application/styles/Zephyrus.module.css";
 
 export default function RecordsCounter({ id }) {
     const [counter, setCounter] = useState();
@@ -56,12 +58,14 @@ export default function RecordsCounter({ id }) {
                             : 0
                         : "Loading..."}
                 </span>
-                <button
+
+                <Button
+                    size="mini"
+                    type="button"
+                    label="+1"
+                    customStyles={customStyles}
                     onClick={() => handleAddCounter()}
-                    className="button-standard"
-                >
-                    +1
-                </button>
+                />
             </div>
 
             <div className={styles.recordsWrap}>
