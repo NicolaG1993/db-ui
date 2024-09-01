@@ -61,7 +61,7 @@ export default function Category({
                     <ItemRow
                         label={"Actors"}
                         arr={actors}
-                        onClick={handleRouting}
+                        handleRouting={handleRouting}
                         tagType={"complex"}
                         customStyles={customStyles}
                     />

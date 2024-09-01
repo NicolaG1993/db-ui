@@ -48,7 +48,7 @@ export default function Studio({ label, item, handleDelete, setFormIsOpen }) {
                         label={"Nationality"}
                         group={"nationalities"}
                         values={nationalities}
-                        onClick={handleRouting}
+                        handleRouting={handleRouting}
                         customStyles={customStyles}
                     />
                     <ItemRow
@@ -67,34 +67,10 @@ export default function Studio({ label, item, handleDelete, setFormIsOpen }) {
                     <ItemRow
                         label={"Actors"}
                         arr={actors}
-                        onClick={handleRouting}
+                        handleRouting={handleRouting}
                         tagType={"complex"}
                         customStyles={customStyles}
                     />
-
-                    {/* <div className={styles.elRowToScroll}>
-                        <span>Actors: </span>
-                        <div className={styles.tagsWrap}>
-                            {actors ? (
-                                actors.map((el) => (
-                                    <div
-                                        key={"actor " + el.id}
-                                        className={styles.tagElWithInfo}
-                                    >
-                                        <Link href={`/el/actor/${el.id}`}>
-                                            <p>{el.name}</p>
-                                        </Link>
-                                        {" | "}
-                                        <Link href={`/search`}>
-                                            <p>{el.count}</p>
-                                        </Link>
-                                    </div>
-                                ))
-                            ) : (
-                                <p>N/A</p>
-                            )}
-                        </div>
-                    </div> */}
                 </div>
 
                 <div className={styles.infoWrap}>
