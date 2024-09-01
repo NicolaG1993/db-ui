@@ -45,12 +45,10 @@ export default function DataFormWrap() {
             */
             dispatch(addToSessionPlaylist(obj));
         }
-        dispatch(closeForm());
     };
 
     const handleEdits = async () => {
         dispatch(reloadItem());
-        dispatch(closeForm());
     };
 
     useEffect(() => {
@@ -60,6 +58,8 @@ export default function DataFormWrap() {
             } else if (isFormOpen && propsData) {
                 handleEdits();
             }
+
+            dispatch(closeForm());
         }
     }, [isFinish, formRes]);
 

@@ -10,7 +10,7 @@ import { useDispatch, shallowEqual, useSelector } from "react-redux";
 import { Button } from "zephyrus-components";
 import customStyles from "@/src/application/styles/Zephyrus.module.css";
 
-export default function SessionPlaylistAddBtn({ el }) {
+export default function SessionPlaylistAddBtn({ el, size = "medium" }) {
     let sessionPlaylist = useSelector(selectSessionPlaylist, shallowEqual);
     const dispatch = useDispatch();
 
@@ -37,7 +37,7 @@ export default function SessionPlaylistAddBtn({ el }) {
 
     return isClone ? (
         <Button
-            size="mini"
+            size={size}
             type="button"
             label="Remove from session"
             customStyles={customStyles}
@@ -45,7 +45,7 @@ export default function SessionPlaylistAddBtn({ el }) {
         />
     ) : (
         <Button
-            size="mini"
+            size={size}
             type="button"
             label="Add to session"
             customStyles={customStyles}

@@ -180,6 +180,8 @@
 .formSideNavSearchBar {
     display: grid;
     grid-template-columns: 1fr auto;
+    align-items: center;
+    column-gap: 0.5rem;
 }
 
 .sidewrapBody {
