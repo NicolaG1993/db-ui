@@ -85,28 +85,28 @@ export default function Movie({
                         label={"Studio"}
                         arr={studios}
                         group={"studio"}
-                        onClick={handleRouting}
+                        handleRouting={handleRouting}
                         customStyles={customStyles}
                     />
                     <ItemRow
                         label={"Distribution"}
                         arr={distributions}
                         group={"distribution"}
-                        onClick={handleRouting}
+                        handleRouting={handleRouting}
                         customStyles={customStyles}
                     />
                     <ItemRow
                         label={"Categories"}
                         parsedData={parseTagsForUiList(categories)}
                         group={"category"}
-                        onClick={handleRouting}
+                        handleRouting={handleRouting}
                         customStyles={customStyles}
                     />
                     <ItemRow
                         label={"Tags"}
                         parsedData={parseTagsForUiList(tags)}
                         group={"tag"}
-                        onClick={handleRouting}
+                        handleRouting={handleRouting}
                         customStyles={customStyles}
                     />
                     <ItemRow

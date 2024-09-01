@@ -113,14 +113,14 @@ export default function Actor({
                         label={"Nationality"}
                         group={"nationalities"}
                         values={nationalities}
-                        onClick={handleRouting}
+                        handleRouting={handleRouting}
                         customStyles={customStyles}
                     />
                     <ItemRow
                         label={"Hair"}
                         group={"tag"}
                         arr={itemInfo?.Hair}
-                        onClick={handleRouting}
+                        handleRouting={handleRouting}
                         customStyles={customStyles}
                     />
                     <ItemRow label={"Eyes color"} customStyles={customStyles} />
@@ -129,14 +129,14 @@ export default function Actor({
                         label={"Ethnicity"}
                         group={"tag"}
                         arr={itemInfo?.Ethnicity}
-                        onClick={handleRouting}
+                        handleRouting={handleRouting}
                         customStyles={customStyles}
                     />
                     <ItemRow
                         label={"Body type"}
                         group={"tag"}
                         arr={itemInfo?.["Body Types"]}
-                        onClick={handleRouting}
+                        handleRouting={handleRouting}
                         customStyles={customStyles}
                     />
                     <ItemRow
@@ -158,17 +158,17 @@ export default function Actor({
 
                     <ItemRow
                         label={"Tags"}
-                        parsedData={parseTagsForUiList(tags)}
+                        parsedData={() => parseTagsForUiList(tags)}
                         group={"tag"}
-                        onClick={handleRouting}
+                        handleRouting={handleRouting}
                         customStyles={customStyles}
                     />
 
                     <ItemRow
                         label={"Categories"}
-                        parsedData={parseTagsForUiList(categories)}
+                        parsedData={() => parseTagsForUiList(categories)}
                         group={"category"}
-                        onClick={handleRouting}
+                        handleRouting={handleRouting}
                         customStyles={customStyles}
                     />
 
@@ -176,7 +176,7 @@ export default function Actor({
                         label={"Studios"}
                         arr={studios}
                         group={"studio"}
-                        onClick={handleRouting}
+                        handleRouting={handleRouting}
                         customStyles={customStyles}
                     />
 
@@ -184,7 +184,7 @@ export default function Actor({
                         label={"Distribution"}
                         arr={distributions}
                         group={"distribution"}
-                        onClick={handleRouting}
+                        handleRouting={handleRouting}
                         customStyles={customStyles}
                     />
 
