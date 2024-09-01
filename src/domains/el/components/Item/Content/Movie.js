@@ -129,6 +129,7 @@ export default function Movie({
                                 pic: item.pic,
                                 actors: item.actors, // but we dont have actors here! // inside Card yes 🔴🧠🔴⚠️🧠🔴⚠️
                             }}
+                            size="medium"
                         />
                         <Button
                             size="medium"
