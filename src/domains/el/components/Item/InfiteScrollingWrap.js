@@ -1,17 +1,12 @@
 // Maybe this file is not in the right directory? 🧠 check afterwards the components library is finished
 import { useState, useEffect, useRef } from "react";
 import customStyles from "@/src/application/styles/Zephyrus.module.css";
-import { useRouter } from "next/router";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import {
     addToSessionPlaylist,
     removeElementFromSessionPlaylist,
     selectSessionPlaylist,
 } from "@/src/application/redux/slices/sessionPlaylistSlice";
-import {
-    activateLoadingItem,
-    clearItem,
-} from "@/src/application/redux/slices/itemSlice";
 import { InputSelect, RelationsList } from "zephyrus-components";
 import dataStructureGroups from "@/src/application/settings/dataStructureGroups";
 import { useAppContext } from "@/src/domains/_app/contexts/AppContext";
@@ -134,26 +129,15 @@ export default function InfiteScrollingWrap({
     }, [filters.page]);
 
     /* CARD COMPONENT HANDLERS 👇 */
-    const router = useRouter();
     const dispatch = useDispatch();
     const { showTooltip, hideTooltip } = useAppContext();
     let sessionPlaylist = useSelector(selectSessionPlaylist, shallowEqual);
-
-    const clearPreviousItem = () => {
-        dispatch(clearItem());
-        dispatch(activateLoadingItem());
-    };
 
     const onMouseOver = (title, description, e) => {
         showTooltip(title, description, e);
     };
     const onMouseOut = () => {
         hideTooltip();
-    };
-
-    const onClickCard = ({ id, label }) => {
-        clearPreviousItem();
-        router.push(`/el/${label}/${id}`);
     };
 
     const addToPlaylist = (obj) => {
@@ -198,7 +182,6 @@ export default function InfiteScrollingWrap({
                     currentPlaylist={sessionPlaylist}
                     onMouseOver={onMouseOver}
                     onMouseOut={onMouseOut}
-                    onClickCard={onClickCard}
                     onAddItem={addToPlaylist}
                     onRemoveItem={removeFromPlaylist}
                     customStyles={customStyles}

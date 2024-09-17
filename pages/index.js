@@ -5,11 +5,6 @@ import HomeSearchbar from "@/src/domains/home/components/HomeSearchBar";
 import { useErrorBoundary } from "react-error-boundary";
 import getHomeData from "@/src/domains/home/actions/getHomeData";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
-import { useRouter } from "next/router";
-import {
-    activateLoadingItem,
-    clearItem,
-} from "@/src/application/redux/slices/itemSlice";
 import { useAppContext } from "@/src/domains/_app/contexts/AppContext";
 import { ShortList } from "zephyrus-components";
 import customStyles from "@/src/application/styles/Zephyrus.module.css";
@@ -56,35 +51,15 @@ export default function Home() {
     ////// CHANGES AFTER REFACTORING COMPONENTS LIBRARY
     // they have to be passed down to ShortList then to Card
     // I should create a Wrapper inside App for this? yes but after in case
-    const router = useRouter();
     const dispatch = useDispatch();
     const { showTooltip, hideTooltip } = useAppContext();
     let sessionPlaylist = useSelector(selectSessionPlaylist, shallowEqual);
-
-    const clearPreviousItem = (id) => {
-        if (id) {
-            dispatch(clearItem());
-            dispatch(activateLoadingItem());
-        } else {
-            dispatch(clearItem());
-        }
-    };
 
     const onMouseOver = (title, description, e) => {
         showTooltip(title, description, e);
     };
     const onMouseOut = () => {
         hideTooltip();
-    };
-
-    const onClickLink = ({ itemGroup }) => {
-        clearPreviousItem();
-        router.push(`/all/${itemGroup}`);
-    };
-
-    const onClickCard = ({ id, label }) => {
-        clearPreviousItem(id);
-        router.push(`/el/${label}/${id}`);
     };
 
     const addToPlaylist = (obj) => {
@@ -107,8 +82,8 @@ export default function Home() {
                 table={dataStructureGroups["actors"]}
                 onMouseOver={onMouseOver}
                 onMouseOut={onMouseOut}
-                onClickCard={onClickCard}
-                onClickLink={() => onClickLink({ itemGroup: "actors" })}
+                // onClickCard={onClickCard}
+                // onClickLink={() => onClickLink({ itemGroup: "actors" })}
                 customStyles={customStyles}
             />
             <ShortList
@@ -118,8 +93,8 @@ export default function Home() {
                 currentPlaylist={sessionPlaylist}
                 onMouseOver={onMouseOver}
                 onMouseOut={onMouseOut}
-                onClickCard={onClickCard}
-                onClickLink={() => onClickLink({ itemGroup: "movies" })}
+                // onClickCard={onClickCard}
+                // onClickLink={() => onClickLink({ itemGroup: "movies" })}
                 onAddItem={addToPlaylist}
                 onRemoveItem={removeFromPlaylist}
                 customStyles={customStyles}

@@ -20,11 +20,11 @@ import {
 } from "@/src/application/redux/slices/sessionPlaylistSlice";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import { useAppContext } from "@/src/domains/_app/contexts/AppContext";
-import { useRouter } from "next/router";
-import {
-    activateLoadingItem,
-    clearItem,
-} from "@/src/application/redux/slices/itemSlice";
+// import { useRouter } from "next/router";
+// import {
+//     activateLoadingItem,
+//     clearItem,
+// } from "@/src/application/redux/slices/itemSlice";
 
 /*
 TODO: Keep this component as wrap (handle data and declare dynamic functions here!)
@@ -34,7 +34,6 @@ export default function FullList({ tableName }) {
     //================================================================================
     // Component State
     //================================================================================
-    const router = useRouter();
     const dispatch = useDispatch();
     const { showTooltip, hideTooltip } = useAppContext();
     let sessionPlaylist = useSelector(selectSessionPlaylist, shallowEqual);
@@ -177,6 +176,7 @@ export default function FullList({ tableName }) {
         setFiltersBar(!filtersBar);
     };
 
+    // Todo
     const updateFilters = (val, topic) => {
         if (filters[topic]) {
             setFilters({
@@ -189,20 +189,11 @@ export default function FullList({ tableName }) {
         }
     };
 
-    const clearPreviousItem = () => {
-        dispatch(clearItem());
-        dispatch(activateLoadingItem());
-    };
-
     const onMouseOver = (title, description, e) => {
         showTooltip(title, description, e);
     };
     const onMouseOut = () => {
         hideTooltip();
-    };
-    const onClickCard = ({ id, label }) => {
-        clearPreviousItem();
-        router.push(`/el/${label}/${id}`);
     };
 
     const addToPlaylist = (obj) => {
@@ -265,7 +256,6 @@ export default function FullList({ tableName }) {
                     cardHasOverlay={table.itemGroup === "movies"} // Fix when we have overlay also for actor card 🧠
                     onMouseOver={onMouseOver}
                     onMouseOut={onMouseOut}
-                    onClickCard={onClickCard}
                     onAddItem={addToPlaylist}
                     onRemoveItem={removeFromPlaylist}
                     customStyles={customStyles}

@@ -4,8 +4,9 @@ import store from "@/src/application/redux/store";
 import { ErrorBoundary } from "react-error-boundary";
 // import ErrorBoundary from "@/src/domains/_app/components/Error/components/ErrorApp/ErrorBoundary";
 import ErrorApp from "@/src/domains/_app/components/Error/components/ErrorApp/ErrorApp";
-import { TooltipProvider } from "@/src/domains/_app/contexts/TooltipContext";
 import { SettingsProvider } from "@/src/domains/_app/contexts/SettingsContext";
+import { RouteChangeProvider } from "@/src/domains/_app/contexts/RouteChangeContext";
+import { TooltipProvider } from "@/src/domains/_app/contexts/TooltipContext";
 import GlobalStyles from "@/src/domains/_app/components/GlobalStyles/GlobalStyles";
 
 export default function AppProviders({ children }) {
@@ -24,15 +25,17 @@ export default function AppProviders({ children }) {
         >
             <Provider store={store}>
                 <SettingsProvider>
-                    <TooltipProvider>
-                        <ErrorBoundary
-                            FallbackComponent={ErrorApp}
-                            onError={logError}
-                        >
-                            <GlobalStyles />
-                            {children}
-                        </ErrorBoundary>
-                    </TooltipProvider>
+                    <RouteChangeProvider>
+                        <TooltipProvider>
+                            <ErrorBoundary
+                                FallbackComponent={ErrorApp}
+                                onError={logError}
+                            >
+                                <GlobalStyles />
+                                {children}
+                            </ErrorBoundary>
+                        </TooltipProvider>
+                    </RouteChangeProvider>
                 </SettingsProvider>
             </Provider>
         </SnackbarProvider>
