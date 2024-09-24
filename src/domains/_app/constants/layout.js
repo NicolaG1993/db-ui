@@ -172,12 +172,6 @@ export default function Layout({ children }) {
         }
     };
 
-    const handleRouting = async (url) => {
-        // id && clearPreviousItem(id);
-        clearPreviousItem(url);
-        router.push(url);
-    };
-
     // FIX: COMPLETARE 👇🔴 APPROCCIO CORRETTO 👍
     const widgetsConfig = [
         // 🧠 Creare dynamic button component
@@ -291,7 +285,6 @@ export default function Layout({ children }) {
                         openDrawer={openDrawer}
                         closeDrawer={closeDrawer}
                         handleRandomMovie={handleRandomMovie}
-                        handleRouting={handleRouting}
                         customStyles={customStyles}
                         // showTooltip={showTooltip}
                         // hideTooltip={hideTooltip}
@@ -331,7 +324,6 @@ export default function Layout({ children }) {
                         overridePlaylist={overridePlaylist}
                         deletePlaylist={deletePlaylist}
                         shufflePlaylist={shufflePlaylist}
-                        handleRouting={handleRouting}
                         hasPlaylistWidget={true}
                         customStyles={customStyles}
                         // showTooltip={showTooltip}

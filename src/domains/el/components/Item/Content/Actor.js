@@ -10,7 +10,6 @@ import extractItemInfo from "@/src/domains/el/utils/extractItemInfo";
 import { Button, ItemRow } from "zephyrus-components";
 import customStyles from "@/src/application/styles/Zephyrus.module.css";
 import InfiteScrollingWrap from "../InfiteScrollingWrap";
-import { useRouter } from "next/router";
 
 /*
 Form "open" and "close" should be handled in redux
@@ -58,14 +57,9 @@ export default function Actor({
         totalMovies,
     } = item;
 
-    const router = useRouter();
     const itemInfo = extractItemInfo(tags || []);
 
     let {} = itemInfo;
-
-    const handleRouting = (url) => {
-        router.push(url);
-    }; // 🧠 Should move to Item component and pass as prop (?)
 
     return (
         <div id={styles.Actor} className={styles.elWrap}>
@@ -113,14 +107,12 @@ export default function Actor({
                         label={"Nationality"}
                         group={"nationalities"}
                         values={nationalities}
-                        handleRouting={handleRouting}
                         customStyles={customStyles}
                     />
                     <ItemRow
                         label={"Hair"}
                         group={"tag"}
                         arr={itemInfo?.Hair}
-                        handleRouting={handleRouting}
                         customStyles={customStyles}
                     />
                     <ItemRow label={"Eyes color"} customStyles={customStyles} />
@@ -129,14 +121,12 @@ export default function Actor({
                         label={"Ethnicity"}
                         group={"tag"}
                         arr={itemInfo?.Ethnicity}
-                        handleRouting={handleRouting}
                         customStyles={customStyles}
                     />
                     <ItemRow
                         label={"Body type"}
                         group={"tag"}
                         arr={itemInfo?.["Body Types"]}
-                        handleRouting={handleRouting}
                         customStyles={customStyles}
                     />
                     <ItemRow
@@ -160,7 +150,6 @@ export default function Actor({
                         label={"Tags"}
                         parsedData={() => parseTagsForUiList(tags)}
                         group={"tag"}
-                        handleRouting={handleRouting}
                         customStyles={customStyles}
                     />
 
@@ -168,7 +157,6 @@ export default function Actor({
                         label={"Categories"}
                         parsedData={() => parseTagsForUiList(categories)}
                         group={"category"}
-                        handleRouting={handleRouting}
                         customStyles={customStyles}
                     />
 
@@ -176,7 +164,6 @@ export default function Actor({
                         label={"Studios"}
                         arr={studios}
                         group={"studio"}
-                        handleRouting={handleRouting}
                         customStyles={customStyles}
                     />
 
@@ -184,7 +171,6 @@ export default function Actor({
                         label={"Distribution"}
                         arr={distributions}
                         group={"distribution"}
-                        handleRouting={handleRouting}
                         customStyles={customStyles}
                     />
 
