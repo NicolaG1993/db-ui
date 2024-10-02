@@ -64,14 +64,14 @@ export default function Playlists() {
                         size="large"
                         label="Session playlist editor"
                         customStyles={customStyles}
-                        onClick={() => router.push("/el/playlist/editor")}
+                        href={"/el/playlist/editor"}
                         icon={<IconEdit />}
                     />
                     <Button
                         size="large"
                         label="Tournament Session"
                         customStyles={customStyles}
-                        onClick={() => router.push("/el/playlist/tournament")}
+                        href={"/el/playlist/tournament"}
                         icon={<IconPlay />}
                     />
                 </div>

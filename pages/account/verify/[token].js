@@ -71,7 +71,7 @@ export default function VerifyEmail() {
                                 type="button"
                                 label="Go back to login"
                                 customStyles={customStyles}
-                                onClick={() => router.push("/")}
+                                href={"/"}
                             />
                         </>
                     ) : (
@@ -82,7 +82,7 @@ export default function VerifyEmail() {
                                 type="button"
                                 label="Proceed to login"
                                 customStyles={customStyles}
-                                onClick={() => router.push("/")}
+                                href={"/"}
                             />
                         </>
                     )

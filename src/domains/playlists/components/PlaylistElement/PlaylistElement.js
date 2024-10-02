@@ -32,7 +32,7 @@ export default function PlaylistElement({ el, handleDelete }) {
                 type="button"
                 label="View"
                 customStyles={customStyles}
-                onClick={() => router.push(`/el/playlist/${el.id}`)}
+                href={`/el/playlist/${el.id}`}
                 // className={styles.btn} // TODO? 🔴
             />
             <Button

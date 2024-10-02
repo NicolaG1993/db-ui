@@ -1,20 +1,13 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { selectUserState } from "@/src/application/redux/slices/userSlice.js";
-// import Link from "next/link";
 import styles from "@/src/application/styles/Records.module.css";
-// import PlaylistMovie from "@/src/domains/playlists/components/PlaylistMovie/PlaylistMovie.js";
 import getPlaylist from "@/src/domains/playlists/actions/getPlaylist.js";
 import { Button, IconBackArrow, Playlist } from "zephyrus-components";
 import customStyles from "@/src/application/styles/Zephyrus.module.css";
-import {
-    activateLoadingItem,
-    clearItem,
-} from "@/src/application/redux/slices/itemSlice";
 
 export default function PlaylistPreview() {
-    const dispatch = useDispatch();
     const router = useRouter();
     const { id } = router.query;
 
@@ -38,16 +31,6 @@ export default function PlaylistPreview() {
         }
     };
 
-    const clearPreviousItem = () => {
-        dispatch(clearItem());
-        dispatch(activateLoadingItem());
-    };
-
-    const handleRouting = async (url) => {
-        clearPreviousItem();
-        router.push(url);
-    };
-
     return (
         <main>
             {playlist ? (
@@ -59,7 +42,7 @@ export default function PlaylistPreview() {
                                 size="large"
                                 label="All playlists"
                                 customStyles={customStyles}
-                                onClick={() => router.push("/all/playlists")}
+                                href={"/all/playlists"}
                                 icon={<IconBackArrow />}
                             />
                         </div>
@@ -73,7 +56,7 @@ export default function PlaylistPreview() {
                         // shufflePlaylist={shufflePlaylist}
                         size={"page"}
                         // handleParentUI={handleParentUI}
-                        handleRouting={handleRouting}
+
                         isEditable={false}
                         customStyles={customStyles}
                     />

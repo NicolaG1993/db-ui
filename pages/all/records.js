@@ -87,10 +87,6 @@ export default function Records() {
     //     }
     // }, [recs]);
 
-    const handleRouting = (url) => {
-        router.push(url);
-    };
-
     return (
         <main>
             <div>
@@ -108,7 +104,7 @@ export default function Records() {
                             data={allRecords.records}
                             rowType={"complex"}
                             // rowSize={rowSize}
-                            handleRouting={handleRouting}
+
                             handleOpenRecordsForm={handleOpenRecordsForm}
                             handleOpenRecordForm={handleOpenRecordForm}
                             handleDeleteRecordForm={handleDeleteRecordForm}
@@ -122,7 +118,6 @@ export default function Records() {
                             listLength={allRecords.moviesRecords.length}
                             data={allRecords.moviesRecords}
                             rowSize={"large"}
-                            handleRouting={handleRouting}
                             customStyles={customStyles}
                         />
 
@@ -130,7 +125,6 @@ export default function Records() {
                             listTitle={"ACTORS"}
                             listLength={allRecords.actorsRecords.length}
                             data={allRecords.actorsRecords}
-                            handleRouting={handleRouting}
                             customStyles={customStyles}
                         />
 
@@ -138,7 +132,6 @@ export default function Records() {
                             listTitle={"TAGS"}
                             listLength={allRecords.tagsRecords.length}
                             data={allRecords.tagsRecords}
-                            handleRouting={handleRouting}
                             customStyles={customStyles}
                         />
 
@@ -146,7 +139,6 @@ export default function Records() {
                             listTitle={"CATEGORIES"}
                             listLength={allRecords.categoriesRecords.length}
                             data={allRecords.categoriesRecords}
-                            handleRouting={handleRouting}
                             customStyles={customStyles}
                         />
                     </section>

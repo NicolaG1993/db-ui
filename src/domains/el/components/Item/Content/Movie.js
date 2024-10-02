@@ -8,7 +8,6 @@ import { parseTagsForUiList } from "@/src/domains/_app/utils/parsers";
 import { Button, ItemRow } from "zephyrus-components";
 import customStyles from "@/src/application/styles/Zephyrus.module.css";
 import InfiteScrollingWrap from "../InfiteScrollingWrap";
-import { useRouter } from "next/router";
 
 export default function Movie({
     label,
@@ -34,11 +33,6 @@ export default function Movie({
         categories,
         totalActors,
     } = item;
-
-    const router = useRouter();
-    const handleRouting = (url) => {
-        router.push(url);
-    }; // 🧠 Should move to Item component and pass as prop (?)
 
     return (
         <div id={styles.Movie} className={styles.elWrap}>
@@ -85,28 +79,24 @@ export default function Movie({
                         label={"Studio"}
                         arr={studios}
                         group={"studio"}
-                        handleRouting={handleRouting}
                         customStyles={customStyles}
                     />
                     <ItemRow
                         label={"Distribution"}
                         arr={distributions}
                         group={"distribution"}
-                        handleRouting={handleRouting}
                         customStyles={customStyles}
                     />
                     <ItemRow
                         label={"Categories"}
                         parsedData={parseTagsForUiList(categories)}
                         group={"category"}
-                        handleRouting={handleRouting}
                         customStyles={customStyles}
                     />
                     <ItemRow
                         label={"Tags"}
                         parsedData={parseTagsForUiList(tags)}
                         group={"tag"}
-                        handleRouting={handleRouting}
                         customStyles={customStyles}
                     />
                     <ItemRow

@@ -6,7 +6,6 @@ import {
     deleteSessionPlaylist,
     removeFromSessionPlaylist,
     shuffleSessionPlaylist,
-    // addToSessionPlaylist,
     updateSessionPlaylist,
 } from "@/src/application/redux/slices/sessionPlaylistSlice";
 import SavePlaylistForm from "@/src/domains/_app/constants/components/SessionPlaylist/components/SavePlaylistForm.js";
@@ -15,7 +14,6 @@ import {
     openForm,
     resetFormStore,
 } from "@/src/application/redux/slices/formSlice";
-// import PlaylistEditor from "@/src/domains/playlists/components/PlaylistEditor/PlaylistEditor";
 import { Button, IconBackArrow, Modal, Playlist } from "zephyrus-components";
 import customStyles from "@/src/application/styles/Zephyrus.module.css";
 
@@ -31,10 +29,6 @@ export default function EditorPlaylist() {
     };
     const overridePlaylist = (playlist) => {
         dispatch(updateSessionPlaylist(playlist));
-    };
-    const clearPreviousItem = () => {
-        dispatch(clearItem());
-        dispatch(activateLoadingItem());
     };
 
     const removeFromPlaylist = (i) => {
@@ -54,11 +48,6 @@ export default function EditorPlaylist() {
         }
     };
 
-    const handleRouting = async (url) => {
-        clearPreviousItem();
-        router.push(url);
-    };
-
     const closeModal = () => {
         setSaveModal(false);
     };
@@ -72,7 +61,7 @@ export default function EditorPlaylist() {
                     size="large"
                     label="All playlists"
                     customStyles={customStyles}
-                    onClick={() => router.push("/el/playlist/tournament")}
+                    href={"/el/playlist/tournament"}
                     icon={<IconBackArrow />}
                 />
             </div>
@@ -85,7 +74,6 @@ export default function EditorPlaylist() {
                 shufflePlaylist={shufflePlaylist}
                 size={"page"}
                 handleParentUI={handleParentUI}
-                handleRouting={handleRouting}
                 customStyles={customStyles}
             />
             {/* <PlaylistEditor
