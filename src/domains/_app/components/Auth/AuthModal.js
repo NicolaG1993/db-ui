@@ -14,7 +14,6 @@ export default function AuthModal() {
 
     useEffect(() => {
         if (token) {
-            console.log("token: ", token);
             setTab("pswReset");
         }
     }, [token]);

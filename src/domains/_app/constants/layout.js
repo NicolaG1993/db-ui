@@ -302,6 +302,7 @@ export default function Layout({ children }) {
                         title={"Menu"}
                         customStyles={customStyles}
                         showCloseButton={false}
+                        top={"52px"}
                     >
                         <SideNavMenu onClose={closeDrawer} />
                     </Drawer>

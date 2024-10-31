@@ -2,7 +2,6 @@
 // import { useRouter } from "next/router";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import styles from "@/src/domains/_app/components/Auth/AuthModal.module.css";
 import {
     // selectUserState,
     userLogin,
@@ -10,8 +9,8 @@ import {
 import { emailValidation } from "@/src/application/utils/validateForms.js";
 // import { getError } from "@/src/application/utils/error.js";
 import loginUser from "@/src/domains/_app/components/Auth/actions/loginUser.js";
-
 import { Button, InputText } from "zephyrus-components";
+import styles from "@/src/domains/_app/components/Auth/AuthModal.module.css";
 import customStyles from "@/src/application/styles/Zephyrus.module.css";
 
 export default function LoginForm({ handleTab }) {

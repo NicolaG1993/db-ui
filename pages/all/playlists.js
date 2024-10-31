@@ -59,7 +59,7 @@ export default function Playlists() {
         <main>
             <div className={"heading"}>
                 <h1>YOUR PLAYLISTS</h1>
-                <div className={styles.buttonsWrap}>
+                <div className={"buttonsWrap"}>
                     <Button
                         size="large"
                         label="Session playlist editor"

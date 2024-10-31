@@ -92,7 +92,7 @@ export default function RegistrationForm({ handleTab }) {
         if (Object.keys(errors).length === 0) {
             try {
                 const data = await createUser(userName, email, password);
-                dispatch(userLogin(data));
+                dispatch(userLogin(data)); // TODO: 🧠🔴 We should not login directly, but redirect to the login form (email verification required first!)
                 // router.push("/");
             } catch (err) {
                 const errorCode = err.response?.data?.code;

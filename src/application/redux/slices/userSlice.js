@@ -21,7 +21,7 @@ const userSlice = createSlice({
     },
 });
 
-export const { userLogin, userLogout, storeEmailToken } = userSlice.actions; // ACTIONS
+export const { userLogin, userLogout } = userSlice.actions; // ACTIONS
 export const selectUserState = (state) => state.user.user; // SELECTOR
 
 export default userSlice;
