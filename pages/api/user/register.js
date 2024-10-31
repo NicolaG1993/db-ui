@@ -1,5 +1,5 @@
 import { release, connect } from "@/src/application/db/db.js";
-import createUser from "@/src/domains/user/utils/createUser";
+import createNewUser from "@/src/domains/user/utils/createNewUser";
 import mapUserRawToUser from "@/src/domains/user/utils/mapUserRawToUser";
 
 export default async function handler(req, res) {
@@ -8,7 +8,7 @@ export default async function handler(req, res) {
         const { name, email, password } = body;
         const client = await connect();
         try {
-            const rawUser = await createUser(client, name, email, password);
+            const rawUser = await createNewUser(client, name, email, password);
             const mappedUser = mapUserRawToUser(rawUser);
             res.status(200).json({ user: mappedUser });
         } catch (err) {

@@ -11,7 +11,7 @@ import { newUser, getUserByEmail } from "@/src/application/db/utils/user.js";
 import { createNewUserSettings } from "@/src/application/db/utils/settings.js";
 import sendVerificationEmail from "@/src/domains/_app/components/Auth/utils/sendVerificationEmail";
 
-export default async function createUser(client, name, email, password) {
+export default async function createNewUser(client, name, email, password) {
     try {
         await begin(client);
 

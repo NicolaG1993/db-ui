@@ -411,6 +411,12 @@ select:hover {
 .heading > a:hover {
     font-weight: 500;
 }
+.buttonsWrap {
+    display: flex;
+    justify-content: space-evenly;
+    align-content: center;
+    gap: 0.75rem;
+}
 
 /* CUSTOM ELEMENTS */
 

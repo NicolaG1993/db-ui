@@ -32,7 +32,6 @@ yarn-error.log*
 .vercel
 
 .env
-.env*.local
 steps.txt
 src/application/settings/appSettingsCustom.js
 src/application/db/data.js
