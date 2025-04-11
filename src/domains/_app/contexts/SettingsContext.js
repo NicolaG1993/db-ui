@@ -4,6 +4,8 @@ import { selectUserState } from "@/src/application/redux/slices/userSlice";
 import axiosAuthInstance from "@/src/application/utils/axiosAuthInstance";
 import Cookies from "js-cookie";
 
+// TODO: We could merge this context with DatabaseContext 🧠👇
+
 export const SettingsContext = createContext();
 
 export const SettingsProvider = ({ children }) => {

@@ -87,7 +87,7 @@ export default function ActorForm({
     //================================================================================
     // Render UI
     //================================================================================
-    console.log("ACtor formState: ", formState);
+    console.log("Actor formState: ", formState);
 
     return (
         <>
