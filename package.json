@@ -12,6 +12,7 @@
         "@emotion/react": "^11.13.0",
         "@emotion/styled": "^11.13.0",
         "@reduxjs/toolkit": "^2.2.7",
+        "@supabase/supabase-js": "^2.49.4",
         "aws-sdk": "^2.1669.0",
         "axios": "^1.7.3",
         "bcryptjs": "^2.4.3",
