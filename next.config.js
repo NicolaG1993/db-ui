@@ -1,4 +1,6 @@
 /** @type {import('next').NextConfig} */
+const isDev = process.env.NODE_ENV === "development";
+
 const nextConfig = {
     reactStrictMode: true,
     swcMinify: true,
@@ -12,7 +14,12 @@ const nextConfig = {
     },
 
     images: {
-        domains: [process.env.S3_BUCKET_URL, process.env.S3_BUCKET_URL_B],
+        domains: [
+            process.env.S3_BUCKET_URL,
+            process.env.S3_BUCKET_URL_B,
+            isDev ? process.env.SUPABASE_PROJECT_URL_DEV || "" : "",
+            process.env.SUPABASE_PROJECT_URL_PROD || "",
+        ],
         unoptimized: true, // set to true when vercel limit exceeded // comment otherwise
     },
 
@@ -36,6 +43,10 @@ const nextConfig = {
         JWT_SECRET: process.env.JWT_SECRET,
         EMAIL_USER: process.env.EMAIL_USER,
         EMAIL_PASS: process.env.EMAIL_PASS,
+
+        SUPABASE_PROJECT_URL_DEV: process.env.SUPABASE_PROJECT_URL_DEV,
+        SUPABASE_PROJECT_URL_PROD: process.env.SUPABASE_PROJECT_URL_PROD,
+        SUPABASE_KEY: process.env.SUPABASE_KEY,
     },
 };
 

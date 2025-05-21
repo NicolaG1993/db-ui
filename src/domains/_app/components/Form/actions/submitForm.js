@@ -11,11 +11,19 @@ const submitForm = async ({ formState, newImage, formSettings, propsData }) => {
     if (newImage) {
         // user added a new image
         const imgRes = await uploadImage(newImage.file, formSettings.group);
+
+        // Use the public URL returned from the API
+        const picUrl = imgRes.data?.publicUrl;
+
         let newState = {
             ...formState,
-            pic: imgRes.data[0].Location,
+            pic: picUrl, // AWS: imgRes.data[0].Location,
             birthday,
         };
+        console.log("Creating item with data:", {
+            newState,
+            pic: picUrl,
+        });
         finalRes = await createItem({
             formState: newState,
             formSettings,
